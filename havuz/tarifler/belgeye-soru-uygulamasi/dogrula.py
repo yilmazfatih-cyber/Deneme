@@ -60,7 +60,9 @@ def api_dene(gunluk: Gunluk, web: str, yz_url: str, anahtar: str) -> None:
             raise AssertionError(f"oturumsuz soru {durum} döndü (401 beklenirdi)")
         kayit = {"email": f"sor-{secrets.token_hex(4)}@ornek.com", "password": "mavi-deniz-kenari-42",
                  "name": "Ayşe"}  # fmt: skip
-        durum, _, govde = http_istek("POST", f"{web}/api/auth/register", kayit, {"X-Auth-Mode": "token"})
+        durum, _, govde = http_istek(
+            "POST", f"{web}/api/auth/register", kayit, {"X-Auth-Mode": "token"}
+        )
         if durum != 201:
             raise AssertionError(f"kayıt başarısız: {durum} {govde}")
         yetki = {"Authorization": f"Bearer {govde['token']}"}
@@ -73,10 +75,20 @@ def api_dene(gunluk: Gunluk, web: str, yz_url: str, anahtar: str) -> None:
 def tarayici_testleri(gunluk: Gunluk, uygulama: Path, web: str) -> None:
     yol = chromium()
     if yol is None:
-        gunluk.atla("Playwright (telefon 390/360)", "Chromium yok: PLAYWRIGHT_CHROMIUM_EXECUTABLE verin")
+        gunluk.atla(
+            "Playwright (telefon 390/360)", "Chromium yok: PLAYWRIGHT_CHROMIUM_EXECUTABLE verin"
+        )
         return
     ortam = dict(os.environ, SOR_WEB_URL=web, PLAYWRIGHT_CHROMIUM_EXECUTABLE=yol)
-    komut = ["npx", "playwright", "test", "--config", "e2e/sor/playwright.config.ts", "--trace", "off"]
+    komut = [
+        "npx",
+        "playwright",
+        "test",
+        "--config",
+        "e2e/sor/playwright.config.ts",
+        "--trace",
+        "off",
+    ]
     gunluk.calistir("Playwright: e2e/sor (telefon 390 + 360, axe)", komut, uygulama, ortam, 900)
 
 
@@ -87,8 +99,19 @@ def uctan_uca(gunluk: Gunluk, proje: Path) -> None:
     yz_kapi, api_kapi = bos_kapi(), bos_kapi()
     yz_url, web = f"http://127.0.0.1:{yz_kapi}", f"http://127.0.0.1:{api_kapi}"
     yz_hazirla(gunluk, proje, calisma / "yz")
-    yz_ortam = venv_ortami(yz, {"YZ_VERI_DIZINI": str(calisma / "yz"), "YZ_SUNUCU_ANAHTARI": anahtar})
-    yz_komut = [str(venv_python(yz)), "-m", "yz", "sun", "--saglayici", "sahte", "--kapi", str(yz_kapi)]
+    yz_ortam = venv_ortami(
+        yz, {"YZ_VERI_DIZINI": str(calisma / "yz"), "YZ_SUNUCU_ANAHTARI": anahtar}
+    )
+    yz_komut = [
+        str(venv_python(yz)),
+        "-m",
+        "yz",
+        "sun",
+        "--saglayici",
+        "sahte",
+        "--kapi",
+        str(yz_kapi),
+    ]
     api_ortam = dict(os.environ, NODE_ENV="test", PORT=str(api_kapi), HOST="127.0.0.1",
                      DATABASE_PATH=str(calisma / "api.db"), APP_URL=web, WEB_DIST="../web/dist",
                      YZ_URL=yz_url, YZ_API_KEY=anahtar)  # fmt: skip
@@ -106,7 +129,9 @@ def uctan_uca(gunluk: Gunluk, proje: Path) -> None:
             with gunluk.adim("yz kapalıyken API anlaşılır hata döndürür (500, suçlamayan ileti)"):
                 kayit = {"email": f"sor-{secrets.token_hex(4)}@ornek.com",
                          "password": "mavi-deniz-kenari-42", "name": "Ayşe"}  # fmt: skip
-                _, _, govde = http_istek("POST", f"{web}/api/auth/register", kayit, {"X-Auth-Mode": "token"})
+                _, _, govde = http_istek(
+                    "POST", f"{web}/api/auth/register", kayit, {"X-Auth-Mode": "token"}
+                )
                 yetki = {"Authorization": f"Bearer {govde['token']}"}
                 durum, _, hata = http_istek("POST", f"{web}/api/sor", {"question": SORU}, yetki)
                 if durum != 500 or "ulaşılamıyor" not in hata["error"]["message"]:
@@ -121,7 +146,9 @@ def main(argv: list[str]) -> int:
         gunluk,
         [
             lambda: temeli_denetle(gunluk, proje / "uygulama"),
-            lambda: gunluk.calistir("uygulama: web derlemesi", ["npm", "run", "build"], proje / "uygulama"),
+            lambda: gunluk.calistir(
+                "uygulama: web derlemesi", ["npm", "run", "build"], proje / "uygulama"
+            ),
             lambda: uctan_uca(gunluk, proje),
         ],
     )

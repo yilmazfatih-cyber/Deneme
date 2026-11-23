@@ -1,0 +1,13 @@
+# Her gece yedek. Kurulum: sudo cp yayin/systemd/uygulama-yedek.* /etc/systemd/system/
+#                          sudo systemctl daemon-reload && sudo systemctl enable --now uygulama-yedek.timer
+# Durum: systemctl list-timers uygulama-yedek.timer · son çalışma: journalctl -u uygulama-yedek -n 20
+[Unit]
+Description=Uygulama veritabanı yedeği (her gece)
+
+[Timer]
+OnCalendar=*-*-* 03:17:00
+RandomizedDelaySec=15min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

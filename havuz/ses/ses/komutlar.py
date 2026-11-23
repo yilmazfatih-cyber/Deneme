@@ -47,7 +47,9 @@ def stt_motoru_kur(ad: str | None, ayarlar: Ayarlar, sahte: str | None = None) -
     from ses.stt.whisper import WhisperMotoru
 
     model = katalogu_oku().bul(ad or ayarlar.stt_modeli, "stt")
-    return WhisperMotoru(model_klasoru(ayarlar.model_dizini, model), ad=model.ad, is_parcacigi=ayarlar.is_parcacigi)
+    return WhisperMotoru(
+        model_klasoru(ayarlar.model_dizini, model), ad=model.ad, is_parcacigi=ayarlar.is_parcacigi
+    )
 
 
 def tts_motoru_kur(ad: str | None, ayarlar: Ayarlar, sahte: bool = False) -> TtsMotoru:
@@ -120,7 +122,7 @@ def komut_seslendir(secenek: argparse.Namespace) -> int:
     ayarlar = _ayarlar(secenek)
     metin = Path(secenek.dosya).read_text(encoding="utf-8") if secenek.dosya else secenek.metin
     if not metin:
-        raise SesHatasi("Metin verin: python -m ses seslendir \"Merhaba\" ya da --dosya metin.txt")
+        raise SesHatasi('Metin verin: python -m ses seslendir "Merhaba" ya da --dosya metin.txt')
     motor = tts_motoru_kur(secenek.ses, ayarlar, secenek.sahte)
     ayar = SesAyari(hiz=secenek.hiz, perde=secenek.perde, cumle_arasi_ms=secenek.cumle_arasi,
                     hedef_lufs=None if secenek.lufs_yok else secenek.lufs, ornekleme=secenek.ornekleme,
@@ -148,7 +150,9 @@ def komut_degerlendir(secenek: argparse.Namespace) -> int:
 
     ayarlar = _ayarlar(secenek)
     motor = stt_motoru_kur(secenek.model, ayarlar, secenek.sahte)
-    rapor = degerlendir(Path(secenek.liste), motor, tarih=date.today().isoformat(), ilerleme=_ilerleme)
+    rapor = degerlendir(
+        Path(secenek.liste), motor, tarih=date.today().isoformat(), ilerleme=_ilerleme
+    )
     if secenek.cikti:
         json_yolu, md_yolu = rapor_yaz(rapor, secenek.cikti)
         _hata(f"Yazıldı: {json_yolu}, {md_yolu}")
@@ -163,9 +167,17 @@ def komut_modeller(secenek: argparse.Namespace) -> int:
                  "indirildi": indirilmis_mi(ayarlar.model_dizini, m), "aciklama": m.aciklama}
                 for m in katalog.modeller]  # fmt: skip
     if secenek.json:
-        print(json.dumps({"model_dizini": str(ayarlar.model_dizini), "modeller": satirlar}, ensure_ascii=False, indent=2))
+        print(
+            json.dumps(
+                {"model_dizini": str(ayarlar.model_dizini), "modeller": satirlar},
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
         return 0
-    print(f"Model dizini: {ayarlar.model_dizini}   (katalog doğrulama: {katalog.dogrulama_tarihi})\n")
+    print(
+        f"Model dizini: {ayarlar.model_dizini}   (katalog doğrulama: {katalog.dogrulama_tarihi})\n"
+    )
     print(f"{'AD':<20} {'TÜR':<4} {'MB':>6}  {'LİSANS':<16} {'TİCARİ':<9} İNDİRİLDİ")
     goster = {"evet": "evet", "hayir": "hayır", "belirsiz": "belirsiz"}
     for s in satirlar:
@@ -182,9 +194,19 @@ def komut_indir(secenek: argparse.Namespace) -> int:
 
     ayarlar = _ayarlar(secenek)
     katalog = katalogu_oku()
-    secilen = [katalog.bul(ad, "stt") for ad in secenek.stt] + [katalog.bul(ad, "tts") for ad in secenek.tts]
+    secilen = [katalog.bul(ad, "stt") for ad in secenek.stt] + [
+        katalog.bul(ad, "tts") for ad in secenek.tts
+    ]
     if not secilen:
         raise SesHatasi("Ne indirileceğini söyleyin: --stt base ve/veya --tts tr_TR-dfki-medium")
+    son_yuzde: dict[str, int] = {}
+
+    def ilerleme(ad: str, inen: int, toplam: int) -> None:
+        yuzde = inen * 100 // toplam
+        if yuzde // 10 != son_yuzde.get(ad, -1) // 10:
+            son_yuzde[ad] = yuzde
+            _hata(f"  {ad}: %{yuzde}")
+
     sorun = 0
     for model in secilen:
         if secenek.denetle:
@@ -192,15 +214,9 @@ def komut_indir(secenek: argparse.Namespace) -> int:
             print(f"{model.ad}: {'sağlam' if not sorunlar else '; '.join(sorunlar)}")
             sorun += len(sorunlar)
             continue
-        _hata(f"{model.ad} ({model.boyut_mb:.0f} MB, lisans {model.lisans}, ticari: {model.ticari}) indiriliyor…")
-        son_yuzde: dict[str, int] = {}
-
-        def ilerleme(ad: str, inen: int, toplam: int) -> None:
-            yuzde = inen * 100 // toplam
-            if yuzde // 10 != son_yuzde.get(ad, -1) // 10:
-                son_yuzde[ad] = yuzde
-                _hata(f"  {ad}: %{yuzde}")
-
+        _hata(
+            f"{model.ad} ({model.boyut_mb:.0f} MB, lisans {model.lisans}, ticari: {model.ticari}) indiriliyor…"
+        )
         klasor = indir(model, ayarlar.model_dizini, ilerleme=ilerleme)
         print(f"{model.ad}: hazır → {klasor}")
     return 1 if sorun else 0
@@ -230,7 +246,9 @@ def komut_hazirla(secenek: argparse.Namespace) -> int:
         dizi, hiz = yeniden_ornekle(dizi, hiz, secenek.ornekleme), secenek.ornekleme
     dizi, bilgi = lufs_normallestir(dizi, hiz, hedef_lufs=secenek.lufs)
     wav_yaz(secenek.cikti, Ses.tek_kanaldan(dizi, hiz))
-    durum = "hedefe ulaşıldı" if bilgi.hedefe_ulasildi else "tepe sınırı yüzünden hedefin altında kaldı"
+    durum = (
+        "hedefe ulaşıldı" if bilgi.hedefe_ulasildi else "tepe sınırı yüzünden hedefin altında kaldı"
+    )
     _hata(f"Yazıldı: {secenek.cikti} ({len(dizi) / hiz:.2f} sn, {hiz} Hz; {bilgi.olculen:.1f} → "
           f"{bilgi.olculen + bilgi.kazanc_db:.1f} LUFS, {durum})")  # fmt: skip
     return 0
@@ -245,7 +263,9 @@ def komut_sun(secenek: argparse.Namespace) -> int:
         from ses.hatalar import eksik_paket
 
         raise eksik_paket("fastapi/uvicorn", "sunucu") from hata
-    ayarlar = ayarlari_oku(adres=secenek.adres, kapi=secenek.kapi, model_dizini=secenek.model_dizini)
+    ayarlar = ayarlari_oku(
+        adres=secenek.adres, kapi=secenek.kapi, model_dizini=secenek.model_dizini
+    )
     if ayarlar.adres not in ("127.0.0.1", "localhost", "::1") and not ayarlar.api_anahtari:
         raise SesHatasi(
             f"{ayarlar.adres} adresinde dinlemek için API anahtarı gerekir: SES_SUNUCU_ANAHTARI=<uzun-rastgele> verin."
@@ -255,6 +275,8 @@ def komut_sun(secenek: argparse.Namespace) -> int:
         fabrikalar = {"stt_fabrikasi": lambda ad: SahteStt("sahte yazıya çevirme"),
                       "tts_fabrikasi": lambda ad: SahteTts()}  # fmt: skip
     uygulama = uygulama_kur(ayarlar, **fabrikalar)  # type: ignore[arg-type]
-    _hata(f"Ses sunucusu: http://{ayarlar.adres}:{ayarlar.kapi}  (tarayıcı sayfası: /tarayici; durdurmak: Ctrl+C)")
+    _hata(
+        f"Ses sunucusu: http://{ayarlar.adres}:{ayarlar.kapi}  (tarayıcı sayfası: /tarayici; durdurmak: Ctrl+C)"
+    )
     uvicorn.run(uygulama, host=ayarlar.adres, port=ayarlar.kapi, log_level="warning")
     return 0

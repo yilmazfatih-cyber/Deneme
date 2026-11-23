@@ -2,8 +2,13 @@
   "ad": "csvden-tahmin-servisi",
   "baslik": "CSV'den tahmin servisi (sentetik veri → temizlik → model → HTTP)",
   "ozet": "veri temelinin üreteciyle kirli müşteri kaybı verisi üretir, profil çıkarıp temizler, sızıntı sütununu atar, ml-temel ile model eğitir ve modeli girdi şeması doğrulamalı, pickle'sız bir HTTP servisiyle sunar.",
-  "temeller": ["veri", "ml-temel"],
-  "ekKlasorler": ["hat"],
-  "sure": "~4 dk",
+  "temeller": [
+    "veri",
+    "ml-temel"
+  ],
+  "ekKlasorler": [
+    "hat"
+  ],
+  "sure": "~1 dk",
   "zorluk": "orta"
 }

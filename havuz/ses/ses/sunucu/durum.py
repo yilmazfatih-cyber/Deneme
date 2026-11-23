@@ -56,7 +56,9 @@ def _varsayilan_stt(ayarlar: Ayarlar) -> SttFabrikasi:
         from ses.stt.whisper import WhisperMotoru
 
         model = katalogu_oku().bul(ad, "stt")
-        return WhisperMotoru(model_klasoru(ayarlar.model_dizini, model), ad=ad, is_parcacigi=ayarlar.is_parcacigi)
+        return WhisperMotoru(
+            model_klasoru(ayarlar.model_dizini, model), ad=ad, is_parcacigi=ayarlar.is_parcacigi
+        )
 
     return kur
 
@@ -106,6 +108,8 @@ class SunucuDurumu:
         """İndirilmiş (tür, ad) listesi; katalog okunamazsa boş."""
         try:
             katalog = katalogu_oku()
-        except Exception:  # noqa: BLE001 — liste ucu katalog bozukken de yanıt vermeli
+        except Exception:
             return []
-        return [(m.tur, m.ad) for m in katalog.modeller if indirilmis_mi(self.ayarlar.model_dizini, m)]
+        return [
+            (m.tur, m.ad) for m in katalog.modeller if indirilmis_mi(self.ayarlar.model_dizini, m)
+        ]

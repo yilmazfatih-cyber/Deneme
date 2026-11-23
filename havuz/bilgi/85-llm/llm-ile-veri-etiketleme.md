@@ -127,8 +127,8 @@ Okuma:
   rastgele hatayı ölçer, kılavuzu yanlış anlamayı ölçmez. O hatalar yalnız altın kümede sınıf ve kural bazında
   bakınca görünür.
 - Gerçek modellerde aynı istemin örnekleri buradakinden de ilişkili olabilir; oylamanın kazancını kendi altın
-  kümenizde ölçün, varsaymayın. Modelin kendi söylediği güven yüzdesi ("%90 eminim") kalibre değildir; olasılık
-  gerekiyorsa altın kümede kalibre edin ([kalibrasyon](../80-ml/kalibrasyon-ve-olasilik.md)).
+  kümenizde ölçün, varsaymayın. Modelin kendi söylediği güven yüzdesine ("%90 eminim") olasılık gibi
+  güvenmeyin; kullanılacaksa altın kümede kalibrasyonunu ölçün ([kalibrasyon](../80-ml/kalibrasyon-ve-olasilik.md)).
 
 ## İnsanla uyum: altın küme ve insan tavanı
 

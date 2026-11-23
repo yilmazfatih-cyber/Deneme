@@ -64,25 +64,31 @@ def k_suzgec_katsayilari(ornekleme: int) -> tuple[tuple[list[float], list[float]
     return raf, yuksek
 
 
-def _durtu_yaniti(b: list[float], a: list[float], uzunluk: int) -> NDArray[np.float64]:
-    """İkinci derece IIR süzgecin ilk `uzunluk` dürtü yanıtı (doğrudan fark denklemi)."""
-    h = np.zeros(uzunluk)
+def _ikinci_derece(
+    b: list[float], a: list[float], girdi: NDArray[np.float64]
+) -> NDArray[np.float64]:
+    """İkinci derece IIR süzgeç, doğrudan fark denklemi (yalnız kısa dürtü yanıtı için; düz döngü)."""
+    cikti = np.zeros(len(girdi))
     x1 = x2 = y1 = y2 = 0.0
-    for i in range(uzunluk):
-        x0 = 1.0 if i == 0 else 0.0
+    for i, x0 in enumerate(girdi.tolist()):
         y0 = b[0] * x0 + b[1] * x1 + b[2] * x2 - a[1] * y1 - a[2] * y2
-        h[i] = y0
+        cikti[i] = y0
         x2, x1, y2, y1 = x1, x0, y1, y0
-    return h
+    return cikti
 
 
 @lru_cache(maxsize=8)
 def _k_durtu(ornekleme: int) -> NDArray[np.float64]:
-    """K süzgecinin (iki aşama art arda) kırpılmış dürtü yanıtı (≥ 0,5 sn; kuyruk ihmal edilir)."""
+    """K süzgecinin (iki aşama art arda) kırpılmış dürtü yanıtı (≥ 0,5 sn; kuyruk ihmal edilir).
+
+    İkinci aşama birincinin yanıtına süzgeç olarak uygulanır: art arda iki süzgecin ilk n örneği
+    tam olarak budur (evrişim gerekmez; O(n)).
+    """
     raf, yuksek = k_suzgec_katsayilari(ornekleme)
-    uzunluk = 1 << max(10, math.ceil(math.log2(ornekleme * 0.5)))  # ≥ 0,5 sn
-    h = np.convolve(_durtu_yaniti(*raf, uzunluk), _durtu_yaniti(*yuksek, uzunluk))[:uzunluk]
-    return h
+    uzunluk = 1 << max(10, math.ceil(math.log2(ornekleme * 0.5)))
+    durtu = np.zeros(uzunluk)
+    durtu[0] = 1.0
+    return _ikinci_derece(*yuksek, _ikinci_derece(*raf, durtu))
 
 
 def k_agirlikli(dizi: Dizi, ornekleme: int) -> NDArray[np.float64]:

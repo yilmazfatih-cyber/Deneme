@@ -1,0 +1,10 @@
+--- a/api/test/rules.test.ts
++++ b/api/test/rules.test.ts
+@@ -34,6 +34,7 @@
+   'POST /api/auth/password/forgot',
+   'POST /api/auth/password/reset',
+   'GET /api/invites/:token',
++  'POST /api/iletisim',
+ ])
+ 
+ function registeredRoutes(): Set<string> {

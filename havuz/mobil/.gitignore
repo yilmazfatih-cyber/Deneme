@@ -4,6 +4,7 @@ node_modules/
 # Expo ve derleme çıktıları
 .expo/
 dist/
+dist-api/
 web-build/
 expo-env.d.ts
 *.tsbuildinfo

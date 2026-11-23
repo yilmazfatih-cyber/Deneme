@@ -1,0 +1,22 @@
+--- a/api/src/http/body.ts
++++ b/api/src/http/body.ts
+@@ -34,6 +34,19 @@
+   return validate(schema, raw)
+ }
+ 
++/**
++ * Düz HTML form gövdesini (`application/x-www-form-urlencoded`) şemayla doğrular. YALNIZ oturum kullanmayan,
++ * herkese açık form uçları içindir (JS kapalı tarayıcı): burada CSRF duvarı JSON değil, köken denetimidir.
++ */
++export async function readForm<S extends z.ZodType>(c: Context<AppEnv>, schema: S): Promise<z.output<S>> {
++  const type = c.req.header('content-type') ?? ''
++  if (!/^application\/x-www-form-urlencoded\s*(;|$)/i.test(type))
++    throw new AppError('validation', MESSAGES.jsonRequired)
++  const body = await c.req.parseBody()
++  const fields = Object.fromEntries(Object.entries(body).filter(([, value]) => typeof value === 'string'))
++  return validate(schema, fields)
++}
++
+ /** Sorgu dizgisini (`?q=…&limit=…`) şemayla doğrular. */
+ export function readQuery<S extends z.ZodType>(c: Context<AppEnv>, schema: S): z.output<S> {
+   return validate(schema, c.req.query())

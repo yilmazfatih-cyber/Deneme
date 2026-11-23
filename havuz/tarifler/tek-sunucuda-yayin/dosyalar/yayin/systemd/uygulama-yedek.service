@@ -1,0 +1,23 @@
+# Veritabanı yedeği: VACUUM INTO ile tutarlı kopya + 14 günden eski yedekleri silme (en yeni 3 hep kalır).
+# Zamanlayıcısı: uygulama-yedek.timer. Elle: sudo systemctl start uygulama-yedek.service
+# Yedekler /var/lib/uygulama/yedek altında: AYNI DİSKTE. Makine dışına da kopyalayın (README → Yedek).
+[Unit]
+Description=Uygulama veritabanı yedeği
+After=uygulama.service
+
+[Service]
+Type=oneshot
+User=uygulama
+Group=uygulama
+WorkingDirectory=/srv/proje/uygulama/api
+EnvironmentFile=/etc/uygulama/uygulama.env
+ExecStart=/usr/bin/node --disable-warning=ExperimentalWarning scripts/backup.ts --klasor /var/lib/uygulama/yedek --sakla 14
+StateDirectory=uygulama
+UMask=0027
+Nice=10
+IOSchedulingClass=idle
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true

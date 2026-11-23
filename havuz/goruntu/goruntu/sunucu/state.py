@@ -38,9 +38,9 @@ def load_components(model: str | None, index_dir: str | None) -> tuple[Any, Any,
 
         classifier = OnnxClassifier(Path(model))
     if index_dir:
-        from goruntu.arama.embedders import make_embedder
+        from goruntu.arama.embedders import embedder_for_index
         from goruntu.arama.index import ImageIndex
 
         index = ImageIndex.load(Path(index_dir))
-        embedder = make_embedder(index.meta.model)
+        embedder = embedder_for_index(index.meta.model)
     return classifier, index, embedder

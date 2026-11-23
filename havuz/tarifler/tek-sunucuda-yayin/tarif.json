@@ -1,0 +1,14 @@
+{
+  "ad": "tek-sunucuda-yayin",
+  "baslik": "Tek sunucuda yayın (uygulama + site, systemd, Caddy, yedek, sağlık)",
+  "ozet": "uygulamayı tek servis (API derlenmiş web'i sunar) ve siteyi durağan dosya olarak aynı makinede yayınlar: systemd birimleri, Caddy ters vekili, VACUUM INTO + saklama süreli yedek zamanlayıcısı, geri yükleme betiği ve tatbikatı, sağlık denetimi, güncelleme adımları.",
+  "temeller": [
+    "uygulama",
+    "site"
+  ],
+  "ekKlasorler": [
+    "yayin"
+  ],
+  "sure": "~2 dk",
+  "zorluk": "zor"
+}

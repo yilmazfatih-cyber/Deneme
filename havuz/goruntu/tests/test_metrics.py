@@ -6,7 +6,12 @@ from __future__ import annotations
 import numpy as np
 import pytest
 import torch
-from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_recall_fscore_support
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    f1_score,
+    precision_recall_fscore_support,
+)
 
 from goruntu.siniflandirma.calibration import (
     Decision,
@@ -55,7 +60,12 @@ def test_hic_gorulmeyen_sinif_makro_f1_disinda() -> None:
 def test_karistirilan_ciftler_ve_emin_yanlislar() -> None:
     report = classification_report([0, 0, 0, 1, 1], [1, 1, 0, 1, 0], LABELS)
     pairs = confused_pairs(report)
-    assert pairs[0] == {"gercek": "ayakkabı", "tahmin": "çanta", "sayi": 2, "oran": pytest.approx(2 / 3)}
+    assert pairs[0] == {
+        "gercek": "ayakkabı",
+        "tahmin": "çanta",
+        "sayi": 2,
+        "oran": pytest.approx(2 / 3),
+    }
     probabilities = np.asarray([[0.1, 0.9, 0, 0], [0.6, 0.4, 0, 0], [0.3, 0.7, 0, 0]])
     mistakes = confident_mistakes(probabilities, [0, 0, 0], ["a", "b", "c"], LABELS)
     assert [m["dosya"] for m in mistakes] == ["a", "c"]
@@ -103,6 +113,14 @@ def test_karar_kurali_emin_degilim() -> None:
     assert decision.decide(np.asarray([[0.8, 0.2], [0.55, 0.45]])) == ["a", None]
     assert np.allclose(decision.probabilities(np.asarray([[0.0, 0.0]])), [[0.5, 0.5]])
     assert np.allclose(softmax(np.asarray([[1000.0, 0.0]])), [[1.0, 0.0]])  # taşma yok
+
+
+def test_az_dogrulamada_sicaklik_ogrenilmez() -> None:
+    rng = np.random.default_rng(5)
+    labels = rng.integers(0, 4, 20)
+    logits = rng.normal(size=(20, 4)) * 5
+    decision, notes = tune_decision(logits, labels.tolist(), LABELS, ThresholdSection())
+    assert decision.temperature == 1.0 and any("sıcaklık ölçekleme atlandı" in n for n in notes)
 
 
 def test_rapor_uctan_uca() -> None:

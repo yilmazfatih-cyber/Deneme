@@ -46,7 +46,9 @@ def sha256_dosya(yol: Path) -> str:
     return ozet.hexdigest()
 
 
-def _dosya_indir(url: str, dosya: KatalogDosyasi, hedef: Path, acici: Acici, ilerleme: Ilerleme | None) -> None:
+def _dosya_indir(
+    url: str, dosya: KatalogDosyasi, hedef: Path, acici: Acici, ilerleme: Ilerleme | None
+) -> None:
     gecici = hedef.with_name(hedef.name + ".part")
     ozet, inen = hashlib.sha256(), 0
     try:
@@ -54,7 +56,9 @@ def _dosya_indir(url: str, dosya: KatalogDosyasi, hedef: Path, acici: Acici, ile
             while parca := kaynak.read(_PARCA):
                 inen += len(parca)
                 if inen > dosya.boyut:
-                    raise BicimHatasi(f"{dosya.ad}: beklenenden büyük ({dosya.boyut} bayt); indirme durdu.")
+                    raise BicimHatasi(
+                        f"{dosya.ad}: beklenenden büyük ({dosya.boyut} bayt); indirme durdu."
+                    )
                 ozet.update(parca)
                 cikti.write(parca)
                 if ilerleme is not None:
@@ -83,12 +87,18 @@ def indir(
     klasor.mkdir(parents=True, exist_ok=True)
     for dosya in model.dosyalar:
         hedef = klasor / dosya.ad
-        if hedef.is_file() and hedef.stat().st_size == dosya.boyut and sha256_dosya(hedef) == dosya.sha256:
+        if (
+            hedef.is_file()
+            and hedef.stat().st_size == dosya.boyut
+            and sha256_dosya(hedef) == dosya.sha256
+        ):
             continue
         _dosya_indir(adres(model, dosya), dosya, hedef, acici, ilerleme)
     kayit = {"ad": model.ad, "hf": model.hf, "surum": model.surum, "lisans": model.lisans,
              "ticari": model.ticari, "atif": model.atif}  # fmt: skip
-    (klasor / "KAYNAK.json").write_text(json.dumps(kayit, ensure_ascii=False, indent=2) + "\n", "utf-8")
+    (klasor / "KAYNAK.json").write_text(
+        json.dumps(kayit, ensure_ascii=False, indent=2) + "\n", "utf-8"
+    )
     return klasor
 
 

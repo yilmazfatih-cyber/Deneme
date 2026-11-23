@@ -3,6 +3,7 @@
 | Dosya | Ne | Kaynak / lisans |
 | --- | --- | --- |
 | `gidis_donus.jsonl` | 20 kısa, gündelik Türkçe sınama cümlesi (sayı, tarih, saat, para, yüzde, telefon, kısaltma) | Bu temel için elle yazıldı (2026-11-23); eğitim verisi DEĞİL, sınama metnidir. Temelin lisansıyla (MIT) |
+| `gidis_donus_sonuclari.json` | `scripts/gidis_donus.py`'nin üç koşusunun özetleri (her cümlenin tahmini, WER/CER, RTF) | Bu ortamda üretildi (2026-11-23); yorum: docs/GERCEK_MODEL_DENEMESI.md |
 
 `scripts/gidis_donus.py` bu cümleleri seslendirir, yeniden yazıya çevirir ve ölçer.
 Kendi kayıtlarınızla ölçmek için aynı biçimde `ses` alanlı bir JSONL yazın (AGENTS.md tarifi).

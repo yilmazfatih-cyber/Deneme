@@ -1,0 +1,10 @@
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -51,6 +51,7 @@
+ | Uygulama adı, renk, depolama öneki          | `web/src/app/config.ts`                                                       |
+ | PWA (önbellek, bildirim dosyası)            | `web/vite.config.ts`                                                          |
+ | Uçtan uca testler                           | `e2e/` (yardımcılar: `e2e/support/helpers.ts`)                                |
++| Sitenin iletişim formu (herkese açık uç)    | `api/src/modules/iletisim/` (köken, bal küpü, hız sınırı, e-posta)            |
+ 
+ ## Değişmez kurallar
+ 

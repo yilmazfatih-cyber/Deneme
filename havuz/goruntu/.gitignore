@@ -1,0 +1,21 @@
+# Sanal ortam ve önbellekler
+.venv/
+__pycache__/
+*.pyc
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+
+# Eğitim çıktıları, üretilen örnek veri, arama dizinleri, indirilen modeller ve büyük dosyalar
+ciktilar/
+veri/
+dizinler/
+*.onnx
+*.onnx.data
+*.safetensors
+*.bin
+*.pt
+*.npy

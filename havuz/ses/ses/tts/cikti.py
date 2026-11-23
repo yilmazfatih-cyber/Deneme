@@ -28,7 +28,9 @@ MEDYA_TURLERI = {
 def ses_bayt(ses: Ses, bicim: str = "wav") -> tuple[bytes, str]:
     """(baytlar, medya türü). Bilinmeyen biçimde yol gösteren hata."""
     if bicim not in MEDYA_TURLERI:
-        raise BicimHatasi(f"Bilinmeyen ses biçimi: {bicim}. Seçenekler: {', '.join(MEDYA_TURLERI)}.")
+        raise BicimHatasi(
+            f"Bilinmeyen ses biçimi: {bicim}. Seçenekler: {', '.join(MEDYA_TURLERI)}."
+        )
     if bicim == "wav":
         return wav_bayt(ses), MEDYA_TURLERI[bicim]
     if bicim == "pcm":

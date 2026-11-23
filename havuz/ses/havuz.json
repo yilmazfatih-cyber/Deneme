@@ -1,0 +1,16 @@
+{
+  "ad": "ses",
+  "baslik": "Türkçe ses temeli",
+  "ozet": "İnternetsiz Türkçe konuşma→yazı (faster-whisper) ve metin→ses (Piper): Türkçe metin normalizasyonu, WAV/yeniden örnekleme/LUFS/VAD yardımcıları, SRT/WebVTT, WER/CER/RTF ölçümü, lisansı doğrulanmış model kataloğu ve OpenAI uyumlu sunucu.",
+  "tur": "python",
+  "gereksinim": { "python": ">=3.11" },
+  "python": { "ekstra": "dev" },
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": ["SES_MODEL=1 python -m pytest tests/test_gercek_model.py"],
+  "baslat": "python -m ses sun",
+  "yerTutucular": [
+    { "ara": "havuz-ses", "anlam": "dağıtım paketi adı (pyproject.toml [project] name) ve indirici User-Agent'ı" },
+    { "ara": "Tarayıcıda Türkçe ses", "anlam": "tarayıcı sayfasının başlığı (ses/web/sozluk.json baslik)" }
+  ],
+  "kopyalamaHaric": [".venv", "modeller", "build", "dist", "*.egg-info", "__pycache__", ".ruff_cache", ".mypy_cache", ".pytest_cache"]
+}

@@ -1,0 +1,13 @@
+--- a/api/src/http/rateLimit.ts
++++ b/api/src/http/rateLimit.ts
+@@ -42,6 +42,10 @@
+   sync: { name: 'sync', limit: 240, windowMs: MINUTE },
+   /** Kullanıcı başına anlık bildirim bağlantısı açma (yeniden bağlanma fırtınasını keser). */
+   events: { name: 'events', limit: 30, windowMs: MINUTE },
++  /** IP başına iletişim formu: insanın yazabileceğinin üstü, posta kutusunu doldurmanın altı. */
++  contact: { name: 'contact', limit: 5, windowMs: 60 * MINUTE },
++  /** Bütün iletişim formu iletileri (tek anahtar): çok IP'li saldırıda e-posta kotasını korur. */
++  contactAll: { name: 'contact-all', limit: 100, windowMs: 60 * MINUTE },
+   // YENİ KURAL BURAYA
+ } as const satisfies Record<string, RateRule>
+ 

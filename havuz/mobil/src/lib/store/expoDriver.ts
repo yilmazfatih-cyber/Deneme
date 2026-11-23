@@ -14,6 +14,8 @@ export async function openExpoDriver(name: string): Promise<SqlDriver> {
   const db = await SQLite.openDatabaseAsync(name)
   // WAL: yazarken okumayı engellemez, çökmeye dayanıklıdır. Web'deki (OPFS) sürücü bunu desteklemez.
   if (Platform.OS !== 'web') await db.execAsync('PRAGMA journal_mode = WAL;')
+  // Web: geçici dosyalar bellekte (OPFS dosya havuzu küçüktür: expo-sqlite AccessHandlePoolVFS, 6 dosya).
+  else await db.execAsync('PRAGMA temp_store = MEMORY;')
   return {
     exec: (source) => db.execAsync(source),
     run: async (source, params = []) => {

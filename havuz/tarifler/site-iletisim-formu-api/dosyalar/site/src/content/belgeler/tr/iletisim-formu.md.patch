@@ -1,0 +1,19 @@
+--- a/src/content/belgeler/tr/iletisim-formu.md
++++ b/src/content/belgeler/tr/iletisim-formu.md
+@@ -31,6 +31,16 @@
+ > [!NOTE]
+ > Bu biçimde JSON kabul eden servislerden biri Formspree'dir. Bazı servisler gövdede ek bir alan ister (ör. bir erişim anahtarı); öyleyse formun betiğine (`src/scripts/contact-form.ts`) o alanı eklemeniz gerekir. Belirli servislerle bu ortamda gerçek gönderim denenmedi.
+ 
++## Kendi API'nize bağlamak (uygulama temeli)
++
++Form servisi yerine kendi sunucunuzu kullanabilirsiniz: `havuz/tarifler/site-iletisim-formu-api` tarifi, uygulama temelinin API'sine herkese açık `POST /api/iletisim` ucunu ekler (köken izin listesi, bal küpü, hız sınırı, yöneticiye e-posta). Sitede yalnız adres değişir:
++
++```bash title=".env"
++PUBLIC_FORM_ENDPOINT=https://api.ornek.com/api/iletisim
++```
++
++API tarafında `CONTACT_TO` (iletilerin gideceği e-posta) ve `CONTACT_ORIGINS` (sitenin kökeni, ör. `https://ornek.com`) tanımlanır. JavaScript kapalı ziyaretçi için API kısa bir teşekkür sayfası döndürür.
++
+ ## Spam önlemleri
+ 
+ - **Bal küpü:** Ziyaretçinin görmediği, ekran okuyucudan da gizlenen bir alan vardır (`_gotcha`). Doluysa ileti gönderilmez ama bot başarılı olduğunu sanır.

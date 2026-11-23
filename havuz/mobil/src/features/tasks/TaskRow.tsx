@@ -1,13 +1,14 @@
 /**
  * Görev satırı: onay kutusu (tamamla), başlık + liste + son tarih (dokununca düzenleme ekranı), sil düğmesi.
- * Her denetimin ekran okuyucu adı görevin başlığını içerir ("“Süt al” görevini sil").
+ * Her denetimin ekran okuyucu adı görevin başlığını içerir ("“Süt al” görevini sil"). Satırın gövdesi kendi
+ * metniyle adlanır (görünen metin = okunan ad; WCAG 2.5.3), ne yaptığını ipucu söyler.
  *
  * Genişletme: satırda yeni bir bilgi (ör. öncelik rozeti) → `Meta` içine ekleyin; dokunma hedefleri ≥ 48 dp kalsın.
  */
 import { Pressable, StyleSheet, View } from 'react-native'
 import { t } from '../../i18n/index.ts'
 import { dueState, formatDay } from '../../lib/date.ts'
-import { AppText, Checkbox, IconButton, RADIUS, SPACE, useTheme } from '../../ui/index.ts'
+import { AppText, Checkbox, Icon, IconButton, RADIUS, SPACE, useTheme } from '../../ui/index.ts'
 import type { Task, TaskList } from './logic.ts'
 
 export interface TaskRowProps {
@@ -23,7 +24,7 @@ export interface TaskRowProps {
 
 export function TaskRow({ task, list, today, readOnly, onToggle, onOpen, onRemove }: TaskRowProps) {
   const { colors } = useTheme()
-  const { title, done, dueDate } = task.data
+  const { title, done, dueDate, priority } = task.data
   const state = dueDate ? dueState(dueDate, today) : null
   const dueText = dueDate
     ? state === 'overdue' && !done
@@ -40,14 +41,14 @@ export function TaskRow({ task, list, today, readOnly, onToggle, onOpen, onRemov
       />
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={t('tasks.open', { title })}
+        accessibilityHint={t('tasks.openHint')}
         onPress={() => onOpen(task)}
         style={styles.body}
       >
         <AppText tone={done ? 'muted' : 'ink'} style={done ? styles.done : null} numberOfLines={3}>
           {title}
         </AppText>
-        {list || dueText ? (
+        {list || dueText || priority === 'high' ? (
           <View style={styles.meta}>
             {list ? (
               <View style={styles.metaItem}>
@@ -61,6 +62,14 @@ export function TaskRow({ task, list, today, readOnly, onToggle, onOpen, onRemov
               <AppText size="small" weight="medium" tone={state === 'overdue' && !done ? 'danger' : 'muted'}>
                 {dueText}
               </AppText>
+            ) : null}
+            {priority === 'high' ? (
+              <View style={styles.metaItem}>
+                <Icon name="flag-outline" size={14} color={colors.warn} />
+                <AppText size="small" weight="medium" tone="warn">
+                  {t('tasks.priority.highBadge')}
+                </AppText>
+              </View>
             ) : null}
           </View>
         ) : null}

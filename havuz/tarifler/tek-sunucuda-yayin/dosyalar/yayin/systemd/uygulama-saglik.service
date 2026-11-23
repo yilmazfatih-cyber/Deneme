@@ -1,0 +1,10 @@
+# Sağlık denetimi: /api/health üç denemede yanıt vermezse uygulamayı yeniden başlatır (yayin/saglik.sh).
+# Çöken süreci systemd zaten yeniden başlatır (Restart=on-failure); bu birim "açık ama yanıt vermiyor" içindir.
+[Unit]
+Description=Uygulama sağlık denetimi
+After=uygulama.service
+
+[Service]
+Type=oneshot
+Environment=SAGLIK_URL=http://127.0.0.1:8310/api/health
+ExecStart=/bin/bash /srv/proje/yayin/saglik.sh

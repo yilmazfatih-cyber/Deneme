@@ -15,7 +15,7 @@ import { t } from '../../i18n/index.ts'
 import type { ThemeChoice } from '../../ui/theme.tsx'
 import { setDeviceValue, type StoredSession } from '../device/deviceStore.ts'
 import { isNetworkError } from '../errors.ts'
-import { deleteLocalDb, LOCAL_DB_NAME, openLocalDb, userDbName } from '../store/databases.ts'
+import { closeLocalDb, deleteLocalDb, LOCAL_DB_NAME, openLocalDb, userDbName } from '../store/databases.ts'
 import type { LocalDb } from '../store/localDb.ts'
 import { ensureClientId } from '../store/meta.ts'
 import { SyncEngine, type SyncEvent } from '../sync/engine.ts'
@@ -75,6 +75,15 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
   }, [boot, dbName])
   const db = opened?.name === dbName ? opened : null
+
+  // Öteki veritabanına geçilince (giriş/çıkış) eskisini kapat: web'de aynı anda açık dosya sayısı sınırlı.
+  useEffect(() => {
+    if (!opened) return
+    const name = opened.name
+    return () => {
+      void closeLocalDb(name)
+    }
+  }, [opened])
 
   const userId = session?.userId ?? null
   const expired = session?.expired ?? false

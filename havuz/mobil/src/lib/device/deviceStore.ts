@@ -1,19 +1,18 @@
 /**
  * Cihaz ayarları: oturum kaydı (kim giriş yaptı), karşılama geçildi mi, tema seçimi. Kullanıcı veritabanlarından
- * AYRI küçük bir veritabanında durur (`<APP.id>.cihaz.db`, tablo `kv`). Uygulama açılınca hangi kullanıcı
+ * AYRI küçük bir veritabanında durur (`cihaz.db`, tablo `kv`). Uygulama açılınca hangi kullanıcı
  * veritabanının açılacağını buradan öğrenir. Oturum BELİRTECİ burada DEĞİL, güvenli depodadır (session/tokenStore.ts).
  *
  * Genişletme: yeni bir cihaz ayarı → DEVICE_SCHEMAS ve DEVICE_DEFAULTS'a birer satır (TypeScript eksik olanı gösterir).
  */
 import { userSchema } from '@uygulama/shared'
 import { z } from 'zod'
-import { APP } from '../../config.ts'
 import { THEME_CHOICES } from '../../ui/theme.tsx'
 import { openLocalDb } from '../store/databases.ts'
 import type { LocalDb } from '../store/localDb.ts'
 import type { Migration } from '../store/schema.ts'
 
-export const DEVICE_DB_NAME = `${APP.id}.cihaz.db`
+export const DEVICE_DB_NAME = 'cihaz.db'
 
 export const DEVICE_MIGRATIONS: readonly Migration[] = [
   {

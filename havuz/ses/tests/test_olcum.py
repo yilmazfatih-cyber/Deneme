@@ -3,7 +3,7 @@
 import itertools
 import json
 import random
-from functools import lru_cache
+from functools import cache
 
 import numpy as np
 import pytest
@@ -46,7 +46,10 @@ def test_turkce_normalizasyon():
 
 
 def test_sayilar_yaziyla_secenegi():
-    dogru, tahmin = "23.11.2026'da %20 indirim", "yirmi üç Kasım iki bin yirmi altıda yüzde yirmi indirim"
+    dogru, tahmin = (
+        "23.11.2026'da %20 indirim",
+        "yirmi üç Kasım iki bin yirmi altıda yüzde yirmi indirim",
+    )
     assert wer(dogru, tahmin) > 0.5
     assert wer(dogru, tahmin, sayilari_yaz=True) == 0.0
     assert cer(dogru, "23 Kasım 2026'da %20 indirim", sayilari_yaz=True) == 0.0
@@ -56,15 +59,15 @@ def test_bos_dogru_metin():
     assert wer("", "") == 0.0 and wer("", "bir şey") == 1.0 and cer("...", "") == 0.0
 
 
-@lru_cache(maxsize=None)
-def _levenshtein(a: tuple, b: tuple) -> int:
+@cache
+def _levenshtein(a: tuple[str, ...], b: tuple[str, ...]) -> int:
     """Başvuru: özyinelemeli tanım (yalnız küçük girdiler)."""
     if not a:
         return len(b)
     if not b:
         return len(a)
-    return min(_levenshtein(a[1:], b) + 1, _levenshtein(a, b[1:]) + 1,
-               _levenshtein(a[1:], b[1:]) + (a[0] != b[0]))  # fmt: skip
+    return int(min(_levenshtein(a[1:], b) + 1, _levenshtein(a, b[1:]) + 1,
+                   _levenshtein(a[1:], b[1:]) + (a[0] != b[0])))  # fmt: skip
 
 
 def _uygula(dogru, adimlar):
@@ -138,7 +141,9 @@ def _ornek_klasoru(tmp_path):
 def test_degerlendir_sahte_motorla(tmp_path):
     jsonl = _ornek_klasoru(tmp_path)
     saat = iter(np.arange(0, 100, 0.4).tolist())
-    rapor = degerlendir(jsonl, SahteStt("merhaba dünya"), tarih="2026-11-23", saat=lambda: next(saat))
+    rapor = degerlendir(
+        jsonl, SahteStt("merhaba dünya"), tarih="2026-11-23", saat=lambda: next(saat)
+    )
     assert [o.kimlik for o in rapor.ornekler] == ["a", "sayi-1"]
     assert rapor.ornekler[0].wer.oran == 0.0 and rapor.ornekler[1].wer.oran == 1.0
     assert rapor.toplam("wer").oran == pytest.approx(2 / 4)
@@ -146,7 +151,9 @@ def test_degerlendir_sahte_motorla(tmp_path):
     md = markdown_rapor(rapor)
     assert "| WER |" in md and "## Türe göre" in md and "| sayı | 1 |" in md
     json_yolu, md_yolu = rapor_yaz(rapor, tmp_path / "cikti")
-    assert json.loads(json_yolu.read_text(encoding="utf-8"))["model"] == "sahte" and md_yolu.exists()
+    assert (
+        json.loads(json_yolu.read_text(encoding="utf-8"))["model"] == "sahte" and md_yolu.exists()
+    )
 
 
 def test_degerlendir_hatali_satir(tmp_path):

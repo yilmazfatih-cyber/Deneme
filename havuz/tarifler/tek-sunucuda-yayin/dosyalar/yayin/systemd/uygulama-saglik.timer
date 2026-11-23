@@ -1,0 +1,10 @@
+# Sağlık denetimi 5 dakikada bir. Kurulum: uygulama-yedek.timer ile aynı (enable --now uygulama-saglik.timer).
+[Unit]
+Description=Uygulama sağlık denetimi (5 dakikada bir)
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=timers.target

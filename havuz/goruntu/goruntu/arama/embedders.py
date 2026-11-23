@@ -6,7 +6,7 @@ Seçenekler (`make_embedder` adı):
 - "siglip2"   → google/siglip2-base-patch32-256 (Apache-2.0). Çok dilli metin kodlayıcı (Gemma
                 belirteçleyici): Türkçe sorgu denenebilir; ölçüm docs/DENEME_KAYDI.md'de.
 - "clip"      → laion/CLIP-ViT-B-32-laion2B-s34B-b79K (MIT). Metin yalnız İngilizce eğitildi.
-- "histogram" → modelsiz, indirme gerektirmeyen renk (HSV) + kenar yönü histogramı. Yalnız
+- "histogram" → (adı "histogram-v2") modelsiz, indirme gerektirmeyen renk (HSV) + kenar histogramı. Yalnız
                 görüntü→görüntü ("benzer renk/doku"); metinle arama YAPAMAZ. Testlerde ve ağsız denemede.
 - Başka bir Hugging Face kimliği (CLIP/SigLIP ailesi) de verilebilir; denenmemiş sayılır.
 transformers 5 tuzağı: `get_image_features` artık tensör değil, `pooler_output` alanı olan bir nesne
@@ -30,7 +30,7 @@ from goruntu.messages import t
 ALIASES = {
     "siglip2": "google/siglip2-base-patch32-256",
     "clip": "laion/CLIP-ViT-B-32-laion2B-s34B-b79K",
-    "histogram": "histogram",
+    "histogram": "histogram-v2",
 }
 DEFAULT_EMBEDDER = "siglip2"
 SIGLIP_TEXT_LENGTH = 64
@@ -58,21 +58,28 @@ class Embedder(Protocol):
 
 
 class HistogramEmbedder:
-    """Modelsiz gömme: HSV renk histogramı (8×4×4) + 2×2 ızgarada kenar yönü histogramı (8 yön)."""
+    """Modelsiz gömme: doygunluk-farkında renk histogramı + 2×2 ızgarada kenar yönü histogramı.
 
-    name = "histogram"
-    dim = 8 * 4 * 4 + 4 * 8
+    Renkli pikseller (doygunluk > %20, parlaklık > %15) ton(12) × doygunluk(2) × parlaklık(2) kutularına,
+    gri/beyaz/siyah pikseller ayrı 4 parlaklık kutusuna düşer: beyaz ürün zemini rengi bastırmaz.
+    Kutular karekök (Hellinger) ile yumuşatılır; kenar kısmı 0,5 ağırlıkla eklenir.
+    Ölçüm (tests/test_search.py, renkli şekiller): renk sınıfında recall@1 ≥ 0,9; şekli AYIRT ETMEZ.
+    """
+
+    name = "histogram-v2"  # tasarım değişirse sürümü artırın: eski dizinler açık hatayla reddedilir
+    dim = 12 * 2 * 2 + 4 + 4 * 8
     supports_text = False
 
     def _one(self, image: Image.Image) -> np.ndarray:
         small = image.convert("RGB").resize((64, 64), Image.Resampling.BILINEAR)
         hsv = np.asarray(small.convert("HSV"), dtype=np.int64)
-        index = (
-            (hsv[..., 0] * 8 // 256) * 16 + (hsv[..., 1] * 4 // 256) * 4 + hsv[..., 2] * 4 // 256
-        )
-        color = np.bincount(index.ravel(), minlength=128).astype(np.float64)
-        gray = np.asarray(small.convert("L"), dtype=np.float64)
-        gy, gx = np.gradient(gray)
+        hue, saturation, value = hsv[..., 0], hsv[..., 1], hsv[..., 2]
+        chromatic = (saturation > 51) & (value > 38)
+        bins = (hue * 12 // 256) * 4 + (saturation * 2 // 256) * 2 + value * 2 // 256
+        color = np.bincount(bins[chromatic].ravel(), minlength=48).astype(np.float64)
+        gray = np.bincount((value[~chromatic] * 4 // 256).ravel(), minlength=4).astype(np.float64)
+        histogram = np.concatenate([color, gray])
+        gy, gx = np.gradient(np.asarray(small.convert("L"), dtype=np.float64))
         angle = ((np.arctan2(gy, gx) + np.pi) / (2 * np.pi) * 8).astype(np.int64) % 8
         magnitude = np.hypot(gx, gy)
         cells = []
@@ -82,8 +89,12 @@ class HistogramEmbedder:
                     np.bincount(angle[rows, cols].ravel(), magnitude[rows, cols].ravel(), 8)
                 )
         edges = np.concatenate(cells)
-        parts = [np.sqrt(color / max(color.sum(), 1e-12)), np.sqrt(edges / max(edges.sum(), 1e-12))]
-        return np.concatenate(parts)
+        return np.concatenate(
+            [
+                np.sqrt(histogram / max(histogram.sum(), 1e-12)),
+                0.5 * np.sqrt(edges / max(edges.sum(), 1e-12)),
+            ]
+        )
 
     def embed_images(self, images: list[Image.Image]) -> np.ndarray:
         if not images:
@@ -158,6 +169,16 @@ class HfEmbedder:
 def make_embedder(name: str = DEFAULT_EMBEDDER, batch: int = 16) -> Embedder:
     """Ad ya da Hugging Face kimliğinden gömme modeli kurar (ilk kullanımda indirilir)."""
     model_id = ALIASES.get(name, name)
-    if model_id == "histogram":
+    if model_id == HistogramEmbedder.name:
         return HistogramEmbedder()
+    if model_id.startswith("histogram"):
+        raise UserError(t("arama.model_surumu", dizin=model_id, model=HistogramEmbedder.name))
     return HfEmbedder(model_id, batch)
+
+
+def embedder_for_index(model_name: str, batch: int = 16) -> Embedder:
+    """Dizini kuran modelin AYNISINI yükler; ad/sürüm tutmazsa sessizce yanlış sonuç vermez, durur."""
+    embedder = make_embedder(model_name, batch)
+    if embedder.name != model_name:
+        raise UserError(t("arama.model_surumu", dizin=model_name, model=embedder.name))
+    return embedder

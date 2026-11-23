@@ -22,6 +22,7 @@ import {
   Loading,
   Screen,
   TextField,
+  useTheme,
   useToast,
 } from '../../ui/index.ts'
 import { DueField } from './DueField.tsx'
@@ -60,6 +61,7 @@ function TaskForm({ task, lists }: { task: Task; lists: TaskList[] }) {
   const { update } = useWrite('tasks')
   const actions = useTaskActions()
   const toast = useToast()
+  const { colors } = useTheme()
   const today = useToday()
   const [title, setTitle] = useState(task.data.title)
   const [note, setNote] = useState(task.data.note)
@@ -128,7 +130,7 @@ function TaskForm({ task, lists }: { task: Task; lists: TaskList[] }) {
         onChange={setListId}
         options={[
           { value: 'none', label: t('tasks.noList') },
-          ...lists.map((list) => ({ value: list.id, label: list.data.name })),
+          ...lists.map((list) => ({ value: list.id, label: list.data.name, swatch: colors.list[list.data.color] })),
         ]}
       />
       <TextField

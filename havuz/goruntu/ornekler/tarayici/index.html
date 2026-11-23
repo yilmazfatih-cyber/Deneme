@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tarayıcıda sınıflandırma</title>
+    <!--
+      Tarayıcıda ONNX çıkarımı örneği (goruntu temeli). Ayrıntı: docs/TARAYICI.md
+      Bu klasöre `paket/model.onnx` ve `paket/paket.json` kopyalayın, bir HTTP sunucusuyla açın
+      (python -m http.server). Fotoğraf bilgisayardan dışarı gönderilmez.
+      Adres parametreleri: ?model=…&paket=…&ort=<onnxruntime-web dist klasörü>&ornek=<görüntü adresi>
+      Genişletme: ön işleme `hazirlik/model_input.prepare` ile aynı kalmalı; değiştirirseniz ikisini birlikte
+      değiştirin ve docs/TARAYICI.md'deki eşdeğerlik denemesini yeniden koşun.
+    -->
+    <style>
+      :root { --zemin: #ffffff; --yazi: #1b1b1b; --vurgu: #0b5cad; --ince: #d0d5dd; }
+      @media (prefers-color-scheme: dark) {
+        :root { --zemin: #121417; --yazi: #eceff3; --vurgu: #6cb2ff; --ince: #3a4048; }
+      }
+      body { margin: 0; background: var(--zemin); color: var(--yazi); font: 18px/1.5 system-ui, sans-serif; }
+      main { max-width: 40rem; margin: 0 auto; padding: 16px; }
+      label { display: block; margin: 1rem 0 0.5rem; font-weight: 600; }
+      input[type="file"] { min-height: 48px; width: 100%; }
+      #onizleme { max-width: 100%; max-height: 16rem; margin-top: 1rem; border: 1px solid var(--ince); }
+      #sonuc li { margin: 0.25rem 0; }
+      .etiket { color: var(--vurgu); font-weight: 700; }
+      pre { white-space: pre-wrap; word-break: break-all; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Görüntü sınıflandırma</h1>
+      <p>Model bu sayfada çalışır; fotoğrafınız hiçbir sunucuya gönderilmez.</p>
+      <label for="dosya">Fotoğraf seçin</label>
+      <input id="dosya" type="file" accept="image/*" disabled />
+      <p id="durum" role="status" aria-live="polite">Model yükleniyor…</p>
+      <img id="onizleme" alt="Seçilen fotoğraf" hidden />
+      <ol id="sonuc"></ol>
+      <pre id="ham" hidden></pre>
+    </main>
+    <script>
+      "use strict";
+      const ayar = new URLSearchParams(location.search);
+      const MODEL = ayar.get("model") || "paket/model.onnx";
+      const PAKET = ayar.get("paket") || "paket/paket.json";
+      // Mutlak adres gerekir: ORT, .mjs dosyasını modül olarak içe aktarır ("ort/" gibi göreli ad çözülmez).
+      const ORT = new URL(
+        ayar.get("ort") || "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.31.1/dist/", location.href
+      ).href;
+      const durum = document.getElementById("durum");
+      // Sayfanın ürettiği bütün metinler burada (sabit başlık ve açıklama HTML'dedir).
+      const METIN = {
+        hazir: "Hazır: bir fotoğraf seçin.",
+        tahmin: "Tahmin: ",
+        eminDegil: "Emin değilim",
+        acilamadi: "Bu dosya açılamadı. JPEG ya da PNG bir fotoğraf seçin.",
+        modelYok: "Model yüklenemedi: ",
+        betikYok: "Betik yüklenemedi: ",
+      };
+
+      function yukle(adres) {
+        return new Promise((tamam, hata) => {
+          const etiket = document.createElement("script");
+          etiket.src = adres;
+          etiket.onload = tamam;
+          etiket.onerror = () => hata(new Error(METIN.betikYok + adres));
+          document.head.appendChild(etiket);
+        });
+      }
+
+      // Python 3 round() ve torchvision ile aynı: yarımlar çift sayıya yuvarlanır (2.5 → 2).
+      function yarimCifte(x) {
+        const alt = Math.floor(x), fark = x - alt;
+        if (fark > 0.5) return alt + 1;
+        if (fark < 0.5) return alt;
+        return alt % 2 === 0 ? alt : alt + 1;
+      }
+
+      // hazirlik/model_input.prepare ile aynı hesap: kısa kenar floor(boyut / kirpma_orani), ortadan kırpma.
+      function kirpmaKutusu(gen, yuk, on) {
+        const hedefY = Math.floor(on.yukseklik / on.kirpma_orani);
+        const hedefG = Math.floor(on.genislik / on.kirpma_orani);
+        let yeniG, yeniY;
+        if (on.kirpma === "ezme") { yeniG = hedefG; yeniY = hedefY; }
+        else if (hedefY === hedefG) {
+          const kisa = Math.min(gen, yuk), uzun = Math.max(gen, yuk);
+          const yeniKisa = hedefY, yeniUzun = Math.trunc((hedefY * uzun) / kisa);
+          [yeniG, yeniY] = gen <= yuk ? [yeniKisa, yeniUzun] : [yeniUzun, yeniKisa];
+        } else {
+          const oran = Math.min(yuk / hedefY, gen / hedefG);
+          yeniG = yarimCifte(gen / oran); yeniY = yarimCifte(yuk / oran);
+        }
+        const ust = yarimCifte((yeniY - on.yukseklik) / 2), sol = yarimCifte((yeniG - on.genislik) / 2);
+        const olcekX = gen / yeniG, olcekY = yuk / yeniY;
+        return [sol * olcekX, ust * olcekY, on.genislik * olcekX, on.yukseklik * olcekY];
+      }
+
+      function girdi(bitmap, on) {
+        const tuval = document.createElement("canvas");
+        tuval.width = on.genislik; tuval.height = on.yukseklik;
+        const ctx = tuval.getContext("2d", { willReadFrequently: true });
+        ctx.fillStyle = "rgb(" + on.arka_plan.join(",") + ")"; // saydam yerler beyaz zemine
+        ctx.fillRect(0, 0, on.genislik, on.yukseklik);
+        ctx.imageSmoothingQuality = "high";
+        const [sx, sy, sw, sh] = kirpmaKutusu(bitmap.width, bitmap.height, on);
+        ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, on.genislik, on.yukseklik);
+        const rgba = ctx.getImageData(0, 0, on.genislik, on.yukseklik).data;
+        const rgb = new Uint8Array(on.genislik * on.yukseklik * 3);
+        for (let i = 0, j = 0; i < rgba.length; i += 4, j += 3) {
+          rgb[j] = rgba[i]; rgb[j + 1] = rgba[i + 1]; rgb[j + 2] = rgba[i + 2];
+        }
+        return new ort.Tensor("uint8", rgb, [1, on.yukseklik, on.genislik, 3]); // normalleştirme modelin içinde
+      }
+
+      async function siniflandir(oturum, paket, bitmap) {
+        const cikti = await oturum.run({ [paket.girdi_adi]: girdi(bitmap, paket.on_isleme) });
+        const olasilik = Array.from(cikti[paket.cikti_adlari[1]].data); // kalibre olasılık
+        const sira = olasilik.map((p, i) => [p, i]).sort((a, b) => b[0] - a[0]);
+        const liste = document.getElementById("sonuc");
+        liste.replaceChildren();
+        sira.slice(0, 3).forEach(([p, i]) => {
+          const oge = document.createElement("li");
+          oge.innerHTML = '<span class="etiket"></span> — %' + (p * 100).toFixed(1);
+          oge.querySelector(".etiket").textContent = paket.etiketler[i];
+          liste.appendChild(oge);
+        });
+        const [enIyi, sinif] = sira[0];
+        durum.textContent = enIyi >= paket.esik ? METIN.tahmin + paket.etiketler[sinif] : METIN.eminDegil;
+        const ham = document.getElementById("ham");
+        ham.textContent = JSON.stringify({ etiket: enIyi >= paket.esik ? paket.etiketler[sinif] : null, olasilik });
+        ham.hidden = false;
+      }
+
+      async function basla() {
+        await yukle(ORT + "ort.wasm.min.js");
+        ort.env.wasm.wasmPaths = ORT;
+        ort.env.wasm.numThreads = 1; // çok iş parçacığı sunucunun COOP/COEP başlıklarını ister
+        const paket = await (await fetch(PAKET)).json();
+        const oturum = await ort.InferenceSession.create(MODEL, { executionProviders: ["wasm"] });
+        durum.textContent = METIN.hazir;
+        const secici = document.getElementById("dosya");
+        secici.disabled = false;
+        secici.addEventListener("change", async () => {
+          const dosya = secici.files[0];
+          if (!dosya) return;
+          const onizleme = document.getElementById("onizleme");
+          onizleme.src = URL.createObjectURL(dosya);
+          onizleme.hidden = false;
+          try {
+            const bitmap = await createImageBitmap(dosya, { imageOrientation: "from-image" });
+            await siniflandir(oturum, paket, bitmap);
+          } catch (hata) {
+            durum.textContent = METIN.acilamadi;
+          }
+        });
+        const ornek = ayar.get("ornek");
+        if (ornek) {
+          const blob = await (await fetch(ornek)).blob();
+          const bitmap = await createImageBitmap(blob, {
+            imageOrientation: "from-image", colorSpaceConversion: "none", premultiplyAlpha: "none",
+          });
+          await siniflandir(oturum, paket, bitmap);
+        }
+      }
+
+      basla().catch((hata) => { durum.textContent = METIN.modelYok + hata.message; });
+    </script>
+  </body>
+</html>

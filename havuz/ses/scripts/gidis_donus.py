@@ -46,7 +46,9 @@ def _hazirla(tur: str, ad: str, model_dizini: Path) -> Path:
     return model_klasoru(model_dizini, model)
 
 
-def _seslendir_hepsi(motor: PiperMotoru, cumleler: list[dict[str, str]], klasor: Path, ham: bool) -> dict[str, float]:
+def _seslendir_hepsi(
+    motor: PiperMotoru, cumleler: list[dict[str, str]], klasor: Path, ham: bool
+) -> dict[str, float]:
     klasor.mkdir(parents=True, exist_ok=True)
     satirlar, toplam_ses, toplam_islem = [], 0.0, 0.0
     for cumle in cumleler:
@@ -59,20 +61,32 @@ def _seslendir_hepsi(motor: PiperMotoru, cumleler: list[dict[str, str]], klasor:
     (klasor / "liste.jsonl").write_text(
         "\n".join(json.dumps(s, ensure_ascii=False) for s in satirlar) + "\n", encoding="utf-8"
     )
-    return {"ses_sn": round(toplam_ses, 2), "islem_sn": round(toplam_islem, 2), "rtf": round(rtf(toplam_islem, toplam_ses), 4)}
+    return {
+        "ses_sn": round(toplam_ses, 2),
+        "islem_sn": round(toplam_islem, 2),
+        "rtf": round(rtf(toplam_islem, toplam_ses), 4),
+    }
 
 
 def main() -> int:
     ayristirici = argparse.ArgumentParser(description="Gerçek modellerle gidiş-dönüş ölçümü.")
-    ayristirici.add_argument("--stt", action="append", default=[], help="Whisper boyutu (tekrarlanabilir)")
+    ayristirici.add_argument(
+        "--stt", action="append", default=[], help="Whisper boyutu (tekrarlanabilir)"
+    )
     ayristirici.add_argument("--tts", default="tr_TR-dfki-medium")
     ayristirici.add_argument("--cumleler", type=Path, default=KOK / "veri" / "gidis_donus.jsonl")
     ayristirici.add_argument("--cikti", type=Path, required=True)
-    ayristirici.add_argument("--ham", action="store_true", help="normalizasyonsuz seslendirmeyi de ölç")
+    ayristirici.add_argument(
+        "--ham", action="store_true", help="normalizasyonsuz seslendirmeyi de ölç"
+    )
     ayristirici.add_argument("--is-parcacigi", type=int, default=2)
     secenek = ayristirici.parse_args()
     ayarlar = ayarlari_oku()
-    cumleler = [json.loads(s) for s in secenek.cumleler.read_text(encoding="utf-8").splitlines() if s.strip()]
+    cumleler = [
+        json.loads(s)
+        for s in secenek.cumleler.read_text(encoding="utf-8").splitlines()
+        if s.strip()
+    ]
     tts_klasoru = _hazirla("tts", secenek.tts, ayarlar.model_dizini)
     piper = PiperMotoru(tts_klasoru / f"{secenek.tts}.onnx", is_parcacigi=secenek.is_parcacigi)
     ozet: dict[str, object] = {
@@ -93,7 +107,9 @@ def main() -> int:
             motor._yukle()  # yükleme süresi RTF'ye karışmasın
         for kip in kipler:
             bas = time.perf_counter()
-            rapor = degerlendir(secenek.cikti / kip / "liste.jsonl", motor, tarih=date.today().isoformat())
+            rapor = degerlendir(
+                secenek.cikti / kip / "liste.jsonl", motor, tarih=date.today().isoformat()
+            )
             rapor_yaz(rapor, secenek.cikti / kip / f"rapor-{boyut}")
             sonuc = {
                 "yukleme_sn": round(yukleme.sure, 2), "toplam_sn": round(time.perf_counter() - bas, 2),
@@ -106,7 +122,9 @@ def main() -> int:
             ozet["stt"][f"{boyut}/{kip}"] = sonuc  # type: ignore[index]
             print(f"{boyut}/{kip}: WER {sonuc['wer']} CER {sonuc['cer']} · sayılar yazıyla WER "
                   f"{sonuc['wer_sayili']} CER {sonuc['cer_sayili']} · RTF {sonuc['rtf']}", flush=True)  # fmt: skip
-    (secenek.cikti / "ozet.json").write_text(json.dumps(ozet, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (secenek.cikti / "ozet.json").write_text(
+        json.dumps(ozet, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     print(f"Yazıldı: {secenek.cikti / 'ozet.json'}")
     return 0
 

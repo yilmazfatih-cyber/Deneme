@@ -50,12 +50,15 @@ def _olc(dogru: list[str], tahmin: list[str]) -> Olcum:
 
 
 def wer_olc(dogru: str, tahmin: str, *, sayilari_yaz: bool = False) -> Olcum:
-    return _olc(sozcukler(dogru, sayilari_yaz=sayilari_yaz), sozcukler(tahmin, sayilari_yaz=sayilari_yaz))
+    return _olc(
+        sozcukler(dogru, sayilari_yaz=sayilari_yaz), sozcukler(tahmin, sayilari_yaz=sayilari_yaz)
+    )
 
 
 def cer_olc(dogru: str, tahmin: str, *, sayilari_yaz: bool = False) -> Olcum:
     return _olc(
-        karakterler(dogru, sayilari_yaz=sayilari_yaz), karakterler(tahmin, sayilari_yaz=sayilari_yaz)
+        karakterler(dogru, sayilari_yaz=sayilari_yaz),
+        karakterler(tahmin, sayilari_yaz=sayilari_yaz),
     )
 
 

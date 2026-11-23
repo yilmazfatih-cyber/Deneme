@@ -78,7 +78,8 @@ def pcm_coz(veri: bytes | memoryview, genislik: int, bicim: str = "pcm") -> Dizi
         if genislik not in (4, 8):
             raise BicimHatasi(f"Kayan noktalı WAV yalnız 32/64 bit olur (gelen: {genislik * 8}).")
         sayilar = np.frombuffer(tampon, dtype="<f4" if genislik == 4 else "<f8")
-        return np.nan_to_num(sayilar, nan=0.0, posinf=1.0, neginf=-1.0).astype(np.float32)
+        temiz: Dizi = np.nan_to_num(sayilar, nan=0.0, posinf=1.0, neginf=-1.0).astype(np.float32)
+        return temiz
     if genislik == 1:
         return ((np.frombuffer(tampon, dtype=np.uint8).astype(np.float32) - 128.0) / 128.0).astype(
             np.float32

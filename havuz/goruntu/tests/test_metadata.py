@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 from PIL import ExifTags, Image, ImageCms, PngImagePlugin
 
-from goruntu.hazirlik.batch import clean_one, prepare_one, PrepareOptions
+from goruntu.hazirlik.batch import PrepareOptions, clean_one, prepare_one
 from goruntu.hazirlik.loader import DEFAULT_LIMITS, decode, load_rgb, normalize_mode, open_checked
 from goruntu.hazirlik.metadata import encode_clean, inspect_metadata, jpeg_tables
 from tests.conftest import corner_image, encode
@@ -41,9 +41,14 @@ def personal_exif(orientation: int = 1) -> bytes:
 def marked_jpeg(orientation: int = 6) -> bytes:
     icc = ImageCms.ImageCmsProfile(ImageCms.createProfile("sRGB")).tobytes()
     return encode(
-        corner_image(80, 48), "JPEG", quality=92, exif=personal_exif(orientation), xmp=XMP,
-        comment=b"GIZLI_YORUM", icc_profile=icc,
-    )  # fmt: skip
+        corner_image(80, 48),
+        "JPEG",
+        quality=92,
+        exif=personal_exif(orientation),
+        xmp=XMP,
+        comment=b"GIZLI_YORUM",
+        icc_profile=icc,
+    )
 
 
 def marked_png() -> bytes:
@@ -86,7 +91,7 @@ def test_temizlik_yonu_uygular_ve_dosyayi_yazar(tmp_path) -> None:
     source = tmp_path / "foto.jpg"
     source.write_bytes(marked_jpeg(orientation=6))
     outcome = clean_one(source, tmp_path / "cikti" / "foto.jpg", DEFAULT_LIMITS)
-    assert outcome.status == "tamam" and outcome.findings["gps"]
+    assert outcome.status == "tamam" and outcome.findings["gps"] and outcome.target is not None
     data = outcome.target.read_bytes()
     assert all(secret not in data for secret in SECRETS)
     cleaned = Image.open(outcome.target)
@@ -99,6 +104,7 @@ def test_icc_istenirse_silinir(tmp_path) -> None:
     source = tmp_path / "foto.jpg"
     source.write_bytes(marked_jpeg())
     outcome = clean_one(source, tmp_path / "c" / "foto.jpg", DEFAULT_LIMITS, keep_icc=False)
+    assert outcome.target is not None
     assert not Image.open(outcome.target).info.get("icc_profile")
 
 

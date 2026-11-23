@@ -68,7 +68,9 @@ def kaydi_denetle(model: KatalogModeli) -> dict[str, Any]:
             sorunlar.append(f"{dosya.yol}: boyut {ham.get('size')} (katalogda {dosya.boyut})")
         if ozet != dosya.sha256:
             sorunlar.append(f"{dosya.yol}: sha256 {ozet} (katalogda {dosya.sha256})")
-        dosyalar.append({"yol": dosya.yol, "boyut": ham.get("size"), "sha256": ozet, "lfs": bool(lfs)})
+        dosyalar.append(
+            {"yol": dosya.yol, "boyut": ham.get("size"), "sha256": ozet, "lfs": bool(lfs)}
+        )
     kart_lisansi = (bilgi.get("cardData") or {}).get("license")
     kart = next((d for d in model.dosyalar if d.ad == "MODEL_CARD"), None)
     veri_lisansi = None
@@ -102,9 +104,15 @@ def oneri(hf: str, klasor: str) -> str:
                 "    dosyalar:"]  # fmt: skip
     for s in bilgi.get("siblings", []):
         yol = s["rfilename"]
-        if not yol.startswith(klasor) or "/samples/" in yol or yol in (".gitattributes", "README.md"):
+        if (
+            not yol.startswith(klasor)
+            or "/samples/" in yol
+            or yol in (".gitattributes", "README.md")
+        ):
             continue
-        ozet = (s.get("lfs") or {}).get("sha256") or hashlib.sha256(_dosya(hf, bilgi["sha"], yol)).hexdigest()
+        ozet = (s.get("lfs") or {}).get("sha256") or hashlib.sha256(
+            _dosya(hf, bilgi["sha"], yol)
+        ).hexdigest()
         satirlar.append(f"      - yol: {yol}\n        boyut: {s['size']}\n        sha256: {ozet}")
     lisans = (bilgi.get("cardData") or {}).get("license")
     satirlar.append(f"    lisans: DOLDURUN  # depo etiketi: {lisans}; Piper'da MODEL_CARD'ı okuyun\n"
@@ -127,10 +135,18 @@ def main() -> int:
     geri = {}
     for hf in sorted({g.kaynak.split()[0] for g in katalog.geri_cekilenler}):
         geri.update(geri_cekilenleri_denetle(hf, [g.ad for g in katalog.geri_cekilenler]))
-    rapor = {"tarih": date.today().isoformat(), "modeller": sonuclar, "geri_cekilenler_depoda_yok": geri}
+    rapor = {
+        "tarih": date.today().isoformat(),
+        "modeller": sonuclar,
+        "geri_cekilenler_depoda_yok": geri,
+    }
     for sonuc in sonuclar:
         durum = "TAMAM" if not sonuc["sorunlar"] else "SORUN: " + "; ".join(sonuc["sorunlar"])
-        yeni = "" if sonuc["guncel_surum"] == sonuc["surum"] else f" (depoda daha yeni sürüm var: {sonuc['guncel_surum'][:10]})"
+        yeni = (
+            ""
+            if sonuc["guncel_surum"] == sonuc["surum"]
+            else f" (depoda daha yeni sürüm var: {sonuc['guncel_surum'][:10]})"
+        )
         print(f"{sonuc['ad']:<22} {durum}{yeni}")
     for ad, yok in geri.items():
         print(f"{ad:<22} geri çekilmiş: {'evet, depoda yok' if yok else 'HAYIR, depoda hâlâ var'}")

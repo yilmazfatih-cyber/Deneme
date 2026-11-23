@@ -36,8 +36,12 @@ YEREL_HATASI = (
     "(http://127.0.0.1 ya da http://localhost) açılabilir. Başka adla erişmek için "
     "SES_SUNUCU_ANAHTARI ortam değişkenini verin."
 )
-KOKEN_HATASI = "Başka bir siteden gelen istek reddedildi (yerel kip). SES_IZINLI_KOKENLER'e ekleyin."
-ANAHTAR_HATASI = "API anahtarı eksik ya da yanlış. Authorization: Bearer <anahtar> başlığını gönderin."
+KOKEN_HATASI = (
+    "Başka bir siteden gelen istek reddedildi (yerel kip). SES_IZINLI_KOKENLER'e ekleyin."
+)
+ANAHTAR_HATASI = (
+    "API anahtarı eksik ya da yanlış. Authorization: Bearer <anahtar> başlığını gönderin."
+)
 
 
 def hata_yaniti(durum: int, ileti: str, tur: str = "invalid_request_error") -> JSONResponse:
@@ -98,7 +102,9 @@ class IstekKapisi:
         return None
 
     def _sinir(self, yol: str) -> int:
-        return self.ayarlar.azami_yukleme_bayt + YUKLEME_PAYI if yol == YUKLEME_YOLU else JSON_SINIRI
+        return (
+            self.ayarlar.azami_yukleme_bayt + YUKLEME_PAYI if yol == YUKLEME_YOLU else JSON_SINIRI
+        )
 
     async def __call__(self, kapsam: Scope, al: Receive, gonder: Send) -> None:
         if kapsam["type"] != "http":

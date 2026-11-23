@@ -124,6 +124,10 @@ MESSAGES: dict[str, str] = {
     ),
     "egitim.erken_durdu": "Erken durdurma: {donem}. dönemde iyileşme yok; en iyi dönem {en_iyi}.",
     "egitim.bitti": "Bitti. Çıktılar: {yol} (rapor.txt, degerlendirme.json, model/).",
+    "egitim.eski_paket": (
+        "{yol} ÖNCEKİ modele ait; uygulamaya kopyalamadan önce `python -m goruntu disa-aktar` ile "
+        "yeniden üretin."
+    ),
     # ───────────── değerlendirme ─────────────
     "degerlendirme.bos": "Değerlendirilecek örnek yok.",
     "degerlendirme.ozet": "{sayi} örnek · doğruluk {dogruluk} · makro F1 {f1}",
@@ -146,6 +150,13 @@ MESSAGES: dict[str, str] = {
     "degerlendirme.sicaklik_sinirda": (
         "Sıcaklık arama sınırına dayandı ({sicaklik}): model doğrulamada neredeyse rastgele ya da "
         "doğrulama kümesi çok küçük. Daha çok veri ya da daha uzun eğitim deneyin."
+    ),
+    "degerlendirme.kalibrasyon_az_veri": (
+        "Doğrulama kümesi küçük ({sayi} < {en_az} örnek): sıcaklık ölçekleme atlandı (az veride "
+        "kalibrasyonu bozabiliyor). Daha çok görüntü ekleyin ya da `veri.dogrulama_orani`nı artırın."
+    ),
+    "degerlendirme.esik_az_veri": (
+        "'Emin değilim' eşiği yalnız {sayi} doğrulama örneğiyle seçildi; güvenilirliği düşük."
     ),
     "degerlendirme.esik_secildi": "'Emin değilim' eşiği {esik} seçildi (doğrulamada kapsama {kapsama}).",
     "degerlendirme.bilinmeyen_sinif": (
@@ -182,7 +193,8 @@ MESSAGES: dict[str, str] = {
     "plan.profil_yok": "Model profili çıkarılamadı, bellek/süre kestirimi atlandı ({ayrinti}).",
     "plan.olcum_yok": "Hız ölçülemedi ({ayrinti}).",
     "plan.veri_okuma_haric": (
-        "Süreye görüntü okuma dahil değil; büyük fotoğrafları önce `hazirla` ile küçültün."
+        "Süre, makinenin şu anki yüküyle ölçüldü (paylaşımlı makinede şişebilir); görüntü okuma "
+        "dahil değil. Büyük fotoğrafları önce `hazirla` ile küçültün."
     ),
     "plan.uyarilar": "Uyarılar:",
     "plan.kuru_bitti": "Kuru çalıştırma: eğitim başlamadı. Aynı komutu `--kuru` olmadan çalıştırın.",
@@ -194,6 +206,17 @@ MESSAGES: dict[str, str] = {
     ),
     "onnx.bitti": "Paket yazıldı: {klasor} (PyTorch ile en büyük logit farkı {fark}).",
     "onnx.int8_ozet": "int8 sürümünün karar uyumu: {uyum}.",
+    "onnx.int8_kazanc_yok": (
+        "int8 sürümü yazılmadı: yalnız {oran} küçültüyor (evrişimli ağda dinamik int8 kazanç sağlamaz). "
+        "fp32 paketi kullanın."
+    ),
+    "onnx.int8_uyum_dusuk": (
+        "int8 sürümünün karar uyumu düşük ({uyum}): uygulamada KULLANMAYIN, fp32 paketi kullanın."
+    ),
+    "paket.int8_onerilmez": (
+        "{yol}: bu int8 paketi dışa aktarımda PyTorch'la uyumsuz çıktı (paket.json → dogrulama); "
+        "fp32 paketi kullanın."
+    ),
     "paket.bozuk": "{yol}: paket üst verisi okunamadı ({ayrinti}). `disa-aktar` ile yeniden üretin.",
     "paket.ust_veri_yok": (
         "{yol} bu temelin paketi değil (goruntu.paket üst verisi ve paket.json yok). "
@@ -251,6 +274,10 @@ MESSAGES: dict[str, str] = {
     "arama.dizin_bozuk": "{yol} dizini okunamadı ({ayrinti}). Dizini `indeksle` ile yeniden kurun.",
     "arama.model_farkli": (
         "Bu dizin '{dizin}' modeliyle kurulmuş; '{model}' ile eklenemez. Başka bir --dizin klasörü verin."
+    ),
+    "arama.model_surumu": (
+        "Dizin '{dizin}' modeliyle kurulmuş ama yüklenebilen model '{model}' (sürüm farklı). Sonuçlar "
+        "yanlış olur; dizini `indeksle` ile yeniden kurun."
     ),
     "arama.dizinleniyor": "Dizinleniyor",
     "arama.atlandi": "{yol} atlandı: {ayrinti}",

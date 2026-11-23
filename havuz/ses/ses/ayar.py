@@ -69,7 +69,11 @@ def ayarlari_oku(ortam: Mapping[str, str] | None = None, **ustune: object) -> Ay
     for degisken, alan in _ORTAM.items():
         deger = ortam.get(degisken)
         if deger:
-            degerler[alan] = [k.strip() for k in deger.split(",") if k.strip()] if alan == "izinli_kokenler" else deger
+            degerler[alan] = (
+                [k.strip() for k in deger.split(",") if k.strip()]
+                if alan == "izinli_kokenler"
+                else deger
+            )
     degerler.update({k: v for k, v in ustune.items() if v is not None})
     try:
         return Ayarlar.model_validate(degerler)

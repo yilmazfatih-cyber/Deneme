@@ -33,6 +33,15 @@ describe('yapı (kural testleri)', () => {
     expectNone(missing, 'Dosyanın başına ne yaptığını anlatan /** … */ yorumu ekleyin:')
   })
 
+  it('kaynakta görünmez karakter yok (STANDARTLAR §6.11; gerekiyorsa "\\u200b" gibi kaçışla yazın)', () => {
+    const invisible = /[\u00a0\u00ad\u200b-\u200f\u2028-\u202f\u2060-\u206f\ufeff]/
+    expect(invisible.test('a\u200db') && !invisible.test('düz metin')).toBe(true)
+    const found = [...SOURCES, ...listFiles(join(ROOT, 'docs'), ['.md']), join(SRC, 'i18n', 'tr.json')]
+      .filter((file) => invisible.test(read(file)))
+      .map(rel)
+    expectNone(found, 'Görünmez karakteri kaçış dizisine çevirin: python havuz/araclar/kacis.py havuz/mobil')
+  })
+
   it('kaynak dosyalar kısa kalır', () => {
     const long = SOURCES.map((file) => ({ file: rel(file), lines: read(file).split('\n').length }))
       .filter((item) => item.lines > 320)

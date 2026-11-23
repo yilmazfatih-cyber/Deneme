@@ -61,6 +61,7 @@ def profile_model(config: ClassifierConfig, classes: int) -> ModelProfile:
             num_classes=classes,
             **creation_kwargs(name, config.model.girdi_boyutu),
         )
+    model.eval()  # FLOP ve çıktı boyutu aynı; eğitim kipinde 1×1 haritada BatchNorm hata verir
     spec = spec_from_timm(resolve_model_data_config(model), config.model.girdi_boyutu)
     total = sum(p.numel() for p in model.parameters())
     head = sum(p.numel() for p in model.get_classifier().parameters())
@@ -147,6 +148,7 @@ def _available_gb() -> float | None:
 
 
 def _duration(seconds: float) -> str:
+    seconds = max(seconds, 1.0)
     if seconds < 90:
         return t("plan.saniye", sn=f"{seconds:.0f}")
     minutes = seconds / 60

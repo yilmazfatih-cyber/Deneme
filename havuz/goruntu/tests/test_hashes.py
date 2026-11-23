@@ -24,8 +24,11 @@ from goruntu.kopya.scan import DEFAULT_THRESHOLDS, image_hashes
 from goruntu.synthetic import scene_image, shape_image
 from tests.conftest import encode
 
-REFERENCE = {"phash": (phash, imagehash.phash), "dhash": (dhash, imagehash.dhash),
-             "ahash": (ahash, imagehash.average_hash)}  # fmt: skip
+REFERENCE = {
+    "phash": (phash, imagehash.phash),
+    "dhash": (dhash, imagehash.dhash),
+    "ahash": (ahash, imagehash.average_hash),
+}
 
 
 def _scenes(count: int, seed: int = 11) -> list[Image.Image]:
@@ -48,7 +51,9 @@ def test_dct_kaba_kuvvetle_ayni() -> None:
     expected = np.zeros((8, 8))
     for k in range(8):
         for m in range(8):
-            basis = np.outer(np.cos(np.pi * k * (2 * n + 1) / 16), np.cos(np.pi * m * (2 * n + 1) / 16))
+            basis = np.outer(
+                np.cos(np.pi * k * (2 * n + 1) / 16), np.cos(np.pi * m * (2 * n + 1) / 16)
+            )
             expected[k, m] = (block * basis).sum()
     assert np.allclose(dct2(block), expected)
 
@@ -75,7 +80,9 @@ COPIES = {
     "sikistirilmis": lambda im: _jpeg(im, 40),
     "kirpilmis_3": lambda im: _crop(im, 0.03),
     "kirpilmis_8": lambda im: _crop(im, 0.08),
-    "hepsi_birden": lambda im: _jpeg(_crop(im.resize((im.width * 2 // 3, im.height * 2 // 3)), 0.05), 70),
+    "hepsi_birden": lambda im: _jpeg(
+        _crop(im.resize((im.width * 2 // 3, im.height * 2 // 3)), 0.05), 70
+    ),
 }
 
 

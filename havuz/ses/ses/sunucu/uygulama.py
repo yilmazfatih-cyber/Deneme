@@ -112,7 +112,9 @@ def uygulama_kur(
 
     @uygulama.exception_handler(RequestValidationError)
     def girdi_hatasi(_istek: Request, hata: RequestValidationError) -> JSONResponse:
-        alanlar = ", ".join(f"{'.'.join(str(p) for p in h['loc'][1:])} ({h['msg']})" for h in hata.errors())
+        alanlar = ", ".join(
+            f"{'.'.join(str(p) for p in h['loc'][1:])} ({h['msg']})" for h in hata.errors()
+        )
         return hata_yaniti(400, f"İstek alanları geçersiz: {alanlar}")
 
     @uygulama.get("/saglik")
@@ -126,7 +128,10 @@ def uygulama_kur(
 
     @uygulama.get("/v1/models")
     def modeller() -> dict[str, Any]:
-        veri = [{"id": ad, "object": "model", "owned_by": "havuz-ses", "tur": tur} for tur, ad in durum.modeller()]
+        veri = [
+            {"id": ad, "object": "model", "owned_by": "havuz-ses", "tur": tur}
+            for tur, ad in durum.modeller()
+        ]
         return {"object": "list", "data": veri}
 
     @uygulama.post("/v1/audio/transcriptions")
@@ -149,7 +154,9 @@ def uygulama_kur(
         motor = durum.stt(_katalog_adi((model,), "stt"))
         sozcuklu = response_format in ("srt", "vtt") or "word" in zaman_ayrintisi
         with durum.is_siniri.al():
-            sonuc = uzun_yaziya(motor, ornekler, dil=language, kelime_zamanlari=sozcuklu, ipucu=prompt)
+            sonuc = uzun_yaziya(
+                motor, ornekler, dil=language, kelime_zamanlari=sozcuklu, ipucu=prompt
+            )
         govde, tur = yanit_govdesi(sonuc, response_format, kelimeler="word" in zaman_ayrintisi)
         return Response(govde, media_type=tur)
 

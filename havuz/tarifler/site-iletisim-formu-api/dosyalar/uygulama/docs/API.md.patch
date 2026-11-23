@@ -1,0 +1,53 @@
+--- a/docs/API.md
++++ b/docs/API.md
+@@ -80,6 +80,7 @@
+ | şifre sıfırla | IP           | 20 / 15 dakika       |
+ | eşitleme      | kullanıcı    | 240 / dakika         |
+ | anlık akış    | kullanıcı    | 30 bağlantı / dakika |
++| iletişim      | IP; hepsi    | 5 / saat; 100 / saat |
+ 
+ Şifre değiştir ve hesap sil uçlarındaki şifre denetimi de "giriş (hesap)" kuralına sayılır.
+ 
+@@ -783,6 +784,42 @@
+ curl -s -b cerez.txt $API/api/admin/metrics
+ ```
+ 
++## İletişim formu
++
++Web sitesinin (site temeli) iletişim formu bu uca gönderir: sitede `PUBLIC_FORM_ENDPOINT=https://<api>/api/iletisim`.
++Özellik yalnız `CONTACT_TO` (iletilerin gideceği e-posta) verildiğinde açıktır; sitenin kökeni `CONTACT_ORIGINS`'e
++yazılır (docs/YAYINLAMA.md §6, docs/GUVENLIK.md → CSRF ve CORS).
++
++### POST /api/iletisim
++
++Ziyaretçinin iletisini yöneticiye e-postayla iletir. **Kimlik gerekmez.** JSON gövde (sitenin betiği) ya da
++JavaScript kapalıysa düz form (`application/x-www-form-urlencoded`) kabul edilir; düz formda yanıt küçük bir HTML
++teşekkür sayfasıdır. `_gotcha` alanı (bal küpü) doluysa ileti sessizce atılır, yanıt yine `{ "ok": true }`'dur.
++E-posta arka planda gider (`MAIL_PROVIDER=console` iken `mail_outbox` tablosuna yazılır); ileti ayrıca saklanmaz.
++
++```json contactRequestSchema
++{
++  "name": "Ayşe Kaya",
++  "email": "ayse@ornek.com",
++  "message": "Fiyatlar hakkında bilgi almak istiyorum.",
++  "page": "https://site.ornek.com/iletisim/",
++  "lang": "tr"
++}
++```
++
++```json okResponseSchema
++{ "ok": true }
++```
++
++Hatalar: `400 validation` (alanlar: `name`, `email`, `message`), `403 forbidden` (başka siteden; `Origin`
++`CONTACT_ORIGINS`'te yok), `404 not_found` (özellik kapalı), `429 rate_limited` (IP başına 5/saat, toplam 100/saat;
++`Retry-After`).
++
++```bash
++curl -s -X POST $API/api/iletisim -H 'Content-Type: application/json' \
++  -d '{"name":"Ayşe Kaya","email":"ayse@ornek.com","message":"Fiyatlar hakkında bilgi almak istiyorum."}'
++```
++
+ ## Web uygulamasının sunulması
+ 
+ `WEB_DIST` klasörü (varsayılan `web/dist`) hazırsa API dışındaki her `GET` adresi oradan sunulur: var olan dosya

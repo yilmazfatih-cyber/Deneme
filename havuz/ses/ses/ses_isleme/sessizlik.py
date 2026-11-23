@@ -27,7 +27,7 @@ def kirpma_araligi(
     enerji = cerceve_enerjisi(dizi, ornekleme, pencere_ms=pencere_ms)
     if len(enerji) == 0:
         return 0, 0
-    esik = max(float(enerji.max()) - goreli_esik_db, mutlak_esik_dbfs)
+    esik = max(float(np.max(enerji)) - goreli_esik_db, mutlak_esik_dbfs)
     ustunde = np.flatnonzero(enerji > esik)
     if len(ustunde) == 0:
         return 0, 0

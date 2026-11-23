@@ -24,7 +24,12 @@ def png_header_only(width: int, height: int) -> bytes:
     """Başlığı dev boyut söyleyen ama birkaç yüz baytlık PNG (piksel verisi yok sayılır)."""
     header = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
     body = zlib.compress(b"\x00" * 64)
-    return b"\x89PNG\r\n\x1a\n" + _chunk(b"IHDR", header) + _chunk(b"IDAT", body) + _chunk(b"IEND", b"")
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + _chunk(b"IHDR", header)
+        + _chunk(b"IDAT", body)
+        + _chunk(b"IEND", b"")
+    )
 
 
 @pytest.mark.parametrize("side", [9000, 20000])

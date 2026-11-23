@@ -1,0 +1,22 @@
+--- a/docs/GUVENLIK.md
++++ b/docs/GUVENLIK.md
+@@ -76,10 +76,19 @@
+ tarayıcı değildir (curl, sunucu) ve geçer; tarayıcılar siteler arası isteklerde bu başlıkları hep gönderir.
+ `Authorization: Bearer` istekleri muaftır (belirteci tarayıcı kendiliğinden eklemez).
+ 
++**Herkese açık form uçları** (`POST /api/iletisim`) bu ara katmandan muaftır (`csrfProtection → exemptPaths`):
++oturum kullanmazlar ve JS kapalı tarayıcının düz form gönderimini (JSON değil) de kabul ederler. Yerlerine
++işleyici `Origin` başlığını kendisi denetler: yalnız `CONTACT_ORIGINS`, `APP_URL` kökeni ve kendi kökeni geçer;
++öteki siteler `403` alır. Kötüye kullanıma karşı asıl koruma hız sınırı (IP başına ve toplam) ve bal küpüdür.
++
+ ### CORS
+ 
+ Varsayılan **kapalı**. `ALLOWED_ORIGINS` (virgüllü köken listesi; `*` kabul edilmez) dolarsa yalnız o kökenlere
+ `Access-Control-Allow-Origin` + `Allow-Credentials` verilir.
++
++İletişim formunun CORS'u **ayrıdır** (`http/cors.ts → publicFormCors`): yalnız `CONTACT_ORIGINS`, yalnız `POST`,
++çerezsiz (`Allow-Credentials` yok). Tanıtım sitesini `ALLOWED_ORIGINS`'e eklemeyin: o liste çerezli istek izni
++verir ve sitedeki bir açık uygulamanın oturumlarına uzanırdı.
+ 
+ ### Yetki
+ 

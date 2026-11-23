@@ -24,14 +24,24 @@ from ses.ses_isleme.ses import Dizi
 class SesAyari(BaseModel):
     """Seslendirme ayarları (sunucu ve komut satırı aynı modeli kullanır)."""
 
-    hiz: float = Field(1.0, ge=0.5, le=2.0, description="konuşma hızı çarpanı (1 = sesin kendi hızı)")
-    perde: float = Field(0.0, ge=-6, le=6, description="perde kaydırma, yarım ton (±3 dışı doğal değil)")
+    hiz: float = Field(
+        1.0, ge=0.5, le=2.0, description="konuşma hızı çarpanı (1 = sesin kendi hızı)"
+    )
+    perde: float = Field(
+        0.0, ge=-6, le=6, description="perde kaydırma, yarım ton (±3 dışı doğal değil)"
+    )
     cumle_arasi_ms: int = Field(300, ge=0, le=3000, description="cümleler arası sessizlik")
     bas_son_ms: int = Field(100, ge=0, le=2000, description="baştaki ve sondaki sessizlik")
-    hedef_lufs: float | None = Field(-16.0, ge=-40, le=-5, description="ses yüksekliği; None: dokunma")
-    ornekleme: int | None = Field(None, ge=8000, le=48000, description="çıktı hızı; None: sesin kendi hızı")
+    hedef_lufs: float | None = Field(
+        -16.0, ge=-40, le=-5, description="ses yüksekliği; None: dokunma"
+    )
+    ornekleme: int | None = Field(
+        None, ge=8000, le=48000, description="çıktı hızı; None: sesin kendi hızı"
+    )
     normallestir: bool = Field(True, description="sayı, tarih, kısaltma… okunuşa çevrilsin mi")
-    konusmaci: int | None = Field(None, ge=0, description="çok konuşmacılı seste konuşmacı numarası")
+    konusmaci: int | None = Field(
+        None, ge=0, description="çok konuşmacılı seste konuşmacı numarası"
+    )
 
 
 class TtsMotoru(Protocol):

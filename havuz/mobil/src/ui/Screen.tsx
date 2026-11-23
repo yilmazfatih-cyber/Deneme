@@ -9,11 +9,12 @@
  * Genişletme: ekranlara ortak yeni bir davranış (ör. aşağı çekip yenile) gerekiyorsa buraya seçenek ekleyin.
  */
 import { useNavigation } from 'expo-router'
-import { useEffect, type ReactNode } from 'react'
+import { useEffect, useId, type ReactNode } from 'react'
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Heading } from './Text.tsx'
 import { SPACE, useTheme } from './theme.tsx'
+import { useToastInset } from './Toast.tsx'
 
 export interface ScreenProps {
   /** Ekranın adı: gezinme çubuğunda, ekran okuyucuda ve web sekmesinde görünür. */
@@ -25,7 +26,7 @@ export interface ScreenProps {
   readonly scroll?: boolean
   /** Güvenli alan boşluğu bırakılacak kenarlar (gezinme çubuğu/sekme çubuğu yoksa). */
   readonly edges?: readonly ('top' | 'bottom')[]
-  /** Kaydırılmayan alt bölüm (ör. kaydet düğmesi). */
+  /** Kaydırılmayan alt bölüm (ör. kaydet düğmesi). Bildirimler (toast) bunun üstünde çıkar. */
   readonly footer?: ReactNode
 }
 
@@ -33,10 +34,14 @@ export function Screen({ title, children, heading = false, scroll = true, edges 
   const navigation = useNavigation()
   const insets = useSafeAreaInsets()
   const { colors } = useTheme()
+  const reportInset = useToastInset()
+  const footerId = useId()
 
   useEffect(() => {
     navigation.setOptions({ title })
   }, [navigation, title])
+  // Alt bölüm kalkınca bildirim yeniden sekme çubuğu hizasına iner.
+  useEffect(() => () => reportInset(footerId, null), [footerId, reportInset])
 
   const padding = {
     paddingTop: edges.includes('top') ? insets.top : 0,
@@ -61,7 +66,14 @@ export function Screen({ title, children, heading = false, scroll = true, edges 
         ) : (
           <View style={[styles.fill, styles.content]}>{body}</View>
         )}
-        {footer ? <View style={[styles.footer, { borderTopColor: colors.line }]}>{footer}</View> : null}
+        {footer ? (
+          <View
+            onLayout={(event) => reportInset(footerId, event.nativeEvent.layout.height)}
+            style={[styles.footer, { borderTopColor: colors.line, paddingBottom: SPACE.lg + insets.bottom }]}
+          >
+            {footer}
+          </View>
+        ) : null}
       </View>
     </KeyboardAvoidingView>
   )

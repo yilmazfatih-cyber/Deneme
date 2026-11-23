@@ -67,5 +67,7 @@ class SahteStt:
                 Kelime(baslangic=round(i * adim, 3), bitis=round((i + 1) * adim, 3), metin=" " + s)
                 for i, s in enumerate(sozcukler)
             ]
-        bolutler = [Bolut(baslangic=0.0, bitis=round(sure, 3), metin=" " + metin, kelimeler=kelimeler)]
+        bolutler = [
+            Bolut(baslangic=0.0, bitis=round(sure, 3), metin=" " + metin, kelimeler=kelimeler)
+        ]
         return Transkript(dil=dil, sure=sure, model=self.ad, bolutler=bolutler if sozcukler else [])

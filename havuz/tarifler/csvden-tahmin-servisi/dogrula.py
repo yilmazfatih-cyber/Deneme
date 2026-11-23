@@ -50,11 +50,22 @@ def servisi_dene(gunluk: Gunluk, proje: Path) -> None:
     ml = proje / "ml-temel"
     kapi, anahtar = bos_kapi(), secrets.token_urlsafe(24)
     model = proje / "hat" / "calisma" / "model" / "model.npz"
-    komut = [str(venv_python(ml)), "-m", "ml_temel", "sun", "--model", str(model), "--kapi", str(kapi)]
+    komut = [
+        str(venv_python(ml)),
+        "-m",
+        "ml_temel",
+        "sun",
+        "--model",
+        str(model),
+        "--kapi",
+        str(kapi),
+    ]
     ortam = venv_ortami(ml, {"ML_TEMEL_ANAHTAR": anahtar})
     taban = f"http://127.0.0.1:{kapi}"
     yetki = {"Authorization": f"Bearer {anahtar}"}
-    with Surec("tahmin servisi", komut, ml, ortam, proje / "hat" / "calisma" / "sunucu.log") as sunucu:
+    with Surec(
+        "tahmin servisi", komut, ml, ortam, proje / "hat" / "calisma" / "sunucu.log"
+    ) as sunucu:
         with gunluk.adim("servis: başlat ve /saglik"):
             sunucu.saglik_bekle(f"{taban}/saglik", sure_sn=60)
         with gunluk.adim("servis: curl ile örnek istek (düşük < yüksek risk)"):
@@ -68,11 +79,15 @@ def servisi_dene(gunluk: Gunluk, proje: Path) -> None:
                 ).stdout  # fmt: skip
                 yanit = json.loads(cikti)
             else:
-                _, _, yanit = http_istek("POST", f"{taban}/tahmin", json.loads(ornek.read_text()), yetki)
+                _, _, yanit = http_istek(
+                    "POST", f"{taban}/tahmin", json.loads(ornek.read_text()), yetki
+                )
             print(f"  yanıt: {json.dumps(yanit, ensure_ascii=False)}")
             dusuk, yuksek = (t["olasiliklar"]["1"] for t in yanit["tahminler"])
             if not dusuk < 0.3 < yuksek:
-                raise AssertionError(f"riskler beklenen sırada değil: düşük={dusuk}, yüksek={yuksek}")
+                raise AssertionError(
+                    f"riskler beklenen sırada değil: düşük={dusuk}, yüksek={yuksek}"
+                )
         with gunluk.adim("servis: anahtarsız 401, hatalı girdi 400 (alan yoluyla)"):
             durum, _, _ = http_istek("POST", f"{taban}/tahmin", {"satirlar": [{}]})
             if durum != 401:

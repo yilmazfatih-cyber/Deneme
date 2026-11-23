@@ -136,9 +136,11 @@ Bu bloğun dersleri:
 - `toFixed` ikili değeri, `Intl` ise sayının kısa ondalık yazımını yuvarlar; aynı ekranda ikisi birden kullanılırsa
   aynı sayı iki farklı görünür. Para hesabı kuruş tamsayıyla yapılır
   ([Türkçe sayı ve para](../97-turkce/turkce-sayi-ve-para.md)).
-- Intl çıktısını testte düz metinle karşılaştırmak kırılgandır: bölünmez ve ince boşluklar var ve ICU sürümü
-  değişince değişebilir (geçmişte İngilizce saat biçiminde AM/PM öncesindeki boşluk bu yüzden değişmiş ve pek çok
-  testi kırmıştı). Boşlukları normalleştirerek karşılaştırın ya da `formatToParts` parçalarını sınayın.
+- Intl çıktısını testte düz metinle karşılaştırmak kırılgandır. Bu makinedeki Node'da (ICU 78.3) Türkçe kısa sayı
+  gösteriminde bölünmez boşluk (U+00A0), farklı aylı tarih aralığında tirenin iki yanında ince boşluk (U+2009) var;
+  İngilizce saatte ise düz boşluk. Bu karakterler ICU ve CLDR sürümüyle değişebilir (geçmişte İngilizce saat
+  biçiminde böyle bir değişikliğin testleri kırdığı bildirilmiştir; doğrulanmadı). Boşlukları normalleştirerek
+  karşılaştırın ya da `formatToParts` parçalarını sınayın.
 - Sıra sayısı eki ("3'üncü") ünlü uyumu ister: [Ekler ve ünlü uyumu](../97-turkce/ekler-ve-unlu-uyumu.md).
 - "çığ" ile "cig"i eşlemek için harmanlayıcı değil katlama gerekir: [Büyük/küçük harf](../97-turkce/buyuk-kucuk-harf.md).
 - `Intl.DurationFormat` bu makinedeki Node 22.23'te yok; kullanacaksanız varlığını denetleyin.

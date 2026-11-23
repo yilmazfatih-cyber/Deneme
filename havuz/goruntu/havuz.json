@@ -1,0 +1,16 @@
+{
+  "ad": "goruntu",
+  "baslik": "Görüntü temeli: güvenli hazırlık, kopya bulma, sınıflandırma, ONNX ve arama",
+  "ozet": "EXIF yönü ve kişisel üst veri temizliği, sıkıştırma bombasına karşı güvenli açma, algısal özetle kopya ve sızıntı bulma, timm ile sızıntısız sınıflandırma ince ayarı (kalibrasyon, 'emin değilim'), tek dosyalık ONNX paketi, CLIP/SigLIP 2 ile görüntü ve metinle arama, HTTP sunucusu.",
+  "tur": "python",
+  "gereksinim": { "python": ">=3.11" },
+  "python": { "ekstra": "dev" },
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": ["python scripts/duman_testi.py", "python scripts/katalog_dogrula.py"],
+  "baslat": "python -m goruntu --yardim",
+  "yerTutucular": [
+    { "ara": "GORUNTU_", "anlam": "ortam değişkeni öneki (GORUNTU_API_ANAHTARI, GORUNTU_AG, GORUNTU_IS_PARCACIGI)" },
+    { "ara": "havuz/goruntu", "anlam": "depo içinde temelin bulunduğu klasör (belgelerde)" }
+  ],
+  "kopyalamaHaric": [".venv", "ciktilar", "veri", "dizinler", "*.egg-info", ".mypy_cache", ".ruff_cache", ".pytest_cache", "__pycache__"]
+}

@@ -26,15 +26,39 @@ def _timm_tensor(image: Image.Image, config: dict) -> torch.Tensor:  # type: ign
 
 
 CONFIGS = [
-    {"input_size": (3, 224, 224), "interpolation": "bicubic", "crop_pct": 0.875, "crop_mode": "center",
-     "mean": (0.485, 0.456, 0.406), "std": (0.229, 0.224, 0.225)},
-    {"input_size": (3, 160, 160), "interpolation": "bilinear", "crop_pct": 0.95, "crop_mode": "center",
-     "mean": (0.5, 0.5, 0.5), "std": (0.5, 0.5, 0.5)},
-    {"input_size": (3, 96, 96), "interpolation": "bicubic", "crop_pct": 1.0, "crop_mode": "squash",
-     "mean": (0.485, 0.456, 0.406), "std": (0.229, 0.224, 0.225)},
-    {"input_size": (3, 128, 192), "interpolation": "bicubic", "crop_pct": 0.9, "crop_mode": "center",
-     "mean": (0.485, 0.456, 0.406), "std": (0.229, 0.224, 0.225)},
-]  # fmt: skip
+    {
+        "input_size": (3, 224, 224),
+        "interpolation": "bicubic",
+        "crop_pct": 0.875,
+        "crop_mode": "center",
+        "mean": (0.485, 0.456, 0.406),
+        "std": (0.229, 0.224, 0.225),
+    },
+    {
+        "input_size": (3, 160, 160),
+        "interpolation": "bilinear",
+        "crop_pct": 0.95,
+        "crop_mode": "center",
+        "mean": (0.5, 0.5, 0.5),
+        "std": (0.5, 0.5, 0.5),
+    },
+    {
+        "input_size": (3, 96, 96),
+        "interpolation": "bicubic",
+        "crop_pct": 1.0,
+        "crop_mode": "squash",
+        "mean": (0.485, 0.456, 0.406),
+        "std": (0.229, 0.224, 0.225),
+    },
+    {
+        "input_size": (3, 128, 192),
+        "interpolation": "bicubic",
+        "crop_pct": 0.9,
+        "crop_mode": "center",
+        "mean": (0.485, 0.456, 0.406),
+        "std": (0.229, 0.224, 0.225),
+    },
+]
 SIZES = [(640, 480), (480, 640), (300, 300), (1001, 333), (97, 151)]
 
 

@@ -11,7 +11,7 @@ import {
 
 describe('çalışma zamanı tamamlayıcıları', () => {
   it('UTF-8 kodlayıcı yerleşik TextEncoder ile aynı baytları verir', () => {
-    const samples = ['', 'Süt al', 'İĞÜŞÖÇ ığüşöç', 'emoji 👩‍💻 ✓', 'yarım \ud83d vekil', '\udc00 tek']
+    const samples = ['', 'Süt al', 'İĞÜŞÖÇ ığüşöç', 'emoji 👩\u200d💻 ✓', 'yarım \ud83d vekil', '\udc00 tek']
     const native = new TextEncoder()
     for (const sample of samples)
       expect(Array.from(new Utf8Encoder().encode(sample))).toEqual(Array.from(native.encode(sample)))

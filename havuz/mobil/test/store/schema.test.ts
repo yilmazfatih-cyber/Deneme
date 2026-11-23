@@ -2,6 +2,8 @@
  * Şema göçleri: sırayla uygulanır, yarıda kalan göç geri alınır, yeni sürüm eski veriyi korur.
  * ÖRNEK: yeni bir göç yazarken aşağıdaki "2. sürüm" testini kopyalayıp uyarlayın.
  */
+import { DEVICE_DB_NAME } from '../../src/lib/device/deviceStore.ts'
+import { closeLocalDb, LOCAL_DB_NAME, MAX_DB_NAME, openLocalDb, userDbName } from '../../src/lib/store/databases.ts'
 import { LocalDb } from '../../src/lib/store/localDb.ts'
 import { migrate, MIGRATIONS, SchemaTooNewError, type Migration } from '../../src/lib/store/schema.ts'
 import { openNodeDriver } from '../support/nodeDriver.ts'
@@ -57,5 +59,33 @@ describe('şema göçleri (kural testleri)', () => {
     const db = new LocalDb('g3.db', openNodeDriver())
     await db.write((sql) => sql.exec('PRAGMA user_version = 99'))
     await expect(migrate(db)).rejects.toBeInstanceOf(SchemaTooNewError)
+  })
+})
+
+describe('veritabanı kaydı', () => {
+  it('aynı ad tek bağlantı verir; kapatılan yeniden açılınca yeni bağlantı olur', async () => {
+    const first = await openLocalDb('kayit-deneme.db')
+    expect(await openLocalDb('kayit-deneme.db')).toBe(first)
+    await closeLocalDb('kayit-deneme.db')
+    expect(first.isClosed).toBe(true)
+    const second = await openLocalDb('kayit-deneme.db')
+    expect(second).not.toBe(first)
+    expect(second.isClosed).toBe(false)
+  })
+})
+
+describe('veritabanı adları (kural testi)', () => {
+  it('her ad web sınırına sığar: "/" + ad + "-journal" ≤ 64 karakter (en uzun kimlikte de)', () => {
+    const longest = 'x'.repeat(64)
+    const names = [
+      LOCAL_DB_NAME,
+      DEVICE_DB_NAME,
+      userDbName('0193a5c8-4f2e-7b1a-9c3d-5e6f7a8b9c0d'),
+      userDbName(longest),
+    ]
+    for (const name of names) expect([name, name.length <= MAX_DB_NAME]).toEqual([name, true])
+    expect(userDbName('0193a5c8-4f2e-7b1a-9c3d-5e6f7a8b9c0d')).toBe('kullanici-0193a5c84f2e7b1a9c3d5e6f7a8b9c0d.db')
+    expect(userDbName(longest)).toBe(userDbName(longest))
+    expect(userDbName(longest)).not.toBe(userDbName('y'.repeat(64)))
   })
 })

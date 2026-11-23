@@ -16,7 +16,8 @@ guncellik: 2026-11
 
 - **Sıfırdan eğitmeyin.** Büyük bir veride önceden eğitilmiş bir görüntü modeli (omurga, backbone) alınır; ya
   çıkardığı gömmeler üstünde basit bir sınıflandırıcı eğitilir ya da son katmanları sizin verinizle ince ayarlanır
-  (aktarım öğrenmesi, transfer learning). Sınıf başına birkaç yüz görüntü çoğu iş için başlangıçta yeter.
+  (aktarım öğrenmesi, transfer learning). Sınıf başına birkaç yüz görüntü yaygın bir başlangıç noktasıdır (ölçüm
+  değil; öğrenme eğrisiyle doğrulayın).
 - **Sorunların çoğu veridedir:** aynı fotoğrafın kopyaları iki tarafa düşer (ölçüm şişer), sınıflar farklı yerde
   ya da cihazda çekilmiştir (model nesneyi değil arka planı öğrenir), telefon fotoğrafları yan döner (EXIF), klasör
   adları iki ayrı Unicode biçimindedir.
@@ -35,6 +36,9 @@ guncellik: 2026-11
 | "Bu ne?" yerine "kusur nerede?" | Sınıflandırma değil, nesne bulma / bölütleme | Yer bilgisi gerekir; bu notun dışı |
 | Görüntüde metin var (fatura, tabela) | Önce metin tanıma (OCR) + metin sınıflandırma | Görüntü modeli yazıyı okumakta zayıftır ([belge girdisi](../85-llm/cok-modlu-ve-belge.md)) |
 | Hata bedeli yüksek | "Emin değilim" eşiği + insan onayı | [Metin sınıflandırma](metin-siniflandirma.md)daki kapsama ↔ doğruluk kuralı aynen geçerli |
+
+Tablodaki görüntü sayısı eşikleri yaygın uygulamadan kaba başlangıç noktalarıdır, ölçüm değildir; kendi verinizde
+öğrenme eğrisiyle doğrulayın ([veri ve etiket kalitesi](veri-ve-etiket.md)).
 
 ## Veri hazırlığı
 
@@ -140,7 +144,9 @@ gruplu ayrım:   77 sınama görüntüsünün 0 tanesinin birebir, 0 tanesinin y
 Kurallar: önce grupla, sonra **grupları** ayır ([ayrım ve çapraz doğrulama](ayrim-ve-capraz-dogrulama.md)). Eşik
 (burada 6 bit) veriye göre değişir: bilinen birkaç kopya çiftinin ve birkaç farklı çiftin uzaklığına bakıp seçin;
 gerçek fotoğraflarda düz bölgeler bitleri oynatır. Aynı kişiye/ürüne/hastaya ait farklı fotoğraflar da bir gruptur:
-gruplama ölçütü "aynı varlık"tır, yalnız "aynı piksel" değil.
+gruplama ölçütü "aynı varlık"tır, yalnız "aynı piksel" değil. Havuzdaki görüntü temelinde (yazılıyor) aynı iş
+gerçek dosyalarla hazır: aHash/dHash/pHash, gruplama ve iki küme arası sızıntı denetimi
+([`goruntu/kopya`](../../goruntu/goruntu/kopya/__init__.py); komutlar `kopya-bul` ve `sizinti`).
 
 ## Kısayol öğrenme ve veri artırma
 
@@ -314,6 +320,7 @@ optimizer = torch.optim.AdamW(model.fc.parameters(), lr=1e-3)
   — gruplu ayrım
 - [Gömmeler ve benzerlik araması](gommeler-ve-benzerlik.md) — gömme + en yakın komşu, görüntü araması
 - [Etiketleme ve aktif öğrenme](etiketleme-ve-aktif-ogrenme.md) · [Hata analizi](hata-analizi.md)
-- Havuzdaki görüntü temeli (yazılıyor): [`goruntu`](../../goruntu/README.md) — güvenli hazırlık (EXIF, gizlilik),
-  kopya bulma, sınıflandırma ince ayarı, ONNX, gömme ve arama
+- Havuzdaki görüntü temeli (yazılıyor): [`goruntu`](../../goruntu/README.md) — güvenli açma, EXIF yönü ve üst veri
+  temizliği ([`hazirlik`](../../goruntu/goruntu/hazirlik/__init__.py)), kopya bulma
+  ([`kopya`](../../goruntu/goruntu/kopya/__init__.py)), sınıflandırma ince ayarı, ONNX, gömme ve arama
 - Sıfırdan küçük evrişimli ağ (numpy): [`ml-temel/ornekler/06_sekil_evrisim.py`](../../ml-temel/ornekler/06_sekil_evrisim.py)

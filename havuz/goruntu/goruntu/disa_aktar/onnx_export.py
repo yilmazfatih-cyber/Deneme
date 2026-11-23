@@ -9,8 +9,8 @@ Kararlar (ayrıntı: docs/KARARLAR.md K07, K08):
 - Giriş uint8 NHWC, yığın ekseni dinamik (1 görüntü de çalışır, testli). Çıkışlar `logit`, `olasilik`.
 - Eşdeğerlik: aynı ön işlemeden geçmiş örneklerde PyTorch ve onnxruntime logitleri karşılaştırılır;
   en büyük fark ve karar uyumu `paket.json` → `dogrulama` alanına yazılır. 1e-4'ü aşarsa UYARI.
-- int8: onnxruntime `quantize_dynamic` (QInt8 ağırlık, ölçüm verisi gerekmez). CNN'lerde hız kazancı
-  garanti değildir; karar uyumu ölçülür ve yazılır.
+- int8: onnxruntime `quantize_dynamic`, YALNIZ MatMul/Gemm (evrişimler bozuluyordu, ölçüldü). %20'den
+  az küçültüyorsa (evrişimli ağlar) int8 dosyası yazılmaz; karar uyumu %98'in altındaysa "önerilmez".
 
 Genişletme: başka bir nicemleme (statik, ölçüm verili) eklenecekse `quantize_int8` yanına yeni işlev
 yazın; sonucu `paket.json`'a aynı biçimde (`*_karar_uyumu`) kaydedin.
@@ -47,6 +47,11 @@ from goruntu.io_utils import write_json
 from goruntu.messages import t
 
 PARITY_TOLERANCE = 1e-4
+INT8_OPS = ["MatMul", "Gemm"]
+INT8_MIN_SAVING = (
+    0.2  # int8 dosyası en az %20 küçük değilse yazılmaz (evrişimli ağlarda kazanç yok)
+)
+INT8_MIN_AGREEMENT = 0.98  # karar uyumu bunun altındaysa paket "önerilmez" diye işaretlenir
 
 
 def _wrapper(model: Any, temperature: float) -> Any:
@@ -92,7 +97,12 @@ def export_onnx(module: Any, example: np.ndarray, target: Path) -> Path:
 
 
 def quantize_int8(source: Path, target: Path) -> Path:
-    """Dinamik int8 nicemleme; şekil ön işlemi başarısız olursa doğrudan nicemlenir."""
+    """Dinamik int8 nicemleme (yalnız MatMul/Gemm); şekil ön işlemi olmazsa doğrudan nicemlenir.
+
+    Evrişimler (Conv) BİLEREK nicemlenmez: MobileNetV3'te evrişimleri dinamik nicemlemek karar uyumunu
+    %40'a düşürdü (kanal başına da; ölçüm docs/DENEME_KAYDI.md). Dönüştürücülerde (ViT) ağırlığın
+    çoğu MatMul'dadır, kazanç orada.
+    """
     from onnxruntime.quantization import QuantType, quantize_dynamic
 
     logging.disable(
@@ -109,7 +119,9 @@ def quantize_int8(source: Path, target: Path) -> Path:
                 start = prepared
             except Exception as exc:  # ön işlem isteğe bağlıdır
                 console.warn(t("onnx.on_islem_atlandi", ayrinti=str(exc).splitlines()[0][:200]))
-            quantize_dynamic(str(start), str(target), weight_type=QuantType.QInt8)
+            quantize_dynamic(
+                str(start), str(target), weight_type=QuantType.QInt8, op_types_to_quantize=INT8_OPS
+            )
     finally:
         logging.disable(logging.NOTSET)
     return target
@@ -156,19 +168,47 @@ def export_classifier(
         mimari=str(meta.get("mimari", "")),
         olusturma_tarihi=datetime.now(UTC).isoformat(timespec="seconds"),
     )
+    (target_dir / INT8_FILE).unlink(missing_ok=True)  # eski bir int8 dosyası yanlışlıkla kalmasın
     if int8:
-        quantized = quantize_int8(fp32, target_dir / INT8_FILE)
-        int8_logits = _onnx_logits(quantized, batch)
-        checks["int8_en_buyuk_fark"] = float(np.abs(int8_logits - reference).max())
-        checks["int8_karar_uyumu"] = _agreement(int8_logits, reference)
-        embed(
-            quantized, bundle.model_copy(update={"nicemleme": "int8-dinamik", "dogrulama": checks})
-        )
+        checks.update(_add_int8(fp32, target_dir / INT8_FILE, batch, reference, bundle, checks))
     bundle = bundle.model_copy(update={"dogrulama": checks})
     embed(fp32, bundle)
     payload = bundle.model_dump(mode="json")
     write_json(target_dir / JSON_FILE, payload)
     return {"klasor": str(target_dir), **payload}
+
+
+def _add_int8(
+    fp32: Path,
+    target: Path,
+    batch: np.ndarray,
+    reference: np.ndarray,
+    bundle: BundleMeta,
+    checks: dict[str, Any],
+) -> dict[str, Any]:
+    """int8 sürümünü üretir ve ölçer; kazanç yoksa siler, uyum düşükse "önerilmez" işaretler."""
+    quantized = quantize_int8(fp32, target)
+    saving = 1.0 - quantized.stat().st_size / fp32.stat().st_size
+    if saving < INT8_MIN_SAVING:
+        quantized.unlink()
+        console.warn(t("onnx.int8_kazanc_yok", oran=f"{saving:.0%}"))
+        return {"int8": "atlandi", "int8_kuculme": round(saving, 4)}
+    logits = _onnx_logits(quantized, batch)
+    agreement = _agreement(logits, reference)
+    result: dict[str, Any] = {
+        "int8": "yazildi",
+        "int8_kuculme": round(saving, 4),
+        "int8_en_buyuk_fark": float(np.abs(logits - reference).max()),
+        "int8_karar_uyumu": agreement,
+        "int8_onerilmez": agreement < INT8_MIN_AGREEMENT,
+    }
+    if result["int8_onerilmez"]:
+        console.warn(t("onnx.int8_uyum_dusuk", uyum=f"{agreement:.1%}"))
+    embed(
+        quantized,
+        bundle.model_copy(update={"nicemleme": "int8-dinamik", "dogrulama": {**checks, **result}}),
+    )
+    return result
 
 
 def _agreement(left: np.ndarray, right: np.ndarray) -> float:

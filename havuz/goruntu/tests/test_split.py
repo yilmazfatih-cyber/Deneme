@@ -12,7 +12,7 @@ import pytest
 from goruntu.errors import UserError
 from goruntu.siniflandirma.dataset import discover
 from goruntu.siniflandirma.prepare import prepare_data
-from goruntu.siniflandirma.split import plan_split
+from goruntu.siniflandirma.split import SplitPlan, plan_split
 from goruntu.synthetic import scene_image, write_shape_dataset
 from tests.conftest import tiny_config
 
@@ -21,7 +21,7 @@ def _hashes(count: int, seed: int = 0) -> np.ndarray:
     return np.random.default_rng(seed).integers(0, 2**63, size=(count, 5), dtype=np.uint64)
 
 
-def _side(plan, index: int) -> str:  # type: ignore[no-untyped-def]
+def _side(plan: SplitPlan, index: int) -> str:
     return next(name for name, rows in plan.indices.items() if index in rows)
 
 
@@ -70,8 +70,7 @@ def test_cok_az_grup_acik_hata() -> None:
 
 def test_kesif_nfc_ve_gizli_dosyalar(tmp_path: Path) -> None:
     write_shape_dataset(tmp_path / "kok", per_class=3, seed=0, size=32, shapes=("daire", "kare"))
-    nfd = unicodedata.normalize("NFD", "çanta")
-    write_shape_dataset(tmp_path / "kok", per_class=3, seed=1, size=32, shapes=(nfd,) if False else ())
+    nfd = unicodedata.normalize("NFD", "çanta")  # macOS'tan gelen ayrışık ad
     (tmp_path / "kok" / nfd).mkdir()
     scene_image(np.random.default_rng(0), (40, 30)).save(tmp_path / "kok" / nfd / "a.png")
     scene_image(np.random.default_rng(1), (40, 30)).save(tmp_path / "kok" / nfd / "b.png")
@@ -90,7 +89,9 @@ def test_grup_deseni(tmp_path: Path) -> None:
             path = tmp_path / label / name
             path.parent.mkdir(parents=True, exist_ok=True)
             scene_image(np.random.default_rng(hash(name) % 1000), (30, 30)).save(path)
-    groups = {s.path.name: s.group for s in discover(tmp_path, r"^([^_]+)_").samples if s.label == "a"}
+    groups = {
+        s.path.name: s.group for s in discover(tmp_path, r"^([^_]+)_").samples if s.label == "a"
+    }
     assert groups == {"u1_arka.png": "a/u1", "u1_on.png": "a/u1", "u2_on.png": "a/u2"}
 
 

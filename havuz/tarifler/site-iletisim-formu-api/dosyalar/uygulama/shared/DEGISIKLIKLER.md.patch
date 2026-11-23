@@ -1,0 +1,12 @@
+--- a/shared/DEGISIKLIKLER.md
++++ b/shared/DEGISIKLIKLER.md
+@@ -11,6 +11,9 @@
+ 
+ ## Günlük
+ 
++- 2026-11-23 — (site-iletisim-formu-api tarifi) EKLENDİ, geriye uyumlu: `contactRequestSchema`, `ContactRequest`
++  ve `API_PATHS.contact` (`POST /api/iletisim`, oturumsuz). Web uygulamasının bir şey yapması gerekmez; çağıran
++  site temelinin formudur.
+ - 2026-11-16 — (api ekibi) EKLENDİ, geriye uyumlu: `adminMetricsResponseSchema` + `AdminMetricsResponse` türü ve
+   `API_PATHS.adminMetrics` (`GET /api/admin/metrics`, yalnız yönetici). Web: yönetim ekranında göstermek
+   isterseniz bu şemayla okuyun; başka bir şey yapmanız gerekmez.

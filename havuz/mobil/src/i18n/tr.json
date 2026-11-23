@@ -73,7 +73,6 @@
   "tasks.due.overdue": "Gecikti · {date}",
   "tasks.markDone": "“{title}” tamamlandı olarak işaretle",
   "tasks.markOpen": "“{title}” yeniden aç",
-  "tasks.open": "“{title}” görevini aç",
   "tasks.delete": "“{title}” görevini sil",
   "tasks.deleted": "“{title}” silindi.",
   "tasks.empty.title": "Henüz görev yok",
@@ -103,7 +102,6 @@
   "lists.created": "“{name}” listesi eklendi.",
   "lists.edit": "Listeyi düzenle",
   "lists.editNamed": "“{name}” listesini düzenle",
-  "lists.showTasks": "“{name}” listesinin görevleri",
   "lists.delete": "“{name}” listesini sil",
   "lists.deleted": "“{name}” listesi silindi. Görevleri listesiz kaldı.",
   "lists.openCount": "{count} açık görev",
@@ -198,5 +196,8 @@
   "sync.reset.pull": "Sunucudakini al",
   "sync.reset.pushHint": "Buradakini gönder: bu telefondaki kayıtlar sunucuya yeniden yazılır. Önerilen budur.",
   "sync.reset.pullHint": "Sunucudakini al: bu telefondaki kayıtlar atılır, sunucudaki hâli gelir.",
-  "nav.tab": "{name} sekmesi, {index}/{count}"
+  "nav.tab": "{name} sekmesi, {index}/{count}",
+  "tasks.openHint": "Görevin ayrıntılarını açar.",
+  "lists.showTasksHint": "Bu listenin görevlerini gösterir.",
+  "tasks.priority.highBadge": "Yüksek öncelik"
 }

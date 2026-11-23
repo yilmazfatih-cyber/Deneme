@@ -1,0 +1,45 @@
+--- a/api/src/mail/templates.ts
++++ b/api/src/mail/templates.ts
+@@ -19,6 +19,42 @@
+ function html(paragraphs: string[]): string {
+   const body = paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join('\n')
+   return `<!doctype html><html lang="tr"><body style="font-family: sans-serif; line-height: 1.5">\n${body}\n</body></html>`
++}
++
++/** Kontrol karakterlerini boşluğa çevirir ve kırpar (konu satırı tek satır kalsın). */
++function oneLine(text: string, max: number): string {
++  const clean = [...text].map((ch) => (ch.charCodeAt(0) < 32 || ch.charCodeAt(0) === 127 ? ' ' : ch)).join('')
++  return clean.trim().slice(0, max)
++}
++
++/** Web sitesinin iletişim formundan gelen ileti (modules/iletisim). Gönderenin adresi gövdededir. */
++export function contactMail(input: {
++  to: string
++  name: string
++  email: string
++  message: string
++  page?: string | undefined
++  lang?: string | undefined
++  receivedAt: string
++}): MailMessage {
++  const name = oneLine(input.name, 100)
++  const meta = [
++    `Ad: ${name}`,
++    `E-posta: ${input.email}`,
++    ...(input.page ? [`Sayfa: ${input.page}`] : []),
++    ...(input.lang ? [`Dil: ${input.lang}`] : []),
++    `Zaman: ${input.receivedAt}`,
++  ]
++  return {
++    to: input.to,
++    subject: `Web sitesinden ileti: ${name}`,
++    text: [...meta, '', input.message, '', `Yanıtlamak için gönderene yazın: ${input.email}`].join('\n'),
++    html: html([
++      ...meta.map(escapeHtml),
++      escapeHtml(input.message).replaceAll('\n', '<br>'),
++      `Yanıtlamak için gönderene yazın: ${escapeHtml(input.email)}`,
++    ]),
++  }
+ }
+ 
+ export function passwordResetMail(input: { to: string; name: string; link: string; ttlMinutes: number }): MailMessage {

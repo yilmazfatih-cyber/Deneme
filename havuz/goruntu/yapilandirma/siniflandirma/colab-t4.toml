@@ -1,0 +1,56 @@
+# colab-t4 — Colab/Kaggle T4 (16 GB) için tam ince ayar: önce 2 dönem yalnız baş, sonra bütün ağ
+# (gövde 10 kat küçük öğrenme oranıyla). fp16 karma duyarlık otomatik seçilir.
+# DİKKAT: Bu hazır ayar GPU'da ÇALIŞTIRILMADI (README Sınırlar); `--kuru` ile planı görün.
+# Kendi verinizle: python -m goruntu egit --hazir colab-t4 -D veri.klasor="fotograflarim"
+
+[model]
+taban = "timm/efficientnet_b0.ra_in1k"
+onceden_egitilmis = true
+girdi_boyutu = 0
+kip = "tam"
+bas_isinma_donemi = 2
+govde_oran_carpani = 0.1
+birakma = 0.2
+
+[veri]
+klasor = "veri/sekiller"
+dogrulama_orani = 0.15
+test_orani = 0.15
+kopya_yontemi = "phash"
+kopya_esigi = 8
+grup_deseni = ""
+tohum = 42
+
+[artirma]
+etkin = true
+olcek_alt = 0.5
+yatay_cevir = true
+dikey_cevir = false
+renk = 0.3
+dondurme_derece = 10.0
+
+[egitim]
+cikti = "ciktilar/colab-t4"
+donem = 20
+yigin = 64
+ogrenme_orani = 1e-3
+agirlik_curumesi = 0.05
+isinma_orani = 0.05
+dengesizlik = "agirlikli-kayip"
+etiket_yumusatma = 0.1
+erken_durdurma = 4
+izlenen = "makro_f1"
+duyarlik = "oto"
+is_parcacigi = 0
+isci = 2
+tohum = 42
+hedef_bellek_gb = 15.0
+hedef_tflops = 8.0
+
+[esik]
+kalibrasyon = true
+hedef_dogruluk = 0.95
+sabit_esik = 0.0
+
+[disa_aktarim]
+int8 = true

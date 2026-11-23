@@ -11,7 +11,6 @@ from __future__ import annotations
 import argparse
 from collections.abc import Callable
 from dataclasses import dataclass
-from pathlib import Path
 
 from goruntu.config import PRESETS
 from goruntu.hazirlik.loader import DEFAULT_MAX_BYTES, DEFAULT_MAX_PIXELS, LoadLimits
@@ -63,7 +62,3 @@ def limits_from(args: argparse.Namespace) -> LoadLimits:
 
 def add_json_argument(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--json", metavar="DOSYA", help=t("yardim.secenek.json"))
-
-
-def existing_path(text: str) -> Path:
-    return Path(text)

@@ -21,8 +21,14 @@ from ses.stt.motor import ORNEKLEME
 from ses.stt.tipler import Bolut, Kelime, Transkript
 
 TRANSCRIBE_SECENEKLERI = (
-    "language", "task", "beam_size", "word_timestamps", "vad_filter",
-    "condition_on_previous_text", "initial_prompt", "temperature",
+    "language",
+    "task",
+    "beam_size",
+    "word_timestamps",
+    "vad_filter",
+    "condition_on_previous_text",
+    "initial_prompt",
+    "temperature",
 )  # fmt: skip  — tests/test_stt.py bu adların kurulu faster-whisper'da olduğunu denetler
 
 
@@ -93,7 +99,10 @@ class WhisperMotoru:
             )
             bolutler = [_bolut_cevir(b) for b in bolutler_ham]  # üreteç: asıl iş burada yapılır
         return Transkript(
-            dil=str(bilgi.language), sure=len(ornekler) / ORNEKLEME, model=self.ad, bolutler=bolutler
+            dil=str(bilgi.language),
+            sure=len(ornekler) / ORNEKLEME,
+            model=self.ad,
+            bolutler=bolutler,
         )
 
 

@@ -51,6 +51,8 @@ export function Checkbox({
 export interface ChoiceOption<T extends string> {
   readonly value: T
   readonly label: string
+  /** Seçeneğin yanında küçük renk noktası (ör. liste rengi). Süstür; anlamı etiket taşır. */
+  readonly swatch?: string
 }
 
 export function ChoiceGroup<T extends string>({
@@ -78,7 +80,7 @@ export function ChoiceGroup<T extends string>({
               key={option.value}
               accessibilityRole="radio"
               accessibilityLabel={option.label}
-              {...a11yState({ checked: selected, selected })}
+              {...a11yState({ checked: selected })}
               onPress={() => onChange(option.value)}
               style={[
                 styles.option,
@@ -89,6 +91,7 @@ export function ChoiceGroup<T extends string>({
               ]}
             >
               {selected ? <Icon name="checkmark" size={18} color={colors.accentInk} /> : null}
+              {option.swatch ? <View style={[styles.swatch, { backgroundColor: option.swatch }]} /> : null}
               <AppText weight={selected ? 'bold' : 'regular'} tone={selected ? 'accent' : 'ink'}>
                 {option.label}
               </AppText>
@@ -105,6 +108,7 @@ const styles = StyleSheet.create({
   labelled: { flexDirection: 'row', justifyContent: 'flex-start', gap: SPACE.sm, alignSelf: 'flex-start' },
   group: { gap: SPACE.xs },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACE.sm },
+  swatch: { width: 12, height: 12, borderRadius: 6 },
   option: {
     minHeight: TOUCH,
     paddingHorizontal: SPACE.md,

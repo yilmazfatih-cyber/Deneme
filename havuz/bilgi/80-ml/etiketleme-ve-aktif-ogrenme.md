@@ -210,8 +210,8 @@ sınama 545 öğe, eğitim 600 öğe → toplam 1901 etiketleme
 
 Okuma: sınama kümesi bütçenin yarısından fazlasını yiyor; hassasiyeti ±3'ten ±5 puana gevşetmek onu üçte birine
 indirir. Eğitim miktarı tahmindir: 300 etiketle eğitip öğrenme eğrisine bakın, sonra karar verin
-([veri ve etiket kalitesi](veri-ve-etiket.md)). İnsan bir saatte ~100 öğeden fazlasını dikkatle okuyamaz; günde
-4–5 saati geçen etiketleme oturumunda kontrol sorusu doğruluğu düşer.
+([veri ve etiket kalitesi](veri-ve-etiket.md)). Uzun oturumda dikkat düşer: kontrol sorusu doğruluğunu oturum
+içinde saat saat izleyin ve düşüş başladığı yerde oturum süresini sınırlayın (sınırı tahminle değil bu ölçümle koyun).
 
 ## Aktif öğrenme: belirsizlik örneklemesi
 

@@ -84,7 +84,10 @@ def _sozcuklerle_bol(
             ipuclari.append(Ipucu(grup[0][0], grup[-1][1], " ".join(g[2] for g in grup)))
             grup = []
         grup.append((k.baslangic, k.bitis, sozcuk))
-        if sozcuk.endswith(_CUMLE_SONU) and len(" ".join(g[2] for g in grup)) >= azami_karakter // 2:
+        if (
+            sozcuk.endswith(_CUMLE_SONU)
+            and len(" ".join(g[2] for g in grup)) >= azami_karakter // 2
+        ):
             ipuclari.append(Ipucu(grup[0][0], grup[-1][1], " ".join(g[2] for g in grup)))
             grup = []
     if grup:

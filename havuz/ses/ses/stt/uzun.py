@@ -1,6 +1,8 @@
 """Uzun sesi parçalayarak yazıya çevirir: VAD ile konuşma parçaları (≤ 28 sn), zamanlar birleştirilir.
 
 Neden: (1) Whisper 30 sn'lik pencereyle çalışır; sessizlikten bölmek sözcük ortasından kesmeyi önler.
+Her parçanın başına/sonuna GERÇEK sessizlik eklenir (`BAS_DOLGU_SN`, `SON_DOLGU_SN`): Whisper ses
+sessizlikle bitmezse son sözcüğü sıkça yarım bırakır ("arttı" → "art"); zamanlar parçaya kıstırılır.
 (2) Uzun sessizlikte Whisper uydurur (Türkçede sık görülen "Altyazı M.K.", "İzlediğiniz için
 teşekkürler" gibi); sessiz bölümler hiç modele verilmez. (3) Her parçadan sonra ilerleme bildirilir.
 Bilinen uydurma kalıbı tek başına bir bölüt olarak ve düşük güvenle gelirse atılır ve `uyarilar`'a
@@ -12,6 +14,8 @@ from __future__ import annotations
 
 import re
 from collections.abc import Callable
+
+import numpy as np
 
 from ses.metin import kucuk_tr
 from ses.ses_isleme.parcala import konusma_parcalari
@@ -27,6 +31,8 @@ UYDURMA_KALIPLARI = (
 )
 _UYDURMA = re.compile(r"^\W*(?:" + "|".join(UYDURMA_KALIPLARI) + r")\W*$")
 
+BAS_DOLGU_SN = 0.3
+SON_DOLGU_SN = 0.7
 Ilerleme = Callable[[int, int], None]
 """(biten parça sayısı, toplam parça) ile çağrılır."""
 
@@ -36,6 +42,21 @@ def _uydurma_mi(bolut: Bolut) -> bool:
         return False
     guvensiz = (bolut.konusma_yok_olasiligi or 0.0) > 0.3 or (bolut.ort_logolasilik or 0.0) < -0.8
     return guvensiz
+
+
+def _kistir(bolut: Bolut, alt: float, ust: float) -> Bolut:
+    """Dolgu yüzünden parçanın dışına taşan zamanları parça sınırına çeker."""
+
+    def k(deger: float) -> float:
+        return min(max(deger, alt), ust)
+
+    kelimeler = [
+        w.model_copy(update={"baslangic": k(w.baslangic), "bitis": k(w.bitis)})
+        for w in bolut.kelimeler
+    ]
+    return bolut.model_copy(
+        update={"baslangic": k(bolut.baslangic), "bitis": k(bolut.bitis), "kelimeler": kelimeler}
+    )
 
 
 def uzun_yaziya(
@@ -52,16 +73,23 @@ def uzun_yaziya(
     sure = len(ornekler) / ORNEKLEME
     parcalar = konusma_parcalari(ornekler, ORNEKLEME, azami_sn=azami_parca_sn)
     if not parcalar:
-        return Transkript(dil=dil, sure=sure, model=motor.ad, uyarilar=["Seste konuşma bulunamadı."])
+        return Transkript(
+            dil=dil, sure=sure, model=motor.ad, uyarilar=["Seste konuşma bulunamadı."]
+        )
     bolutler: list[Bolut] = []
     uyarilar: list[str] = []
+    bas_dolgu = np.zeros(round(BAS_DOLGU_SN * ORNEKLEME), dtype=np.float32)
+    son_dolgu = np.zeros(round(SON_DOLGU_SN * ORNEKLEME), dtype=np.float32)
     for sira, parca in enumerate(parcalar, start=1):
-        sonuc = motor.yaziya(
-            ornekler[parca.bas : parca.son], dil=dil, kelime_zamanlari=kelime_zamanlari, ipucu=ipucu
-        ).kaydir(parca.bas / ORNEKLEME)
-        for bolut in sonuc.bolutler:
+        girdi = np.concatenate([bas_dolgu, ornekler[parca.bas : parca.son], son_dolgu])
+        sonuc = motor.yaziya(girdi, dil=dil, kelime_zamanlari=kelime_zamanlari, ipucu=ipucu)
+        sonuc = sonuc.kaydir(parca.bas / ORNEKLEME - BAS_DOLGU_SN)
+        for ham_bolut in sonuc.bolutler:
+            bolut = _kistir(ham_bolut, parca.bas / ORNEKLEME, parca.son / ORNEKLEME)
             if _uydurma_mi(bolut):
-                uyarilar.append(f"{bolut.baslangic:.1f} sn: olası uydurma atıldı: {bolut.metin.strip()!r}")
+                uyarilar.append(
+                    f"{bolut.baslangic:.1f} sn: olası uydurma atıldı: {bolut.metin.strip()!r}"
+                )
                 continue
             bolutler.append(bolut.model_copy(update={"kimlik": len(bolutler)}))
         uyarilar.extend(sonuc.uyarilar)

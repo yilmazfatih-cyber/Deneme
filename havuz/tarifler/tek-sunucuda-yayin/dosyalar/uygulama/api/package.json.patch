@@ -1,0 +1,10 @@
+--- a/api/package.json
++++ b/api/package.json
+@@ -15,6 +15,7 @@
+     "migrate": "node --disable-warning=ExperimentalWarning scripts/migrate.ts",
+     "seed": "node --disable-warning=ExperimentalWarning scripts/seed.ts",
+     "backup": "node --disable-warning=ExperimentalWarning scripts/backup.ts",
++    "restore": "node --disable-warning=ExperimentalWarning scripts/restore.ts",
+     "create-admin": "node --disable-warning=ExperimentalWarning scripts/create-admin.ts"
+   },
+   "dependencies": {

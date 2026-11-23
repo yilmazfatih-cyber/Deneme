@@ -42,7 +42,9 @@ def _wav(sure=1.0):
 
 
 def _yazi(istemci, **alanlar):
-    return istemci.post("/v1/audio/transcriptions", files={"file": ("ses.wav", _wav(), "audio/wav")}, data=alanlar)
+    return istemci.post(
+        "/v1/audio/transcriptions", files={"file": ("ses.wav", _wav(), "audio/wav")}, data=alanlar
+    )
 
 
 def test_temel_uclar(tmp_path):
@@ -67,10 +69,14 @@ def test_yaziya_bicimler(tmp_path, bicim, tur, icerik):
 
 
 def test_verbose_json_sozcuklu(tmp_path):
-    yanit = _yazi(_istemci(tmp_path), response_format="verbose_json", **{"timestamp_granularities[]": "word"})
+    yanit = _yazi(
+        _istemci(tmp_path), response_format="verbose_json", **{"timestamp_granularities[]": "word"}
+    )
     govde = yanit.json()
     assert govde["language"] == "turkish" and govde["text"] == "merhaba dünya"
-    assert govde["segments"][0]["start"] == pytest.approx(0.1, abs=0.05)
+    assert govde["segments"][0]["start"] == pytest.approx(
+        0.0, abs=0.05
+    )  # parça 0,5 sn payla başlar
     assert [k["word"] for k in govde["words"]] == ["merhaba", "dünya"]
 
 
@@ -80,7 +86,10 @@ def test_yaziya_hatalari_openai_bicimiyle(tmp_path):
     assert yanit.status_code == 400 and yanit.json()["error"]["type"] == "invalid_request_error"
     yanit = istemci.post("/v1/audio/transcriptions", files={"file": ("bos.wav", b"", "audio/wav")})
     assert yanit.status_code == 400 and "boş" in yanit.json()["error"]["message"]
-    yanit = istemci.post("/v1/audio/transcriptions", files={"file": ("x.m3u8", b"#EXTM3U\n/etc/passwd\n", "text/plain")})
+    yanit = istemci.post(
+        "/v1/audio/transcriptions",
+        files={"file": ("x.m3u8", b"#EXTM3U\n/etc/passwd\n", "text/plain")},
+    )
     assert yanit.status_code == 400 and "tanınmadı" in yanit.json()["error"]["message"]
     assert _yazi(istemci).status_code == 413  # ses 0,5 sn sınırından uzun
     yanit = _yazi(istemci, language="Türkçe")
@@ -92,12 +101,15 @@ def test_govde_siniri_okunmadan_once(tmp_path):
     buyuk = b"RIFF" + b"\x00" * (3 * 1024 * 1024)
     yanit = istemci.post("/v1/audio/transcriptions", files={"file": ("b.wav", buyuk, "audio/wav")})
     assert yanit.status_code == 413 and "çok büyük" in yanit.json()["error"]["message"]
+
     # Content-Length yalan söylese de (parça parça gönderim) okunurken kesilir
     def parcalar():
         for _ in range(40):
             yield b"x" * 100_000
 
-    yanit = istemci.post("/v1/audio/speech", content=parcalar(), headers={"content-type": "application/json"})
+    yanit = istemci.post(
+        "/v1/audio/speech", content=parcalar(), headers={"content-type": "application/json"}
+    )
     assert yanit.status_code == 413
 
 
@@ -122,33 +134,54 @@ def test_yerel_kip_ad_ve_koken_denetimi(tmp_path):
     kotu = _istemci(tmp_path, base_url="http://kotu-site.example")
     assert kotu.get("/saglik").status_code == 403  # DNS yeniden bağlama
     istemci = _istemci(tmp_path)
-    yanit = istemci.post("/v1/audio/speech", json={"input": "a"}, headers={"origin": "https://kotu.example"})
+    yanit = istemci.post(
+        "/v1/audio/speech", json={"input": "a"}, headers={"origin": "https://kotu.example"}
+    )
     assert yanit.status_code == 403 and yanit.json()["error"]["type"] == "permission_error"
-    assert istemci.post("/v1/audio/speech", json={"input": "a"}, headers={"origin": YEREL}).status_code == 200
+    assert (
+        istemci.post("/v1/audio/speech", json={"input": "a"}, headers={"origin": YEREL}).status_code
+        == 200
+    )
     izinli = _istemci(tmp_path, izinli_kokenler=["https://uygulamam.example"])
-    yanit = izinli.post("/v1/audio/speech", json={"input": "a"}, headers={"origin": "https://uygulamam.example"})
-    assert yanit.status_code == 200 and yanit.headers["access-control-allow-origin"] == "https://uygulamam.example"
+    yanit = izinli.post(
+        "/v1/audio/speech", json={"input": "a"}, headers={"origin": "https://uygulamam.example"}
+    )
+    assert (
+        yanit.status_code == 200
+        and yanit.headers["access-control-allow-origin"] == "https://uygulamam.example"
+    )
 
 
 def test_api_anahtari(tmp_path):
-    istemci = _istemci(tmp_path, base_url="http://ses.ornek.example", api_anahtari="gizli-anahtar-123")
+    istemci = _istemci(
+        tmp_path, base_url="http://ses.ornek.example", api_anahtari="gizli-anahtar-123"
+    )
     assert istemci.get("/saglik").status_code == 200  # açık yol
     assert istemci.post("/v1/audio/speech", json={"input": "a"}).status_code == 401
     yanlis = {"authorization": "Bearer yanlis"}
     assert istemci.post("/v1/audio/speech", json={"input": "a"}, headers=yanlis).status_code == 401
-    for baslik in ({"authorization": "Bearer gizli-anahtar-123"}, {"x-api-key": "gizli-anahtar-123"}):
-        assert istemci.post("/v1/audio/speech", json={"input": "a"}, headers=baslik).status_code == 200
+    for baslik in (
+        {"authorization": "Bearer gizli-anahtar-123"},
+        {"x-api-key": "gizli-anahtar-123"},
+    ):
+        assert (
+            istemci.post("/v1/audio/speech", json={"input": "a"}, headers=baslik).status_code == 200
+        )
 
 
 def test_seslendirme(tmp_path):
     tts = SahteTts()
     istemci = _istemci(tmp_path, tts=tts)
-    yanit = istemci.post("/v1/audio/speech", json={"model": "tts-1", "voice": "alloy", "input": "Saat 14:30."})
+    yanit = istemci.post(
+        "/v1/audio/speech", json={"model": "tts-1", "voice": "alloy", "input": "Saat 14:30."}
+    )
     assert yanit.status_code == 200 and yanit.headers["content-type"] == "audio/wav"
     ses = wav_oku(yanit.content)
     assert ses.ornekleme == 22050 and ses.sure > 0.5 and yanit.headers["x-ornekleme"] == "22050"
     assert tts.metinler[-1] == "Saat on dört otuz."
-    yanit = istemci.post("/v1/audio/speech", json={"input": "merhaba", "response_format": "pcm", "ornekleme": 16000})
+    yanit = istemci.post(
+        "/v1/audio/speech", json={"input": "merhaba", "response_format": "pcm", "ornekleme": 16000}
+    )
     assert yanit.headers["content-type"] == "audio/pcm" and len(yanit.content) % 2 == 0
     yanit = istemci.post("/v1/audio/speech", json={"input": "a", "speed": 4.0})
     assert yanit.status_code == 400 and "speed" in yanit.json()["error"]["message"]
@@ -159,7 +192,9 @@ def test_seslendirme(tmp_path):
 def test_seslendirme_sikistirilmis(tmp_path):
     istemci = _istemci(tmp_path)
     for bicim, imza in (("mp3", (b"ID3", b"\xff\xfb", b"\xff\xf3")), ("opus", (b"OggS",))):
-        yanit = istemci.post("/v1/audio/speech", json={"input": "merhaba", "response_format": bicim})
+        yanit = istemci.post(
+            "/v1/audio/speech", json={"input": "merhaba", "response_format": bicim}
+        )
         assert yanit.status_code == 200 and yanit.content.startswith(imza)
 
 
@@ -185,10 +220,8 @@ def test_mesgulken_503(tmp_path):
 
 def test_is_siniri():
     sinir = IsSiniri(1, 1, bekleme_sn=0.05)
-    with sinir.al():
-        with pytest.raises(MesgulHatasi, match="süre doldu"):
-            with sinir.al():
-                pass
+    with sinir.al(), pytest.raises(MesgulHatasi, match="süre doldu"), sinir.al():
+        pass
     with sinir.al():
         pass  # serbest bırakıldı
 
@@ -210,7 +243,9 @@ def test_bozuk_json(tmp_path):
     yanit = _istemci(tmp_path).post(
         "/v1/audio/speech", content=b"{bozuk", headers={"content-type": "application/json"}
     )
-    assert yanit.status_code == 400 and json.loads(yanit.text)["error"]["message"].startswith("İstek alanları")
+    assert yanit.status_code == 400 and json.loads(yanit.text)["error"]["message"].startswith(
+        "İstek alanları"
+    )
 
 
 def test_sessiz_dosya_bos_metin(tmp_path):

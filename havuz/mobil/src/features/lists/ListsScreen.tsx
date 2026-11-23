@@ -91,7 +91,7 @@ export function ListsScreen() {
             <View key={list.id} style={[styles.row, { backgroundColor: colors.surface, borderColor: colors.line }]}>
               <Pressable
                 accessibilityRole="button"
-                accessibilityLabel={t('lists.showTasks', { name: list.data.name })}
+                accessibilityHint={t('lists.showTasksHint')}
                 onPress={() => router.push({ pathname: '/tasks', params: { liste: list.id } })}
                 style={styles.body}
               >

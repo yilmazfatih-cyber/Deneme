@@ -23,7 +23,14 @@ from ses.ses_isleme.ses import Ses, pcm_coz, pcm_kodla
 
 ZAMAN_ASIMI_SN = 300.0
 _KODLAYICILAR: dict[str, list[str]] = {
-    "ogg": ["-c:a", "libopus", "-b:a", "32k", "-f", "ogg"],  # konuşma için opus 32 kbit/sn bol gelir
+    "ogg": [
+        "-c:a",
+        "libopus",
+        "-b:a",
+        "32k",
+        "-f",
+        "ogg",
+    ],  # konuşma için opus 32 kbit/sn bol gelir
     "opus": ["-c:a", "libopus", "-b:a", "32k", "-f", "ogg"],
     "mp3": ["-c:a", "libmp3lame", "-b:a", "64k", "-f", "mp3"],
     "flac": ["-c:a", "flac", "-f", "flac"],
@@ -72,9 +79,13 @@ def bicim_tani(bas: bytes) -> str | None:
 
 def _calistir(komut: list[str], girdi: bytes | None, zaman_asimi: float) -> bytes:
     try:
-        sonuc = subprocess.run(komut, input=girdi, capture_output=True, timeout=zaman_asimi, check=False)
+        sonuc = subprocess.run(
+            komut, input=girdi, capture_output=True, timeout=zaman_asimi, check=False
+        )
     except subprocess.TimeoutExpired as hata:
-        raise SinirHatasi(f"ffmpeg {zaman_asimi:.0f} sn içinde bitiremedi; dosyayı bölün.") from hata
+        raise SinirHatasi(
+            f"ffmpeg {zaman_asimi:.0f} sn içinde bitiremedi; dosyayı bölün."
+        ) from hata
     if sonuc.returncode != 0:
         son_satir = sonuc.stderr.decode("utf-8", "replace").strip().splitlines()[-1:] or ["?"]
         raise BicimHatasi(f"ffmpeg sesi işleyemedi: {son_satir[0][:300]}")
@@ -123,7 +134,9 @@ def ffmpeg_ile_coz(
 def ffmpeg_ile_kodla(ses: Ses, bicim: str, *, zaman_asimi: float = ZAMAN_ASIMI_SN) -> bytes:
     """`Ses`'i istenen biçime kodlar: ogg/opus (Ogg içinde Opus), mp3, flac → baytlar."""
     if bicim not in _KODLAYICILAR:
-        raise BicimHatasi(f"Bilinmeyen çıktı biçimi: {bicim}. Seçenekler: wav, {', '.join(KODLANABILIR)}.")
+        raise BicimHatasi(
+            f"Bilinmeyen çıktı biçimi: {bicim}. Seçenekler: wav, {', '.join(KODLANABILIR)}."
+        )
     komut = [_ffmpeg(), "-nostdin", "-hide_banner", "-loglevel", "error",
              "-f", "s16le", "-ar", str(ses.ornekleme), "-ac", str(ses.kanal), "-i", "pipe:0",
              *_KODLAYICILAR[bicim], "pipe:1"]  # fmt: skip

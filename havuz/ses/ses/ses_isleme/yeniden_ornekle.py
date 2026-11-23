@@ -49,7 +49,8 @@ def suzgec_tasarla(yukari: int, asagi: int) -> NDArray[np.float64]:
     yari = (uzunluk - 1) // 2
     konum = np.arange(uzunluk, dtype=np.float64) - yari
     katsayi = 2 * kesim * np.sinc(2 * kesim * konum) * np.kaiser(uzunluk, beta)
-    return katsayi * (yukari / katsayi.sum())
+    olcekli: NDArray[np.float64] = katsayi * (yukari / katsayi.sum())
+    return olcekli
 
 
 @lru_cache(maxsize=8)
@@ -87,9 +88,7 @@ def yeniden_ornekle(dizi: Dizi, kaynak: int, hedef: int) -> Dizi:
         )
     banka, gecikme = _banka(yukari, asagi)
     dal = banka.shape[1]
-    dolgulu = np.concatenate(
-        [np.zeros(dal, np.float32), girdi, np.zeros(2 * dal + 2, np.float32)]
-    )
+    dolgulu = np.concatenate([np.zeros(dal, np.float32), girdi, np.zeros(2 * dal + 2, np.float32)])
     toplam = cikti_uzunlugu(len(girdi), kaynak, hedef)
     cikti = np.empty(toplam, dtype=np.float32)
     geri = np.arange(dal, dtype=np.int64)

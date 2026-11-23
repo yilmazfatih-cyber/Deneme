@@ -119,6 +119,9 @@ def finish_training(
         "surumler": _versions(),
         "uyarilar": notes,
     }
+    if (out_dir / "paket").exists():
+        notes.append(t("egitim.eski_paket", yol=out_dir / "paket"))
+        summary["uyarilar"] = notes
     write_json(out_dir / "ozet.json", summary)
     console.result("\n" + text)
     for note in notes:

@@ -1,0 +1,3147 @@
+{
+ "aciklama": "scripts/gidis_donus.py çıktıları (2026-11-23). onceki_surum: parçalama düzeltmesinden ÖNCE; kosu_1: düzeltmeden sonra (RTF aynı anda koşan testlerle kirlendi); kosu_2: düzeltmeden sonra, temiz. Ses dosyaları depoda yok (yeniden üretilebilir).",
+ "onceki_surum": {
+  "tarih": "2026-11-23",
+  "tts": "tr_TR-dfki-medium",
+  "cumle_sayisi": 20,
+  "is_parcacigi": 2,
+  "islemci": "x86_64",
+  "cekirdek": 4,
+  "tts_olcum": {
+   "normal": {
+    "ses_sn": 56.61,
+    "islem_sn": 9.15,
+    "rtf": 0.1616
+   },
+   "ham": {
+    "ses_sn": 55.97,
+    "islem_sn": 3.48,
+    "rtf": 0.0621
+   }
+  },
+  "stt": {
+   "tiny/normal": {
+    "yukleme_sn": 0.3,
+    "toplam_sn": 8.24,
+    "rtf": 0.1331,
+    "wer": 0.7843,
+    "cer": 0.4613,
+    "wer_sayili": 0.2707,
+    "cer_sayili": 0.0986,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlacını saat 14.000'de almayı unutma.",
+      "cer_sayili": 0.122,
+      "wer_sayili": 0.143
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Randev'un yirmi üç kastın iki bin yirmi altı tarihinde",
+      "cer_sayili": 0.038,
+      "wer_sayili": 0.111
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı bin iki yüz otuz dört lira elli kuruş.",
+      "cer_sayili": 0.105,
+      "wer_sayili": 0.091
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torun'un üçüncü sınıfa gidiyor.",
+      "cer_sayili": 0.034,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kireyi 15 aralık tabankaya yatırdın.",
+      "cer_sayili": 0.128,
+      "wer_sayili": 0.667
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor bünde iki tablet içmeni söyledi.",
+      "cer_sayili": 0.053,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu aifaturalar yüzde yirmi art.",
+      "cer_sayili": 0.121,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası sıfır beş yüz otuz iki yüz yirmi üç kırk beş altmış edin.",
+      "cer_sayili": 0.027,
+      "wer_sayili": 0.071
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs amdaki kagiyeceğim.",
+      "cer_sayili": 0.458,
+      "wer_sayili": 0.75
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Mekum aşım on iki bin beş yüz lira oldu.",
+      "cer_sayili": 0.119,
+      "wer_sayili": 0.222
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah yedi de kalptim, kahvaltı yaptım.",
+      "cer_sayili": 0.083,
+      "wer_sayili": 0.6
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 915'te başlıyor.",
+      "cer_sayili": 0.085,
+      "wer_sayili": 0.143
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyonun on üçe sekiz.",
+      "cer_sayili": 0.241,
+      "wer_sayili": 0.4
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Doktor Ayşe Hanım'a teşekkürler.",
+      "cer_sayili": 0.152,
+      "wer_sayili": 0.4
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütünlitesi otuz beş lira olmuş.",
+      "cer_sayili": 0.061,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen bin dokuz yüz kök sekiz yılında doldu.",
+      "cer_sayili": 0.091,
+      "wer_sayili": 0.375
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Ejzane yirmi dört saat açık.",
+      "cer_sayili": 0.133,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşurumuz.",
+      "cer_sayili": 0.108,
+      "wer_sayili": 0.333
+     }
+    ]
+   },
+   "tiny/ham": {
+    "yukleme_sn": 0.3,
+    "toplam_sn": 7.57,
+    "rtf": 0.1239,
+    "wer": 0.8235,
+    "cer": 0.4613,
+    "wer_sayili": 0.4812,
+    "cer_sayili": 0.2049,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bu gün hava çok güzel.",
+      "cer_sayili": 0.05,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlercini saat 14.000'de almayı unutma.",
+      "cer_sayili": 0.22,
+      "wer_sayili": 0.286
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Prandev'un ilmi üç nokta on bir nokta iki bin ilmiyaltı tarihinde.",
+      "cer_sayili": 0.423,
+      "wer_sayili": 0.889
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı bin iki yüz otuz dört bir güleldü.",
+      "cer_sayili": 0.298,
+      "wer_sayili": 0.364
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torun'un üç sınıfa gidiyor.",
+      "cer_sayili": 0.172,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kireyi on beş aralıkta bankaya yet.",
+      "cer_sayili": 0.205,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor dün de iki tablet içmemi söyledi.",
+      "cer_sayili": 0.053,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu aif aturaları yüzde yirmi ar.",
+      "cer_sayili": 0.212,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası sıfır beş uçti yüz yirmi üç kır beş altmış",
+      "cer_sayili": 0.219,
+      "wer_sayili": 0.357
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobus on dakika gece.",
+      "cer_sayili": 0.208,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emekle başım, on gibi inbeşiztele oldu.",
+      "cer_sayili": 0.357,
+      "wer_sayili": 0.778
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah edi de kalptim, kahvaltı yap.",
+      "cer_sayili": 0.194,
+      "wer_sayili": 0.8
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplandı Pazart'ı saat 9-15 de başı yiyor.",
+      "cer_sayili": 0.213,
+      "wer_sayili": 0.857
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tasiyonun, on üç esekiz.",
+      "cer_sayili": 0.345,
+      "wer_sayili": 0.8
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Dere, Ayşe Hanım'a teşekkür ettim.",
+      "cer_sayili": 0.152,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütümlitesi otuz beş lira olmuş.",
+      "cer_sayili": 0.091,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Anlam bin dokuz yüz kör sekiz yılında doldu.",
+      "cer_sayili": 0.114,
+      "wer_sayili": 0.375
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Ejzane ilmi dört saat aç.",
+      "cer_sayili": 0.267,
+      "wer_sayili": 0.667
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşur mu?",
+      "cer_sayili": 0.081,
+      "wer_sayili": 0.167
+     }
+    ]
+   },
+   "base/normal": {
+    "yukleme_sn": 0.32,
+    "toplam_sn": 14.02,
+    "rtf": 0.2364,
+    "wer": 0.4412,
+    "cer": 0.1824,
+    "wer_sayili": 0.1955,
+    "cer_sayili": 0.07,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlacını saat 14-30'da almayı unutma.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Randev'un 23 Kasın 2000-26 tarihinde.",
+      "cer_sayili": 0.019,
+      "wer_sayili": 0.111
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı bin iki yüz otuz dört lira elli kuruş.",
+      "cer_sayili": 0.105,
+      "wer_sayili": 0.091
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torun'un 3. sınıfa gidiyor.",
+      "cer_sayili": 0.034,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kireyi 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.077,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor bünde iki tablet içmeni söyledi.",
+      "cer_sayili": 0.053,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu aifaturalar %20 art.",
+      "cer_sayili": 0.121,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası sıfır 532-1234567.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs 10 dakika geçir.",
+      "cer_sayili": 0.167,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Mekke maaşım 12500 lira oldu.",
+      "cer_sayili": 0.071,
+      "wer_sayili": 0.111
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah hediye kalktım, kahvaltı yaptım.",
+      "cer_sayili": 0.056,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 915'de başlıyor.",
+      "cer_sayili": 0.085,
+      "wer_sayili": 0.143
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyonun 13-8",
+      "cer_sayili": 0.276,
+      "wer_sayili": 0.6
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Doktor Ayşe Hanım'a teşekkürler.",
+      "cer_sayili": 0.152,
+      "wer_sayili": 0.4
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütüm litesi 35 lira olmuş.",
+      "cer_sayili": 0.061,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen 1948 yılında doğdu.",
+      "cer_sayili": 0.023,
+      "wer_sayili": 0.125
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Elzane 24 saat açık.",
+      "cer_sayili": 0.133,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşurumuz.",
+      "cer_sayili": 0.108,
+      "wer_sayili": 0.333
+     }
+    ]
+   },
+   "base/ham": {
+    "yukleme_sn": 0.32,
+    "toplam_sn": 15.15,
+    "rtf": 0.2587,
+    "wer": 0.5,
+    "cer": 0.2392,
+    "wer_sayili": 0.3008,
+    "cer_sayili": 0.1362,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bu gün hava çok güzel.",
+      "cer_sayili": 0.05,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlacını saat 14-30'da almayı unutma.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Prandev'un 23.11.2026 tarihinde.",
+      "cer_sayili": 0.019,
+      "wer_sayili": 0.111
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı bin iki yüz otuz dört bir güle lütfen.",
+      "cer_sayili": 0.263,
+      "wer_sayili": 0.364
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunum 3 sınıfa gidiyor.",
+      "cer_sayili": 0.138,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kireyi on beş aralıkta bankaya yet.",
+      "cer_sayili": 0.205,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor günde iki tablet içmemi söyle.",
+      "cer_sayili": 0.053,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu aif aturalar %20 arf.",
+      "cer_sayili": 0.182,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızının numarası sıfır 5-320-345 altmış.",
+      "cer_sayili": 0.288,
+      "wer_sayili": 0.429
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs 10 dakika geçir.",
+      "cer_sayili": 0.167,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Hemekli maşım 12.500 TL oldu.",
+      "cer_sayili": 0.048,
+      "wer_sayili": 0.222
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah hediye kalktım kahvaltı yap.",
+      "cer_sayili": 0.139,
+      "wer_sayili": 0.4
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 9-15 de başlıyor.",
+      "cer_sayili": 0.043,
+      "wer_sayili": 0.286
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tasyonun 13S8",
+      "cer_sayili": 0.517,
+      "wer_sayili": 0.8
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Dere Ayşe Hanım'a teşekkür ettim.",
+      "cer_sayili": 0.152,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütüm litlası 35 lira olmuş.",
+      "cer_sayili": 0.121,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annem bin dokuz yüz kır sekiz yılında doğdu.",
+      "cer_sayili": 0.023,
+      "wer_sayili": 0.125
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "El zane 24 saat açın",
+      "cer_sayili": 0.2,
+      "wer_sayili": 0.667
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşur mu?",
+      "cer_sayili": 0.081,
+      "wer_sayili": 0.167
+     }
+    ]
+   },
+   "small/normal": {
+    "yukleme_sn": 0.78,
+    "toplam_sn": 34.22,
+    "rtf": 0.5929,
+    "wer": 0.2941,
+    "cer": 0.1325,
+    "wer_sayili": 0.1203,
+    "cer_sayili": 0.0493,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlacını saat 14.30'de almayı unutma.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Randevun 23 Kas'ın 2026 tarihinde",
+      "cer_sayili": 0.019,
+      "wer_sayili": 0.111
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı 1234 lira 50 kuruş",
+      "cer_sayili": 0.105,
+      "wer_sayili": 0.091
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunun üçüncü sınıfa gidiyor.",
+      "cer_sayili": 0.034,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor günde iki tablet içmeni söyledi.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu ay faturalar yüzde 20 art",
+      "cer_sayili": 0.061,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası 0-532-123-4567",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs 10 dakika geci...",
+      "cer_sayili": 0.125,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emekli maaşım 12.500 lira oldu.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah hedide kalktım, kahvaltı yaptım.",
+      "cer_sayili": 0.028,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 9.15'de başlıyor.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tahsiyon'un 13'e 8",
+      "cer_sayili": 0.276,
+      "wer_sayili": 0.4
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Doktor Ayşe Hanım'a teşekkür ederim.",
+      "cer_sayili": 0.091,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "sütün litesi 35 lira olmuş.",
+      "cer_sayili": 0.03,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Anen 1948 yılında doğdu.",
+      "cer_sayili": 0.045,
+      "wer_sayili": 0.125
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Eczane 24 saat açık.",
+      "cer_sayili": 0.1,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşuruz.",
+      "cer_sayili": 0.135,
+      "wer_sayili": 0.333
+     }
+    ]
+   },
+   "small/ham": {
+    "yukleme_sn": 0.78,
+    "toplam_sn": 37.08,
+    "rtf": 0.65,
+    "wer": 0.3039,
+    "cer": 0.1119,
+    "wer_sayili": 0.218,
+    "cer_sayili": 0.1167,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlacını saat 14.30'da almayı unutma.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Pran Dev'ın 23.11.2026 tarihinde.",
+      "cer_sayili": 0.058,
+      "wer_sayili": 0.222
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı 1234,50 tu...",
+      "cer_sayili": 0.228,
+      "wer_sayili": 0.273
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunun 3 sınıfa gidiyor.",
+      "cer_sayili": 0.172,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yat.",
+      "cer_sayili": 0.128,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor günde iki tablet içmemi söyle.",
+      "cer_sayili": 0.053,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu ay faturalar %20",
+      "cer_sayili": 0.182,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızının numarası 05-223-45-60",
+      "cer_sayili": 0.205,
+      "wer_sayili": 0.286
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs 10 dakika gece.",
+      "cer_sayili": 0.167,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emekli maaşım 12.500 TL oldu.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah 7'de kalktım kahvaltıya.",
+      "cer_sayili": 0.139,
+      "wer_sayili": 0.4
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplandı pazartesi saat 9.15'de başlıyor.",
+      "cer_sayili": 0.021,
+      "wer_sayili": 0.143
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tahsiyon'un 13S8",
+      "cer_sayili": 0.483,
+      "wer_sayili": 0.8
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Dere, Ayşe Hanım'a teşekkür ettim.",
+      "cer_sayili": 0.152,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "sütüm litresi 35 lira olmuş.",
+      "cer_sayili": 0.03,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen 1948 yılında doğdu.",
+      "cer_sayili": 0.023,
+      "wer_sayili": 0.125
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Eczane 24 saat aç",
+      "cer_sayili": 0.167,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşuruz.",
+      "cer_sayili": 0.135,
+      "wer_sayili": 0.333
+     }
+    ]
+   }
+  }
+ },
+ "kosu_1": {
+  "tarih": "2026-11-23",
+  "tts": "tr_TR-dfki-medium",
+  "cumle_sayisi": 20,
+  "is_parcacigi": 2,
+  "islemci": "x86_64",
+  "cekirdek": 4,
+  "tts_olcum": {
+   "normal": {
+    "ses_sn": 56.94,
+    "islem_sn": 6.4,
+    "rtf": 0.1125
+   },
+   "ham": {
+    "ses_sn": 56.3,
+    "islem_sn": 4.17,
+    "rtf": 0.0741
+   }
+  },
+  "stt": {
+   "tiny/normal": {
+    "yukleme_sn": 0.35,
+    "toplam_sn": 20.93,
+    "rtf": 0.3501,
+    "wer": 0.6961,
+    "cer": 0.4165,
+    "wer_sayili": 0.188,
+    "cer_sayili": 0.0441,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlacını saat 14.000'de almayı unutma.",
+      "cer_sayili": 0.122,
+      "wer_sayili": 0.143
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Randev'un yirmi üç kasın iki bin yirmi altı tarihinde.",
+      "cer_sayili": 0.019,
+      "wer_sayili": 0.111
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı bin iki yüz otuz dört yira elli kuruş tuttu.",
+      "cer_sayili": 0.018,
+      "wer_sayili": 0.091
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torum'un üçüncü sınafa gidiyor.",
+      "cer_sayili": 0.103,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Boktor bünde iki tavlet içmeni söyledi.",
+      "cer_sayili": 0.105,
+      "wer_sayili": 0.667
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu aifaturalar yüzde 20 arttı.",
+      "cer_sayili": 0.061,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası sıfır beş yüz otuz iki yüz yirmi üç kırk beş altmış yedi.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobus 10 dakika gecikti.",
+      "cer_sayili": 0.042,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emekle başım, on iki bin beş yüz lira oldu.",
+      "cer_sayili": 0.071,
+      "wer_sayili": 0.222
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah yedi de kalptim, kahaltı yaptım.",
+      "cer_sayili": 0.111,
+      "wer_sayili": 0.8
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 915'te başlıyor.",
+      "cer_sayili": 0.085,
+      "wer_sayili": 0.143
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyonum on üçe sekiz çıktı.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Doktor Ayşe Hanım'a teşekkür ettin.",
+      "cer_sayili": 0.03,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütünlitesi otuz beş lira olmuş.",
+      "cer_sayili": 0.061,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen bin dokuz yüz kırk sekiz yılında doğdu.",
+      "cer_sayili": 0.023,
+      "wer_sayili": 0.125
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Ejzane yirmi dört saat açık mı?",
+      "cer_sayili": 0.033,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşur musun?",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     }
+    ]
+   },
+   "tiny/ham": {
+    "yukleme_sn": 0.35,
+    "toplam_sn": 40.01,
+    "rtf": 0.6931,
+    "wer": 0.6863,
+    "cer": 0.4165,
+    "wer_sayili": 0.3459,
+    "cer_sayili": 0.1349,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlercini saat 14 otuzda almayı unutma.",
+      "cer_sayili": 0.098,
+      "wer_sayili": 0.143
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Randev'un yirmi üç nokta on bir noktayı ki bin yirmi yalta tarihinde.",
+      "cer_sayili": 0.365,
+      "wer_sayili": 0.667
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı bin iki yüz otuz dört bilgül elli tuttu.",
+      "cer_sayili": 0.193,
+      "wer_sayili": 0.182
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunun üç sınıfa gidiyor.",
+      "cer_sayili": 0.172,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor günde iki tablet içmemi söyledi.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu aifaturalar yüzde yirmi arttı.",
+      "cer_sayili": 0.061,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numara sıfır beş üç yüz yirmi üç kırk beş altmış yedi",
+      "cer_sayili": 0.178,
+      "wer_sayili": 0.286
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobus 10 dakika gecikti.",
+      "cer_sayili": 0.042,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emek ki maaşım, onki bir besüz teli oldu.",
+      "cer_sayili": 0.286,
+      "wer_sayili": 0.889
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah yedi de kalptim kahvaltı yaptım.",
+      "cer_sayili": 0.083,
+      "wer_sayili": 0.6
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 915'te başlayır.",
+      "cer_sayili": 0.128,
+      "wer_sayili": 0.286
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyonun on üç esegiz çıktı.",
+      "cer_sayili": 0.138,
+      "wer_sayili": 0.6
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Dere, Ayşe hanıma teşekkür ettim.",
+      "cer_sayili": 0.152,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Turumlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.059,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütünlitesi otuz beş lira olmuş.",
+      "cer_sayili": 0.061,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen bin dokuz yüz kör sekiz yılında doğdu.",
+      "cer_sayili": 0.068,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Elzaniyimi dört saat açık mı?",
+      "cer_sayili": 0.133,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Yurttan biraz daha yavaş konuşurumusum.",
+      "cer_sayili": 0.189,
+      "wer_sayili": 0.5
+     }
+    ]
+   },
+   "base/normal": {
+    "yukleme_sn": 0.44,
+    "toplam_sn": 27.97,
+    "rtf": 0.4731,
+    "wer": 0.3431,
+    "cer": 0.1429,
+    "wer_sayili": 0.1429,
+    "cer_sayili": 0.0298,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlacını saat 14-30'da almayı unutma.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Huran Devon 23 Kasın 2026 tarihinde.",
+      "cer_sayili": 0.096,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı bin iki yüz otuz dört lira elli kuruştuttu.",
+      "cer_sayili": 0.018,
+      "wer_sayili": 0.182
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunum 3. sınıfa gidiyor.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor günde iki tablet içmini söyledi.",
+      "cer_sayili": 0.053,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu aif aturalar %20 arttı.",
+      "cer_sayili": 0.091,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası sıfır 532-1234567.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs 10 dakika gecikti.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emekli maaşım 12500 lira oldu.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah edi de kaldım kahvaltı yaptım.",
+      "cer_sayili": 0.111,
+      "wer_sayili": 0.6
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 9-15 de başlıyor.",
+      "cer_sayili": 0.043,
+      "wer_sayili": 0.286
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyonum 13-8 çıktı.",
+      "cer_sayili": 0.034,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Doktor Ayşe hanıma teşekkür ettim.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütün litesi 35 lira olmuş.",
+      "cer_sayili": 0.03,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen 1948 yılında doldu.",
+      "cer_sayili": 0.045,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Eczzane 24 saat açık mı?",
+      "cer_sayili": 0.033,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşur musun?",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     }
+    ]
+   },
+   "base/ham": {
+    "yukleme_sn": 0.44,
+    "toplam_sn": 32.54,
+    "rtf": 0.5605,
+    "wer": 0.451,
+    "cer": 0.2375,
+    "wer_sayili": 0.2256,
+    "cer_sayili": 0.0882,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlacını saat 14-30'da almayı unutma.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Randevun 23.11.22.26 tarihinde.",
+      "cer_sayili": 0.231,
+      "wer_sayili": 0.444
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı bin iki yüz otuz dört bilgüleli tuttu.",
+      "cer_sayili": 0.211,
+      "wer_sayili": 0.273
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunun 3 sınıfa gidiyor.",
+      "cer_sayili": 0.172,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor günde iki tablet içmemiz söyledi.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu aif aturalar %20 arttı.",
+      "cer_sayili": 0.091,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası sıfır beş üç yüz yirmi üç kırp beş altmış yedi.",
+      "cer_sayili": 0.164,
+      "wer_sayili": 0.286
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs 10 dakika gecikti.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emek ki maaşım 12500 TL oldu.",
+      "cer_sayili": 0.048,
+      "wer_sayili": 0.222
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Saba hediye de kaldım kahvaltı yaptım.",
+      "cer_sayili": 0.194,
+      "wer_sayili": 0.8
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat dokuz on beşte başlıyor.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tasyonun 13-8 çıktı.",
+      "cer_sayili": 0.138,
+      "wer_sayili": 0.4
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Dere, Ayşe hanıma teşekkür ettim.",
+      "cer_sayili": 0.152,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torumlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.029,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütün litesi 35 lira olmuş.",
+      "cer_sayili": 0.03,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annem bin dokuz yüz kır sekiz yılında doğdu",
+      "cer_sayili": 0.023,
+      "wer_sayili": 0.125
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Elzane 24 saat açık mı?",
+      "cer_sayili": 0.033,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşur musun?",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     }
+    ]
+   },
+   "small/normal": {
+    "yukleme_sn": 0.97,
+    "toplam_sn": 54.38,
+    "rtf": 0.9424,
+    "wer": 0.2059,
+    "cer": 0.0757,
+    "wer_sayili": 0.0677,
+    "cer_sayili": 0.0182,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlacını saat 14.30'da almayı unutma.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Randevun 23 Kasın 2026 tarihinde.",
+      "cer_sayili": 0.019,
+      "wer_sayili": 0.111
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı 1234,50 kuruş tuttu.",
+      "cer_sayili": 0.07,
+      "wer_sayili": 0.091
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunun üçüncü sınıfa gidiyor.",
+      "cer_sayili": 0.034,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor günde iki tablet içmini söyledi.",
+      "cer_sayili": 0.053,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu ay faturalar %20 arttı.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası 0-532-123-4567",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs 10 dakika gecikti.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emekli maaşım 12.500 lira oldu.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah hediye kalktım, kahvaltı yaptım.",
+      "cer_sayili": 0.056,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 9.15'de başlıyor.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyonum 13'e 8 çıktı.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Doktor Ayşe Hanım'a teşekkür ettim.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütün litesi 35 lira olmuş.",
+      "cer_sayili": 0.03,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen 1948 yılında doldu.",
+      "cer_sayili": 0.045,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Eczane 24 saat açık mı?",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşur musun?",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     }
+    ]
+   },
+   "small/ham": {
+    "yukleme_sn": 0.97,
+    "toplam_sn": 42.93,
+    "rtf": 0.7508,
+    "wer": 0.1863,
+    "cer": 0.0327,
+    "wer_sayili": 0.1729,
+    "cer_sayili": 0.0908,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlacını saat 14.30'da almayı unutma.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Randevun 23.11.226 tarihinde",
+      "cer_sayili": 0.365,
+      "wer_sayili": 0.556
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı 1234.50 tuttu.",
+      "cer_sayili": 0.175,
+      "wer_sayili": 0.182
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunun 3 sınıfa gidiyor.",
+      "cer_sayili": 0.172,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor Günde 2 tablet içmemi söyledi.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu ay faturalar %20 arttı.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası 053 223 4567",
+      "cer_sayili": 0.247,
+      "wer_sayili": 0.357
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs 10 dakika gecikti.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emekli maaşım 12.500 TL oldu.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah 7'de kalktım kahvaltı yaptım.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 9.15'de başlıyor.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyon'un 13S8 çıktı.",
+      "cer_sayili": 0.241,
+      "wer_sayili": 0.6
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Dere, Ayşe Hanım'a teşekkür ettim.",
+      "cer_sayili": 0.152,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torumlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.029,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütün litesi 35 lira olmuş.",
+      "cer_sayili": 0.03,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen 1948 yılında doğdu.",
+      "cer_sayili": 0.023,
+      "wer_sayili": 0.125
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Elzani 24 saat açık mı?",
+      "cer_sayili": 0.067,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşur musun?",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     }
+    ]
+   }
+  }
+ },
+ "kosu_2": {
+  "tarih": "2026-11-23",
+  "tts": "tr_TR-dfki-medium",
+  "cumle_sayisi": 20,
+  "is_parcacigi": 2,
+  "islemci": "x86_64",
+  "cekirdek": 4,
+  "tts_olcum": {
+   "normal": {
+    "ses_sn": 56.57,
+    "islem_sn": 5.0,
+    "rtf": 0.0885
+   },
+   "ham": {
+    "ses_sn": 56.12,
+    "islem_sn": 3.51,
+    "rtf": 0.0626
+   }
+  },
+  "stt": {
+   "tiny/normal": {
+    "yukleme_sn": 0.32,
+    "toplam_sn": 8.51,
+    "rtf": 0.1366,
+    "wer": 0.6667,
+    "cer": 0.3305,
+    "wer_sayili": 0.2406,
+    "cer_sayili": 0.0882,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlayacını saat 14.000'de almayı unutma.",
+      "cer_sayili": 0.171,
+      "wer_sayili": 0.286
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Prandev'un yirmi üç kasın iki bin yirmi altı tarihinde.",
+      "cer_sayili": 0.038,
+      "wer_sayili": 0.222
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı bin iki yüz otuz dört lira elli kuruş tuttu.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunun üçüncü sınıfa gidiyor.",
+      "cer_sayili": 0.034,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor günde iki tabiyet içmemi söyledi.",
+      "cer_sayili": 0.053,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu aifaturalar yüzde yirmi arttı.",
+      "cer_sayili": 0.061,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarasız 4-5-6-2-2-3-4-5-6-6-6-7.",
+      "cer_sayili": 0.452,
+      "wer_sayili": 0.714
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobus 10 dakika gecikti.",
+      "cer_sayili": 0.042,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Mekke Maaşım on iki bin beş yüz lira oldu.",
+      "cer_sayili": 0.071,
+      "wer_sayili": 0.111
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah yedi de kalptim kahaltı yaptın.",
+      "cer_sayili": 0.139,
+      "wer_sayili": 1.0
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 915'te başlıyor.",
+      "cer_sayili": 0.085,
+      "wer_sayili": 0.143
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyonun on üçe sekiz çıktı.",
+      "cer_sayili": 0.034,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Doktor Ayşe Hanım'a teşekkür ettim.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütün lite ise 35 lira olmuş.",
+      "cer_sayili": 0.121,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen bin dokuz yüz kırk sekiz yılında doğdu.",
+      "cer_sayili": 0.023,
+      "wer_sayili": 0.125
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Elzane 24 saat açık mı?",
+      "cer_sayili": 0.033,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşur musun?",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     }
+    ]
+   },
+   "tiny/ham": {
+    "yukleme_sn": 0.32,
+    "toplam_sn": 7.32,
+    "rtf": 0.1184,
+    "wer": 0.8333,
+    "cer": 0.4578,
+    "wer_sayili": 0.406,
+    "cer_sayili": 0.1297,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bu gün hava çok güzel.",
+      "cer_sayili": 0.05,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İleci nasıl at on dört otuz da almayı unutma.",
+      "cer_sayili": 0.22,
+      "wer_sayili": 0.714
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Prandev'un yirmi üç nokta on bir nokta iki bin yirmi altı tarihinde.",
+      "cer_sayili": 0.327,
+      "wer_sayili": 0.556
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı bin iki yüz otuz dört bir güleldü tuttu.",
+      "cer_sayili": 0.193,
+      "wer_sayili": 0.273
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunun üç sınıfa gidiyor.",
+      "cer_sayili": 0.172,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Boktor günde iki tabiyet içmemi söyledi.",
+      "cer_sayili": 0.079,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu aifaturalar yüzde yirmi arttı.",
+      "cer_sayili": 0.061,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası sıfır beş üç iki yüz yirmi üç kırt beş altmış edin.",
+      "cer_sayili": 0.137,
+      "wer_sayili": 0.286
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobus on dakika gecikti.",
+      "cer_sayili": 0.042,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emekle başım on gibi bir besüz tel oldu.",
+      "cer_sayili": 0.31,
+      "wer_sayili": 0.778
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah yedi de kalptim, kahvaltı yaptım.",
+      "cer_sayili": 0.083,
+      "wer_sayili": 0.6
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplandı pazartesi saat 9-15 de başlayar.",
+      "cer_sayili": 0.106,
+      "wer_sayili": 0.571
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyonun on üç e sekiz çıktı.",
+      "cer_sayili": 0.069,
+      "wer_sayili": 0.6
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Dere, Ayşe Hanım'a teşekkür ettim.",
+      "cer_sayili": 0.152,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütünlitesi otuz beş lira olmuş.",
+      "cer_sayili": 0.061,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen bin dokuz yüz kır sekiz yılında doldu.",
+      "cer_sayili": 0.068,
+      "wer_sayili": 0.375
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Elzaneyi mi dört saat açık mı?",
+      "cer_sayili": 0.1,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Yüttel biraz daha yavaş konuşur musum.",
+      "cer_sayili": 0.108,
+      "wer_sayili": 0.333
+     }
+    ]
+   },
+   "base/normal": {
+    "yukleme_sn": 0.35,
+    "toplam_sn": 13.64,
+    "rtf": 0.2301,
+    "wer": 0.402,
+    "cer": 0.1566,
+    "wer_sayili": 0.1805,
+    "cer_sayili": 0.0337,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlaycını saat 14-30'da almayı unutma.",
+      "cer_sayili": 0.024,
+      "wer_sayili": 0.143
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Brandevun 23 Kasın 2026 tarihinde.",
+      "cer_sayili": 0.038,
+      "wer_sayili": 0.222
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı bin iki yüz otuz dört lira elli kuruştuktu.",
+      "cer_sayili": 0.035,
+      "wer_sayili": 0.182
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunun üçüncü sınıfa gidiyor.",
+      "cer_sayili": 0.034,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Hirayı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.051,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor günde iki tabi et içmemiz söyledi.",
+      "cer_sayili": 0.079,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu aifaturalar %20 arttı.",
+      "cer_sayili": 0.061,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası sıfır 532-1234567.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs 10 dakika gecikti.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emekli maaşım 12500 lira oldu.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah hediye kalktın kahaltı yaptın.",
+      "cer_sayili": 0.139,
+      "wer_sayili": 0.8
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 9-15 de başlıyor.",
+      "cer_sayili": 0.043,
+      "wer_sayili": 0.286
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyonun 13-8 çıktı.",
+      "cer_sayili": 0.069,
+      "wer_sayili": 0.4
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Doktor Ayşe hanıma teşekkür ettim.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütün litesi 35 lira olmuş.",
+      "cer_sayili": 0.03,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen 1948 yılında doğdu.",
+      "cer_sayili": 0.023,
+      "wer_sayili": 0.125
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Hedzane 24 saat açık mı?",
+      "cer_sayili": 0.067,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşur musun?",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     }
+    ]
+   },
+   "base/ham": {
+    "yukleme_sn": 0.35,
+    "toplam_sn": 14.92,
+    "rtf": 0.254,
+    "wer": 0.4902,
+    "cer": 0.2668,
+    "wer_sayili": 0.2256,
+    "cer_sayili": 0.0947,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlacını saat 14.30'da almayı unutma.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Prandevun yirmi üç nokta on bir nokta iki bin yirmi altı tarihinde.",
+      "cer_sayili": 0.327,
+      "wer_sayili": 0.556
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı bin iki yüz otuz dört virü güleli tuttu.",
+      "cer_sayili": 0.193,
+      "wer_sayili": 0.273
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunun 3 sınıfa gidiyor.",
+      "cer_sayili": 0.172,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Boktor günde iki tablet içmimi söyledi.",
+      "cer_sayili": 0.053,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu aif haturalar %20 arttı.",
+      "cer_sayili": 0.091,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızının numarası sıfır beş üç iki yüz yirmi üç kırk beş altmış yedi.",
+      "cer_sayili": 0.11,
+      "wer_sayili": 0.214
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs 10 dakika gecikti.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emekli maaşım 10.500 TL oldu.",
+      "cer_sayili": 0.095,
+      "wer_sayili": 0.111
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah hediye de kaldım kahvaltı yaptım.",
+      "cer_sayili": 0.167,
+      "wer_sayili": 0.6
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 9-15'te başlıyor.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyonun 13 S8 çıktı.",
+      "cer_sayili": 0.207,
+      "wer_sayili": 0.6
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Dere, Ayşe Hanım'a teşekkür ettim.",
+      "cer_sayili": 0.152,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütün litesi 35 lira olmuş.",
+      "cer_sayili": 0.03,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen 1948 yılında doğdu.",
+      "cer_sayili": 0.023,
+      "wer_sayili": 0.125
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Elzane 24 saat açık mı?",
+      "cer_sayili": 0.033,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Yütten biraz daha yavaş konuşur musun?",
+      "cer_sayili": 0.054,
+      "wer_sayili": 0.167
+     }
+    ]
+   },
+   "small/normal": {
+    "yukleme_sn": 0.81,
+    "toplam_sn": 46.72,
+    "rtf": 0.813,
+    "wer": 0.2059,
+    "cer": 0.0826,
+    "wer_sayili": 0.0902,
+    "cer_sayili": 0.0169,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlaycını saat 14.30'da almayı unutma.",
+      "cer_sayili": 0.024,
+      "wer_sayili": 0.143
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Pran Devun 23 Kasın 2026 tarihinde",
+      "cer_sayili": 0.058,
+      "wer_sayili": 0.333
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı 1234 lira 50 kuruş tuttu.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunun üçüncü sınıfa gidiyor.",
+      "cer_sayili": 0.034,
+      "wer_sayili": 0.25
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor günde iki tabiat içmemi söyledi.",
+      "cer_sayili": 0.053,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu ay faturalar %20 arttı.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası 0532 123 45 67",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs 10 dakika gecikti.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emekli maaşım 12.500 lira oldu.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah 7'de kalktın kahvaltı yaptın.",
+      "cer_sayili": 0.056,
+      "wer_sayili": 0.4
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 9.15'de başlıyor.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyonum 13'e 8 çıktı.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Doktor Ayşe Hanım'a teşekkür ettim.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütün litesi 35 lira olmuş.",
+      "cer_sayili": 0.03,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen 1948 yılında doğdu.",
+      "cer_sayili": 0.023,
+      "wer_sayili": 0.125
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Eccane 24 saat açık mı?",
+      "cer_sayili": 0.033,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşur musun?",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     }
+    ]
+   },
+   "small/ham": {
+    "yukleme_sn": 0.81,
+    "toplam_sn": 43.62,
+    "rtf": 0.7649,
+    "wer": 0.2549,
+    "cer": 0.0534,
+    "wer_sayili": 0.188,
+    "cer_sayili": 0.0804,
+    "ornekler": [
+     {
+      "kimlik": "g01",
+      "etiket": "gündelik",
+      "dogru": "Bugün hava çok güzel.",
+      "tahmin": "Bugün hava çok güzel.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g02",
+      "etiket": "saat",
+      "dogru": "İlacını saat 14:30'da almayı unutma.",
+      "tahmin": "İlacını saat 14.30'da almayı unutma.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g03",
+      "etiket": "tarih",
+      "dogru": "Randevun 23.11.2026 tarihinde.",
+      "tahmin": "Pran Devun 23.11.2026 tarihinde",
+      "cer_sayili": 0.038,
+      "wer_sayili": 0.222
+     },
+     {
+      "kimlik": "g04",
+      "etiket": "para",
+      "dogru": "Market hesabı ₺1.234,50 tuttu.",
+      "tahmin": "Market hesabı 1234,50 tuttu.",
+      "cer_sayili": 0.175,
+      "wer_sayili": 0.182
+     },
+     {
+      "kimlik": "g05",
+      "etiket": "sıra sayısı",
+      "dogru": "Torunum 3. sınıfa gidiyor.",
+      "tahmin": "Torunun 3 sınıfa gidiyor.",
+      "cer_sayili": 0.172,
+      "wer_sayili": 0.5
+     },
+     {
+      "kimlik": "g06",
+      "etiket": "tarih",
+      "dogru": "Kirayı 15 Aralık'ta bankaya yatırdım.",
+      "tahmin": "Kira'yı 15 aralıkta bankaya yatırdın.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g07",
+      "etiket": "sayı",
+      "dogru": "Doktor günde 2 tablet içmemi söyledi.",
+      "tahmin": "Doktor günde iki tablet içmimi söyledi.",
+      "cer_sayili": 0.026,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g08",
+      "etiket": "yüzde",
+      "dogru": "Bu ay faturalar %20 arttı.",
+      "tahmin": "Bu ay faturalar %20 arttı.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g09",
+      "etiket": "telefon",
+      "dogru": "Kızımın numarası 0532 123 45 67.",
+      "tahmin": "Kızımın numarası 052234567",
+      "cer_sayili": 0.288,
+      "wer_sayili": 0.429
+     },
+     {
+      "kimlik": "g10",
+      "etiket": "sayı",
+      "dogru": "Otobüs 10 dakika gecikti.",
+      "tahmin": "Otobüs 10 dakika gecikti.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g11",
+      "etiket": "para",
+      "dogru": "Emekli maaşım 12.500 TL oldu.",
+      "tahmin": "Emekli maaşım 10-1500 TL oldu.",
+      "cer_sayili": 0.095,
+      "wer_sayili": 0.111
+     },
+     {
+      "kimlik": "g12",
+      "etiket": "saat",
+      "dogru": "Sabah 7'de kalktım, kahvaltı yaptım.",
+      "tahmin": "Sabah hedi de kalktın, kahvaltı yaptın.",
+      "cer_sayili": 0.111,
+      "wer_sayili": 0.8
+     },
+     {
+      "kimlik": "g13",
+      "etiket": "saat",
+      "dogru": "Toplantı pazartesi saat 09:15'te başlıyor.",
+      "tahmin": "Toplantı pazartesi saat 9.15'de başlıyor.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g14",
+      "etiket": "sayı",
+      "dogru": "Tansiyonum 13'e 8 çıktı.",
+      "tahmin": "Tansiyon'un 13E8 çıktı.",
+      "cer_sayili": 0.241,
+      "wer_sayili": 0.6
+     },
+     {
+      "kimlik": "g15",
+      "etiket": "kısaltma",
+      "dogru": "Dr. Ayşe Hanım'a teşekkür ettim.",
+      "tahmin": "Dere, Ayşe Hanım'a teşekkür ettim.",
+      "cer_sayili": 0.152,
+      "wer_sayili": 0.2
+     },
+     {
+      "kimlik": "g16",
+      "etiket": "gündelik",
+      "dogru": "Torunlarım hafta sonu bize gelecek.",
+      "tahmin": "Torunlarım hafta sonu bize gelecek.",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g17",
+      "etiket": "para",
+      "dogru": "Sütün litresi 35 lira olmuş.",
+      "tahmin": "Sütün litesi 35 lira olmuş.",
+      "cer_sayili": 0.03,
+      "wer_sayili": 0.167
+     },
+     {
+      "kimlik": "g18",
+      "etiket": "sayı",
+      "dogru": "Annem 1948 yılında doğdu.",
+      "tahmin": "Annen 1948 yılında doğdu.",
+      "cer_sayili": 0.023,
+      "wer_sayili": 0.125
+     },
+     {
+      "kimlik": "g19",
+      "etiket": "gündelik",
+      "dogru": "Eczane 24 saat açık mı?",
+      "tahmin": "Eczane 24 saat açık mı?",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     },
+     {
+      "kimlik": "g20",
+      "etiket": "gündelik",
+      "dogru": "Lütfen biraz daha yavaş konuşur musun?",
+      "tahmin": "Lütfen biraz daha yavaş konuşur musun?",
+      "cer_sayili": 0.0,
+      "wer_sayili": 0.0
+     }
+    ]
+   }
+  }
+ }
+}

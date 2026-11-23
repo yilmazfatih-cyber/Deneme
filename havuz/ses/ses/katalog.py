@@ -85,7 +85,9 @@ def katalogu_oku(yol: Path | None = None) -> Katalog:
         ham = yaml.safe_load(yol.read_text(encoding="utf-8"))
         return Katalog.model_validate(ham)
     except OSError as hata:
-        raise BicimHatasi(f"Katalog okunamadı: {yol}. SES_KATALOG ortam değişkenini denetleyin.") from hata
+        raise BicimHatasi(
+            f"Katalog okunamadı: {yol}. SES_KATALOG ortam değişkenini denetleyin."
+        ) from hata
     except (yaml.YAMLError, ValidationError) as hata:
         raise BicimHatasi(f"Katalog bozuk: {yol}\n{hata}") from hata
 
@@ -98,5 +100,6 @@ def indirilmis_mi(model_dizini: Path, model: KatalogModeli) -> bool:
     """Bütün dosyalar diskte ve boyutları doğru mu? (sha256'yı `indir --denetle` hesaplar)."""
     klasor = model_klasoru(model_dizini, model)
     return all(
-        (klasor / d.ad).is_file() and (klasor / d.ad).stat().st_size == d.boyut for d in model.dosyalar
+        (klasor / d.ad).is_file() and (klasor / d.ad).stat().st_size == d.boyut
+        for d in model.dosyalar
     )

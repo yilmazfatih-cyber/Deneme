@@ -4,7 +4,8 @@ Kim kullanır: `train.py` (eğitim sonunda test kümesinde), `degerlendir` komut
 çıktısıyla — ikisi aynı raporu üretir; böylece ONNX'in eşdeğerliği ölçüt düzeyinde de görülür).
 
 Karar ayarı DOĞRULAMA kümesinde yapılır (sıcaklık + eşik), rapor TEST kümesinde verilir. Test yoksa
-doğrulamada raporlanır ve sonucun iyimser olduğu not edilir.
+doğrulamada raporlanır ve sonucun iyimser olduğu not edilir. Doğrulama `MIN_CALIBRATION` örnekten
+azsa sıcaklık ölçekleme atlanır (az veride öğrenilen sıcaklık kalibrasyonu bozabiliyor; ölçüldü).
 
 Genişletme: rapora yeni bir bölüm eklemek için `evaluate_logits` sözlüğüne anahtar, `render_text`
 içine birkaç satır ekleyin (başlıklar `messages.py`).
@@ -34,14 +35,23 @@ from goruntu.siniflandirma.metrics import (
     confused_pairs,
 )
 
+# Bu sayının altındaki doğrulama kümesinde sıcaklık öğrenilmez: ağlı duman testinde 20 örnekle öğrenilen
+# sıcaklık testte ECE'yi 0,125 → 0,167 kötüleştirdi (docs/DENEME_KAYDI.md).
+MIN_CALIBRATION = 50
+
 
 def tune_decision(
     logits: np.ndarray, y_true: Sequence[int], labels: list[str], settings: ThresholdSection
 ) -> tuple[Decision, list[str]]:
     """Doğrulama logitlerinden sıcaklık ve güven eşiğini seçer; (karar kuralı, notlar)."""
     notes: list[str] = []
-    has_data = len(y_true) > 0
-    temperature = fit_temperature(logits, y_true) if settings.kalibrasyon and has_data else 1.0
+    count = len(y_true)
+    has_data = count > 0
+    temperature = 1.0
+    if settings.kalibrasyon and count >= MIN_CALIBRATION:
+        temperature = fit_temperature(logits, y_true)
+    elif settings.kalibrasyon and has_data:
+        notes.append(t("degerlendirme.kalibrasyon_az_veri", sayi=count, en_az=MIN_CALIBRATION))
     if not 0.06 <= temperature <= 45.0:
         notes.append(t("degerlendirme.sicaklik_sinirda", sicaklik=f"{temperature:.2f}"))
     threshold = settings.sabit_esik
@@ -57,6 +67,8 @@ def tune_decision(
             notes.append(
                 t("degerlendirme.esik_secildi", esik=f"{chosen:.3f}", kapsama=f"{coverage:.1%}")
             )
+            if count < MIN_CALIBRATION:
+                notes.append(t("degerlendirme.esik_az_veri", sayi=count))
     return Decision(labels, temperature, threshold), notes
 
 

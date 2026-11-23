@@ -1,0 +1,15 @@
+--- a/api/src/messages.ts
++++ b/api/src/messages.ts
+@@ -35,6 +35,12 @@
+   adminSelfLock: 'Kendi hesabınızın rolünü değiştiremez ya da onu kapatamazsınız.',
+   userNotFound: 'Kullanıcı bulunamadı.',
+ 
++  // İletişim formu (modules/iletisim)
++  contactDisabled: 'İletişim formu bu sunucuda açık değil.',
++  contactThanksTitle: 'İletiniz alındı',
++  contactThanksBody: 'Teşekkürler. En kısa sürede yanıtlayacağız.',
++  contactBack: 'Siteye dönün',
++
+   // Eşitleme
+   mutationsOutOfOrder: 'Değişiklikler artan sıra numarasıyla gönderilmeli.',
+ } as const

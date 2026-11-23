@@ -1,0 +1,29 @@
+# Caddy ters vekili: HTTPS sertifikasını kendisi alır ve yeniler (alan adlarının DNS kaydı bu sunucuyu
+# göstermeli; 80 ve 443 kapıları açık olmalı). Kurulum: sudo cp yayin/caddy/Caddyfile /etc/caddy/Caddyfile
+# && sudo systemctl reload caddy. app.ornek.com ve ornek.com'u kendi alan adlarınızla değiştirin.
+# DOĞRULAMA DURUMU: bu dosya Caddy ile DENENMEDİ (ortamda Caddy yoktu); söz dizimi Caddy belgelerindeki
+# örneklere göre yazıldı. İlk iş: caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+
+# Uygulama: API + web tek serviste (127.0.0.1:8310; ayarda TRUST_PROXY=1).
+app.ornek.com {
+	# Anlık bildirim akışı (SSE) arabelleğe alınmasın; uygulama 25 sn'de bir nabız gönderir.
+	reverse_proxy 127.0.0.1:8310 {
+		flush_interval -1
+	}
+}
+
+# Site: durağan dosyalar (yayin/site-yayinla.sh /srv/site/current bağlantısını günceller).
+ornek.com {
+	root * /srv/site/current
+	encode zstd gzip
+	header /_astro/* Cache-Control "public, max-age=31536000, immutable"
+	file_server
+	handle_errors {
+		rewrite * /{err.status_code}.html
+		file_server
+	}
+}
+
+www.ornek.com {
+	redir https://ornek.com{uri} permanent
+}

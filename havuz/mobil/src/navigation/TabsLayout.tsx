@@ -9,10 +9,11 @@ import type { ColorValue } from 'react-native'
 import { t, type MessageKey } from '../i18n/index.ts'
 import { Icon, useTheme, type IconName } from '../ui/index.ts'
 
-/** Sekmeler (sırası ekranda görünen sıradır). YENİ SEKME BURAYA. */
+/** Sekmeler (sırası ekranda görünen sıradır). Üreteç yeni sekmeyi işaretli satırın üstüne ekler. */
 const TABS: readonly { name: string; title: MessageKey; icon: IconName }[] = [
   { name: 'tasks', title: 'tasks.title', icon: 'checkbox-outline' },
   { name: 'lists', title: 'lists.title', icon: 'list-outline' },
+  // YENİ SEKME BURAYA
   { name: 'settings', title: 'settings.title', icon: 'settings-outline' },
 ]
 

@@ -20,12 +20,20 @@ HIZ = 16000
 
 
 def test_uzun_ses_parcalanir_ve_zamanlar_kayar():
-    sinyal = birlestir(sessizlik(1, HIZ), patlama(3, HIZ), sessizlik(2, HIZ), patlama(3, HIZ), sessizlik(1, HIZ))
+    sinyal = birlestir(
+        sessizlik(1, HIZ), patlama(3, HIZ), sessizlik(2, HIZ), patlama(3, HIZ), sessizlik(1, HIZ)
+    )
     motor = SahteStt("bir iki")
-    sonuc = uzun_yaziya(motor, sinyal, azami_parca_sn=4)
+    sonuc = uzun_yaziya(motor, sinyal, azami_parca_sn=5)
     assert len(motor.cagrilar) == 2  # sessizlik modele gitmedi; iki parça
-    assert [b.baslangic for b in sonuc.bolutler] == pytest.approx([0.9, 5.9], abs=0.05)  # VAD payı 0,1 sn
-    assert sonuc.bolutler[1].kelimeler[0].baslangic == sonuc.bolutler[1].baslangic  # sözcükler de kaydı
+    # parça = konuşma ± 0,5 sn pay; modele başta 0,3 sn, sonda 0,7 sn gerçek sessizlik eklenir
+    assert motor.cagrilar[0] == pytest.approx((4.0 + 0.3 + 0.7) * 16000, abs=800)
+    assert [b.baslangic for b in sonuc.bolutler] == pytest.approx(
+        [0.5, 5.5], abs=0.05
+    )  # parçaya kıstırılır
+    assert (
+        sonuc.bolutler[1].kelimeler[0].baslangic == sonuc.bolutler[1].baslangic
+    )  # sözcükler de kaydı
     assert [b.kimlik for b in sonuc.bolutler] == [0, 1]
     assert sonuc.metin == "bir iki bir iki" and sonuc.sure == pytest.approx(10.0)
 
@@ -44,7 +52,12 @@ class _UyduranMotor:
             bolutler=[
                 Bolut(baslangic=0, bitis=1, metin=" Merhaba.", konusma_yok_olasiligi=0.01),
                 Bolut(baslangic=1, bitis=2, metin=" Altyazı M.K.", konusma_yok_olasiligi=0.6),
-                Bolut(baslangic=2, bitis=3, metin=" İzlediğiniz için teşekkürler!", ort_logolasilik=-0.2),
+                Bolut(
+                    baslangic=2,
+                    bitis=3,
+                    metin=" İzlediğiniz için teşekkürler!",
+                    ort_logolasilik=-0.2,
+                ),
             ],
         )
 
@@ -75,7 +88,9 @@ def test_kurulu_faster_whisper_api_si_beklenenle_ayni():
 
     transcribe = set(inspect.signature(fw.WhisperModel.transcribe).parameters)
     eksik = set(TRANSCRIBE_SECENEKLERI) - transcribe
-    assert not eksik, f"faster-whisper.transcribe'da artık yok: {eksik}; ses/stt/whisper.py'yi güncelleyin"
+    assert not eksik, (
+        f"faster-whisper.transcribe'da artık yok: {eksik}; ses/stt/whisper.py'yi güncelleyin"
+    )
     kurucu = set(inspect.signature(fw.WhisperModel.__init__).parameters)
     assert {"device", "compute_type", "cpu_threads", "num_workers", "local_files_only"} <= kurucu
     assert {"id", "start", "end", "text", "words", "avg_logprob", "no_speech_prob"} <= {

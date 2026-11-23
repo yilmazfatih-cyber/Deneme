@@ -67,7 +67,9 @@ def test_8_bit_isaretsiz():
 def test_kayan_noktali(bit, tur):
     degerler = np.array([0.0, 0.25, -1.0, 1.25, np.nan], dtype=tur)
     ses = wav_oku(_wav(_fmt(3, 1, 48000, bit), degerler.tobytes()))
-    assert np.allclose(ses.mono(), [0.0, 0.25, -1.0, 1.25, 0.0])  # NaN sıfırlanır, 1'in üstü korunur
+    assert np.allclose(
+        ses.mono(), [0.0, 0.25, -1.0, 1.25, 0.0]
+    )  # NaN sıfırlanır, 1'in üstü korunur
 
 
 def test_extensible_baslik_ve_ara_parcalar():
@@ -130,6 +132,6 @@ def test_ses_dogrulama():
     with pytest.raises(BicimHatasi):
         Ses(np.zeros(10, np.float32), 16000)
     with pytest.raises(BicimHatasi):
-        Ses(np.zeros((10, 1), np.float64), 16000)  # type: ignore[arg-type]
+        Ses(np.zeros((10, 1), np.float64), 16000)
     stereo = Ses(np.array([[1.0, 0.0], [0.5, 0.5]], np.float32), 8000)
     assert np.allclose(stereo.mono(), [0.5, 0.5]) and stereo.sure == 2 / 8000

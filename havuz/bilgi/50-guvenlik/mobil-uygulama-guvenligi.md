@@ -41,8 +41,9 @@ guncellik: 2026-11
 
 ## Pakete gömülü sır yanılgısı
 
-- Expo'da `EXPO_PUBLIC_` önekli değişkenler derlemede pakete yazılır; uygulama yapılandırmasının `extra` alanı da
-  uygulamayla gider. Bunlara yalnız herkesin görebileceği değerleri koyun (API adresi, ortam adı). Önek listesi ve
+- Expo'da `EXPO_PUBLIC_` önekli değişkenler derlemede pakete değer olarak yazılır; uygulama yapılandırmasının
+  `extra` alanı da uygulamayla gider ve `Constants.expoConfig.extra` ile okunur (ikisi de havuzdaki mobil temelin
+  kurulu Expo paketlerinde doğrulandı). Bunlara yalnız herkesin görebileceği değerleri koyun (API adresi, ortam adı). Önek listesi ve
   derleme çıktısını tarayan denetim: [Sır yönetimi](sir-yonetimi.md).
 - "Açık" anahtar türleri (harita, bildirim, analitik istemci anahtarları) gizli değildir ama başıboş da
   bırakılmaz: sağlayıcı panelinde Android paket adı + imza parmak izi, iOS paket kimliği ve kota sınırı verin.

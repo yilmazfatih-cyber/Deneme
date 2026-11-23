@@ -4,7 +4,7 @@ Uçlar:
     GET  /saglik        {"durum": "ok", "siniflandirici": bool, "dizin": öğe sayısı | null}
     POST /siniflandir   çok parçalı form, alan `dosya` → etiket, güven, emin_degil, ilk
     POST /ara           JSON {"metin": "...", "k": 5} → sonuclar [{yol, kimlik, benzerlik}]
-    POST /benzer        çok parçalı form, alan `dosya`, sorgu `?k=5` → sonuclar
+    POST /benzer        çok parçalı form, alan `dosya`, sorgu `?k=5` → sonuclar (birebir aynı dosya hariç)
 Güvenlik (`gate.py`): gövde sınırı okunmadan önce; yerel kipte Host/Origin; isteğe bağlı API anahtarı.
 Görüntüler `load_rgb` ile açılır: piksel sınırı, biçim beyaz listesi, EXIF yönü. Hata iletileri Türkçe
 JSON (`{"hata": …, "neden": …}`); iz sürme dışarı verilmez. Belgeler (/docs) kapalı.
@@ -25,6 +25,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from goruntu.errors import ImageRejectedError, UserError
 from goruntu.hazirlik.loader import load_rgb
+from goruntu.io_utils import sha256_bytes
 from goruntu.messages import t
 from goruntu.sunucu.gate import RequestGate
 from goruntu.sunucu.state import ServerState
@@ -71,9 +72,9 @@ def create_app(state: ServerState) -> FastAPI:
     def http_error(_request: Request, error: StarletteHTTPException) -> JSONResponse:
         return JSONResponse({"hata": str(error.detail)}, status_code=error.status_code)
 
-    def need(component: Any, key: str) -> None:
+    def need(component: Any, message: str) -> None:
         if component is None:
-            raise HTTPException(503, t(key))
+            raise HTTPException(503, message)
 
     @app.get("/saglik")
     def health() -> dict[str, Any]:
@@ -82,21 +83,22 @@ def create_app(state: ServerState) -> FastAPI:
 
     @app.post("/siniflandir")
     def classify(dosya: UploadFile = File(...)) -> dict[str, Any]:  # noqa: B008
-        need(state.classifier, "sunucu.model_yok")
+        need(state.classifier, t("sunucu.model_yok"))
         image = load_rgb(_read_upload(state, dosya), state.limits)
         return dict(state.classifier.predict([image], 3)[0].to_dict())  # type: ignore[union-attr]
 
     @app.post("/ara")
     def search(body: SearchBody) -> dict[str, Any]:
-        need(state.index, "sunucu.dizin_yok")
+        need(state.index, t("sunucu.dizin_yok"))
         if not state.embedder.supports_text:  # type: ignore[union-attr]
             raise HTTPException(400, t("arama.metin_desteklenmiyor", model=state.embedder.name))  # type: ignore[union-attr]
         return _results(state, state.embedder.embed_texts([body.metin]), body.k)  # type: ignore[union-attr]
 
     @app.post("/benzer")
     def similar(dosya: UploadFile = File(...), k: int = Query(5, ge=1, le=50)) -> dict[str, Any]:  # noqa: B008
-        need(state.index, "sunucu.dizin_yok")
-        image = load_rgb(_read_upload(state, dosya), state.limits)
-        return _results(state, state.embedder.embed_images([image]), k)  # type: ignore[union-attr]
+        need(state.index, t("sunucu.dizin_yok"))
+        data = _read_upload(state, dosya)
+        query = state.embedder.embed_images([load_rgb(data, state.limits)])  # type: ignore[union-attr]
+        return _results(state, query, k, exclude={sha256_bytes(data)})  # birebir aynı dosya hariç
 
     return app

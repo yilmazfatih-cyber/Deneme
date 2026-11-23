@@ -1,0 +1,66 @@
+--- a/api/scripts/backup.ts
++++ b/api/scripts/backup.ts
+@@ -1,31 +1,40 @@
+ /**
+- * `npm run backup -w @uygulama/api -- [hedef.db]` — veritabanının TUTARLI bir kopyasını alır (`VACUUM INTO`).
+- * Sunucu çalışırken de güvenlidir (SQLite kopyayı tek bir okuma anının görüntüsünden üretir). Hedef verilmezse
+- * veritabanının yanındaki `yedek/` klasörüne zaman damgalı bir dosya yazılır. Kopya açılıp bütünlüğü denetlenir.
++ * `npm run backup -w @uygulama/api -- [hedef.db] [--klasor <klasör>] [--sakla <gün>]` — veritabanının TUTARLI bir
++ * kopyasını alır (`VACUUM INTO`). Sunucu çalışırken de güvenlidir (SQLite kopyayı tek bir okuma anının
++ * görüntüsünden üretir). Hedef verilmezse `--klasor` (yoksa veritabanının yanındaki `yedek/`) klasörüne zaman
++ * damgalı bir dosya yazılır. Kopya açılıp bütünlüğü denetlenir. `--sakla 14`: aynı klasördeki 14 günden eski
++ * zaman damgalı yedekleri siler, en yeni 3 yedeğe hiç dokunmaz (kural: scripts/retention.ts).
+  *
+- * Geri yükleme: sunucuyu durdurun, yedek dosyayı DATABASE_PATH'e kopyalayın, yanındaki `-wal` ve `-shm`
+- * dosyalarını silin, sunucuyu başlatın (ayrıntı: docs/YAYINLAMA.md → "Yedekleme ve geri yükleme").
++ * Geri yükleme: `npm run restore -w @uygulama/api -- <yedek.db> --onayla` (scripts/restore.ts; ayrıntı:
++ * docs/YAYINLAMA.md → "Yedekleme ve geri yükleme").
+  *
+  * Genişletme: yedeği başka bir yere (S3 vb.) göndermek için bu betiğin sonuna yükleme adımı eklenebilir.
+  */
+-import { existsSync, mkdirSync, statSync } from 'node:fs'
++import { existsSync, mkdirSync, readdirSync, rmSync, statSync } from 'node:fs'
+ import { dirname, join, resolve } from 'node:path'
+ import { parseArgs } from 'node:util'
+ import { openDatabase } from '../src/db/database.ts'
+ import { loadScriptConfig, print, runScript, ScriptError } from './lib.ts'
++import { expiredBackups } from './retention.ts'
+ 
+ function stamp(date: Date): string {
+   return date.toISOString().replace(/[-:]/g, '').replace('T', '-').slice(0, 15)
+ }
+ 
+ runScript(() => {
+-  const { positionals } = parseArgs({ allowPositionals: true })
++  const { positionals, values } = parseArgs({
++    allowPositionals: true,
++    options: { klasor: { type: 'string' }, sakla: { type: 'string' } },
++  })
++  const keepDays = values.sakla === undefined ? null : Number(values.sakla)
++  if (keepDays !== null && (!Number.isInteger(keepDays) || keepDays < 1)) {
++    throw new ScriptError('--sakla 1 ya da daha büyük bir gün sayısı olmalı (ör. --sakla 14).')
++  }
+   const config = loadScriptConfig()
+   if (config.databasePath === ':memory:') throw new ScriptError('Bellek içi veritabanı yedeklenemez.')
+   if (!existsSync(config.databasePath)) throw new ScriptError(`Veritabanı bulunamadı: ${config.databasePath}`)
+-  const target = resolve(
+-    positionals[0] ?? join(dirname(config.databasePath), 'yedek', `uygulama-${stamp(new Date())}.db`),
+-  )
++  const folder = values.klasor ? resolve(values.klasor) : join(dirname(config.databasePath), 'yedek')
++  const target = resolve(positionals[0] ?? join(folder, `uygulama-${stamp(new Date())}.db`))
+   if (existsSync(target)) throw new ScriptError(`Hedef dosya zaten var: ${target}. Başka bir ad verin.`)
+   mkdirSync(dirname(target), { recursive: true })
+ 
+@@ -47,4 +56,12 @@
+   } finally {
+     copy.close()
+   }
++
++  if (keepDays !== null) {
++    const dir = dirname(target)
++    for (const name of expiredBackups(readdirSync(dir), new Date(), keepDays)) {
++      for (const suffix of ['', '-wal', '-shm']) rmSync(join(dir, `${name}${suffix}`), { force: true })
++      print(`Silindi (${keepDays} günden eski yedek): ${name}`)
++    }
++  }
+ })

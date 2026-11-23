@@ -1,0 +1,17 @@
+--- a/api/src/http/csrf.ts
++++ b/api/src/http/csrf.ts
+@@ -35,10 +35,13 @@
+ export function csrfProtection(options: {
+   allowedOrigins: readonly string[]
+   trustProxy: number
++  /** Oturum KULLANMAYAN, herkese açık form uçları (iletişim): köken denetimini kendileri yapar. */
++  exemptPaths?: readonly string[]
+ }): MiddlewareHandler<AppEnv> {
+   const allowed = new Set(options.allowedOrigins)
++  const exempt = new Set(options.exemptPaths ?? [])
+   return async (c, next) => {
+-    if (SAFE_METHODS.has(c.req.method) || isBearerRequest(c)) return next()
++    if (SAFE_METHODS.has(c.req.method) || isBearerRequest(c) || exempt.has(c.req.path)) return next()
+     const origin = c.req.header('origin')
+     const site = c.req.header('sec-fetch-site')
+     const originAllowed = origin !== undefined && (allowed.has(origin) || origin === ownOrigin(c, options.trustProxy))

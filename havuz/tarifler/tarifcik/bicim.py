@@ -153,16 +153,30 @@ def tarif_sorunlari(klasor: Path) -> list[str]:
 
 
 def dizin_sorunlari(tarifler: list[Path]) -> list[str]:
-    """tarifler/README.md her tarife bağlantı vermeli."""
+    """tarifler/README.md her tarife bağlantı vermeli; satırda tarif.json'daki süre ve zorluk yazmalı."""
     yol = TARIFLER / "README.md"
     if not yol.is_file():
         return ["README.md (tarif dizini) yok"]
-    dizin = yol.read_text(encoding="utf-8")
-    return [
-        f"README.md: '{klasor.name}' tarifi dizin tablosunda yok (`[{klasor.name}]({klasor.name}/)`)"
-        for klasor in tarifler
-        if f"]({klasor.name}/)" not in dizin
-    ]
+    satirlar = yol.read_text(encoding="utf-8").splitlines()
+    sorunlar: list[str] = []
+    for klasor in tarifler:
+        satir = next((s for s in satirlar if f"]({klasor.name}/)" in s), None)
+        if satir is None:
+            sorunlar.append(
+                f"README.md: '{klasor.name}' tarifi dizin tablosunda yok (`[{klasor.name}]({klasor.name}/)`)"
+            )
+            continue
+        try:
+            tarif = tarif_oku(klasor)
+        except TarifHatasi:
+            continue  # tarif.json sorunu tarif_sorunlari'nda raporlanır
+        hucreler = [h.strip() for h in satir.strip().strip("|").split("|")]
+        if tarif.sure not in hucreler or tarif.zorluk not in hucreler:
+            sorunlar.append(
+                f"README.md: '{klasor.name}' satırında süre ({tarif.sure}) ve zorluk ({tarif.zorluk}) "
+                "tarif.json'dakiyle aynı olmalı"
+            )
+    return sorunlar
 
 
 def tarif_klasorleri() -> list[Path]:

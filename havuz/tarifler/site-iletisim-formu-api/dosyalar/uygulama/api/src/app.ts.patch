@@ -1,0 +1,58 @@
+--- a/api/src/app.ts
++++ b/api/src/app.ts
+@@ -14,11 +14,12 @@
+ import { createContext, type AppContext, type Deps } from './context.ts'
+ import { bodyLimits } from './http/bodyLimit.ts'
+ import { rateLimitKey } from './http/clientIp.ts'
+-import { corsMiddleware } from './http/cors.ts'
++import { corsMiddleware, exceptPaths, publicFormCors } from './http/cors.ts'
+ import { csrfProtection } from './http/csrf.ts'
+ import { apiNotFound, createErrorHandler } from './http/errors.ts'
+ import { rateLimit, RATE_RULES } from './http/rateLimit.ts'
+ import { requestContext } from './http/requestLog.ts'
++import { ROUTES } from './http/routes.ts'
+ import { securityHeaders } from './http/securityHeaders.ts'
+ import { staticWeb } from './http/static.ts'
+ import type { AppEnv } from './http/types.ts'
+@@ -28,6 +29,7 @@
+ import { sessionMiddleware } from './modules/auth/session.ts'
+ import { eventRoutes } from './modules/events/routes.ts'
+ import { healthRoutes } from './modules/health/routes.ts'
++import { iletisimRoutes } from './modules/iletisim/routes.ts'
+ import { inviteRoutes } from './modules/invites/routes.ts'
+ import { syncRoutes } from './modules/sync/routes.ts'
+ import { workspaceRoutes } from './modules/workspaces/routes.ts'
+@@ -48,8 +50,11 @@
+ 
+   app.use('*', requestContext({ logger: ctx.logger, trustProxy: config.trustProxy }))
+   app.use('*', securityHeaders({ production: config.isProduction }))
++  // Herkese açık formların CORS'u genelden ÖNCE ve ondan ayrı (çerezsiz, yalnız CONTACT_ORIGINS).
++  const publicForms = [ROUTES.contact]
++  app.use(ROUTES.contact, publicFormCors(config.contact?.origins ?? []))
+   const cors = corsMiddleware(config.allowedOrigins)
+-  if (cors) app.use('/api/*', cors)
++  if (cors) app.use('/api/*', exceptPaths(publicForms, cors))
+   app.use(
+     '/api/*',
+     rateLimit(ctx.limiter, RATE_RULES.general, (c) => rateLimitKey(c.get('ip'))),
+@@ -57,7 +62,11 @@
+   app.use('/api/*', bodyLimits())
+   app.use(
+     '/api/*',
+-    csrfProtection({ allowedOrigins: [config.appOrigin, ...config.allowedOrigins], trustProxy: config.trustProxy }),
++    csrfProtection({
++      allowedOrigins: [config.appOrigin, ...config.allowedOrigins],
++      trustProxy: config.trustProxy,
++      exemptPaths: publicForms,
++    }),
+   )
+   app.use('/api/*', sessionMiddleware(ctx))
+ 
+@@ -69,6 +78,7 @@
+   app.route('/', syncRoutes(ctx))
+   app.route('/', eventRoutes(ctx))
+   app.route('/', adminRoutes(ctx))
++  app.route('/', iletisimRoutes(ctx))
+   // YENİ MODÜL BURAYA: app.route('/', ornekRoutes(ctx))
+ 
+   const web = staticWeb(config.webDist)

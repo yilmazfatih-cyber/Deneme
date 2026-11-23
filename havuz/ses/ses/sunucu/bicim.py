@@ -39,7 +39,9 @@ def verbose_json(transkript: Transkript, *, kelimeler: bool) -> dict[str, Any]:
     return govde
 
 
-def yanit_govdesi(transkript: Transkript, bicim: str, *, kelimeler: bool = False) -> tuple[str, str]:
+def yanit_govdesi(
+    transkript: Transkript, bicim: str, *, kelimeler: bool = False
+) -> tuple[str, str]:
     """(gövde, medya türü)."""
     if bicim == "text":
         return transkript.metin + "\n", "text/plain; charset=utf-8"
@@ -48,5 +50,7 @@ def yanit_govdesi(transkript: Transkript, bicim: str, *, kelimeler: bool = False
     if bicim == "vtt":
         return vtt_uret(ipuclarina_bol(transkript.bolutler)), "text/vtt; charset=utf-8"
     if bicim == "verbose_json":
-        return json.dumps(verbose_json(transkript, kelimeler=kelimeler), ensure_ascii=False), "application/json"
+        return json.dumps(
+            verbose_json(transkript, kelimeler=kelimeler), ensure_ascii=False
+        ), "application/json"
     return json.dumps({"text": transkript.metin}, ensure_ascii=False), "application/json"

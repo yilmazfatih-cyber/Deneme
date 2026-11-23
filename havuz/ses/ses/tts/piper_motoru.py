@@ -22,8 +22,14 @@ import numpy as np
 from ses.hatalar import BicimHatasi, ModelBulunamadiHatasi, eksik_paket
 from ses.ses_isleme.ses import Dizi
 
-SYNTHESIS_ALANLARI = ("speaker_id", "length_scale", "noise_scale", "noise_w_scale",
-                      "normalize_audio", "volume")  # fmt: skip  — tests/test_tts.py denetler
+SYNTHESIS_ALANLARI = (
+    "speaker_id",
+    "length_scale",
+    "noise_scale",
+    "noise_w_scale",
+    "normalize_audio",
+    "volume",
+)  # fmt: skip  — tests/test_tts.py denetler
 
 
 class PiperMotoru:
@@ -37,7 +43,9 @@ class PiperMotoru:
                 f"Piper sesi bulunamadı: {self.model_yolu}(.json). İndirin: python -m ses indir --tts <ses>"
             )
         try:
-            self.yapilandirma: dict[str, Any] = json.loads(self.yapilandirma_yolu.read_text("utf-8"))
+            self.yapilandirma: dict[str, Any] = json.loads(
+                self.yapilandirma_yolu.read_text("utf-8")
+            )
             self._ornekleme = int(self.yapilandirma["audio"]["sample_rate"])
         except (ValueError, KeyError, TypeError) as hata:
             raise BicimHatasi(f"Ses yapılandırması okunamadı: {self.yapilandirma_yolu}") from hata
@@ -83,5 +91,8 @@ class PiperMotoru:
                 normalize_audio=False,
                 volume=1.0,
             )
-            parcalar = [np.asarray(p.audio_float_array, dtype=np.float32) for p in ses.synthesize(metin, ayar)]
+            parcalar = [
+                np.asarray(p.audio_float_array, dtype=np.float32)
+                for p in ses.synthesize(metin, ayar)
+            ]
         yield from parcalar

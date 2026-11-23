@@ -66,7 +66,7 @@ describe('görevler', () => {
   it('düzenleme: başlık, son tarih ve öncelik kaydedilir; geçersiz tarih yazılınca ileti çıkar', async () => {
     const app = await openTasks()
     await addTask(app, 'Banka')
-    await app.user.press(app.screen.getByRole('button', { name: '“Banka” görevini aç' }))
+    await app.user.press(app.screen.getByRole('button', { name: /^Banka/ }))
     const title = await app.screen.findByLabelText('Başlık')
     expect(app.getPathname()).toMatch(/^\/task\//)
     await app.user.clear(title)

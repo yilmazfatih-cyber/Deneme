@@ -1,0 +1,50 @@
+# uygulama: API + derlenmiş web tek serviste (kaynak: havuz/tarifler/tek-sunucuda-yayin).
+# Kurulum:  sudo cp yayin/systemd/uygulama.service /etc/systemd/system/
+#           sudo systemctl daemon-reload && sudo systemctl enable --now uygulama
+# Yollar:   proje /srv/proje · veritabanı /var/lib/uygulama (StateDirectory) · ayar /etc/uygulama/uygulama.env
+# node başka yerdeyse (`command -v node`) ExecStart'taki /usr/bin/node'u değiştirin. npm ile DEĞİL doğrudan
+# node ile başlar: npm, SIGTERM'i node'a iletmeyebilir; o zaman düzgün kapanış (SQLite kapanışı) atlanır.
+[Unit]
+Description=Uygulama (API ve web)
+Documentation=file:///srv/proje/uygulama/docs/YAYINLAMA.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=uygulama
+Group=uygulama
+WorkingDirectory=/srv/proje/uygulama/api
+EnvironmentFile=/etc/uygulama/uygulama.env
+ExecStart=/usr/bin/node --disable-warning=ExperimentalWarning src/index.ts
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=20
+StateDirectory=uygulama
+StateDirectoryMode=0750
+UMask=0027
+# Sertleştirme: yalnız /var/lib/uygulama yazılabilir; ev klasörleri, aygıtlar ve çekirdek ayarları kapalı.
+# (MemoryDenyWriteExecute KULLANMAYIN: node'un JIT derleyicisini bozar.)
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+RestrictNamespaces=true
+LockPersonality=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+MemoryMax=1G
+
+[Install]
+WantedBy=multi-user.target

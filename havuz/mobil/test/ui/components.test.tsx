@@ -150,7 +150,9 @@ describe('arayüz bileşenleri', () => {
     await user.press(screen.getByRole('button', { name: 'Sor' }))
     await user.press(screen.getByRole('button', { name: 'Vazgeç' }))
     await user.press(screen.getByRole('button', { name: 'Sor' }))
-    await fireEvent(screen.getByLabelText('Silinsin mi?'), 'requestClose')
+    const modal = screen.container.queryAll((node) => node.type === 'Modal')[0]
+    expect(modal).toBeDefined()
+    await fireEvent(modal!, 'requestClose')
     expect(answers).toEqual([true, false, false])
   })
 })

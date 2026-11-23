@@ -60,16 +60,26 @@ def test_konusma_parcalari_sinirlara_uyar_ve_sessizligi_atlar():
     for _ in range(3):
         parcalar_sinyal += [patlama(6, HIZ), sessizlik(2, HIZ)]
     sinyal = birlestir(*parcalar_sinyal)
-    parcalar = konusma_parcalari(sinyal, HIZ, azami_sn=15)
-    assert all((p.son - p.bas) / HIZ <= 15 for p in parcalar)
-    assert len(parcalar) == 2  # ilk ikisi bir parçaya sığar (arada 2 sn sessizlik), üçüncüsü ayrı
-    assert abs(parcalar[0].bas / HIZ - 1.9) < 0.05 and abs(parcalar[1].bas / HIZ - 17.9) < 0.05
+    parcalar = konusma_parcalari(sinyal, HIZ, azami_sn=16)  # konuşmanın iki yanında 0,5 sn pay
+    assert all((p.son - p.bas) / HIZ <= 16 for p in parcalar)
+    assert len(parcalar) == 2  # ilk ikisi bir parçaya sığar (1,5–16,5 sn), üçüncüsü ayrı
+    assert abs(parcalar[0].bas / HIZ - 1.5) < 0.05 and abs(parcalar[1].bas / HIZ - 17.5) < 0.05
+    assert abs(parcalar[1].son / HIZ - 24.5) < 0.05  # sondaki 1,5 sn sessizliğin yalnız payı alınır
+
+
+def test_sondaki_kisik_hece_parcada_kalir():
+    """Konuşmadan 250 ms sonra gelen kısa, kısık hece (kapantı + "-tı") parçanın içinde kalmalı."""
+    sinyal = birlestir(sessizlik(0.5, HIZ), patlama(1.5, HIZ), sessizlik(0.25, HIZ),
+                       patlama(0.06, HIZ, genlik=0.02, tohum=5), sessizlik(1.0, HIZ))  # fmt: skip
+    parcalar = konusma_parcalari(sinyal, HIZ)
+    assert len(parcalar) == 1 and parcalar[0].son / HIZ >= 2.31 + 0.3
 
 
 def test_uzun_konusma_en_sessiz_yerden_bolunur():
     yukseklik = 0.3 * np.ones(HIZ * 12, np.float32)
     yukseklik[int(HIZ * 6.95) : int(HIZ * 7.05)] = 0.001  # 7. saniyede kısa bir iniş
-    sinyal = birlestir(sessizlik(0.5, HIZ), patlama(12, HIZ) * yukseklik / 0.3, sessizlik(0.5, HIZ))
+    konusma = (patlama(12, HIZ) * yukseklik / 0.3).astype(np.float32)
+    sinyal = birlestir(sessizlik(0.5, HIZ), konusma, sessizlik(0.5, HIZ))
     parcalar = konusma_parcalari(sinyal, HIZ, azami_sn=10)
     assert len(parcalar) == 2 and abs(parcalar[0].son / HIZ - 7.45) < 0.1
     assert parcalar[0].son == parcalar[1].bas  # arada örnek kaybı yok

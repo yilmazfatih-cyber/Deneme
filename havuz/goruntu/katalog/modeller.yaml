@@ -1,0 +1,150 @@
+# Model kataloğu — görüntü sınıflandırma (timm) ve gömme/arama (transformers) için önerilen açık modeller.
+#
+# Her kayıt 23 Kasım 2026'da Hugging Face API'siyle doğrulandı (scripts/katalog_dogrula.py); ham sonuç:
+# katalog/dogrulama-2026-11-23.json. `lisans`, `parametre`, `erisim` API'den okunan değerlerdir; `ticari`
+# lisans etiketinden çıkarılır (evet / kosullu / hayir, bkz. goruntu/catalog.py).
+# DİKKAT: Ağırlık lisansı (ör. apache-2.0) eğitim verisinin koşullarını KAPSAMAZ. timm modellerinin çoğu
+# ImageNet ile eğitildi; ImageNet'in kullanım koşulları araştırma amaçlıdır. Ticari üründe hukuki görüş alın
+# (docs/KARARLAR.md K12). Bu bir hukuki değerlendirme değildir.
+# `turkce_metin` (yalnız gömme): "kanıt: …" dil etiketi/model kartı Türkçe'yi anıyorsa; "çok dilli…" kart
+# "multilingual" diyorsa (Türkçe ayrıca anılmıyor); "kanıt yok"; sınıflandırmada "uygulanmaz".
+# Bu temelde hangi modelin gerçekten denendiği docs/DENEME_KAYDI.md içindedir; diğerleri DENENMEDİ.
+# Yeni kayıt ekledikten sonra: .venv/bin/python scripts/katalog_dogrula.py --yaz
+
+modeller:
+  # ───────────── Sınıflandırma (timm; ince ayar tabanı) ─────────────
+  - kimlik: timm/mobilenetv3_small_100.lamb_in1k
+    gorev: [siniflandirma]
+    kutuphane: timm
+    boyut: 2.6M
+    parametre: 2554968
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    girdi: 224 px
+    turkce_metin: uygulanmaz
+    notlar: "En küçük seçenek; CPU'da en hızlı, doğruluğu en düşük. Denenmedi."
+    dogrulandi: "2026-11-23"
+  - kimlik: timm/mobilenetv3_large_100.ra_in1k
+    gorev: [siniflandirma]
+    kutuphane: timm
+    boyut: 5.5M
+    parametre: 5507432
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    girdi: 224 px
+    turkce_metin: uygulanmaz
+    notlar: "cpu-kucuk hazır ayarının tabanı; ağlı duman testinde kullanıldı (docs/DENEME_KAYDI.md)."
+    dogrulandi: "2026-11-23"
+  - kimlik: timm/efficientnet_b0.ra_in1k
+    gorev: [siniflandirma]
+    kutuphane: timm
+    boyut: 5.3M
+    parametre: 5330564
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    girdi: 224 px
+    turkce_metin: uygulanmaz
+    notlar: "colab-t4 hazır ayarının tabanı (GPU'da çalıştırılması doğrulanmadı)."
+    dogrulandi: "2026-11-23"
+  - kimlik: timm/vit_tiny_patch16_224.augreg_in21k_ft_in1k
+    gorev: [siniflandirma]
+    kutuphane: timm
+    boyut: 5.7M
+    parametre: 5717416
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    girdi: 224 px (sabit; başka boyutta konum gömmesi yeniden örneklenir)
+    turkce_metin: uygulanmaz
+    notlar: "Küçük dönüştürücü (ViT). ImageNet-21k ön eğitimi. Denenmedi."
+    dogrulandi: "2026-11-23"
+  - kimlik: timm/convnext_atto.d2_in1k
+    gorev: [siniflandirma]
+    kutuphane: timm
+    boyut: 3.7M
+    parametre: 3695520
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    girdi: 224 px
+    turkce_metin: uygulanmaz
+    notlar: "BatchNorm yok (LayerNorm); küçük yığında kararlı. Denenmedi."
+    dogrulandi: "2026-11-23"
+  - kimlik: timm/mobilenetv4_conv_small.e2400_r224_in1k
+    gorev: [siniflandirma]
+    kutuphane: timm
+    boyut: 3.8M
+    parametre: 3799112
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    girdi: 224 px
+    turkce_metin: uygulanmaz
+    notlar: "Mobil cihaz için tasarlandı. Denenmedi."
+    dogrulandi: "2026-11-23"
+  - kimlik: timm/resnet18.a1_in1k
+    gorev: [siniflandirma]
+    kutuphane: timm
+    boyut: 11.7M
+    parametre: 11699112
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    girdi: 224 px
+    turkce_metin: uygulanmaz
+    notlar: "Klasik, her yerde desteklenen mimari (ONNX/mobil). Denenmedi."
+    dogrulandi: "2026-11-23"
+  - kimlik: timm/convnext_tiny.in12k_ft_in1k
+    gorev: [siniflandirma]
+    kutuphane: timm
+    boyut: 28.6M
+    parametre: 28589128
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    girdi: 224 px
+    turkce_metin: uygulanmaz
+    notlar: "GPU'da daha yüksek doğruluk için; CPU'da yavaş. Denenmedi."
+    dogrulandi: "2026-11-23"
+  # ───────────── Gömme ve arama (transformers; CLIP / SigLIP 2) ─────────────
+  - kimlik: google/siglip2-base-patch32-256
+    gorev: [gomme]
+    kutuphane: transformers
+    takma_ad: siglip2
+    boyut: 377M
+    parametre: 376856066
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    girdi: 256 px (en-boy oranı korunmadan ezilir)
+    turkce_metin: "çok dilli (kartta 'multilingual'; Türkçe ayrıca anılmıyor)"
+    notlar: "Varsayılan gömme modeli. Parametrenin ~200M'si 256 bin sözcüklü metin gömme tablosu; görüntü kodlayıcı ViT-B/32. Türkçe sorgu sonucu docs/DENEME_KAYDI.md."
+    dogrulandi: "2026-11-23"
+  - kimlik: laion/CLIP-ViT-B-32-laion2B-s34B-b79K
+    gorev: [gomme]
+    kutuphane: transformers
+    takma_ad: clip
+    boyut: 151M
+    parametre: 151277439
+    lisans: mit
+    ticari: evet
+    erisim: acik
+    girdi: 224 px
+    turkce_metin: kanıt yok
+    notlar: "Metin kodlayıcı İngilizce; görüntü→görüntü aramada iyi bir küçük seçenek. LAION-2B verisiyle eğitildi."
+    dogrulandi: "2026-11-23"
+  - kimlik: google/siglip2-base-patch16-224
+    gorev: [gomme]
+    kutuphane: transformers
+    boyut: 375M
+    parametre: 375187970
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    girdi: 224 px
+    turkce_metin: "çok dilli (kartta 'multilingual'; Türkçe ayrıca anılmıyor)"
+    notlar: "patch32'den ~4 kat fazla görüntü belirteci: daha ayrıntılı ama CPU'da daha yavaş. Denenmedi."
+    dogrulandi: "2026-11-23"

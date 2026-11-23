@@ -1,0 +1,11 @@
+--- a/docs/YAYINLAMA.md
++++ b/docs/YAYINLAMA.md
+@@ -150,6 +150,8 @@
+ | `WEB_DIST`         | `web/dist`                                   | Derlenmiş web klasörü; hazırsa aynı kökenden sunulur, değilse yalnız API çalışır                        |
+ | `LOG_LEVEL`        | `info` (test: `warn`)                        | `debug` · `info` · `warn` · `error`                                                                     |
+ | `RATE_LIMIT`       | `on`                                         | `off` yalnız uçtan uca testler içindir                                                                  |
++| `CONTACT_TO`       | —                                            | İletişim formu iletilerinin gideceği e-posta; yoksa `POST /api/iletisim` kapalı (404)                   |
++| `CONTACT_ORIGINS`  | boş                                          | Formu gönderebilecek web sitesi kökenleri (virgüllü, `*` yasak); yalnız bu uç için, çerezsiz CORS       |
+ 
+ Hatalı ya da eksik ayarda sunucu **başlamaz** ve her sorunu, değişken adı ve ne yapılacağıyla Türkçe listeler.
+ Sunucu ve betikler önce çalışma klasöründeki, yoksa `havuz/uygulama/` klasöründeki `.env` dosyasını okur

@@ -77,11 +77,11 @@ def _add_ara(parser: argparse.ArgumentParser) -> None:
 
 
 def _ara(args: argparse.Namespace) -> int:
-    from goruntu.arama.embedders import make_embedder
+    from goruntu.arama.embedders import embedder_for_index
     from goruntu.arama.index import ImageIndex
 
     index = ImageIndex.load(Path(args.dizin))
-    embedder = make_embedder(index.meta.model)
+    embedder = embedder_for_index(index.meta.model)
     query = embedder.embed_texts([args.metin])
     _print_results(index.search(query, args.k), args.json)
     return 0
@@ -97,11 +97,11 @@ def _add_benzer(parser: argparse.ArgumentParser) -> None:
 
 def _benzer(args: argparse.Namespace) -> int:
     from goruntu.arama.build import embed_query_image
-    from goruntu.arama.embedders import make_embedder
+    from goruntu.arama.embedders import embedder_for_index
     from goruntu.arama.index import ImageIndex
 
     index = ImageIndex.load(Path(args.dizin))
-    embedder = make_embedder(index.meta.model)
+    embedder = embedder_for_index(index.meta.model)
     path = Path(args.goruntu)
     query = embed_query_image(embedder, path, limits_from(args))
     exclude = {sha256_file(path)}  # sorgunun kendisi dizindeyse sonuçlarda gösterilmez

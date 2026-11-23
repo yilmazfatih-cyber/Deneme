@@ -63,36 +63,57 @@ def build_augmentation(spec: InputSpec, settings: AugmentSection) -> Any:
     return v2.Compose(steps)
 
 
+class ImageDataset:
+    """Harita tarzı veri kümesi (`__len__` + `__getitem__`; torch DataLoader bunu kabul eder).
+
+    Modül düzeyinde tanımlıdır ve torch'tan türemez: macOS/Windows'ta veri işçileri (spawn) nesneyi
+    pickle ile taşır; işlev içinde tanımlı sınıf orada "Can't pickle local object" hatası verir.
+    """
+
+    def __init__(
+        self,
+        samples: list[Sample],
+        labels: list[str],
+        spec: InputSpec,
+        limits: LoadLimits,
+        augmentation: Any | None = None,
+    ) -> None:
+        self.samples, self.spec, self.limits, self.augmentation = (
+            samples,
+            spec,
+            limits,
+            augmentation,
+        )
+        self.index = {label: number for number, label in enumerate(labels)}
+        self.draft = (spec.genislik * 2, spec.yukseklik * 2)
+
+    def __len__(self) -> int:
+        return len(self.samples)
+
+    def __getitem__(self, position: int) -> tuple[Any, int]:
+        import torch
+
+        sample = self.samples[position]
+        try:
+            if self.augmentation is None:
+                array = prepare(load_rgb(sample.path, self.limits), self.spec)
+            else:
+                image = load_rgb(sample.path, self.limits, draft_to=self.draft)
+                array = np.asarray(self.augmentation(image), dtype=np.uint8).copy()
+        except ImageRejectedError as exc:
+            raise UserError(t("veri.egitimde_bozuldu", ayrinti=str(exc))) from exc
+        return torch.from_numpy(array), self.index[sample.label]
+
+
 def make_dataset(
     samples: list[Sample],
     labels: list[str],
     spec: InputSpec,
     limits: LoadLimits,
     augmentation: Any | None = None,
-) -> Any:
-    """`(uint8 tensör HWC, etiket numarası)` döndüren torch veri kümesi."""
-    import torch
-
-    index = {label: number for number, label in enumerate(labels)}
-    draft = (spec.genislik * 2, spec.yukseklik * 2)
-
-    class ImageDataset(torch.utils.data.Dataset):  # type: ignore[type-arg]
-        def __len__(self) -> int:
-            return len(samples)
-
-        def __getitem__(self, position: int) -> tuple[torch.Tensor, int]:
-            sample = samples[position]
-            try:
-                if augmentation is None:
-                    array = prepare(load_rgb(sample.path, limits), spec)
-                else:
-                    image = load_rgb(sample.path, limits, draft_to=draft)
-                    array = np.asarray(augmentation(image), dtype=np.uint8).copy()
-            except ImageRejectedError as exc:
-                raise UserError(t("veri.egitimde_bozuldu", ayrinti=str(exc))) from exc
-            return torch.from_numpy(array), index[sample.label]
-
-    return ImageDataset()
+) -> ImageDataset:
+    """`(uint8 tensör HWC, etiket numarası)` döndüren veri kümesi."""
+    return ImageDataset(samples, labels, spec, limits, augmentation)
 
 
 def class_weights(samples: list[Sample], labels: list[str]) -> list[float]:

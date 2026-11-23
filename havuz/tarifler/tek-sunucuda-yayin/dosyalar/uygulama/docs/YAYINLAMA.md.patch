@@ -1,0 +1,21 @@
+--- a/docs/YAYINLAMA.md
++++ b/docs/YAYINLAMA.md
+@@ -108,6 +108,7 @@
+ ```bash
+ npm run backup -w @uygulama/api                       # → <veritabanı klasörü>/yedek/uygulama-YYYYMMDD-HHMMSS.db
+ npm run backup -w @uygulama/api -- /yol/yedek.db      # hedefi siz verin
++npm run backup -w @uygulama/api -- --klasor /var/backups/uygulama --sakla 14   # + 14 günden eskileri sil (en yeni 3 kalır)
+ docker exec uygulama npm run backup                    # Docker'da → /data/yedek/…
+ ```
+ 
+@@ -119,7 +120,9 @@
+ 17 3 * * * cd /srv/uygulama && docker exec uygulama npm run backup >> /var/log/uygulama-yedek.log 2>&1
+ ```
+ 
+-Geri yükleme:
++Geri yükleme (kısa yol: sunucu durmuşken `npm run restore -w @uygulama/api -- /yol/yedek.db --onayla`; betik
++yedeğin bütünlüğünü denetler, sunucu çalışıyorsa reddeder, şimdiki dosyayı `-wal`/`-shm` ile birlikte
++`.onceki-<zaman>` adıyla kenara alır ve yedeği tek adımda yerine koyar). Elle:
+ 
+ 1. Sunucuyu durdurun (`docker stop uygulama`).
+ 2. Yedek dosyayı `DATABASE_PATH`'e kopyalayın; yanındaki `uygulama.db-wal` ve `uygulama.db-shm` dosyalarını

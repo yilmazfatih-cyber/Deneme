@@ -22,14 +22,14 @@ def _random_hashes(count: int, columns: int = 5, seed: int = 0) -> np.ndarray:
 
 
 def _brute(hashes: np.ndarray, threshold: int) -> set[tuple[int, int]]:
+    """Kaba kuvvet: "birinin tamamı ↔ ötekinin herhangi bir kırpması" en küçük bit farkı."""
     found = set()
+    columns = range(hashes.shape[1])
     for i in range(len(hashes)):
         for j in range(i + 1, len(hashes)):
-            best = min(
-                min(bin(int(hashes[i, s]) ^ int(hashes[j, 0])).count("1") for s in range(hashes.shape[1])),
-                min(bin(int(hashes[i, 0]) ^ int(hashes[j, s])).count("1") for s in range(hashes.shape[1])),
-            )
-            if best <= threshold:
+            gaps = [bin(int(hashes[i, s]) ^ int(hashes[j, 0])).count("1") for s in columns]
+            gaps += [bin(int(hashes[i, 0]) ^ int(hashes[j, s])).count("1") for s in columns]
+            if min(gaps) <= threshold:
                 found.add((i, j))
     return found
 

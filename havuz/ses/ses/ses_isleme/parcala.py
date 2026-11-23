@@ -1,7 +1,10 @@
 """Uzun sesi parçalara bölme: sessizliklerden (VAD) ya da sabit uzunlukta, örtüşmeli.
 
-`konusma_parcalari`: konuşma bölgelerini, her parça `azami_sn`'yi aşmayacak biçimde gruplar;
-sessiz aralıklar parçalara girmez (yazıya çeviricide uydurma — "hallucination" — riskini azaltır).
+`konusma_parcalari`: konuşma bölgelerini iki yandan `kenar_pay_sn` (0,5 sn) genişletir ve her parça
+`azami_sn`'yi aşmayacak biçimde gruplar; uzun sessizlikler parçalara girmez (yazıya çeviricide
+uydurma — "hallucination" — riskini azaltır). Cömert pay ŞARTTIR: sözcük sonundaki kısa ve kısık
+hece (ör. "arttı"daki kapantıdan sonra gelen "-tı") enerji eşiğini zor aşar; sıkı kesilirse sözcük
+kesik çıkar (gerçek modelle ölçüldü: docs/GERCEK_MODEL_DENEMESI.md).
 Tek bir konuşma bölgesi sınırdan uzunsa, sınırın son yarısındaki EN SESSİZ çerçevede kesilir
 (sözcük ortasından kesme olasılığı en aza iner). Whisper 30 sn'lik pencereyle çalışır; varsayılan
 28 sn bir pay bırakır. `sabit_parcalar`: sinyal bakmadan eşit uzunlukta, örtüşmeli parçalar.
@@ -46,14 +49,32 @@ def _bolgeyi_bol(bas: int, son: int, azami: int, enerji: np.ndarray, ornekleme: 
     return parcalar
 
 
+def _genislet(bolgeler: list[Bolge], pay: float, sure: float) -> list[Bolge]:
+    """Bölgeleri iki yandan `pay` saniye genişletir; örtüşenleri birleştirir."""
+    sonuc: list[Bolge] = []
+    for bolge in bolgeler:
+        genis = Bolge(max(0.0, bolge.baslangic - pay), min(sure, bolge.bitis + pay))
+        if sonuc and genis.baslangic <= sonuc[-1].bitis:
+            sonuc[-1] = Bolge(sonuc[-1].baslangic, max(sonuc[-1].bitis, genis.bitis))
+        else:
+            sonuc.append(genis)
+    return sonuc
+
+
 def konusma_parcalari(
-    dizi: Dizi, ornekleme: int, *, azami_sn: float = 28.0, bolgeler: list[Bolge] | None = None
+    dizi: Dizi,
+    ornekleme: int,
+    *,
+    azami_sn: float = 28.0,
+    kenar_pay_sn: float = 0.5,
+    bolgeler: list[Bolge] | None = None,
 ) -> list[Parca]:
     """Konuşma içeren, her biri en çok `azami_sn` uzunlukta parçalar (zaman sırasıyla)."""
     if azami_sn < 1.0:
         raise BicimHatasi("Parça uzunluğu en az 1 saniye olmalı.")
     if bolgeler is None:
-        bolgeler = konusma_bolgeleri(dizi, ornekleme)
+        bolgeler = konusma_bolgeleri(dizi, ornekleme, pay_ms=0)
+    bolgeler = _genislet(bolgeler, kenar_pay_sn, len(dizi) / ornekleme)
     azami = int(azami_sn * ornekleme)
     enerji = cerceve_enerjisi(dizi, ornekleme)
     parcalar: list[Parca] = []
@@ -61,7 +82,9 @@ def konusma_parcalari(
     for bolge in bolgeler:
         bas, son = int(bolge.baslangic * ornekleme), min(len(dizi), int(bolge.bitis * ornekleme))
         if grup is not None and son - grup.bas <= azami:
-            grup = Parca(grup.bas, son)  # aynı parçaya sığıyor: arada kalan kısa sessizlikle birlikte
+            grup = Parca(
+                grup.bas, son
+            )  # aynı parçaya sığıyor: arada kalan kısa sessizlikle birlikte
             continue
         if grup is not None:
             parcalar.append(grup)

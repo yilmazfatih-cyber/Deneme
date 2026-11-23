@@ -57,7 +57,11 @@ def _evaluation_files(args: argparse.Namespace, labels: list[str]) -> tuple[list
     from goruntu.siniflandirma.predict import training_dir_of
 
     if args.veri:
-        samples = discover(Path(args.veri)).all_samples
+        discovery = discover(Path(args.veri))
+        samples = discovery.all_samples
+        if discovery.predefined is not None:  # hazır ayrımda eğitim görüntüleri ölçülmez
+            parts = discovery.predefined
+            samples = parts.get("test") or parts.get("dogrulama") or samples
         unknown = sorted({s.label for s in samples} - set(labels))
         if unknown:
             raise UserError(t("degerlendirme.bilinmeyen_sinif", siniflar=", ".join(unknown)))

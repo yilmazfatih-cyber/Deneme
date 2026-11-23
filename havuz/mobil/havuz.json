@@ -1,0 +1,34 @@
+{
+  "ad": "mobil",
+  "baslik": "Yerel mobil uygulama temeli (Expo + React Native)",
+  "ozet": "Uygulama mağazalarına çıkabilen, çevrimdışı-önce Expo uygulaması: expo-sqlite deposu + havuz/uygulama API'siyle aynı eşitleme protokolü, güvenli belirteç, Türkçe ve erişilebilir ekranlar, üreteç ve mağaza hazırlığı.",
+  "tur": "node",
+  "gereksinim": { "node": ">=22.18" },
+  "kur": ["npm ci"],
+  "denetle": ["npm run check"],
+  "uzunDenetim": ["npm run test:gen", "npm run e2e", "npm run e2e:api"],
+  "baslat": "npm start",
+  "yerTutucular": [
+    {
+      "ara": "havuz-mobil",
+      "anlam": "paket adı ve Expo slug (küçük harf, tire): package.json, app.config.ts → slug, src/config.ts → APP.id"
+    },
+    { "ara": "Yapıtaşı", "anlam": "uygulamanın görünen adı: app.config.ts → name ve src/i18n/tr.json → app.name" },
+    {
+      "ara": "com.ornek.havuzmobil",
+      "anlam": "mağaza paket kimliği (iOS bundleIdentifier, Android package): app.config.ts"
+    },
+    { "ara": "havuzmobil", "anlam": "derin bağlantı şeması (havuzmobil://…): app.config.ts → scheme" }
+  ],
+  "kopyalamaHaric": [
+    "node_modules",
+    "dist",
+    "dist-api",
+    ".expo",
+    "test-results",
+    "playwright-report",
+    "coverage",
+    "ios",
+    "android"
+  ]
+}

@@ -51,7 +51,9 @@ class Rapor(BaseModel):
     ornekler: list[OrnekSonucu]
 
     def toplam(self, alan: str, etiket: str | None = None) -> Olcum:
-        return topla(getattr(o, alan) for o in self.ornekler if etiket is None or o.etiket == etiket)
+        return topla(
+            getattr(o, alan) for o in self.ornekler if etiket is None or o.etiket == etiket
+        )
 
     @property
     def rtf(self) -> float:
@@ -134,14 +136,18 @@ def markdown_rapor(rapor: Rapor) -> str:
                      "| --- | ---: | ---: | ---: | ---: | ---: |"]  # fmt: skip
         for etiket in etiketler:
             adet = sum(1 for o in rapor.ornekler if o.etiket == etiket)
-            olc = [_yuzde(rapor.toplam(a, etiket)) for a in ("wer", "cer", "wer_sayili", "cer_sayili")]
+            olc = [
+                _yuzde(rapor.toplam(a, etiket)) for a in ("wer", "cer", "wer_sayili", "cer_sayili")
+            ]
             satirlar.append(f"| {etiket} | {adet} | " + " | ".join(olc) + " |")
         satirlar.append("")
     satirlar += ["## Örnekler", "", "| Kimlik | WER | CER (sayılar yazıyla) | Doğru | Tahmin |",
                  "| --- | ---: | ---: | --- | --- |"]  # fmt: skip
     for o in rapor.ornekler:
         dogru, tahmin = (m.replace("|", "\\|") for m in (o.dogru, o.tahmin))
-        satirlar.append(f"| {o.kimlik} | {_yuzde(o.wer)} | {_yuzde(o.cer_sayili)} | {dogru} | {tahmin} |")
+        satirlar.append(
+            f"| {o.kimlik} | {_yuzde(o.wer)} | {_yuzde(o.cer_sayili)} | {dogru} | {tahmin} |"
+        )
     return "\n".join(satirlar) + "\n"
 
 

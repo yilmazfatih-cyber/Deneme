@@ -1,0 +1,54 @@
+# cpu-kucuk — gerçek iş, GPU'suz: önceden eğitilmiş küçük model, yalnız sınıflandırma başı eğitilir.
+# Yüzlerce görüntülük bir klasörde dakikalar sürer. İlk koşu modeli indirir (~22 MB).
+# Kendi verinizle: python -m goruntu egit --hazir cpu-kucuk -D veri.klasor="fotograflarim"
+# Büyük fotoğrafları önce küçültün (çok hızlanır): python -m goruntu hazirla fotograflar kucuk --boyut 512
+
+[model]
+taban = "timm/mobilenetv3_large_100.ra_in1k"
+onceden_egitilmis = true
+girdi_boyutu = 0
+kip = "bas"
+bas_isinma_donemi = 0
+govde_oran_carpani = 0.1
+birakma = 0.2
+
+[veri]
+klasor = "veri/sekiller"
+dogrulama_orani = 0.15
+test_orani = 0.15
+kopya_yontemi = "phash"
+kopya_esigi = 8
+grup_deseni = ""
+tohum = 42
+
+[artirma]
+etkin = true
+olcek_alt = 0.7
+yatay_cevir = true
+dikey_cevir = false
+renk = 0.2
+dondurme_derece = 0.0
+
+[egitim]
+cikti = "ciktilar/cpu-kucuk"
+donem = 8
+yigin = 32
+ogrenme_orani = 3e-3
+agirlik_curumesi = 0.01
+isinma_orani = 0.05
+dengesizlik = "agirlikli-kayip"
+etiket_yumusatma = 0.0
+erken_durdurma = 3
+izlenen = "makro_f1"
+duyarlik = "oto"
+is_parcacigi = 0
+isci = 2
+tohum = 42
+
+[esik]
+kalibrasyon = true
+hedef_dogruluk = 0.95
+sabit_esik = 0.0
+
+[disa_aktarim]
+int8 = true

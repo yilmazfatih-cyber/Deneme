@@ -1,0 +1,64 @@
+--- a/api/src/config.ts
++++ b/api/src/config.ts
+@@ -27,6 +27,12 @@
+ 
+ /** OWASP'ın eşdeğer scrypt seçeneklerinden en az bellek isteyeni: özet başına ~16 MiB, ~0,15 sn. */
+ export const DEFAULT_PASSWORD_HASH: PasswordHashParams = { N: 2 ** 14, r: 8, p: 5 }
++
++/** İletişim formu (modules/iletisim): iletilerin gideceği adres ve formu gönderebilecek site kökenleri. */
++export interface ContactConfig {
++  readonly to: string
++  readonly origins: readonly string[]
++}
+ 
+ export type MailConfig =
+   | { readonly provider: 'console'; readonly from: string }
+@@ -49,6 +55,8 @@
+   readonly adminEmails: readonly string[]
+   readonly sessionTtlDays: number
+   readonly mail: MailConfig
++  /** İletişim formu; CONTACT_TO verilmediyse `null` (uç 404 döner). */
++  readonly contact: ContactConfig | null
+   /** Derlenmiş web uygulamasının klasörü; varsa aynı kökenden sunulur. */
+   readonly webDist: string | null
+   readonly logLevel: LogLevel
+@@ -119,6 +127,8 @@
+   WEB_DIST: z.string().optional(),
+   LOG_LEVEL: z.enum(LOG_LEVELS, { error: 'debug, info, warn ya da error olmalı.' }).optional(),
+   RATE_LIMIT: z.enum(['on', 'off'], { error: 'on ya da off olmalı.' }).default('on'),
++  CONTACT_TO: z.string().optional(),
++  CONTACT_ORIGINS: z.string().optional(),
+ })
+ 
+ type RawEnv = z.output<typeof envSchema>
+@@ -170,6 +180,22 @@
+         `ALLOWED_ORIGINS: "${origin}" geçersiz. Yalnız köken yazın, sonda / olmadan (ör. https://ornek.com).`,
+       )
+     }
++  }
++  for (const origin of list(raw.CONTACT_ORIGINS)) {
++    const parsed = tryUrl(origin)
++    if (origin === '*' || !parsed || !/^https?:$/.test(parsed.protocol) || parsed.origin !== origin) {
++      problems.push(
++        `CONTACT_ORIGINS: "${origin}" geçersiz. Sitenin kökenini sonda / olmadan yazın (ör. https://ornek.com); * olmaz.`,
++      )
++    }
++  }
++  if (raw.CONTACT_TO && !emailSchema.safeParse(raw.CONTACT_TO).success) {
++    problems.push(`CONTACT_TO: "${raw.CONTACT_TO}" geçerli bir e-posta değil (iletilerin gideceği adres).`)
++  }
++  if (!raw.CONTACT_TO && raw.CONTACT_ORIGINS) {
++    problems.push(
++      'CONTACT_TO: CONTACT_ORIGINS verildi ama iletilerin gideceği e-posta yok (ör. CONTACT_TO=siz@ornek.com).',
++    )
+   }
+   for (const email of list(raw.ADMIN_EMAILS)) {
+     if (!emailSchema.safeParse(email).success) problems.push(`ADMIN_EMAILS: "${email}" geçerli bir e-posta değil.`)
+@@ -216,6 +242,7 @@
+     adminEmails: list(raw.ADMIN_EMAILS).map((email) => emailSchema.parse(email)),
+     sessionTtlDays: raw.SESSION_TTL_DAYS ?? 30,
+     mail: buildMail(raw),
++    contact: raw.CONTACT_TO ? { to: emailSchema.parse(raw.CONTACT_TO), origins: list(raw.CONTACT_ORIGINS) } : null,
+     webDist: raw.WEB_DIST ? resolve(cwd, raw.WEB_DIST) : DEFAULT_WEB_DIST,
+     logLevel: raw.LOG_LEVEL ?? (raw.NODE_ENV === 'test' ? 'warn' : 'info'),
+     rateLimit: raw.RATE_LIMIT === 'on',

@@ -116,8 +116,11 @@ def python_kur(gunluk: Gunluk, klasor: Path, ekstralar: list[str] | None = None)
     """Temelin .venv'ini kurar. `ekstralar` verilmezse havuz.json → python.ekstra kullanılır."""
     kok = python_klasoru(klasor)
     secilen = _ekstralar(klasor) if ekstralar is None else ekstralar
+    # Etkin bir sanal ortam (ör. denetle.py tarifler'in .venv'ini açtıysa) hedef temelin değildir:
+    # VIRTUAL_ENV taşınırsa `uv sync` uyarı basar; kurulum her zaman temelin kendi .venv'ine gider.
+    ortam = {ad: deger for ad, deger in os.environ.items() if ad != "VIRTUAL_ENV"}
     for komut in python_kur_komutlari(kok, secilen):
-        gunluk.calistir(f"{klasor.name}: python ortamı ({komut[1]})", komut, kok)
+        gunluk.calistir(f"{klasor.name}: python ortamı ({komut[1]})", komut, kok, ortam)
 
 
 def node_kur(gunluk: Gunluk, klasor: Path) -> None:

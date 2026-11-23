@@ -49,7 +49,7 @@ def _ac(kaynak: KAYNAK) -> tuple[BinaryIO, bool]:
         return io.BytesIO(bytes(kaynak)), True
     if isinstance(kaynak, str | Path):
         try:
-            return open(kaynak, "rb"), True  # noqa: SIM115 — çağıran kapatır
+            return open(kaynak, "rb"), True
         except OSError as hata:
             raise dosya_hatasi(kaynak, hata) from hata
     return kaynak, False

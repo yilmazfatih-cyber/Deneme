@@ -130,6 +130,7 @@ def yakala(tarif: Tarif, calisma: Path) -> list[str]:
     Var olan dosyalar/ tümüyle yeniden yazılır. Silinmiş dosya desteklenmez (tarif yalnız ekler/değiştirir).
     """
     planlanan: dict[Path, str] = {}
+    kaynaklar: dict[Path, Path] = {}  # yeni dosyanın kaynağı (çalıştırma izni korunsun: .sh)
     for temel in tarif.temeller:
         asil_klasor = temel_klasoru(temel)
         asil = _dosyalar(asil_klasor, asil_klasor)
@@ -146,6 +147,7 @@ def yakala(tarif: Tarif, calisma: Path) -> list[str]:
             yeni = _oku(yol)
             if goreli not in asil:
                 planlanan[Path(temel) / goreli] = yeni
+                kaynaklar[Path(temel) / goreli] = yol
                 continue
             eski = _oku(asil[goreli])
             if eski != yeni:
@@ -154,10 +156,13 @@ def yakala(tarif: Tarif, calisma: Path) -> list[str]:
     for ek in tarif.ek_klasorler:
         for goreli, yol in sorted(_dosyalar(calisma / ek).items()):
             planlanan[Path(ek) / goreli] = _oku(yol)
+            kaynaklar[Path(ek) / goreli] = yol
     if tarif.dosyalar.exists():
         shutil.rmtree(tarif.dosyalar)
     for goreli, icerik in planlanan.items():
         hedef = tarif.dosyalar / goreli
         hedef.parent.mkdir(parents=True, exist_ok=True)
         hedef.write_text(icerik, encoding="utf-8")
+        if goreli in kaynaklar:
+            shutil.copymode(kaynaklar[goreli], hedef)
     return [str(yol) for yol in sorted(planlanan)]

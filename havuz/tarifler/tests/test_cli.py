@@ -14,7 +14,7 @@ import tarif
 from tarifcik.kurulum import komut_ayir, python_kur_komutlari
 
 
-def test_liste_bütün_tarifleri_yazar(capsys: pytest.CaptureFixture[str]) -> None:
+def test_liste_butun_tarifleri_yazar(capsys: pytest.CaptureFixture[str]) -> None:
     assert tarif.main(["liste"]) == 0
     cikti = capsys.readouterr().out
     assert "belgeye-soru-uygulamasi" in cikti

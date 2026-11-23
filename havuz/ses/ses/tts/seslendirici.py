@@ -17,7 +17,7 @@ import numpy as np
 from ses.hatalar import BicimHatasi
 from ses.ses_isleme.duzey import lufs_normallestir
 from ses.ses_isleme.ses import Dizi, Ses
-from ses.ses_isleme.sessizlik import sessizlik, sessizligi_kirp, sessizlikle_cevrele
+from ses.ses_isleme.sessizlik import sessizligi_kirp, sessizlik, sessizlikle_cevrele
 from ses.ses_isleme.yeniden_ornekle import yeniden_ornekle
 from ses.tts.motor import SesAyari, TtsMotoru
 from ses.tts.normallestir.normallestirici import normallestir

@@ -5,7 +5,7 @@ Kullanım (depo kökünden ya da bu klasörden; yalnız Python standart kütüph
   python havuz/tarifler/tarif.py liste
   python havuz/tarifler/tarif.py kur belgeye-soru-uygulamasi ../sor-projem     # hedefe uygula + kur
   python havuz/tarifler/tarif.py dogrula csvden-tahmin-servisi                  # geçici klasörde kur+doğrula+sil
-  python havuz/tarifler/tarif.py dogrula --hepsi --json sonuc.json              # bütün tarifler (uzun)
+  python havuz/tarifler/tarif.py dogrula --hepsi --json /tmp/tarif-sonuc.json   # bütün tarifler (uzun)
   python havuz/tarifler/tarif.py bicim                                          # hızlı biçim kuralları
   python havuz/tarifler/tarif.py yakala <tarif> <çalışma klasörü>               # elle değişikliği dosyalar/'a al
 

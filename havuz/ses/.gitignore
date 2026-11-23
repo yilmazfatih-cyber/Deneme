@@ -1,0 +1,32 @@
+# Sanal ortam ve derleme çıktıları
+.venv/
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.py[cod]
+
+# Araç önbellekleri
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
+# İndirilen modeller ve sesler: depoya GİRMEZ (python -m ses indir ile yeniden indirilir; sha256 katalogda)
+modeller/
+*.onnx
+*.onnx.json
+*.bin
+*.safetensors
+*.part
+
+# Üretilen ses ve raporlar (kişisel kayıt içerebilir)
+cikti.wav
+*.wav
+*.ogg
+*.mp3
+*.flac
+rapor/
+
+# Sırlar: ortam değişkeni örnekleri docs/AYARLAR.md'de
+.env
+.env.*

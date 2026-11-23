@@ -27,6 +27,7 @@ export default tseslint.config(
     ignores: [
       'node_modules',
       'dist',
+      'dist-api',
       '.expo',
       'shared',
       'coverage',

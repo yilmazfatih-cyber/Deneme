@@ -44,7 +44,9 @@ def _telefon(m: re.Match[str]) -> str:
 
 
 def _cagri_merkezi(m: re.Match[str]) -> str:
-    return ", ".join(["dört yüz kırk dört", _telefon_grubu(m["a"]), ekle(_telefon_grubu(m["b"]), m)])
+    return ", ".join(
+        ["dört yüz kırk dört", _telefon_grubu(m["a"]), ekle(_telefon_grubu(m["b"]), m)]
+    )
 
 
 def _iban(m: re.Match[str]) -> str:

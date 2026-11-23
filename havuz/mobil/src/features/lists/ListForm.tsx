@@ -5,7 +5,7 @@
 import { LIST_COLORS, type ListColor } from '@uygulama/shared'
 import { StyleSheet, View } from 'react-native'
 import { t } from '../../i18n/index.ts'
-import { ChoiceGroup, SPACE, TextField } from '../../ui/index.ts'
+import { ChoiceGroup, SPACE, TextField, useTheme } from '../../ui/index.ts'
 import { COLOR_LABELS } from '../tasks/labels.ts'
 
 export interface ListFormValues {
@@ -24,6 +24,7 @@ export function ListForm({
   errors: Record<string, string>
   onSubmit?: () => void
 }) {
+  const { colors } = useTheme()
   return (
     <View style={styles.form}>
       <TextField
@@ -39,7 +40,7 @@ export function ListForm({
         label={t('lists.form.color')}
         value={values.color}
         onChange={(color) => onChange({ ...values, color })}
-        options={LIST_COLORS.map((value) => ({ value, label: t(COLOR_LABELS[value]) }))}
+        options={LIST_COLORS.map((value) => ({ value, label: t(COLOR_LABELS[value]), swatch: colors.list[value] }))}
       />
     </View>
   )

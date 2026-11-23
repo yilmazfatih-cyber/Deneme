@@ -51,7 +51,9 @@ def test_hiz_sureyi_kisaltir():
 def test_perde_frekansi_kaydirir_sure_korunur(yarim_ton):
     ayar0 = SesAyari(bas_son_ms=0, hedef_lufs=None)
     duz = seslendir(SahteTts(frekans=200), "aaaaaaaaaaaaaaaaaaaa", ayar0)
-    kayik = seslendir(SahteTts(frekans=200), "aaaaaaaaaaaaaaaaaaaa", ayar0.model_copy(update={"perde": yarim_ton}))
+    kayik = seslendir(
+        SahteTts(frekans=200), "aaaaaaaaaaaaaaaaaaaa", ayar0.model_copy(update={"perde": yarim_ton})
+    )
     beklenen = 200 * 2 ** (yarim_ton / 12)
     assert abs(_baskin_frekans(kayik.mono(), kayik.ornekleme) - beklenen) < 3
     assert kayik.sure == pytest.approx(duz.sure, rel=0.03)
@@ -67,6 +69,7 @@ def test_hatalar():
         seslendir(SahteTts(), "   ")
     with pytest.raises(BicimHatasi, match="çok uzun"):
         seslendir(SahteTts(), "a" * (AZAMI_METIN + 1))
+
     class SessizMotor(SahteTts):
         def cumleler(self, metin, *, uzunluk_olcegi=1.0, konusmaci=None):
             yield np.zeros(1000, np.float32)
@@ -102,7 +105,9 @@ def test_kurulu_piper_api_si_beklenenle_ayni():
     """piper-tts sürümü değişip API kayarsa hangi adın gittiğini söyler (modelsiz, hızlı)."""
     piper = pytest.importorskip("piper")
     alanlar = {f.name for f in dataclasses.fields(piper.SynthesisConfig)}
-    assert set(SYNTHESIS_ALANLARI) <= alanlar, f"SynthesisConfig'te yok: {set(SYNTHESIS_ALANLARI) - alanlar}"
+    assert set(SYNTHESIS_ALANLARI) <= alanlar, (
+        f"SynthesisConfig'te yok: {set(SYNTHESIS_ALANLARI) - alanlar}"
+    )
     assert {"config", "session"} <= {f.name for f in dataclasses.fields(piper.PiperVoice)}
     assert "length_scale" in {f.name for f in dataclasses.fields(piper.PiperConfig)}
     assert callable(piper.PiperConfig.from_dict)

@@ -1,0 +1,35 @@
+--- a/shared/src/api.ts
++++ b/shared/src/api.ts
+@@ -247,6 +247,25 @@
+   databaseBytes: z.number().int().nonnegative(),
+ })
+ export type AdminMetricsResponse = z.infer<typeof adminMetricsResponseSchema>
++
++// ── İletişim formu (herkese açık; site temelinin formu buraya gönderir) ──────────────────────────────
++
++/** Sınırlar site temelinin formuyla aynıdır (site/src/components/ContactForm.astro). */
++export const contactRequestSchema = z.object({
++  name: z.string().trim().min(1, 'Adınızı yazın.').max(100, 'Ad en çok 100 karakter olabilir.'),
++  email: emailSchema,
++  message: z
++    .string()
++    .trim()
++    .min(10, 'İleti en az 10 karakter olmalı.')
++    .max(2000, 'İleti en çok 2000 karakter olabilir.'),
++  /** Formun gönderildiği sayfa ve dil (site betiği ekler). */
++  page: z.string().max(500).optional(),
++  lang: z.string().max(10).optional(),
++  /** Bal küpü: insanlar görmez, botlar doldurur. Doluysa ileti sessizce atılır, yanıt yine başarılıdır. */
++  _gotcha: z.string().max(1000).optional(),
++})
++export type ContactRequest = z.input<typeof contactRequestSchema>
+ 
+ // ── Web yolları ──────────────────────────────────────────────────────────────────────────────────
+ 
+@@ -294,5 +313,6 @@
+   adminUsers: '/api/admin/users',
+   adminUser: (id: string) => `/api/admin/users/${enc(id)}`,
+   adminMetrics: '/api/admin/metrics',
++  contact: '/api/iletisim',
+   // YENİ ADRES BURAYA
+ } as const

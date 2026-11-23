@@ -11,7 +11,9 @@ import numpy as np
 from ses.ses_isleme.ses import Dizi
 
 
-def sinus(frekans: float, sure: float, ornekleme: int, genlik: float = 0.5, faz: float = 0.0) -> Dizi:
+def sinus(
+    frekans: float, sure: float, ornekleme: int, genlik: float = 0.5, faz: float = 0.0
+) -> Dizi:
     t = np.arange(round(sure * ornekleme)) / ornekleme
     return (genlik * np.sin(2 * np.pi * frekans * t + faz)).astype(np.float32)
 

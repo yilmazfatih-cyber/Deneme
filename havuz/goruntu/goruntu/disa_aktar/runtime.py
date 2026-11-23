@@ -15,6 +15,7 @@ sonucundan okuyun; paket üst verisinde (`bundle.py`) çıkış adını yazın.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -22,6 +23,7 @@ from typing import Any
 import numpy as np
 from PIL import Image
 
+from goruntu import console
 from goruntu.disa_aktar.bundle import BundleMeta, find_onnx, from_session
 from goruntu.errors import UserError
 from goruntu.hazirlik.loader import DEFAULT_LIMITS, LoadLimits, Source, load_rgb
@@ -72,6 +74,8 @@ class OnnxClassifier:
         except Exception as exc:  # bozuk ya da uyumsuz dosya
             raise UserError(t("paket.acilamadi", yol=self.path, ayrinti=str(exc)[:300])) from exc
         self.meta: BundleMeta = from_session(self.session, self.path)
+        if self.meta.dogrulama.get("int8_onerilmez"):
+            console.warn(t("paket.int8_onerilmez", yol=self.path))
         self.decision = Decision(self.meta.etiketler, self.meta.sicaklik, self.meta.esik)
 
     @property
@@ -91,6 +95,6 @@ class OnnxClassifier:
         return predictions_from(probabilities, self.decision, top)
 
     def predict_files(
-        self, sources: list[Source], limits: LoadLimits = DEFAULT_LIMITS, top: int = 3
+        self, sources: Sequence[Source], limits: LoadLimits = DEFAULT_LIMITS, top: int = 3
     ) -> list[Prediction]:
         return self.predict([load_rgb(source, limits) for source in sources], top)

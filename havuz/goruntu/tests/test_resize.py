@@ -27,7 +27,9 @@ def _image(width: int, height: int, mode: str = "RGB") -> Image.Image:
         ((50, 40), (100, 100), "kirp", (40, 40)),  # büyütmeden kutunun oranında orta parça
     ],
 )
-def test_kipler(size: tuple[int, int], box: tuple[int, int], mode: str, expected: tuple[int, int]) -> None:
+def test_kipler(
+    size: tuple[int, int], box: tuple[int, int], mode: str, expected: tuple[int, int]
+) -> None:
     assert resize_image(_image(*size), box, mode).size == expected  # type: ignore[arg-type]
 
 

@@ -48,14 +48,15 @@ def cerceve_enerjisi(
     baslar = np.arange(0, len(dizi), adim)
     sonlar = np.minimum(baslar + pencere, len(dizi))
     ortalama = (kare[sonlar] - kare[baslar]) / np.maximum(sonlar - baslar, 1)
-    return 10 * np.log10(np.maximum(ortalama, 1e-12))
+    db: NDArray[np.float64] = 10 * np.log10(np.maximum(ortalama, 1e-12))
+    return db
 
 
 def gurultu_tabani(enerji: NDArray[np.float64], pencere_cerceve: int = 30) -> float:
     """Gürültü tabanı (dBFS): enerjinin `pencere_cerceve` çerçevelik kayan ortalamasının en küçüğü."""
     guc = np.power(10.0, enerji / 10)
     if len(guc) <= pencere_cerceve:
-        return float(enerji.min())
+        return float(np.min(enerji))
     birikim = np.concatenate([[0.0], np.cumsum(guc)])
     ortalama = (birikim[pencere_cerceve:] - birikim[:-pencere_cerceve]) / pencere_cerceve
     return float(10 * np.log10(max(float(ortalama.min()), 1e-12)))

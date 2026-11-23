@@ -1,5 +1,6 @@
 node_modules
 dist
+dist-api
 .expo
 package-lock.json
 playwright-report

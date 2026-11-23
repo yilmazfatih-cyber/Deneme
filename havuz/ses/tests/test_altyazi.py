@@ -1,5 +1,7 @@
 """Altyazı biçimleri: SRT/WebVTT altın örnekleri, gidiş-dönüş, zaman biçimi, bölme ve örtüşme."""
 
+import itertools
+
 import pytest
 
 from ses.hatalar import BicimHatasi
@@ -37,7 +39,9 @@ def test_srt_altin_ornek():
 
 def test_vtt_altin_ornek_ve_kacis():
     ipuclari = [Ipucu(0.5, 2.0, "a < b & c --> d")]
-    assert vtt_uret(ipuclari) == "WEBVTT\n\n00:00:00.500 --> 00:00:02.000\na &lt; b &amp; c --&gt; d\n"
+    assert (
+        vtt_uret(ipuclari) == "WEBVTT\n\n00:00:00.500 --> 00:00:02.000\na &lt; b &amp; c --&gt; d\n"
+    )
     assert vtt_uret([]) == "WEBVTT\n\n" and srt_uret([]) == ""
 
 
@@ -47,7 +51,11 @@ def test_bos_satir_bicimi_bozamaz():
 
 
 def test_gidis_donus():
-    ipuclari = [Ipucu(0.0, 1.234, "Bir"), Ipucu(1.5, 3.0, "İki & üç\n<dört>"), Ipucu(3600.001, 3601.5, "Ç")]
+    ipuclari = [
+        Ipucu(0.0, 1.234, "Bir"),
+        Ipucu(1.5, 3.0, "İki & üç\n<dört>"),
+        Ipucu(3600.001, 3601.5, "Ç"),
+    ]
     assert srt_coz(srt_uret(ipuclari)) == ipuclari
     assert vtt_coz(vtt_uret(ipuclari)) == ipuclari
 
@@ -73,7 +81,9 @@ def _kelimeli(metin, bas=0.0, adim=0.5):
     sozcukler = metin.split()
     kelimeler = [Kelime(baslangic=bas + i * adim, bitis=bas + (i + 1) * adim, metin=" " + s)
                  for i, s in enumerate(sozcukler)]  # fmt: skip
-    return Bolut(baslangic=bas, bitis=bas + len(sozcukler) * adim, metin=" " + metin, kelimeler=kelimeler)
+    return Bolut(
+        baslangic=bas, bitis=bas + len(sozcukler) * adim, metin=" " + metin, kelimeler=kelimeler
+    )
 
 
 def test_sozcuk_zamanlariyla_bolme_sinirlara_uyar():
@@ -98,7 +108,7 @@ def test_ortusme_yok_ve_en_kisa_sure():
     ipuclari = ipuclarina_bol(bolutler, en_kisa_sure=0.7)
     assert ipuclari[0].bitis == 0.5  # sonrakini ezmez
     assert ipuclari[2].bitis == pytest.approx(5.7)  # en kısa görünme süresi
-    for once, sonra in zip(ipuclari, ipuclari[1:], strict=False):
+    for once, sonra in itertools.pairwise(ipuclari):
         assert once.bitis <= sonra.baslangic
 
 
