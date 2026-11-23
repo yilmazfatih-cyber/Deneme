@@ -1,5 +1,5 @@
 {
- "zaman": "2026-11-23T11:32",
+ "zaman": "2026-11-23T20:32",
  "rapor": {
   "tv": {
    "satir": 649,
@@ -156,7 +156,7 @@
    "zaman": "2026-11-12T11:18"
   },
   "_toplam": {
-   "sure_dk": 19.7,
+   "sure_dk": 1.4,
    "hisse": 623
   },
   "kesif": {
@@ -259,25 +259,25 @@
   },
   "yahoo": {
    "hisse": 621,
-   "satir": 415544,
+   "satir": 415545,
    "hata": {
     "ALTIN": "boş",
     "DMLKT": "boş"
    },
-   "yazilan_satir": 415544,
+   "yazilan_satir": 415545,
    "eski_dosyadan_korunan_hisse": 0,
-   "sure_sn": 42.0,
-   "zaman": "2026-11-23T11:13"
+   "sure_sn": 54.9,
+   "zaman": "2026-11-23T20:31"
   },
   "hisse_saatlik": {
    "sembol": 251,
-   "satir": 967220,
+   "satir": 974861,
    "hata": {
     "DMLKT.IS": "boş"
    },
    "secilen": 252,
-   "sure_sn": 24.7,
-   "zaman": "2026-11-12T21:01"
+   "sure_sn": 27.8,
+   "zaman": "2026-11-23T20:32"
   },
   "isy": {
    "hisse": 620,
