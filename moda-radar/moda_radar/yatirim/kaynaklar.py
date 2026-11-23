@@ -224,8 +224,13 @@ def birlestir(tahminler: dict[str, TahminKaydi], esikler: dict) -> tuple[TahminK
         yukselen = sum(a for e, a in w.items() if tahminler[e].yon in (Yon.GIRIS, Yon.YUKSELIS))
         cikan = sum(a for e, a in w.items() if tahminler[e].yon == Yon.CIKIS)
         metin = " ".join(tahminler[e].gerekce.lower() for e in kaynakli)
+        # Güç farkı tek başına çelişki değildir (düz desen hep ~0,9): ancak bir eksen gerçekten zayıfsa
+        # (olasılık < celiski_zayif_esik) ve fark büyükse çelişki sayılır.
         celiskili = (
-            max(olas) - min(olas) >= esikler["celiski_olasilik_farki"]
+            (
+                max(olas) - min(olas) >= esikler["celiski_olasilik_farki"]
+                and min(olas) < esikler.get("celiski_zayif_esik", 1.0)
+            )
             or (yukselen >= 0.25 and cikan >= 0.25)
             or "talep yok" in metin
             or "çelişk" in metin
