@@ -2,7 +2,8 @@
 
 Belgede söz edilen komutlar ayrıştırılabilmeli, listeler kodun listeleriyle aynı olmalı, iletilerin andığı bölümler
 belgede bulunmalı. Belgenin anlattığı davranışlar (kenardaki eski eğitimin geri gelmesi, OCR'sız okumanın reddi,
-modül iletileri) kodda da öyle olmalı. Metin satır sonlarından bağımsız karşılaştırılır.
+modül iletileri) kodda da öyle olmalı. Metin satır sonlarından bağımsız karşılaştırılır. Ağa çıkılmaz: indirme ve
+sunucu istekleri sahtedir; bütün veriler sentetiktir.
 """
 
 from __future__ import annotations
@@ -14,21 +15,36 @@ import re
 import shlex
 import struct
 import sys
-from dataclasses import fields
+from dataclasses import fields, replace
 from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
 import pytest
+from conftest import TEST_AYARLARI
 
 from turkce_model import cli, egitim, meb
-from turkce_model.ayarlar import Ayarlar, AyarHatasi, EgitimAyarlari, ayarlari_yukle
+from turkce_model.ayarlar import (
+    EN_BUYUK_EGITIM_TOHUMU,
+    Ayarlar,
+    AyarHatasi,
+    EgitimAyarlari,
+    ayarlari_yukle,
+    egitimi_dogrula,
+)
 from turkce_model.degerlendirme import ilerleme_ekle
 from turkce_model.egitim import KILITLI_EGITIM_ALANLARI
 from turkce_model.metin import binlik
 from turkce_model.moduller import kiyas, komutlar, meb_metin, ocr
-from turkce_model.moduller.ayar import VARSAYILAN_ADRES, MetinAyarlari, ModulAyarlari, OcrAyarlari, moduller_uygula
-from turkce_model.moduller.istemci import ModulHatasi, yerel_adres_mi
+from turkce_model.moduller.ayar import (
+    EN_BUYUK_ZAMAN_ASIMI,
+    VARSAYILAN_ADRES,
+    MetinAyarlari,
+    ModulAyarlari,
+    OcrAyarlari,
+    moduller_uygula,
+)
+from turkce_model.moduller.istemci import ModulHatasi, YerelSunucu, yerel_adres_mi
 from turkce_model.veri import AkisVeri
 
 if sys.version_info >= (3, 11):
@@ -310,7 +326,7 @@ def test_kenardaki_eski_egitim_belgelendigi_gibi_geri_gelir(tmp_path):
     for alinti, koddaki in (
         ("yarıda kalan --uzerine-yaz; eski eğitim kenarda: …", '"yarıda kalan --uzerine-yaz; eski eğitim kenarda: "'),
         ("geri getirmek için: egit --asama … --devam", "→ geri getirmek için: {komut} --devam{ek}"),
-        ("Kenarda kalmış eski eğitimler de burada listelenir.", "/ {asama}: yarıda kalan --uzerine-yaz; eski eğitim kenarda"),
+        ("Kenarda kalmış eski eğitimler de burada listelenir", "/ {asama}: yarıda kalan --uzerine-yaz; eski eğitim kenarda"),
     ):
         assert alinti in durum, alinti
         assert koddaki in kaynak, koddaki
@@ -364,14 +380,16 @@ def test_boru_kapaninca_cikis_kodu_belgelenir():
 # ---- MEB soruları: OCR kipi, OCR'sız okumanın reddi, durum'un sırası ------------------------------
 
 
-def _taranmis_pdf(yol: Path) -> Path:
-    """Metin katmanı olmayan tek sayfalık PDF (yalnız bir dikdörtgen)."""
+def _taranmis_pdf(yol: Path, sayfa_sayisi: int = 1, **kaydet) -> Path:
+    """Metin katmanı olmayan PDF: her sayfada yalnız bir dikdörtgen. ``kaydet``: ``pymupdf`` kaydetme seçenekleri
+    (ör. parola)."""
     pymupdf = pytest.importorskip("pymupdf")
     yol.parent.mkdir(parents=True, exist_ok=True)
     belge = pymupdf.open()
-    sayfa = belge.new_page(width=200, height=200)
-    sayfa.draw_rect(pymupdf.Rect(10, 10, 30, 30), color=(0, 0, 0), fill=(0, 0, 0))
-    belge.save(yol)
+    for i in range(sayfa_sayisi):
+        sayfa = belge.new_page(width=200, height=200)
+        sayfa.draw_rect(pymupdf.Rect(10 + 20 * i, 10, 30 + 20 * i, 30), color=(0, 0, 0), fill=(0, 0, 0))
+    belge.save(yol, **kaydet)
     belge.close()
     return yol
 
@@ -574,11 +592,406 @@ def test_sor_resim_belgelenen_durumlarda_durur(monkeypatch, metin, ileti):
 
 def test_kiyas_onbellegi_ve_kesik_cevaplar_belgelendigi_gibi():
     bolum = _duz(_bolum(README, "Kıyas modülü"))
-    assert "Şık her çalıştırmada saklanan ham cevaptan yeniden çıkarılır." in bolum
+    # Saklanan "cevap" sunucunun içeriği değil, düşünme bloğu ayıklanmış metindir: belge "ham" demez.
+    assert "(cevap metni ve çıkarılan şık)" in bolum and "ham cevap" not in bolum
+    assert "Şık her çalıştırmada saklanan cevaptan yeniden çıkarılır." in bolum
     assert 'secim = cevap_cikar(str(kayit.get("cevap", ""))' in inspect.getsource(kiyas.kiyasla)
+    assert "return dusunmeyi_ayikla(ham)" in inspect.getsource(YerelSunucu.sohbet)
     assert "Önbellek anahtarı model adını da içerir: bu sürümden önce saklanan cevaplar bir kez yeniden sorulur." in bolum
     s = meb.Soru(kimlik="mmlu:x:1", kaynak="turkishmmlu", ders="Tarih", soru="Hangisi?", secenekler=["A", "B"], cevap=0)
     assert kiyas._soru_anahtari(s, MetinAyarlari(model="a")) != kiyas._soru_anahtari(s, MetinAyarlari(model="b"))
     varsayilan = MetinAyarlari().en_fazla_token
-    assert f"Cevabı `[moduller.metin] en_fazla_token`'da (varsayılan {varsayilan}) kesildiği için şıkkı" in bolum
+    assert f"Cevabı `[moduller.metin] en_fazla_token`'da (varsayılan {varsayilan}) kesilen soru" in bolum
     assert "en_fazla_token ({ayar.en_fazla_token}) sınırında kesildi (model çoğu kez" in inspect.getsource(komutlar.komut_modul_kiyas)
+
+
+# ---- kenardakiler silinirken ölen --uzerine-yaz; yeniden eğitilen aşamanın modeli -------------------------
+
+
+def _asama_dosyalari(klasor: Path) -> dict[str, bytes]:
+    return {p.name: p.read_bytes() for p in sorted(klasor.iterdir()) if p.is_file()}
+
+
+def test_kenardakiler_silinirken_olen_uzerine_yaz_belgelendigi_gibi(tmp_path, monkeypatch, capsys):
+    bolum = _duz(_bolum(README, "6. Eğitim"))
+    assert (
+        "Süreç eski dosyaları silerken öldürülürse model (`en_iyi.pt.eski`) `son.pt.eski`'den sonra silindiği için "
+        'kalabilir; `durum` onu da "eski eğitim kenarda" diye gösterir. Bitmiş eski eğitimi `egit --devam` modeliyle '
+        "geri getirir; bitmemiş olanın `son.pt`'si silinmiştir, sürdürülemez."
+    ) in bolum
+    assert "geri getirdiği eğitim bitmişse `--devam` ayarları karşılaştırmaz: `son.pt`'si silinmiş olsa da" in bolum
+    # Silme sırası: son.pt.eski modelden (en_iyi.pt.eski) önce gider.
+    klasor = tmp_path / "tdk"
+    klasor.mkdir()
+    for ad in ("durum.json", "gunluk.jsonl", "en_iyi.pt", "son.pt"):
+        (klasor / f"{ad}.eski").write_bytes(f"eski {ad}".encode())
+    silinenler: list[str] = []
+    asil_sil = Path.unlink
+    with monkeypatch.context() as m:
+        m.setattr(Path, "unlink", lambda yol, *a, **k: (silinenler.append(yol.name), asil_sil(yol, *a, **k))[1])
+        egitim._eskileri_sil(klasor)
+    assert silinenler.index("son.pt.eski") < silinenler.index("en_iyi.pt.eski")
+    # İlk silmeden sonra öldürülmüş: model, durum ve günlük kenarda; yeni koşunun yarım durum/günlük dosyaları canlı.
+    for ad in ("durum.json", "gunluk.jsonl", "en_iyi.pt"):
+        (klasor / f"{ad}.eski").write_bytes(f"eski {ad}".encode())
+    (klasor / "durum.json").write_text('{"durum": "suruyor", "adim": 1}', encoding="utf-8")
+    (klasor / "gunluk.jsonl").write_text("{}\n", encoding="utf-8")
+    assert egitim._yarim_uzerine_yazmayi_toparla(klasor)
+    assert _asama_dosyalari(klasor) == {ad: f"eski {ad}".encode() for ad in ("durum.json", "en_iyi.pt", "gunluk.jsonl")}
+    # Geri gelen bitmiş eğitimin son.pt'si yok: --devam "zaten bitmiş" kararını son.pt'ye bakmadan verir.
+    kaynak = inspect.getsource(egitim._egit)
+    assert kaynak.index("if devam and geri_getirildi:") < kaynak.index("if devam and not son_yol.exists():")
+    # durum, başka bir deneyin son.pt'si silinmiş bitmemiş eski eğitimine --devam önermez.
+    durum = _duz(_bolum(README, "Adım adım"))
+    assert (
+        "Kenarda kalmış eski eğitimler de burada listelenir; bitmemiş ve `son.pt`'si silinmiş olan \"sürdürülemez\" "
+        "notunu alır"
+    ) in durum
+    ayar = tmp_path / "ayarlar.toml"
+    ayar.write_text(TEST_AYARLARI, encoding="utf-8")
+    diger = tmp_path / "ciktilar" / "deneyler" / "diger" / "tdk"
+    diger.mkdir(parents=True)
+    (diger / "en_iyi.pt.eski").write_bytes(b"eski model")
+    (diger / "durum.json.eski").write_text(json.dumps({"durum": "suruyor", "adim": 8, "toplam_adim": 12}), encoding="utf-8")
+    (diger / "durum.json").write_text(json.dumps({"durum": "suruyor", "adim": 1, "toplam_adim": 12}), encoding="utf-8")
+    satir = "  diger / tdk: yarıda kalan --uzerine-yaz; eski eğitim kenarda (adım 8/12)"
+    assert cli.main(["durum", "--ayarlar", str(ayar)]) == 0
+    assert f"{satir}; bitmedi ve son.pt yok, sürdürülemez" in capsys.readouterr().out.splitlines()
+    (diger / "son.pt.eski").write_bytes(b"eski son")  # son.pt kenardaysa sürdürülebilir
+    assert cli.main(["durum", "--ayarlar", str(ayar)]) == 0
+    devam = f"{satir} → egit --asama tdk --devam --deney diger --ayarlar {cli._tirnak(str(ayar))}"
+    assert devam in capsys.readouterr().out.splitlines()
+
+
+def test_yeniden_egitilen_asamanin_modelini_isteyen_komut_bunu_soyler(tmp_path, tok, capsys):
+    bolum = _duz(_bolum(README, "6. Eğitim"))
+    assert (
+        "Aşamayı başka bir süreç eğitirken `.eski` dosyalarına dokunulmaz; o aşamanın modelini isteyen komut (`--model` "
+        "ile verilen `en_iyi.pt` ya da `son.pt` de) aşamanın yeniden eğitildiğini söyleyip 2 koduyla çıkar."
+    ) in bolum
+    ayar = tmp_path / "ayarlar.toml"
+    ayar.write_text(TEST_AYARLARI, encoding="utf-8")
+    ayarlar = ayarlari_yukle(ayar)
+    tok.kaydet(egitim.tokenizer_klasoru(ayarlar))
+    klasor = ayarlar.deney_klasoru / "tdk"
+    klasor.mkdir(parents=True)
+    for ad in ("durum.json", "en_iyi.pt", "son.pt"):
+        (klasor / f"{ad}.eski").write_bytes(b"eski")
+    with egitim.egitim_kilidi(klasor):  # başka bir süreç bu aşamayı --uzerine-yaz ile eğitiyor: kilit tutuluyor
+        kenarda = _asama_dosyalari(klasor)
+        for argv in (
+            ["uret", "kitap"],
+            ["uret", "kitap", "--model", str(klasor / "en_iyi.pt")],
+            ["tanimla", "kitap", "--model", str(klasor / "son.pt")],
+        ):
+            assert cli.main([*argv, "--ayarlar", str(ayar), "--cihaz", "cpu"]) == 2, argv
+            hata = capsys.readouterr().err
+            assert f"{klasor} şu an başka bir süreçte --uzerine-yaz ile yeniden eğitiliyor" in hata, argv
+            assert "Model dosyası yok" not in hata, argv
+        assert _asama_dosyalari(klasor) == kenarda  # kenardakiler süren eğitimindir: yerinde kalır
+    # degerlendir --model de varsayılan yoldaki gibi sorar.
+    assert "yeniden_egitiliyor_notu(yol.parent)" in inspect.getsource(egitim.degerlendir)
+
+
+# ---- MEB soruları: --klasor'lu ipuçları, meb-mmlu notu; tohum ----------------------------------------------
+
+
+def test_taranmis_pdf_uyarisi_ve_reddi_ayni_klasoru_okutur(tmp_path, capsys):
+    bolum = _duz(_bolum(README, "3. MEB soruları"))
+    assert "İki durumda da yazılan komut çağrının `--klasor`, `--ayarlar`, `--ayar` ve `--deney` seçeneklerini taşır." in bolum
+    klasor = _taranmis_pdf(tmp_path / "eski kitaplar" / "a.pdf").parent
+    hedef = tmp_path / "veri" / "meb" / "meb_pdf.jsonl"
+    soru = meb.Soru(
+        kimlik="pdf:b.pdf:111:tarih-1:1", kaynak="meb-pdf", ders="Tarih - 1", soru="Hangisi bir başkenttir?",
+        secenekler=["Ankara", "Deniz", "Hava", "Uzay"], cevap=0, bolum="egitim", ek={"dosya": "b.pdf"},
+    )
+    meb.soru_yaz([soru], hedef)
+    once = hedef.read_bytes()
+    ayar = tmp_path / "ayarlar.toml"
+    ayar.write_text(AYAR_DOSYASI, encoding="utf-8")
+    argv = ["meb-pdf", "--klasor", str(klasor), "--ayarlar", str(ayar), "--ayar", "moduller.ocr.dpi=200", "--deney", "d"]
+    assert cli.main(argv) == 2  # hiç soru bulunamadı: önceki çıktı silinmesin diye durur
+    cikti = capsys.readouterr()
+    uyari, ret = cikti.out.strip().splitlines()[-1], cikti.err.strip().splitlines()[-1]
+    assert "taranmış (resim) bir PDF olabilir" in uyari and hedef.read_bytes() == once
+    for satir in (uyari, ret):  # yapıştırılan komut aynı klasörü aynı ayarlarla OCR ile okur
+        yeni = cli.ayristirici().parse_args(shlex.split(satir.split("OCR ile okumak için: python -m turkce_model ")[1]))
+        assert (yeni.komut, yeni.ocr, yeni.klasor, yeni.ayarlar, yeni.ayar, yeni.deney) == (
+            "meb-pdf", "gerekirse", str(klasor), str(ayar), ["moduller.ocr.dpi=200"], "d"
+        )
+
+
+def test_meb_mmlu_notu_komutlari_sirayla_yazar(tmp_path, monkeypatch, capsys):
+    bolum = _duz(_bolum(README, "3. MEB soruları"))
+    assert (
+        "`meb-mmlu` bu durumda bu komutları OCR kipiyle ve çağrının `--ayarlar`, `--ayar`, `--deney` seçenekleriyle "
+        "sırayla yazar."
+    ) in bolum
+    monkeypatch.setattr(meb, "mmlu_indir", lambda yol, yaz=print: [])  # ağa çıkılmaz
+    ayar = tmp_path / "ek ayar.toml"
+    ayar.write_text(AYAR_DOSYASI, encoding="utf-8")
+    hedef = tmp_path / "veri" / "meb" / "meb_pdf.jsonl"
+    hedef.parent.mkdir(parents=True)
+    hedef.write_text("", encoding="utf-8")
+    model = tmp_path / "ciktilar" / "deneyler" / "d" / "meb" / "en_iyi.pt"
+    model.parent.mkdir(parents=True)
+    model.write_bytes(b"")
+    for kip, deney, beklenen in (
+        ("hepsi", "d", ["meb-pdf --ocr hepsi", "veri-hazirla", "egit --asama meb --uzerine-yaz"]),
+        ("gerekirse", "yok", ["meb-pdf --ocr", "veri-hazirla"]),  # bu deneyde MEB modeli yok
+        (None, "d", ["meb-pdf", "veri-hazirla", "egit --asama meb --uzerine-yaz"]),
+    ):
+        hedef.with_suffix(".rapor.json").write_text(json.dumps({"ocr": kip}), encoding="utf-8")
+        argv = ["meb-mmlu", "--ayarlar", str(ayar), "--ayar", "moduller.ocr.dpi=200", "--deney", deney]
+        assert cli.main(argv) == 0
+        ek = cli._komut_eki(cli.ayristirici().parse_args(argv))
+        satirlar = capsys.readouterr().out.splitlines()
+        i = next(i for i, s in enumerate(satirlar) if s.startswith("Not: meb_pdf.jsonl bundan önce üretilmiş."))
+        assert satirlar[i + 1 :] == [f"  python -m turkce_model {k}{ek}" for k in beklenen], kip
+
+
+def test_egitim_tohumunun_araligi_belgelendigi_gibi(tmp_path, capsys):
+    bolum = _duz(_bolum(README, "5. Gömme kararları"))
+    assert "`tohum` 0 ile 2⁶³ − 1 arasında bir tam sayı olmalıdır" in bolum
+    assert EN_BUYUK_EGITIM_TOHUMU == 2**63 - 1
+    for deger in (0, 2**63 - 1):
+        egitimi_dogrula(replace(Ayarlar().tdk, tohum=deger), "tdk")
+    for deger in (-1, 2**63, 1.5, True, "7"):
+        with pytest.raises(AyarHatasi, match=r"egitim\.meb\.tohum 0 ile 9223372036854775807 arasında bir tam sayı"):
+            egitimi_dogrula(replace(Ayarlar().meb, tohum=deger), "meb")
+    ayar = tmp_path / "ayarlar.toml"
+    ayar.write_text(TEST_AYARLARI, encoding="utf-8")
+    assert cli.main(["hesapla", "--ayarlar", str(ayar), "--ayar", "egitim.meb.tohum=-1"]) == 2  # iki aşamayı denetler
+    assert "egitim.meb.tohum 0 ile 9223372036854775807 arasında bir tam sayı olmalı (şu an: -1)" in capsys.readouterr().err
+
+
+# ---- DeepSeek modülleri: iletilerdeki ayar dosyası, açılamayan PDF, kapanış satırı, sor --resim, kıyas -----
+
+
+def _yanit(kod: int, veri: dict) -> SimpleNamespace:
+    """``requests`` cevabının istemcinin kullandığı kısmı."""
+    return SimpleNamespace(status_code=kod, json=lambda: veri, text=json.dumps(veri), headers={})
+
+
+def test_modul_iletileri_ayar_dosyasini_ve_secenekleri_anar(tmp_path, monkeypatch, capsys):
+    requests = pytest.importorskip("requests")
+    bolum = _duz(_bolum(README, "Modülleri kurmak"))
+    assert (
+        "`modul-liste`, `modul-dene`, `modul-kiyas` ve `ocr` komutlarının iletileri ayar dosyası olarak `--ayarlar` ile "
+        "verdiğin dosyanın adını anar; yazdıkları komutlar (ör. `modul-liste`) çağrının `--ayarlar`, `--ayar` ve "
+        "`--deney` seçeneklerini taşır."
+    ) in bolum
+    ayar = tmp_path / "ek ayar.toml"
+    ayar.write_text(AYAR_DOSYASI, encoding="utf-8")  # modüller kapalı
+    for argv, rol in ((["modul-dene"], "ocr"), (["modul-kiyas"], "metin"), (["ocr", "sayfa.png"], "ocr")):
+        assert cli.main([*argv, "--ayarlar", str(ayar)]) == 2, argv
+        assert f"ek ayar.toml'da [moduller.{rol}] model = " in capsys.readouterr().err, argv
+    # Sunucu "model yok" der: ipucundaki modul-liste komutu çağrının seçeneklerini taşır.
+    yok = _yanit(404, {"error": {"message": "model 'deepseek-r1:1.5b' not found"}})
+    monkeypatch.setattr(requests.Session, "request", lambda *_, **__: yok)
+    argv = ["modul-dene", "metin", "--ayarlar", str(ayar), "--ayar", "moduller.metin.model=deepseek-r1:1.5b", "--deney", "d"]
+    assert cli.main(argv) == 2
+    ek = cli._komut_eki(cli.ayristirici().parse_args(argv))
+    assert capsys.readouterr().err.strip().endswith(f"Sunucudaki modelleri görmek için: python -m turkce_model modul-liste{ek}")
+
+    def ulasilamaz(*_, **__):
+        raise requests.exceptions.ConnectionError("bağlantı reddedildi")
+
+    monkeypatch.setattr(requests.Session, "request", ulasilamaz)
+    assert cli.main(["modul-liste", "--ayarlar", str(ayar)]) == 0  # modul-liste sunucunun durumunu yazar, durmaz
+    assert "Başka bir sunucu kullanıyorsan ek ayar.toml'da [moduller] adres değerini düzelt." in capsys.readouterr().out
+
+
+class _SiraliOcrSunucusu:
+    """``OcrModulu``'nün kullandığı tek yöntem: görüntü istekleri sırayla ``sayfalar``ı alır."""
+
+    def __init__(self, sayfalar: list[str]) -> None:
+        self.sayfalar, self.istek, self.son_bitis = sayfalar, 0, "stop"
+
+    def gorselden_metin(self, *_, **__) -> str:
+        self.istek += 1
+        return self.sayfalar[(self.istek - 1) % len(self.sayfalar)]
+
+
+def test_ocr_acilamayan_pdfi_atlar_sunucu_hatasinda_durur(tmp_path):
+    pymupdf = pytest.importorskip("pymupdf")
+    bolum = _duz(_bolum(README, "OCR modülü"))
+    assert (
+        "Sunucuya ulaşılamazsa, model yoksa ya da modül kapalıysa `meb-pdf --ocr` kendi iletisiyle durur ve "
+        "`meb_pdf.jsonl`'e dokunmaz. Açılamayan bir PDF (bozuk, boş ya da parolalı) ise `--ocr hepsi` ile de atlanır ve "
+        'özet satırında "okunamadı" diye sayılır; öbür kitapçıklar okunur.'
+    ) in bolum
+    klasor = tmp_path / "pdf"
+    _taranmis_pdf(klasor / "iyi.pdf", 2)
+    (klasor / "bozuk.pdf").write_bytes(b"bozuk")
+    (klasor / "bos.pdf").write_bytes(b"")
+    _taranmis_pdf(klasor / "parolali.pdf", encryption=pymupdf.PDF_ENCRYPT_AES_256, user_pw="gizli", owner_pw="sahip")
+    sunucu = _SiraliOcrSunucusu(
+        ["(111) TARİH - 1\n\n" + _ocr_sorusu(1) + "\n\n" + _ocr_sorusu(2), "CEVAP ANAHTARI\n\n(111) TARİH - 1\n\n1. A\n2. B"]
+    )
+    ayristirici = meb_metin.ocr_ayristirici(ocr.OcrModulu(sunucu, OcrAyarlari(model="m"), None), "hepsi")
+    hedef = tmp_path / "meb_pdf.jsonl"
+    satirlar: list[str] = []
+    rapor = meb.pdf_klasoru_ayristir(klasor, hedef, yaz=satirlar.append, ayristirici=ayristirici)
+    hatalar = {ad: r["hata"].split(":")[0] for ad, r in rapor["dosyalar"].items() if "hata" in r}
+    assert hatalar == dict.fromkeys(("bos.pdf", "bozuk.pdf", "parolali.pdf"), "PdfOkunamadi")
+    assert (rapor["yazilan"], sunucu.istek) == (2, 2)  # açılamayan dosya için sunucuya istek gitmez
+    assert any(s.startswith("4 PDF (3 okunamadı): 2 soru bulundu, 2 tutuldu") for s in satirlar)
+    # Sunucu ya da model hatası her dosyada yinelenir: okuma durur, önceki çıktıya dokunulmaz.
+    once = hedef.read_bytes()
+
+    def sunucu_kapali(*_, **__):
+        raise ModulHatasi("Yerel model sunucusuna ulaşılamadı (http://localhost:11434/v1).")
+
+    with pytest.raises(ModulHatasi, match="ulaşılamadı"):
+        meb.pdf_klasoru_ayristir(klasor, hedef, yaz=lambda _: None, ayristirici=sunucu_kapali)
+    assert hedef.read_bytes() == once
+
+
+def _ocr_ayikla(*sayfalar: str) -> dict[int, meb.Soru]:
+    sorular, _ = meb_metin.metinden_ayristir(list(sayfalar), "k.pdf", yaz=lambda _: None)
+    return {int(s.ek["soru_no"]): s for s in sorular}
+
+
+def test_ocr_kapanis_satiri_belgelendigi_gibi():
+    bolum = _duz(_bolum(README, "OCR modülü"))
+    m = re.search(r"Testin sonundaki kapanış satırı \((.*?) gibi\) son seçeneğe eklenmez\.", bolum)
+    ornekler = re.findall(r'"([^"]+)"', m.group(1)) if m else []
+    assert len(ornekler) == 3
+    for son in ornekler:
+        sorular = _ocr_ayikla(
+            "(111) TARİH - 1\n\n" + _ocr_sorusu(1) + "\n\n" + _ocr_sorusu(2) + "\n\n" + son,
+            "CEVAP ANAHTARI\n\n(111) TARİH - 1\n\n1. A\n2. B",
+        )
+        assert [s.secenekler for s in sorular.values()] == [["Bir", "İki", "Üç", "Dört"]] * 2, son
+    # Satırın tamamı kapanış değilse ya da ortak metnin içindeyse metin olarak kalır.
+    assert (
+        '"Sınav bitti, sonuçlar…" gibi bir metin satırı da, ortak metnin ("2 - 3. soruları … cevaplayınız.") içindeki '
+        "satır da metin olarak kalır."
+    ) in bolum
+    for satir in ("Sınav bitti, sonuçlar bir hafta sonra açıklandı.", ornekler[-1]):
+        parca = ["Ayşe bütün dönem düzenli çalıştı.", satir, "Ayşe ödül kazandı."]
+        sorular = _ocr_ayikla(
+            "(111) TARİH - 1\n\n" + _ocr_sorusu(1) + "\n\n2 - 3. soruları aşağıdaki metne göre cevaplayınız.\n\n"
+            + "\n".join(parca) + "\n\n" + _ocr_sorusu(2) + "\n\n" + _ocr_sorusu(3),
+            "CEVAP ANAHTARI\n\n(111) TARİH - 1\n\n1. A\n2. B\n3. C",
+        )
+        assert all(" ".join(parca) in sorular[n].soru for n in (2, 3)), satir
+
+
+def test_zaman_asimi_ust_siniri_belgelendigi_gibi():
+    bolum = _duz(_bolum(README, "OCR modülü"))
+    assert "En çok 604800 sn (bir hafta) verilebilir; daha büyük değer ayarlar okunurken reddedilir." in bolum
+    assert EN_BUYUK_ZAMAN_ASIMI == 604800 == 7 * 24 * 3600
+    yuklu = ayarlari_yukle(PROJE / "ayarlar.toml", ["moduller.zaman_asimi=604800"])
+    assert yuklu.moduller.zaman_asimi == 604800
+    for deger in ("604801", "1e10"):
+        with pytest.raises(AyarHatasi, match=r"en çok 604800 \(bir hafta\)"):
+            ayarlari_yukle(PROJE / "ayarlar.toml", [f"moduller.zaman_asimi={deger}"])
+
+
+_FOTO_SORUSU = "Aşağıdakilerden hangisi bir başkenttir?\nA) İzmir\nB) Ankara\nC) Bursa\nD) Konya"
+
+
+@pytest.mark.parametrize(
+    "metin",
+    [
+        pytest.param("AÇIK ÖĞRETİM LİSESİ\n(111) TARİH - 1\n12\n7) " + _FOTO_SORUSU + "\n\n8) Hangisi?", id="baslik-7)"),
+        pytest.param("C) Murat\nD) Selim\n\n7. " + _FOTO_SORUSU + "\n\n8) Hangisi?", id="onceki-secenekler-7."),
+        pytest.param("7) " + _FOTO_SORUSU + "\n\n8. Hangisi?", id="7)-sonra-8."),
+    ],
+)
+def test_sor_resim_soru_numarasi_ve_sayfa_basligi_belgelendigi_gibi(monkeypatch, metin):
+    bolum = _duz(_bolum(README, "OCR modülü"))
+    assert (
+        'Soru numarası "7." ya da "7)" olabilir. Numaradan önce yalnız büyük harfli sayfa başlığı ve sayfa numarası ya '
+        'da önceki sorunun seçenekleri varsa bu satırlar okunmaz; seçeneklerden sonra başlayan soru ("8. …" ya da '
+        '"8) …") son seçeneğe eklenmez.'
+    ) in bolum
+    sahte = SimpleNamespace(ayar=OcrAyarlari(model="m"), dosya_oku=lambda *_: [metin])
+    monkeypatch.setattr(ocr, "ocr_modulu", lambda *_, **__: sahte)
+    soru = komutlar.resimden_soru("soru.png", None)
+    assert (soru.soru, soru.secenekler) == ("Aşağıdakilerden hangisi bir başkenttir?", ["İzmir", "Ankara", "Bursa", "Konya"])
+    # Yalnız büyük harfli başlık atlanır: karışık harfli satır kökte kalır.
+    assert meb_metin.tek_soru("Açık Öğretim Lisesi\n\n7) " + _FOTO_SORUSU).soru.startswith("Açık Öğretim Lisesi")
+
+
+def _sohbet_sunucusu(icerik: str, bitis: str) -> YerelSunucu:
+    """Gerçek ``YerelSunucu``; oturumu her isteğe aynı cevabı döndürür (ağa çıkılmaz)."""
+    veri = {"choices": [{"message": {"role": "assistant", "content": icerik}, "finish_reason": bitis}]}
+    return YerelSunucu("http://127.0.0.1:9/v1", oturum=SimpleNamespace(request=lambda *_, **__: _yanit(200, veri)))
+
+
+def test_kiyas_olumsuz_harf_ve_dusunurken_kesilen_cevap_belgelendigi_gibi(tmp_path, monkeypatch, capsys):
+    bolum = _duz(_bolum(README, "Kıyas modülü"))
+    m = re.search(r'Olumsuzlanan harf \((.*?)\) cevap sayılmaz; başka bir harf onaylanmışsa o alınır \("(.+?)" → ([A-E])\)\.', bolum)
+    assert m
+    olumsuzlar = re.findall(r'"([^"]+)"', m.group(1))
+    assert len(olumsuzlar) == 2 and all(kiyas.cevap_cikar(o, 4) is None for o in olumsuzlar)
+    assert kiyas.cevap_cikar(m.group(2), 4) == "ABCD".index(m.group(3))
+    # Düşünürken kesilen cevap (kapanan </think> yok) cevapsızdır; şablon düşünmeyi açtıysa içerikte <think> da yoktur.
+    assert (
+        "kesilen soru, cevapta kapanan bir düşünme bloğu (`</think>`) yoksa cevapsız sayılır: model düşünürken "
+        "kesilmiştir, metindeki harf cevap değildir. Sunucunun sohbet şablonu düşünmeyi kendisi açtığında (cevapta "
+        "`<think>` görünmez) da böyledir."
+    ) in bolum
+    sorular = [
+        meb.Soru(kimlik=f"mmlu:x:{i}", kaynak="turkishmmlu", ders="Coğrafya", soru=f"{i}. Başkent hangisidir?",
+                 secenekler=["İzmir", "Ankara", "Bursa", "Konya"], cevap=1)
+        for i in range(3)
+    ]
+    ayar = MetinAyarlari(model="m")
+    for ad, icerik, bitis, beklenen in (  # (cevapsız, kesik, doğruluk)
+        ("sablon", "Soruyu düşünüyorum. Cevap B olabilir mi?", "length", (3, 3, 0.0)),
+        ("etiketli", "<think>Soruyu düşünüyorum. Cevap B olabilir mi?", "length", (3, 3, 0.0)),
+        ("bitmis", "Cevap B olabilir mi?</think>B", "length", (0, 0, 1.0)),
+        ("tam", "B", "stop", (0, 0, 1.0)),
+    ):
+        sonuc = kiyas.kiyasla(_sohbet_sunucusu(icerik, bitis), ayar, sorular, tmp_path / ad, yaz=lambda _: None)
+        assert (sonuc["cevapsiz"], sonuc["kesik"], sonuc["dogruluk_uretim"]) == beklenen, ad
+    # Önbellekten yeniden okunurken de aynı kural (yeni istek gitmez); bilgisi olmayan eski kayıt eskisi gibi okunur.
+    sonuc = kiyas.kiyasla(_sohbet_sunucusu("A", "stop"), ayar, sorular, tmp_path / "sablon", yaz=lambda _: None)
+    assert (sonuc["cevapsiz"], sonuc["kesik"]) == (3, 3)
+    assert "Düşünmenin kapanıp kapanmadığını tutmayan eski önbellek kayıtları eskisi gibi okunur." in bolum
+    eski = tmp_path / "eski" / f"{kiyas._dosya_adi('m')}.jsonl"
+    eski.parent.mkdir()
+    kayit = {"anahtar": kiyas._soru_anahtari(sorular[0], ayar), "kimlik": sorular[0].kimlik, "cevap": "Cevap B", "kesik": True}
+    eski.write_text(json.dumps(kayit, ensure_ascii=False) + "\n", encoding="utf-8")
+    sonuc = kiyas.kiyasla(_sohbet_sunucusu("A", "stop"), ayar, sorular[:1], eski.parent, yaz=lambda _: None)
+    assert (sonuc["cevapsiz"], sonuc["dogruluk_uretim"]) == (0, 1.0)
+    # modul-dene metin de aynı kuralla sınar; --adet eksi olamaz (0 = hepsi).
+    assert "`modul-dene metin` de aynı kuralla sınar" in bolum
+    monkeypatch.setattr(komutlar, "_sunucu", lambda *_: _sohbet_sunucusu("Soruyu düşünüyorum. Cevap B olabilir mi?", "length"))
+    assert cli.main(["modul-dene", "metin", "--ayarlar", str(PROJE / "ayarlar.toml"), "--ayar", "moduller.metin.model=m"]) == 1
+    assert "Sonuç: cevaptan şık harfi çıkarılamadı." in capsys.readouterr().out
+    with pytest.raises(SystemExit):
+        cli.ayristirici().parse_args(["modul-kiyas", "--adet", "-5"])
+
+
+def test_ocr_metni_pdf_yolunun_elemelerinden_gecer():
+    bolum = _duz(_bolum(README, "OCR modülü"))
+    assert "PDF ayrıştırıcısının aynı kurallarından geçer: ders başlığı → soru → seçenek, cevap anahtarı, elemeler." in bolum
+    assert "yabancı dil derslerini" in _duz(_bolum(README, "3. MEB soruları"))
+    # Kısa kitapçık: dil satırı sarılmış başlığın ikinci satırı ve anahtar başlıkları yineler; ders yine yabancı dildir.
+
+    def ders(baslik: str, sayfa_no: int) -> list[str]:
+        ilk = "1. OTURUM\n\n" + baslik + "\n\n" + "\n\n".join(_ocr_sorusu(n) for n in range(1, 4))
+        ikinci = "1. OTURUM\n\n" + "\n\n".join(_ocr_sorusu(n) for n in range(4, 7))
+        return [f"{ilk}\n\n{sayfa_no}", f"{ikinci}\n\n{sayfa_no + 1}"]
+
+    almanca = "(183) SEÇMELİ İKİNCİ YABANCI DİL\nALMANCA - 1"
+    anahtar = "CEVAP ANAHTARI\n\n" + "\n\n".join(
+        f"{b}\n\n" + "\n".join(f"{n}. A" for n in range(1, 7)) for b in (almanca, "(111) TARİH - 1")
+    )
+    sayfalar = ["AÇIK ÖĞRETİM LİSESİ\n\n1. OTURUM", *ders(almanca, 2), *ders("(111) TARİH - 1", 4), anahtar]
+    sorular, rapor = meb_metin.metinden_ayristir(sayfalar, "k.pdf", yaz=lambda _: None)
+    assert {s.ders for s in sorular} == {"Tarih - 1"} and rapor["elenen"] == {"yabanci_dil": 6}
+    # Bütün soruları belirsiz ders: ders bulunur, soruları elenir; "soruları bulunamayan dersler" uyarısı çıkmaz.
+    assert "Hangi satırın soru başı olduğu ayırt edilemezse komşu sorular elenir." in bolum
+    sayfa = (
+        "(111) TARİH - 1\n1. Aşağıdakilerden hangisi bir meyvedir?\nA) Elma\nB) Masa\nC) Kalem\nD) Ağacın\n"
+        "2. dalındaki olgun yemiş\n2. Hangisi bir renktir?\nA) Mavi\nB) Kapı\nC) Defter\nD) Silgi"
+    )
+    mesajlar: list[str] = []
+    sorular, _ = meb_metin.metinden_ayristir([sayfa, "CEVAP ANAHTARI\n\n(111) TARİH - 1\n\n1. A\n2. A"], "k.pdf", yaz=mesajlar.append)
+    assert not sorular and mesajlar == ["k.pdf: 1 ders, 2 soru bulundu, 0 tutuldu (elenen: secenek_eksik 2)"]

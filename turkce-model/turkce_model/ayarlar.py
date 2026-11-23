@@ -30,6 +30,9 @@ MODEL_NORMLARI = ("rmsnorm", "layernorm")
 MLP_TURLERI = ("swiglu", "gelu")
 HASSASIYETLER = ("otomatik", "fp32", "bf16", "fp16")
 KAYIP_TURLERI = ("tum", "cevap")
+# egitim.<aşama>.tohum'un üst sınırı: torch 64 bitlik, numpy eksi olmayan tohum alır; aralık dışı değer izleme
+# dökümüyle çökerdi. 2**64 değil 2**63: eski kontrol noktalarında tohuma adım sayısı eklenir, toplam taşmasın.
+EN_BUYUK_EGITIM_TOHUMU = 2**63 - 1
 
 # Her gömme kararı: (alan, kısa açıklama, olası değerler)
 GOMME_KARARLARI: list[tuple[str, str, str]] = [
@@ -412,6 +415,9 @@ def egitimi_dogrula(ea: EgitimAyarlari, asama: str) -> EgitimAyarlari:
         hatalar.append(f"{ad}.kayip şunlardan biri olmalı: {', '.join(KAYIP_TURLERI)} (şu an: {ea.kayip!r})")
     if not isinstance(ea.derle, bool):
         hatalar.append(f"{ad}.derle true ya da false olmalı (şu an: {ea.derle!r})")
+    t = ea.tohum
+    if not (isinstance(t, int) and not isinstance(t, bool) and 0 <= t <= EN_BUYUK_EGITIM_TOHUMU):
+        hatalar.append(f"{ad}.tohum 0 ile {EN_BUYUK_EGITIM_TOHUMU} arasında bir tam sayı olmalı (şu an: {t!r})")
     if hatalar:
         raise AyarHatasi("Eğitim ayarlarında sorun var:\n  • " + "\n  • ".join(hatalar))
     return ea

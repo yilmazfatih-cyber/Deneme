@@ -6,7 +6,6 @@ işlevlerin içinde alınır.
 
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass, field, fields, replace
 from typing import Any
 from urllib.parse import urlsplit
@@ -14,6 +13,8 @@ from urllib.parse import urlsplit
 VARSAYILAN_ADRES = "http://localhost:11434/v1"
 """Ollama'nın OpenAI uyumlu adresi. llama.cpp: http://localhost:8080/v1, LM Studio: http://localhost:1234/v1,
 vLLM: http://localhost:8000/v1."""
+EN_BUYUK_ZAMAN_ASIMI = 7 * 24 * 3600
+"""``zaman_asimi``nin üst sınırı (bir hafta, saniye). Çok büyük değer (1e10) istek kurulurken taşma hatası verirdi."""
 
 
 @dataclass
@@ -107,13 +108,16 @@ def modulleri_dogrula(m: ModulAyarlari) -> None:
         hatalar.append(f"moduller.adres http:// ile başlayan bir adres olmalı (şu an: {m.adres!r}); ör. {VARSAYILAN_ADRES}")
     elif not _adres_gecerli(m.adres):
         hatalar.append(f"moduller.adres geçerli bir adres değil (şu an: {m.adres!r}); ör. {VARSAYILAN_ADRES}")
+    # Karşılaştırma nan'ı, sonsuzu ve float'a çevrilemeyecek kadar büyük tam sayıyı da (math.isfinite taşardı) reddeder.
     if (
         isinstance(m.zaman_asimi, bool)
         or not isinstance(m.zaman_asimi, (int, float))
-        or not math.isfinite(m.zaman_asimi)
-        or m.zaman_asimi <= 0
+        or not 0 < m.zaman_asimi <= EN_BUYUK_ZAMAN_ASIMI
     ):
-        hatalar.append(f"moduller.zaman_asimi pozitif bir sayı (saniye) olmalı (şu an: {m.zaman_asimi!r})")
+        hatalar.append(
+            f"moduller.zaman_asimi pozitif bir sayı (saniye) olmalı, en çok {EN_BUYUK_ZAMAN_ASIMI} (bir hafta) "
+            f"(şu an: {m.zaman_asimi!r})"
+        )
     if not isinstance(m.uzak_sunucu, bool):
         hatalar.append(f"moduller.uzak_sunucu true ya da false olmalı (şu an: {m.uzak_sunucu!r})")
     for ad in _ALT_BOLUMLER:

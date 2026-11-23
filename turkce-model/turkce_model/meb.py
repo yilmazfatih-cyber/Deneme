@@ -1537,8 +1537,11 @@ def pdf_ayristir(
     bolumler, anahtarlar, belge, bilgi = ayrik if ayrik is not None else _ayristir(pdf)
     bilesikler = _bilesikleri_topla(bilgi["satirlar"])
 
-    # Hiçbir sorusunda seçenek bulunmayan bölümler gerçek ders değildir (ör. dizin satırları); yok sayılır.
-    bolumler = [b for b in bolumler if any(len(s.secenekler) >= 2 for s in b.sorular)]
+    # Hiçbir sorusunda seçenek bulunmayan bölümler gerçek ders değildir (ör. dizin satırları); yok sayılır. OCR yolu
+    # (``ayrik``) soru başı belirsiz diye seçeneklerini sildiği soruların derslerini ``secenekli_bolumler``de verir:
+    # o ders raporda kalır, soruları elenir.
+    secenekli = {id(b) for b in bilgi.get("secenekli_bolumler", [])}
+    bolumler = [b for b in bolumler if id(b) in secenekli or any(len(s.secenekler) >= 2 for s in b.sorular)]
     eslesme = _anahtarla_eslestir(bolumler, anahtarlar)
     secenek_sayilari = Counter(
         len(s.secenekler) for b in bolumler for s in b.sorular if len(s.secenekler) >= 2
@@ -1755,7 +1758,9 @@ def pdf_klasoru_ayristir(
     ``haric_kokler``: kökü bunlardan biriyle aynı olan sorular yazılmaz (ör. TurkishMMLU kökleri:
     değerlendirme sorusu eğitime sızmasın); sayısı raporda ``haric_kok``.
 
-    Okunamayan dosyalar atlanır ve raporda belirtilir. Klasörde PDF yoksa (``FileNotFoundError``), pymupdf
+    Okunamayan dosyalar (OCR modülünün açamadığı bozuk, boş ya da parolalı PDF'ler de) atlanır ve raporda belirtilir.
+    ``ayristirici``nin öbür modül hataları (``AyarHatasi``: sunucu kapalı, model yok) her dosyada yinelenir: ``hedef``
+    yazılmadan olduğu gibi yükselir. Klasörde PDF yoksa (``FileNotFoundError``), pymupdf
     kurulu değilse ya da hiçbir PDF okunamadıysa (``RuntimeError``) ``hedef``e dokunulmaz: önceki çıktı boş
     bir dosyayla ezilmez. OCR'sız okumada (``ayristirici`` yok) metin katmanı olmayan (taranmış) kitapçıklar yüzünden
     önceki çıktının soruları kaybolacaksa da öyle: hiç soru bulunamadıysa ya da önceki çıktıdaki OCR ile okunmuş
@@ -1771,6 +1776,7 @@ def pdf_klasoru_ayristir(
         )
     _pymupdf()  # kurulu değilse her dosya için ayrı ayrı "okunamadı" demek yerine hemen dur
     from .ayarlar import AyarHatasi  # burada: meb.py ayarlar'a bağlı olmadan da kullanılabilsin
+    from .moduller.ocr import PdfOkunamadi
 
     haric = tuple(haric_dersler)
     haric_anahtarlar = {k for k in map(_bolme_anahtari, haric_kokler) if k}
@@ -1793,9 +1799,11 @@ def pdf_klasoru_ayristir(
                 sorular, r = ayristirici(pdf, haric, yaz=lambda m: yaz("  " + m), dosya_adi=ad)
             else:
                 sorular, r = pdf_ayristir(pdf, haric, yaz=lambda m: yaz("  " + m), dosya_adi=ad, komut_eki=komut_eki)
-        except AyarHatasi:  # modül hatası (sunucu kapalı, model yok…) her dosyada yinelenir: kendi iletisiyle dur
-            raise
         except Exception as e:  # noqa: BLE001 — bozuk ya da kitapçık olmayan PDF: diğerleri yine işlensin
+            # Modül hatası (sunucu kapalı, model yok…) her dosyada yinelenir: kendi iletisiyle dur. OCR'ın açamadığı
+            # PDF (bozuk, boş, parolalı) yalnız o dosyanındır.
+            if isinstance(e, AyarHatasi) and not isinstance(e, PdfOkunamadi):
+                raise
             hatali += 1
             rapor["dosyalar"][ad] = {"hata": f"{type(e).__name__}: {e}"}
             yaz(f"  {ad}: okunamadı ({type(e).__name__}: {e})")

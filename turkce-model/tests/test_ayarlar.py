@@ -105,6 +105,19 @@ def test_model_ve_egitim_ayarlari_dogrulanir():
             egitimi_dogrula(ayarlari_yukle(None, [degisim]).tdk, "tdk")
 
 
+@pytest.mark.parametrize("deger", ["-1", str(2**63), str(2**64), "1.5", "true", '"7"'])
+@pytest.mark.parametrize("asama", ["tdk", "meb"])
+def test_egitim_tohumu_dogrulanir(asama, deger):
+    # C4: tohum torch'a ve numpy'ye gider; aralık dışı değer eskiden eğitimde izleme dökümüyle çökerdi.
+    from turkce_model.ayarlar import EN_BUYUK_EGITIM_TOHUMU, egitimi_dogrula
+
+    ayarlar = ayarlari_yukle(None, [f"egitim.{asama}.tohum={deger}"])
+    with pytest.raises(AyarHatasi, match=rf"Eğitim ayarlarında sorun var:\n  • egitim\.{asama}\.tohum 0 ile {EN_BUYUK_EGITIM_TOHUMU} "):
+        egitimi_dogrula(getattr(ayarlar, asama), asama)
+    for sinir in (0, EN_BUYUK_EGITIM_TOHUMU):  # sınırdaki değerler geçerli
+        egitimi_dogrula(getattr(ayarlari_yukle(None, [f"egitim.{asama}.tohum={sinir}"]), asama), asama)
+
+
 def test_kod_varsayilanlari_depodaki_ayar_dosyasiyla_ayni():
     """ayarlar.toml'suz çalışan kod (ör. testler, --ayarlar'sız betikler) depodaki dosyayla aynı ayarları kullanır."""
     dosya, kod = ayarlari_yukle(PROJE / "ayarlar.toml"), Ayarlar()

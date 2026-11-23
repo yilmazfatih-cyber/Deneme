@@ -59,17 +59,22 @@ def gorsel_parcasi(gorsel: bytes, mime: str = "image/png") -> dict:
 
 
 class YerelSunucu:
-    """``adres``: sunucunun OpenAI uyumlu kökü (ör. ``http://localhost:11434/v1``)."""
+    """``adres``: sunucunun OpenAI uyumlu kökü (ör. ``http://localhost:11434/v1``). ``komut_eki``: iletilerde yazılan
+    komutların sonuna eklenen seçenekler (``cli._komut_eki``); ``ayar_dosyasi``: iletilerde anılan ayar dosyası."""
 
-    def __init__(self, adres: str, zaman_asimi: float = 900, uzak_sunucu: bool = False, oturum: Any = None) -> None:
+    def __init__(
+        self, adres: str, zaman_asimi: float = 900, uzak_sunucu: bool = False, oturum: Any = None,
+        komut_eki: str = "", ayar_dosyasi: str = "ayarlar.toml",
+    ) -> None:
         self.adres = adres.rstrip("/")
         self.zaman_asimi = zaman_asimi
+        self.komut_eki, self.ayar_dosyasi = komut_eki, ayar_dosyasi
         yerel = yerel_adres_mi(self.adres)
         if not yerel and not uzak_sunucu:
             raise ModulHatasi(
                 f"{self.adres} bu bilgisayarda ya da yerel ağda değil. TDK/MEB içeriği dışarı gönderilmesin diye "
                 "uzak sunucular varsayılan olarak kapalıdır. Yerel bir sunucu kullan (ör. Ollama: "
-                "http://localhost:11434/v1) ya da bilerek izin vermek için ayarlar.toml'da [moduller] "
+                f"http://localhost:11434/v1) ya da bilerek izin vermek için {ayar_dosyasi}'da [moduller] "
                 "uzak_sunucu = true yaz."
             )
         if oturum is None:
@@ -81,6 +86,9 @@ class YerelSunucu:
         self.oturum = oturum
         self.son_bitis: str | None = None
         """Son sohbet isteğinin ``finish_reason``'ı: ``"length"`` ise çıktı ``en_fazla_token``'da kesilmiştir."""
+        self.son_dusunme_kapandi = False
+        """Son cevabın ham içeriğinde kapanan bir düşünme bloğu (``</think>``) var mı. Sohbet şablonu düşünmeyi kendisi
+        açan sunucularda içerikte ``<think>`` görünmez: düşünürken kesilen cevap etiketsiz düz metindir."""
 
     # ---------------------------------------------------------------------------------------------
     def _istek(self, yontem: str, yol: str, govde: dict | None = None) -> dict:
@@ -92,13 +100,14 @@ class YerelSunucu:
         except requests.exceptions.Timeout as e:
             raise ModulHatasi(
                 f"Yerel model sunucusu {self.zaman_asimi:g} sn içinde cevap vermedi ({url}). Ekran kartı yoksa bir "
-                "sayfanın OCR'ı dakikalar sürebilir: ayarlar.toml'da [moduller] zaman_asimi değerini büyüt."
+                f"sayfanın OCR'ı dakikalar sürebilir: {self.ayar_dosyasi}'da [moduller] zaman_asimi değerini büyüt."
             ) from e
         except requests.exceptions.ConnectionError as e:
             raise ModulHatasi(
                 f"Yerel model sunucusuna ulaşılamadı ({self.adres}). Sunucu kurulu ve çalışıyor mu? Ollama için: "
                 "ollama.com'dan kur, sonra `ollama serve` (çoğu kurulumda kendiliğinden çalışır). Başka bir sunucu "
-                "kullanıyorsan ayarlar.toml'da [moduller] adres değerini düzelt. Ayrıntı: README, 'DeepSeek modülleri'."
+                f"kullanıyorsan {self.ayar_dosyasi}'da [moduller] adres değerini düzelt. "
+                "Ayrıntı: README, 'DeepSeek modülleri'."
             ) from e
         except requests.exceptions.RequestException as e:
             raise ModulHatasi(f"Yerel model sunucusuna istek gönderilemedi ({url}): {e}") from e
@@ -106,7 +115,7 @@ class YerelSunucu:
             raise ModulHatasi(
                 f"Yerel model sunucusu isteği başka bir adrese yönlendirdi (HTTP {yanit.status_code} → "
                 f"{yanit.headers.get('Location', '?')}). Veri dışarı gitmesin diye yönlendirme izlenmez; "
-                "ayarlar.toml'da [moduller] adres değerini sunucunun asıl /v1 köküyle değiştir."
+                f"{self.ayar_dosyasi}'da [moduller] adres değerini sunucunun asıl /v1 köküyle değiştir."
             )
         if yanit.status_code >= 400:
             raise ModulHatasi(self._hata_metni(yanit, govde))
@@ -136,7 +145,7 @@ class YerelSunucu:
         if model and "model" in dusuk and ("not found" in dusuk or "not exist" in dusuk):
             return (
                 f"Sunucuda '{model}' modeli yok ({self.adres}). Ollama kullanıyorsan indir: `ollama pull {model}`. "
-                "Sunucudaki modelleri görmek için: python -m turkce_model modul-liste"
+                f"Sunucudaki modelleri görmek için: python -m turkce_model modul-liste{self.komut_eki}"
             )
         ipucu = " Adres OpenAI uyumlu kökü göstermeli (çoğu sunucuda /v1 ile biter)." if yanit.status_code == 404 else ""
         return f"Yerel model sunucusu hata döndürdü (HTTP {yanit.status_code}, {self.adres}): {mesaj}.{ipucu}"
@@ -175,7 +184,9 @@ class YerelSunucu:
             raise ModulHatasi(f"Sunucunun cevabı beklenen biçimde değil ({self.adres}): {str(veri)[:200]!r}") from e
         if isinstance(icerik, list):  # içerik parçaları: metinleri birleştir
             icerik = "".join(str(p.get("text", "")) for p in icerik if isinstance(p, dict))
-        return dusunmeyi_ayikla(str(icerik or ""))
+        ham = str(icerik or "")
+        self.son_dusunme_kapandi = "</think>" in ham
+        return dusunmeyi_ayikla(ham)
 
     def gorselden_metin(
         self,

@@ -1,7 +1,8 @@
 """DeepSeek modülleri: yerel sunucu istemcisi, OCR, OCR metninden MEB sorusu, kıyas, katalog.
 
 Gerçek bir model çalıştırılmaz: testler bu süreçte açılan sahte bir OpenAI uyumlu sunucuyla konuşur.
-Tüm metinler sentetiktir.
+Tüm metinler sentetiktir. Adlardaki bulgu numaraları önceki incelemelerin (M1 … M8, m1 … m13) ya da son düzeltme
+turunun (M2, M5, M6, M7, M9 … M12) bulgularıdır: aynı numara iki turda farklı kusurları gösterebilir.
 """
 
 from __future__ import annotations
@@ -245,6 +246,25 @@ def test_m4_sonlu_olmayan_zaman_asimi_reddedilir(deger):
         moduller_uygula(ModulAyarlari(), {"zaman_asimi": deger})
 
 
+@pytest.mark.parametrize("deger", [1e10, 10**12, 10**400, 604801], ids=["1e10", "10-uzeri-12", "float-tasan", "bir-hafta-1"])
+def test_M6_cok_buyuk_zaman_asimi_reddedilir(deger):
+    # 1e10 doğrulamadan geçiyor, istek "timestamp out of range for C PyTime_t" ile izleme dökümü veriyordu.
+    with pytest.raises(AyarHatasi, match=r"moduller\.zaman_asimi pozitif bir sayı \(saniye\) olmalı, en çok 604800 \(bir hafta\)"):
+        moduller_uygula(ModulAyarlari(), {"zaman_asimi": deger})
+    assert moduller_uygula(ModulAyarlari(), {"zaman_asimi": 604800}).zaman_asimi == 604800
+
+
+def test_M6_modul_liste_buyuk_zaman_asimini_izleme_dokumsuz_reddeder(tmp_path, monkeypatch, capsys):
+    from turkce_model.cli import main
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "ayarlar.toml").write_text("[moduller]\nzaman_asimi = 10000000000\n", encoding="utf-8")
+    assert main(["modul-liste"]) == 2
+    assert capsys.readouterr().err.strip().endswith(
+        "moduller.zaman_asimi pozitif bir sayı (saniye) olmalı, en çok 604800 (bir hafta) (şu an: 10000000000)"
+    )
+
+
 # ---- OCR: temizleme ve önbellek ------------------------------------------------------------------
 
 HAM_OCR = """<|ref|>title<|/ref|><|det|>[[73, 60, 925, 110]]<|/det|>
@@ -375,6 +395,8 @@ def test_B2_ozel_token_artigi_etiket_gibi_temizlenir():
         pytest.param("|x - 2| = 5 denkleminin çözüm kümesi hangisidir?", "|x - 2| = 5 denkleminin çözüm kümesi hangisidir?", id="M5-mutlak-deger"),
         pytest.param("|a| + |b| = 7 olduğuna göre a kaçtır?", "|a| + |b| = 7 olduğuna göre a kaçtır?", id="M5-iki-mutlak-deger"),
         pytest.param("Bir açının ölçüsü \\( 30^{\\circ} \\) ise", "Bir açının ölçüsü 30° ise", id="m12-derece"),
+        pytest.param("Bir açının ölçüsü \\( 45^\\circ \\) ise", "Bir açının ölçüsü 45° ise", id="M7-parantezsiz-derece"),
+        pytest.param("\\( 45 ^ \\circ \\) ve 90^\\degree", "45° ve 90°", id="M7-bosluklu-derece"),
         pytest.param("\\( A = \\{1, 2, 3\\} \\) kümesi", "A = {1, 2, 3} kümesi", id="m12-kume"),
         pytest.param("\\( \\log_{2} 8 \\) değeri", "log_(2) 8 değeri", id="m12-log"),
         pytest.param("\\( x \\in \\mathbb{R} \\) olmak üzere", "x ∈ R olmak üzere", id="m12-mathbb"),
@@ -386,7 +408,7 @@ def test_B2_ozel_token_artigi_etiket_gibi_temizlenir():
         pytest.param("**Ankara**nın nüfusu", "Ankaranın nüfusu", id="R5-vurgu-ardinda-ek"),
     ],
 )
-def test_ocr_temizle_metni_bozmaz(ham, temiz):  # B3, M5, m12, m13, R4, R5
+def test_ocr_temizle_metni_bozmaz(ham, temiz):  # B3, M5, m12, m13, R4, R5, M7 (tur 5)
     assert ocr_temizle(ham) == temiz
 
 
@@ -628,6 +650,64 @@ def test_m9_sunucu_hatasi_klasoru_yarim_yazmadan_durdurur(sunucu, tmp_path):
     assert hedef.read_bytes() == once
 
 
+M2_METIN = (
+    "(111) TARİH - 1\n\n1. Hangisi bir başkenttir?\n\nA) Ankara\nB) Deniz\nC) Hava\nD) Uzay\n\n"
+    "2. Hangisi bir gezegendir?\n\nA) Ay\nB) Mars\nC) Güneş\nD) Sirius\n\nCEVAP ANAHTARI\n\n(111) TARİH - 1\n\n1. A\n2. B"
+)
+
+
+def _okunamayan_pdfler(klasor) -> None:
+    """Taranmış bir kitapçığın yanında bozuk, boş ve parolalı PDF."""
+    _sayfali_pdf(klasor / "a_taranmis.pdf", 1)
+    (klasor / "b_bozuk.pdf").write_bytes(b"%PDF-1.4 bozuk")
+    (klasor / "c_bos.pdf").write_bytes(b"")
+    belge = pymupdf.open()
+    belge.new_page()
+    belge.save(klasor / "d_parolali.pdf", encryption=pymupdf.PDF_ENCRYPT_AES_256, user_pw="gizli", owner_pw="sahip")
+    belge.close()
+
+
+@pymupdf_gerekli
+def test_M2_ocr_hepsi_acilamayan_pdfi_atlar_digerlerini_okur(sunucu, tmp_path):
+    # m8 bu PDF'leri ModulHatasi yapmıştı; m9 modül hatasında bütün klasörü durdurduğu için "--ocr hepsi" tek bir bozuk
+    # dosyada hiçbir şey yazmadan duruyordu ("gerekirse" kipi atlıyordu).
+    klasor = tmp_path / "pdf"
+    klasor.mkdir()
+    _okunamayan_pdfler(klasor)
+    sunucu.cevapla = lambda govde: M2_METIN
+    modul = OcrModulu(YerelSunucu(sunucu.adres), OcrAyarlari(model="deepseek-ocr", dpi=72), None)
+    satirlar: list[str] = []
+    rapor = meb.pdf_klasoru_ayristir(
+        klasor, tmp_path / "meb_pdf.jsonl", yaz=satirlar.append, ayristirici=meb_metin.ocr_ayristirici(modul, "hepsi")
+    )
+    assert (rapor["yazilan"], rapor["hatali_dosya"], len(sunucu.istekler)) == (2, 3, 1)
+    hatalar = {ad: r["hata"] for ad, r in rapor["dosyalar"].items() if "hata" in r}
+    assert hatalar["b_bozuk.pdf"].startswith("PdfOkunamadi: PDF açılamadı: ")
+    assert hatalar["c_bos.pdf"].startswith("PdfOkunamadi: PDF açılamadı: ")
+    assert hatalar["d_parolali.pdf"] == f"PdfOkunamadi: PDF parola korumalı, açılamadı: {klasor / 'd_parolali.pdf'}"
+    assert satirlar[-1].startswith("4 PDF (3 okunamadı): 2 soru bulundu, 2 tutuldu")
+
+
+@pymupdf_gerekli
+def test_M2_meb_pdf_ocr_hepsi_komutu_bozuk_pdfte_durmaz(sunucu, tmp_path, monkeypatch, capsys):
+    from turkce_model.cli import main
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "ayarlar.toml").write_text("", encoding="utf-8")
+    klasor = tmp_path / "kitaplar"
+    klasor.mkdir()
+    _okunamayan_pdfler(klasor)
+    sunucu.cevapla = lambda govde: M2_METIN
+    secenekler = ["--ayar", f"moduller.adres={sunucu.adres}", "--ayar", "moduller.ocr.model=deepseek-ocr"]
+    assert main(["meb-pdf", "--ocr", "hepsi", "--klasor", str(klasor), *secenekler]) == 0
+    cikti = capsys.readouterr()
+    assert "4 PDF (3 okunamadı): 2 soru bulundu" in cikti.out and "Traceback" not in cikti.err
+    assert len(meb.soru_oku(tmp_path / "veri" / "meb" / "meb_pdf.jsonl")) == 2
+    # Tek dosyayı okuyan komut aynı hatayı izleme dökümsüz yazar.
+    assert main(["ocr", str(klasor / "d_parolali.pdf"), *secenekler]) == 2
+    assert capsys.readouterr().err.strip() == f"PDF parola korumalı, açılamadı: {klasor / 'd_parolali.pdf'}"
+
+
 # ---- kıyas --------------------------------------------------------------------------------------
 
 
@@ -640,6 +720,25 @@ def test_m9_sunucu_hatasi_klasoru_yarim_yazmadan_durdurur(sunucu, tmp_path):
     ],
 )
 def test_cevap_cikar(cevap, beklenen):
+    assert kiyas.cevap_cikar(cevap, 4) == beklenen
+
+
+@pytest.mark.parametrize(
+    ("cevap", "beklenen"),
+    [
+        pytest.param("Cevap A değil.", None, id="M9-cevap-degil"),
+        pytest.param("C şıkkı yanlış", None, id="M9-sikki-yanlis"),
+        pytest.param("Cevap A değildir.", None, id="M9-degildir"),
+        pytest.param("Cevap A olamaz", None, id="M9-olamaz"),
+        pytest.param("The answer is not A", None, id="M9-not"),
+        pytest.param("Cevap A değil, B'dir.", 1, id="M9-baska-harf-onayli"),
+        pytest.param("A doğru değil, C doğru", 2, id="M9-dogru-degil"),
+        pytest.param("Cevap: B. A değil.", 1, id="M9-once-cevap"),
+    ],
+)
+def test_M9_olumsuzlanan_harf_hicbir_kuralla_cevap_sayilmaz(cevap, beklenen):
+    # Olumsuzluk korumaları ifade kurallarını atlatıyordu ama son satırdaki tek harf kuralı olumsuzlanan harfi
+    # döndürüyordu ("Cevap A değil." → A).
     assert kiyas.cevap_cikar(cevap, 4) == beklenen
 
 
@@ -742,6 +841,46 @@ def test_M4_dusunurken_kesilen_cevaplar_sayilir_ve_uyarilir(sunucu, tmp_path, ca
     )
     kayit = json.loads((ayarlar.cikti_klasoru / "ilerleme.jsonl").read_text(encoding="utf-8").splitlines()[-1])
     assert kayit["meb_test"]["kesik"] == 5 and kayit["meb_test"]["cevapsiz"] == 5
+
+
+M5_DUSUNCE = "Tamam, bu soruyu düşünelim. Önce A şıkkına bakalım: cevap A olabilir mi? Belki. Ama B şıkkı da"
+
+
+def test_M5_sablonun_actigi_dusunmede_kesilen_cevap_cevapsiz_sayilir(sunucu, tmp_path):
+    # Şablon düşünmeyi açınca içerikte "<think>" yok; düşünürken kesilen cevap etiketsiz düşüncedir ve "cevap A"
+    # cevap sanılıyordu (cevapsız 0, kesik 0, uyarı yok).
+    cevaplar = {
+        0: (M5_DUSUNCE, "length"),  # şablon açtı, düşünürken kesildi
+        1: ("<think>\n" + M5_DUSUNCE, "length"),  # etiket içerikte (M4): değişmez
+        2: ("B", "stop"),  # kısa, düzgün cevap: değişmez
+        3: (M5_DUSUNCE + "</think>\n\nCevap: D. Çünkü", "length"),  # düşünme bitti, açıklamada kesildi: cevap D
+    }
+    sunucu.cevapla = lambda govde: cevaplar[_soru_no(govde)]
+    sorular = [meb.Soru(kimlik=f"t:{i}", kaynak="test", ders="Tarih", soru=f"Soru {i} hangisidir?",
+                        secenekler=["bir", "iki", "üç", "dört"], cevap=c, bolum="test") for i, c in enumerate([0, 0, 1, 3])]
+    ayar = MetinAyarlari(model="deepseek-r1:1.5b")
+    sonuc = kiyas.kiyasla(YerelSunucu(sunucu.adres), ayar, sorular, tmp_path / "kiyas", lambda m: None)
+    assert (sonuc["cevapsiz"], sonuc["kesik"], sonuc["dogruluk_uretim"]) == (2, 2, 0.5)
+    kayitlar = [json.loads(s) for s in (tmp_path / "kiyas" / "deepseek-r1_1.5b.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert [(k["secim"], k["kesik"], k["dusunme_kapandi"]) for k in kayitlar] == [
+        (None, True, False), (None, True, False), (1, False, False), (3, True, True)
+    ]
+    # Önbellekten okunurken de aynı kural; bu alanı taşımayan eski kayıt eskisi gibi okunur.
+    assert kiyas.kiyasla(YerelSunucu(sunucu.adres), ayar, sorular, tmp_path / "kiyas", lambda m: None) == sonuc
+    assert len(sunucu.istekler) == 4
+    eski = {"anahtar": kiyas._soru_anahtari(sorular[0], ayar), "cevap": "Cevap: A", "kesik": True}
+    (tmp_path / "eski").mkdir()
+    (tmp_path / "eski" / "deepseek-r1_1.5b.jsonl").write_text(json.dumps(eski) + "\n", encoding="utf-8")
+    assert kiyas.kiyasla(YerelSunucu(sunucu.adres), ayar, sorular[:1], tmp_path / "eski", lambda m: None)["dogruluk_uretim"] == 1.0
+
+
+def test_M5_modul_dene_metin_dusunurken_kesilen_cevabi_calisiyor_saymaz(sunucu, tmp_path, capsys):
+    ayarlar = _ayarlar(tmp_path, sunucu.adres, ocr="")
+    sunucu.cevapla = lambda govde: (M5_DUSUNCE, "length")
+    assert komutlar.komut_modul_dene(SimpleNamespace(rol="metin", gorsel=None), ayarlar) == 1
+    assert "Sonuç: cevaptan şık harfi çıkarılamadı." in capsys.readouterr().out
+    sunucu.cevapla = lambda govde: (M5_DUSUNCE + "</think>B", "length")  # düşünme kapandı: cevap B
+    assert komutlar.komut_modul_dene(SimpleNamespace(rol="metin", gorsel=None), ayarlar) == 0
 
 
 def test_m5_yarim_kalan_son_satirdan_sonraki_kayitlar_ayri_satirda(sunucu, tmp_path):
@@ -904,6 +1043,17 @@ def test_m11_B1_fotograftaki_iki_soru_ya_da_kesik_cikti_soruya_cevrilmez(sunucu,
         komutlar.resimden_soru(str(tmp_path / "kesik.png"), ayarlar)
 
 
+def test_M10_sor_resim_parantezli_numarali_fotografi_okur(sunucu, tmp_path):
+    # m11'in denetimi yalnız "A)" satırlarını sayar: sonraki sorunun yalnız numarası görünüyorsa tek_soru'ya kalır.
+    ayarlar = _ayarlar(tmp_path, sunucu.adres)
+    (tmp_path / "soru.png").write_bytes(b"\x89PNG-parantezli")
+    sunucu.cevapla = lambda govde: (
+        "AÇIK ÖĞRETİM LİSESİ\n12\n7) Hangisi bir gezegendir?\n\nA) Ay\nB) Güneş\nC) Mars\nD) Sirius\n\n8) Sonraki soru"
+    )
+    soru = komutlar.resimden_soru(str(tmp_path / "soru.png"), ayarlar)
+    assert (soru.soru, soru.secenekler) == ("Hangisi bir gezegendir?", ["Ay", "Güneş", "Mars", "Sirius"])
+
+
 def test_M3_G4_modul_kiyas_satiri_tabloda_dogrulukla_gorunur(sunucu, tmp_path, monkeypatch, capsys):
     from turkce_model.cli import main
 
@@ -918,3 +1068,90 @@ def test_M3_G4_modul_kiyas_satiri_tabloda_dogrulukla_gorunur(sunucu, tmp_path, m
     satir = next(s for s in md.splitlines() if "| modül: deepseek-r1:1.5b | kıyas |" in s)
     # Y3: satır "— / —" ve "eski ölçüm: yeniden değerlendir" gösteriyordu.
     assert "| %30.0 üretimle (taban %25.0, n=10) |" in satir and "— / —" not in satir and "eski ölçüm" not in satir
+
+
+def test_M11_modul_kiyas_negatif_adedi_reddeder(tmp_path, monkeypatch, capsys):
+    from turkce_model.cli import main
+
+    monkeypatch.chdir(tmp_path)
+    with pytest.raises(SystemExit) as cikis:  # eskiden sessizce "hepsi" demekti
+        main(["modul-kiyas", "--adet", "-5"])
+    assert cikis.value.code == 2
+    assert "argument --adet: 0 ya da daha büyük olmalı (şu an: -5)" in capsys.readouterr().err
+
+
+# ---- M12: modül komutlarının yazdığı komutlar ve ayar dosyası çağıranın seçeneklerini taşır -----------------
+
+M12_DOSYA = "ek ayar.toml"
+
+
+def _m12_calistir(tmp_path, monkeypatch, capsys, argv: list[str], ayarlar: str) -> str:
+    """``tmp_path``'te ayrı bir ayar dosyasıyla (``--ayarlar 'ek ayar.toml'``) komutu çalıştırır; hata çıktısı."""
+    from turkce_model.cli import main
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / M12_DOSYA).write_text(ayarlar, encoding="utf-8")
+    assert main([*argv, "--ayarlar", M12_DOSYA]) == 2
+    return capsys.readouterr().err.strip()
+
+
+def test_M12_model_yok_iletisindeki_komut_ayar_dosyasini_tasir(sunucu, tmp_path, monkeypatch, capsys):
+    from turkce_model import cli
+
+    ayarlar = f'[moduller]\nadres = "{sunucu.adres}"\n[moduller.metin]\nmodel = "yok-model"\n'
+    hata = _m12_calistir(tmp_path, monkeypatch, capsys, ["modul-dene", "metin"], ayarlar)
+    assert hata.endswith(f"Sunucudaki modelleri görmek için: python -m turkce_model modul-liste --ayarlar {cli._tirnak(M12_DOSYA)}")
+    # --ayar ile verilen ayarlar da komuta eklenir.
+    secenekler = ["--ayar", f"moduller.adres={sunucu.adres}", "--ayar", "moduller.metin.model=yok-model"]
+    (tmp_path / "ayarlar.toml").write_text("", encoding="utf-8")
+    assert cli.main(["modul-dene", "metin", *secenekler]) == 2
+    ek = "".join(f" --ayar {cli._tirnak(a)}" for a in secenekler[1::2])
+    assert capsys.readouterr().err.strip().endswith(f"python -m turkce_model modul-liste{ek}")
+
+
+@pytest.mark.parametrize(
+    ("argv", "ipucu"),
+    [
+        pytest.param(["modul-dene"], f"{M12_DOSYA}'da [moduller.ocr] model = \"deepseek-ocr\" yaz", id="M12-acik-modul-yok"),
+        pytest.param(["ocr", "sayfa.png"], f"{M12_DOSYA}'da [moduller.ocr] model = \"deepseek-ocr\" yaz", id="M12-ocr-kapali"),
+        pytest.param(["modul-kiyas"], f"{M12_DOSYA}'da [moduller.metin] model = \"deepseek-r1:1.5b\" yaz", id="M12-kiyas-kapali"),
+    ],
+)
+def test_M12_acma_ipucu_kullanilan_ayar_dosyasini_anar(tmp_path, monkeypatch, capsys, argv, ipucu):
+    hata = _m12_calistir(tmp_path, monkeypatch, capsys, argv, "")
+    assert ipucu in hata and "ayarlar.toml" not in hata
+
+
+def test_M12_sunucu_iletisi_kullanilan_ayar_dosyasini_anar(tmp_path, monkeypatch, capsys):
+    from turkce_model.cli import main
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / M12_DOSYA).write_text(f'[moduller]\nadres = "{_kapali_adres()}"\n', encoding="utf-8")
+    assert main(["modul-liste", "--ayarlar", M12_DOSYA]) == 0
+    sunucu_satiri = next(s for s in capsys.readouterr().out.splitlines() if s.startswith("Sunucu:"))
+    assert f"kullanıyorsan {M12_DOSYA}'da [moduller] adres değerini düzelt." in sunucu_satiri
+
+
+def test_M12_ocr_sinamasi_ipucundaki_komut_ayar_dosyasini_tasir(sunucu, tmp_path, monkeypatch, capsys):
+    from turkce_model import cli
+    from turkce_model.moduller import ocr
+
+    monkeypatch.setattr(ocr, "deneme_gorseli", lambda dpi=150: None)  # Türkçe harfli yazı tipi yok
+    ayarlar = f'[moduller]\nadres = "{sunucu.adres}"\n[moduller.ocr]\nmodel = "deepseek-ocr"\n'
+    hata = _m12_calistir(tmp_path, monkeypatch, capsys, ["modul-dene", "ocr"], ayarlar)
+    assert hata.endswith(f"python -m turkce_model modul-dene ocr --gorsel sayfa.png --ayarlar {cli._tirnak(M12_DOSYA)}")
+
+
+def test_M12_meb_pdf_ve_sor_baglantilari_komut_seceneklerini_alir(sunucu, tmp_path):
+    # cli bu iki bağlantıya komutun seçeneklerini (arg) verirse iletiler aynı ayar dosyasını anar.
+    arg = SimpleNamespace(ayarlar=M12_DOSYA, ayar=[], deney=None)
+    kapali = _ayarlar(tmp_path, sunucu.adres, ocr="")
+    for cagri in (lambda: komutlar.resimden_soru("soru.png", kapali, arg), lambda: komutlar.meb_ayristirici(kapali, "hepsi", arg)):
+        with pytest.raises(ModulHatasi, match=f"{M12_DOSYA}'da \\[moduller.ocr\\] model"):
+            cagri()
+    ayarlar = _ayarlar(tmp_path, sunucu.adres, ocr="yok-model")
+    (tmp_path / "soru.png").write_bytes(b"\x89PNG-m12")
+    from turkce_model.cli import _tirnak
+
+    with pytest.raises(ModulHatasi, match=re.escape(f"modul-liste --ayarlar {_tirnak(M12_DOSYA)}") + "$"):
+        komutlar.resimden_soru(str(tmp_path / "soru.png"), ayarlar, arg)

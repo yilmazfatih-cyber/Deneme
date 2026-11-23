@@ -21,7 +21,7 @@ from conftest import calisma_kur, sentetik_sorular
 
 import turkce_model
 from turkce_model import egitim, meb, veri
-from turkce_model.ayarlar import AyarHatasi, EgitimAyarlari, ayarlari_yukle
+from turkce_model.ayarlar import EN_BUYUK_EGITIM_TOHUMU, AyarHatasi, EgitimAyarlari, ayarlari_yukle
 from turkce_model.cli import main
 from turkce_model.egitim import (
     cihaz_dogrula,
@@ -486,6 +486,26 @@ def test_suren_uzerine_yazin_kenardaki_dosyalarina_dokunulmaz(calisma, capsys):
     assert not (a.deney_klasoru / "meb").exists()
 
 
+def test_model_ile_verilen_dosya_kenardayken_yeniden_egitildigi_soylenir(calisma, capsys):
+    # C5: --model ile aşama klasöründeki dosya verildi; aşama şu an --uzerine-yaz ile yeniden eğitiliyor, eski model
+    # kenarda. Eskiden "Model dosyası yok" denirdi; varsayılan yoldaki gibi "yeniden eğitiliyor" denir.
+    a = _ayarlar(calisma, "uz_model", "egitim.tdk.en_fazla_adim=2")
+    egit(a, "tdk", cihaz="cpu", yaz=_sus)
+    klasor = a.deney_klasoru / "tdk"
+    _olmus_uzerine_yaz(klasor)
+    kenarda = _dosya_ozetleri(klasor)
+    ayar = ["--ayarlar", str(calisma / "ayarlar.toml"), "--cihaz", "cpu"]
+    with egitim_kilidi(klasor):
+        with pytest.raises(AyarHatasi, match=r"yeniden eğitiliyor; eski model .* Yeni eğitimin ilk kaydını bekle"):
+            degerlendir(a, cihaz="cpu", yaz=_sus, kontrol_noktasi=klasor / "en_iyi.pt")
+        for argv in (["degerlendir"], ["uret", "kitap"], ["tanimla", "kitap"], ["sor"]):
+            assert main([*argv, "--model", str(klasor / "son.pt"), *ayar]) == 2, argv
+            hata = capsys.readouterr().err
+            assert f"{klasor} şu an başka bir süreçte --uzerine-yaz ile yeniden eğitiliyor" in hata, argv
+            assert "Model dosyası yok" not in hata, argv
+        assert _dosya_ozetleri(klasor) == kenarda  # kenardakiler süren eğitimindir: yerinde kaldı
+
+
 def test_meb_egitimi_kenardaki_tdk_modelinden_baslar(calisma):
     a = _ayarlar(calisma, "uz_meb", "egitim.tdk.en_fazla_adim=2", "egitim.meb.en_fazla_adim=2")
     egit(a, "tdk", cihaz="cpu", yaz=_sus)
@@ -518,6 +538,52 @@ def test_devam_kenardaki_bitmis_egitimi_ayarlar_farkli_olsa_da_geri_getirir(cali
     assert _dosya_ozetleri(klasor) == once
     with pytest.raises(AyarHatasi, match="yigin"):  # geri geldikten sonra sıradan bir --devam: ayar farkı söylenir
         egit(yeni, "tdk", devam=True, cihaz="cpu", yaz=_sus)
+
+
+def test_devam_son_pt_eski_silinmisse_bitmis_egitimi_modeliyle_geri_getirir(calisma):
+    # C1: --uzerine-yaz ilk adımını bitirmiş, kenardakileri silerken öldürülmüş: önce son.pt.eski gider, model
+    # (en_iyi.pt.eski) kalır. durum bu eğitim için --devam önerir; o --devam eskiden "sürdürülecek eğitim yok" ile 2'ydi.
+    a = _ayarlar(calisma, "uz_sil", "egitim.tdk.en_fazla_adim=2")
+    egit(a, "tdk", cihaz="cpu", yaz=_sus)
+    klasor = a.deney_klasoru / "tdk"
+    once = _dosya_ozetleri(klasor)
+    _olmus_uzerine_yaz(klasor)
+    (klasor / "son.pt.eski").unlink()
+    satirlar: list[str] = []
+    assert egit(a, "tdk", devam=True, cihaz="cpu", yaz=satirlar.append) == {"zaten_bitti": True, "adim": 2}
+    assert any("eski eğitim geri getirildi" in s for s in satirlar)
+    assert any(s.startswith("Bu eğitim zaten bitmiş (adım 2/2); sürdürülecek adım yok.") for s in satirlar)
+    del once["son.pt"]
+    assert _dosya_ozetleri(klasor) == once  # model, günlük ve durum olduğu gibi; kenarda dosya kalmadı
+    assert degerlendir(a, "tdk", cihaz="cpu", yaz=_sus)["adim"] == 2  # aşamanın modeli kullanılabilir
+
+
+def test_son_pt_eski_silinmisken_geri_koyma_yarida_kesilse_de_kayit_tutarli(calisma, monkeypatch):
+    # C1: son.pt.eski silinmişken eski eğitimi geri koyan komut da ilk dosyadan (model) sonra öldürülürse, geri gelen
+    # modelin yanında yeni koşunun "sürüyor, adım 0" kaydı kalmaz; durum eski eğitimin kaydını okur. Eskiden bu kayıt
+    # kalır, durum "bitmedi ve son.pt yok → --uzerine-yaz" der, MEB modelini de "TDK modeli değişti" sayardı.
+    a = _ayarlar(calisma, "uz_geri", "egitim.tdk.en_fazla_adim=2")
+    egit(a, "tdk", cihaz="cpu", yaz=_sus)
+    klasor = a.deney_klasoru / "tdk"
+    once = _dosya_ozetleri(klasor)
+    del once["son.pt"]
+    _olmus_uzerine_yaz(klasor)
+    (klasor / "son.pt.eski").unlink()
+    asil = os.replace
+
+    def oldur(kaynak, hedef, *a_, **k):  # ilk geri konan dosyadan hemen sonra süreç ölür
+        asil(kaynak, hedef, *a_, **k)
+        if str(kaynak).endswith(".eski"):
+            raise KeyboardInterrupt
+
+    monkeypatch.setattr(os, "replace", oldur)
+    with pytest.raises(KeyboardInterrupt):
+        egitim.kenardakini_geri_getir(klasor, _sus)
+    monkeypatch.undo()
+    assert (klasor / "en_iyi.pt").exists() and egitim_durumu_oku(klasor) is None
+    assert egitim_durumu_oku(klasor, "durum.json.eski")["durum"] == "bitti"  # durum komutu bunu gösterir
+    assert egitim.kenardakini_geri_getir(klasor, _sus)  # sonraki komut geri koymayı tamamlar
+    assert _dosya_ozetleri(klasor) == once
 
 
 def test_devam_kenardaki_yarim_egitimi_geri_getirip_surdurur(calisma, duz, monkeypatch):
@@ -760,6 +826,37 @@ def test_meb_egitim_sorulari_yoksa_mesaj_kitapciklari_ister(calisma, tmp_path):
     with pytest.raises(AyarHatasi, match="MEB eğitim soruları hazırlanmamış.*meb-pdf, sonra veri-hazirla") as hata:
         egit(_ayarlar(kok, "sorusuz"), "meb", sifirdan=True, cihaz="cpu", yaz=_sus)
     assert "TurkishMMLU yalnız değerlendirme içindir" in str(hata.value) and "meb-mmlu" not in str(hata.value)
+
+
+def test_meb_sorulari_yoksa_ipucu_gercek_pdf_klasorunu_gosterir(calisma, tmp_path, monkeypatch):
+    # C6: [yollar] veri değiştirilmişse ipucu varsayılan veri/meb/pdf'i değil gerçek klasörü söyler: çalışma
+    # klasörünün altındaysa göreli, değilse tam yoluyla.
+    kok = _kopya(calisma, tmp_path / "ws")
+    (kok / "ciktilar" / "veri" / "meb_egitim.npz").unlink()
+    (kok / "veri").rename(kok / "v2")
+    ayar = kok / "ayarlar.toml"
+    ayar.write_text(ayar.read_text(encoding="utf-8") + '\n[yollar]\nveri = "v2"\n', encoding="utf-8")
+    a = _ayarlar(kok, "v2")
+    baska = tmp_path / "baska"
+    baska.mkdir()
+    for cwd, klasor in ((kok, Path("v2", "meb", "pdf")), (baska, kok.resolve() / "v2" / "meb" / "pdf")):
+        monkeypatch.chdir(cwd)
+        with pytest.raises(AyarHatasi) as hata:
+            egit(a, "meb", sifirdan=True, cihaz="cpu", yaz=_sus)
+        assert f"Önce MEB kitapçıklarını {klasor} klasörüne koyup meb-pdf, sonra veri-hazirla" in str(hata.value)
+
+
+def test_egitim_tohumunun_en_buyugu_de_calisir(calisma):
+    # C4: egitim.<aşama>.tohum 0 … 2**63 - 1 arasında bir tam sayıdır; en büyüğüyle de eğitim çalışır (torch ve
+    # numpy üreteçleri). Aralık dışı değer eğitim başlamadan Türkçe iletiyle reddedilir (izleme dökümü yok).
+    for tohum in (0, EN_BUYUK_EGITIM_TOHUMU):
+        a = _ayarlar(calisma, f"tohum{tohum}", "egitim.tdk.en_fazla_adim=1", f"egitim.tdk.tohum={tohum}")
+        assert egit(a, "tdk", cihaz="cpu", yaz=_sus)["adim"] == 1
+    for deger in ("-1", str(EN_BUYUK_EGITIM_TOHUMU + 1), str(2**64), "1.5", "true"):
+        a = _ayarlar(calisma, "tohum_hata", "egitim.tdk.en_fazla_adim=1", f"egitim.tdk.tohum={deger}")
+        with pytest.raises(AyarHatasi, match=rf"egitim\.tdk\.tohum 0 ile {EN_BUYUK_EGITIM_TOHUMU} arasında bir tam sayı"):
+            egit(a, "tdk", cihaz="cpu", yaz=_sus)
+    assert not (a.deney_klasoru / "tdk").exists()
 
 
 @pytest.mark.parametrize("kayip", ["tum", "cevap"])

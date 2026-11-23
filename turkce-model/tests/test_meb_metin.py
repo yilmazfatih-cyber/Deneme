@@ -1,7 +1,8 @@
 """OCR metninden MEB sorusu (``moduller/meb_metin.py``): modül incelemesinin bulgularına karşı sınamalar.
 
 Her sınamanın adında, parametre kimliğinde ya da yorumunda bulgu numarası geçer (F1 …, B1, G1 …; R1/R2: ikinci
-incelemede bulunan kusurlar). Bütün metinler sentetiktir; gerçek kitapçık ya da TDK/MEB içeriği kullanılmaz.
+incelemede bulunan kusurlar; M1 … M13: son düzeltme turunun bulguları). Bütün metinler sentetiktir; gerçek kitapçık
+ya da TDK/MEB içeriği kullanılmaz.
 Asıl ölçüt: hiçbir soru yanlış cevapla ya da kirli kök/seçenekle tutulmaz; emin olunamayan soru elenir.
 """
 
@@ -79,6 +80,33 @@ def test_F1_bos_satirsiz_belirsiz_soru_basi_yanlis_tutulmaz():
     # Paragraf bilgisi yok: iki "2." satırından hangisinin soru başı olduğu bilinemez, komşu sorular elenir.
     assert "111:1" not in sorular or sorular["111:1"].secenekler[3].endswith("Viyana Kuşatması'ndaki yenilgisi")
     assert "111:2" not in sorular or sorular["111:2"].soru.startswith("Lale Devri")
+
+
+@pytest.mark.parametrize(
+    "ilk",
+    [
+        pytest.param("3. Hangisi bir renktir?\n\nA) Mavi\nB) Masa\nC) Kalem\nD) Defter", id="M8-sirasiz-soru"),
+        pytest.param("2. Dünya Savaşı'ndan sonra", id="M8-sayili-devam-satiri"),
+    ],
+)
+def test_M8_baslik_sonrasindaki_secilmeyen_aday_ders_basligina_eklenmez(ilk):
+    # F1 seçilmeyen adayı önceki satıra ekler; ders başlığına eklenseydi başlık bozulur, ders kaybolurdu ("0 ders").
+    sayfa = "(111) TARİH - 1\n\n" + ilk + "\n\n" + _soru(1) + "\n\n" + _soru(2)
+    sorular, rapor, _ = _ayikla([sayfa, _anahtar(("(111) TARİH - 1", "ABA"))])
+    assert {k: (s.ders, s.cevap, s.secenekler) for k, s in sorular.items()} == {
+        "111:1": ("Tarih - 1", 0, ["Bir", "İki", "Üç", "Dört"]), "111:2": ("Tarih - 1", 1, ["Bir", "İki", "Üç", "Dört"])
+    }
+    assert rapor["ders_sayisi"] == 1 and rapor["sorusuz_anahtarlar"] == []
+
+
+def test_M13_butun_sorulari_belirsiz_ders_raporda_elenmis_sayilir():
+    # Aynı girdi: dersin iki sorusu da belirsiz. Rapor "0 ders, 0 soru" diyor ve dersi "soruları bulunamayan" diye
+    # uyarıyordu; ders bulundu, soruları elendi.
+    secenekler = "A) Mohaç Meydan Muharebesi\nB) Preveze Deniz Savaşı\nC) Çaldıran Savaşı\nD) Osmanlı Devleti'nin\n"
+    sayfa = (F1_SORU1 + secenekler + "2. Viyana Kuşatması'ndaki yenilgisi\n\n" + F1_SORU2).replace("\n\n", "\n")
+    sorular, rapor, mesajlar = _ayikla([sayfa, F1_ANAHTAR])
+    assert not sorular and (rapor["ders_sayisi"], rapor["bulunan"], rapor["elenen"]) == (1, 2, {"secenek_eksik": 2})
+    assert mesajlar == ["k.pdf: 1 ders, 2 soru bulundu, 0 tutuldu (elenen: secenek_eksik 2)"]
 
 
 F1_DERS_SONU = (
@@ -218,6 +246,125 @@ def test_R2_cok_sayfada_yinelenen_kesik_isareti_kenar_sayilmaz():
     assert {"111:4", "111:10", "111:14"}.isdisjoint(sorular)
 
 
+# ---- M1: kısa kitapçıkta gevşek kenar eşiği (2 sayfa) içerik satırını sayfa başlığı sanmaz --------------------
+
+M1_ALMANCA_1 = ["(183) SEÇMELİ İKİNCİ YABANCI DİL", "ALMANCA - 1"]
+M1_ALMANCA_2 = ["(184) SEÇMELİ İKİNCİ YABANCI DİL", "ALMANCA - 2"]
+M1_SECMELI = ["(532) SEÇMELİ", "PEYGAMBERİMİZİN HAYATI - 2"]
+M1_TARIH = ["(111) TARİH - 1"]
+
+
+def _kisa_kitapcik(basliklar: list[list[str]], her_sayfada: bool = False) -> list[str]:
+    """Kapak + her ders iki sayfa (sayfa başına üç soru, cevap "A") + anahtar: en çok 8 sayfa, yani küçük harfsiz
+    satır 2 sayfada yinelenince kenar sayılır. ``her_sayfada``: ders başlığı her sayfanın başında yinelenir."""
+    sayfalar = ["AÇIK ÖĞRETİM LİSESİ\n\n1. OTURUM\n\nAdayların dikkatine: süre 90 dakikadır."]
+    anahtar = ["CEVAP ANAHTARI", ""]
+    for baslik in basliklar:
+        no = 1
+        for p in range(2):
+            g = ["1. OTURUM", ""] + (baslik + [""] if p == 0 or her_sayfada else [])
+            for _ in range(3):
+                kok, secenekler = KONULAR[no % 4]
+                g += [f"{no}. {kok}", "", *(f"{h}) {s}" for h, s in zip("ABCD", secenekler)), ""]
+                no += 1
+            sayfalar.append("\n".join(g + [str(len(sayfalar) + 1)]))
+        anahtar += baslik + [""] + [f"{n}. A" for n in range(1, no)] + [""]
+    return sayfalar + ["\n".join(anahtar)]
+
+
+def _secenekleri_temiz(sorular: dict) -> bool:
+    return all(s.secenekler == KONULAR[s.ek["soru_no"] % 4][1] for s in sorular.values())
+
+
+@pytest.mark.parametrize(
+    ("basliklar", "dersler", "elenen"),
+    [
+        # Dil satırı atılınca ders "Seçmeli İkinci Yabancı Dil" sanılıyor, Almanca sorular eğitime giriyordu.
+        pytest.param([M1_ALMANCA_1, M1_TARIH], {"111": "Tarih - 1"}, {"yabanci_dil": 6}, id="M1-yabanci-dil-basligi"),
+        pytest.param(
+            [M1_SECMELI, M1_TARIH], {"532": "Seçmeli Peygamberimizin Hayatı - 2", "111": "Tarih - 1"}, {},
+            id="M1-iki-satirli-baslik",
+        ),
+        # Aynı dersin iki düzeyi: "ALMANCA - #" iki soru sayfasında yineleniyor (anahtar sayfası sayılmasa da kenar
+        # olurdu; anahtarı sayımdan çıkarmak yetmez, aşağıdaki karşı duruma da bak).
+        pytest.param(
+            [M1_ALMANCA_1, M1_ALMANCA_2, M1_TARIH], {"111": "Tarih - 1"}, {"yabanci_dil": 12},
+            id="M1-iki-duzeyli-yabanci-dil",
+        ),
+    ],
+)
+def test_M1_sarilmis_ders_basliginin_devami_kenar_sayilmaz(basliklar, dersler, elenen):
+    sorular, rapor, _ = _ayikla(_kisa_kitapcik(basliklar))
+    assert {s.ek["ders_kodu"]: s.ders for s in sorular.values()} == dersler
+    assert rapor["elenen"] == elenen and _secenekleri_temiz(sorular)
+
+
+def test_M1_her_sayfada_yinelenen_sarilmis_baslik_secenege_karismaz():
+    # Devam satırı artık kenar sayılmıyor: yinelenen başlık atılırken devamı da atılmalı, yoksa önceki sayfanın son
+    # seçeneğine ("Dört PEYGAMBERİMİZİN HAYATI - 2") eklenirdi.
+    sorular, rapor, _ = _ayikla(_kisa_kitapcik([M1_SECMELI, M1_TARIH], her_sayfada=True))
+    assert rapor["tutulan"] == 12 and _secenekleri_temiz(sorular)
+    assert {s.ders for k, s in sorular.items() if k.startswith("532:")} == {"Seçmeli Peygamberimizin Hayatı - 2"}
+
+
+M1_PARCA = "Bir kent, yalnız binalardan değil, içinde yaşayanların ortak belleğinden de oluşur."
+
+
+def test_M1_buyuk_harfli_grup_yonergesi_kenar_sayilmaz():
+    # 9 sayfanın 3'ünde sayfa başında büyük harfli yönerge: atılınca ortak metin önceki seçeneğe yapışıyor, 3-4. sorular
+    # metinsiz tutuluyordu.
+    sayfalar, no = [], 1
+    for p in range(1, 9):
+        g = ["1. OTURUM", ""] + (["(111) TARİH - 1", ""] if p == 1 else [])
+        if p in (2, 4, 6):
+            g += [f"{no} - {no + 1}. SORULARI AŞAĞIDAKİ METNE GÖRE CEVAPLAYINIZ.", "", M1_PARCA, ""]
+            g += [_soru(no, "Bu metne göre kentin belleğini ne taşır?"), "", _soru(no + 1, "Bu metnin konusu nedir?")]
+        else:
+            g += [_soru(no), "", _soru(no + 1)]
+        no += 2
+        sayfalar.append("\n".join(g + ["", str(p)]))
+    sorular, rapor, _ = _ayikla(sayfalar + [_anahtar(("(111) TARİH - 1", "A" * (no - 1)))])
+    assert rapor["tutulan"] == 16
+    for n in (3, 4, 7, 8, 11, 12):
+        ilk = n if n % 2 else n - 1
+        assert sorular[f"111:{n}"].soru.split("\n")[0] == f"{ilk} - {ilk + 1}. SORULARI AŞAĞIDAKİ METNE GÖRE CEVAPLAYINIZ. {M1_PARCA}"
+        assert sorular[f"111:{n}"].secenekler == ["Bir", "İki", "Üç", "Dört"]
+
+
+def test_M1_tek_basina_oncul_isareti_kenar_sayilmaz():
+    # "III." üç sayfanın son satırlarında: atılınca öncül numarasız kalıyor, "I, II ve III" seçeneği boşa düşüyordu.
+    sayfalar, no, devam = [], 1, False
+    for p in range(1, 8):
+        g = ["1. OTURUM", ""] + (["(111) TARİH - 1", ""] if p == 1 else [])
+        if devam:
+            g += ["Ordu yeniden düzenlenmiştir.", "Buna göre hangileri doğrudur?", "",
+                  "A) Yalnız I", "B) Yalnız II", "C) I ve II", "D) I, II ve III", ""]
+        g += [_soru(no), ""]
+        devam = p in (1, 3, 5)
+        if devam:
+            g += [f"{no + 1}. Aşağıdakiler verilmiştir:", "I. Gelirler artmıştır.", "II. Okullar açılmıştır.", "III."]
+        else:
+            g += [_soru(no + 1), ""]
+        no += 2
+        sayfalar.append("\n".join(g + [str(p)]))
+    sorular, _, _ = _ayikla(sayfalar + [_anahtar(("(111) TARİH - 1", "A" * (no - 1)))])
+    for n in (2, 6, 10):
+        assert sorular[f"111:{n}"].soru.split() == (
+            "Aşağıdakiler verilmiştir: I. Gelirler artmıştır. II. Okullar açılmıştır. III. Ordu yeniden düzenlenmiştir. "
+            "Buna göre hangileri doğrudur?"
+        ).split()
+
+
+def test_M1_karsi_durum_tek_soru_sayfasinin_alt_bilgisi_anahtarda_da_yinelenince_kenardir():
+    # Anahtar sayfası sayımdan çıkarılsaydı tek soru sayfalı kitapçıkta alt bilgi son seçeneğe yapışırdı.
+    sayfalar = [
+        "(111) TARİH - 1\n\n" + _soru(1) + "\n\n" + _soru(2) + "\n\nA KİTAPÇIĞI",
+        _anahtar(("(111) TARİH - 1", "AB")) + "\n\nA KİTAPÇIĞI",
+    ]
+    sorular, _, _ = _ayikla(sayfalar)
+    assert [s.secenekler for s in sorular.values()] == [["Bir", "İki", "Üç", "Dört"]] * 2
+
+
 # ---- B1, F8: kesik sayfa ve sayfa sınırındaki şekil --------------------------------------------------------
 
 
@@ -292,6 +439,59 @@ def test_sinav_sonu_satirinin_ocr_bicimleri_secenege_eklenmez(son):  # F7
     sayfa += _soru(2, "Hangisi bir başkenttir?", ["Ankara", "Deniz", "Hava", "Uzay"]) + "\n\n" + son
     sorular, _, _ = _ayikla([sayfa, _anahtar(("(111) TARİH - 1", "AA"))])
     assert sorular["111:2"].secenekler == ["Ankara", "Deniz", "Hava", "Uzay"]
+
+
+@pytest.mark.parametrize(
+    ("son", "sayfa_sayisi"),
+    [
+        pytest.param(son, n, id=f"M4-{ad}-{n}-sayfa")
+        for ad, son in (
+            ("diger-teste-geciniz", "DİĞER TESTE GEÇİNİZ."), ("basarilar", "Başarılar dileriz."),
+            ("basarilar-buyuk", "BAŞARILAR DİLERİZ."), ("sona-erdi", "Sınav sona erdi."), ("bitmistir", "TEST BİTMİŞTİR."),
+            ("lutfen-kontrol", "Lütfen cevaplarınızı kontrol ediniz."), ("iyi-sanslar", "Test bitti. İyi şanslar."),
+        )
+        for n in (1, 3)
+    ],
+)
+def test_M4_kapanis_satirinin_baska_bicimleri_son_secenege_eklenmez(son, sayfa_sayisi):
+    # Kapanış satırı yalnız kitapçığın sonunda (kenar sayılacak kadar yinelenmiyor): son seçeneğe yapışıyordu
+    # ("Dört Başarılar dileriz.").
+    sayfalar = [
+        "\n\n".join([("(111) TARİH - 1" if p == 0 else "1. OTURUM"), _soru(2 * p + 1), _soru(2 * p + 2)])
+        for p in range(sayfa_sayisi)
+    ]
+    sayfalar[-1] += "\n\n" + son
+    sorular, rapor, _ = _ayikla(sayfalar + [_anahtar(("(111) TARİH - 1", "AB" * sayfa_sayisi))])
+    assert rapor["tutulan"] == 2 * sayfa_sayisi and {tuple(s.secenekler) for s in sorular.values()} == {("Bir", "İki", "Üç", "Dört")}
+
+
+M3_PARCA = ["Ayşe bütün dönem düzenli çalıştı.", "Sınav bitti, sonuçlar bir hafta sonra açıklandı.", "Ayşe ödül kazandı."]
+
+
+@pytest.mark.parametrize(
+    "parca",
+    [
+        pytest.param(M3_PARCA, id="M3-parcadaki-cumle"),
+        # Satırın tamamı kapanış cümlesi olsa da birden çok soruya ait parçanın içindedir: kapanış sayılmaz.
+        pytest.param(["Ayşe bütün dönem düzenli çalıştı.", "Sınav bitti.", "Ayşe ödül kazandı."], id="M3-parcadaki-tam-satir"),
+        pytest.param(["Okulumuzda kitap şenliği yapılacaktır.", "Başarılar dileriz.", "Okul Müdürlüğü"], id="M4-parcadaki-duyuru"),
+    ],
+)
+def test_M3_parcadaki_sinav_bitti_satiri_ortak_metni_kesmez(parca):
+    sayfa = (
+        "(111) TÜRK DİLİ VE EDEBİYATI - 1\n\n" + _soru(1) + "\n\n2 - 3. soruları aşağıdaki metne göre cevaplayınız.\n\n"
+        + "\n".join(parca) + "\n\n" + _soru(2, "Bu metne göre Ayşe ne kazandı?") + "\n\n" + _soru(3, "Bu metnin konusu nedir?")
+    )
+    sorular, rapor, _ = _ayikla([sayfa, _anahtar(("(111) TÜRK DİLİ VE EDEBİYATI - 1", "ABC"))])
+    assert rapor["tutulan"] == 3
+    for n in (2, 3):  # parça kesilip sorular yarım metinle tutuluyordu
+        assert sorular[f"111:{n}"].soru.split("\n")[0].endswith(" ".join(parca))
+
+
+def test_M3_kokteki_sinav_bitti_satiri_soruyu_kapatmaz():
+    kok = "Aşağıdakilerden hangisi\nSınav bitti mi diye soran öğrenciye\nverilebilecek en uygun cevaptır?"
+    sorular, _, _ = _ayikla(["(111) TARİH - 1\n\n" + _soru(1, kok) + "\n\n" + _soru(2), _anahtar(("(111) TARİH - 1", "AB"))])
+    assert sorular["111:1"].soru == " ".join(kok.split("\n")) and sorular["111:1"].secenekler == ["Bir", "İki", "Üç", "Dört"]
 
 
 F12_S2 = (
@@ -506,6 +706,43 @@ def test_tek_soru_yalniz_fotograftaki_soruyu_alir(metin):  # F14, G2
     ],
 )
 def test_tek_soru_kokun_basini_atlamaz(metin, kok):  # F14, G2 karşı durumları
+    assert meb_metin.tek_soru(metin).soru == kok
+
+
+@pytest.mark.parametrize(
+    "metin",
+    [
+        pytest.param("AÇIK ÖĞRETİM LİSESİ\n(111) TARİH - 1\n12\n7) " + SORU_FOTO, id="M10-sayfa-basligi"),
+        pytest.param("1) OTURUM\n7) " + SORU_FOTO, id="M10-parantezli-oturum-basligi"),
+        pytest.param("C) Murat\nD) Selim\n\n8) " + SORU_FOTO, id="M10-onceki-sorunun-secenegi"),
+        pytest.param("7) " + SORU_FOTO + "\n\n8) Hangisi bir gezegendir?", id="M10-ikinci-soru"),
+        pytest.param("7) " + SORU_FOTO + "\n\n8. Hangisi bir gezegendir?", id="M10-karisik-numara"),
+        pytest.param("7. " + SORU_FOTO + "\n\n8) Hangisi bir gezegendir?", id="M10-karisik-numara-ters"),
+    ],
+)
+def test_M10_parantezli_numara_noktali_gibi_taninir(metin):
+    # "7)" yalnız ilk satırda atılıyordu: başlık ve önceki seçenekler köke, sonraki "8) …" son seçeneğe ekleniyordu;
+    # "7)" + "8." hiç soru vermiyordu.
+    s = meb_metin.tek_soru(metin)
+    assert (s.soru, s.secenekler) == ("Aşağıdakilerden hangisi bir başkenttir?", SECENEK_FOTO)
+
+
+@pytest.mark.parametrize(
+    ("metin", "kok"),
+    [
+        pytest.param(
+            "Hangileri doğrudur?\n\n1) Gelirler artmıştır.\n2) Okullar açılmıştır.\n\nA) Yalnız 1\nB) 1 ve 2",
+            "Hangileri doğrudur? 1) Gelirler artmıştır. 2) Okullar açılmıştır.", id="M10-parantezli-onculler",
+        ),
+        pytest.param(
+            "Aşağıdaki gelişmelerden hangisi\n2) Dünya Savaşı'ndan sonra yaşanmıştır?\n\nA) Bir\nB) İki",
+            "Aşağıdaki gelişmelerden hangisi 2) Dünya Savaşı'ndan sonra yaşanmıştır?", id="M10-kok-devami",
+        ),
+        pytest.param("Açık Öğretim Lisesi\n\n7) " + SORU_FOTO, "Açık Öğretim Lisesi 7) " + SORU_FOTO.split("\n")[0],
+                     id="M10-karisik-harfli-baslik-kalir"),
+    ],
+)
+def test_M10_karsi_durum_parantezli_satirlar_koku_bolmez(metin, kok):
     assert meb_metin.tek_soru(metin).soru == kok
 
 

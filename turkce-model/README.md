@@ -116,7 +116,8 @@ komutu söyler:
 - **Başka deneyler.** Listenin altındaki "Yarıda kalan başka deneyler" bölümü, `ciktilar/deneyler` altında yarıda
   kalmış her aşamayı sürdürme komutuyla gösterir. Bu komut `--deney` ve `--ayarlar`'ı taşır, `--ayar`'ları taşımaz: o
   deneyi `--ayar` ile başlattıysan aynılarını ekle. Tokenizer'ı ya da hazır verisi değişmiş bir koşu "sürdürülemez"
-  notuyla listelenir. Kenarda kalmış eski eğitimler de burada listelenir.
+  notuyla listelenir. Kenarda kalmış eski eğitimler de burada listelenir; bitmemiş ve `son.pt`'si silinmiş olan
+  "sürdürülemez" notunu alır (6. adım, "Eski eğitim korunur").
 
 Listedeki ve "Sıradaki adım"daki komutlar `durum`'a verdiğin `--ayarlar`, `--ayar` ve `--deney` seçeneklerini tekrarlar;
 kopyaladığın komut aynı deneye gider. İndirilen madde sayısı da listededir. Komutları `turkce-model` klasöründe
@@ -176,8 +177,9 @@ python -m turkce_model meb-pdf      # → veri/meb/meb_pdf.jsonl (+ .rapor.json)
 `meb-mmlu`'yu önce çalıştırırsan `meb-pdf`, TurkishMMLU'daki bir soruyla soru kökü aynı olan PDF sorularını eğitimden
 çıkarır. Böylece değerlendirme sınavı eğitime sızmaz. Sırayı ters yaptıysan `meb-pdf`'i (kitapçıkları OCR ile
 okuduysan aynı `--ocr` seçeneğiyle), sonra `veri-hazirla`'yı yeniden çalıştır; MEB modeli eğitildiyse onu da
-`--uzerine-yaz` ile yeniden eğit. Klasöre sonradan kitapçık eklersen `durum` `meb-pdf`'i yeniden önerir; sorular OCR
-ile okunduysa aynı kiple: `meb-pdf --ocr` ya da `meb-pdf --ocr hepsi`.
+`--uzerine-yaz` ile yeniden eğit. `meb-mmlu` bu durumda bu komutları OCR kipiyle ve çağrının `--ayarlar`, `--ayar`,
+`--deney` seçenekleriyle sırayla yazar. Klasöre sonradan kitapçık eklersen `durum` `meb-pdf`'i yeniden önerir;
+sorular OCR ile okunduysa aynı kiple: `meb-pdf --ocr` ya da `meb-pdf --ocr hepsi`.
 
 `meb-pdf` şunları yapar:
 
@@ -189,7 +191,8 @@ ile okunduysa aynı kiple: `meb-pdf --ocr` ya da `meb-pdf --ocr hepsi`.
 - Metin katmanı olmayan (taranmış) bir kitapçıkta uyarır. Böyle kitapçıkları OCR modülüyle okuyabilirsin:
   `meb-pdf --ocr` (aşağıda, "DeepSeek modülleri"). OCR'sız okuma böyle kitapçıklar yüzünden önceki çıktının
   sorularını kaybedecekse (hiç soru bulunamadıysa ya da OCR ile okunmuş sorular silinecekse) `meb_pdf.jsonl`'i
-  yazmaz, 2 koduyla çıkar ve `meb-pdf --ocr` komutunu yazar.
+  yazmaz, 2 koduyla çıkar ve `meb-pdf --ocr` komutunu yazar. İki durumda da yazılan komut çağrının `--klasor`,
+  `--ayarlar`, `--ayar` ve `--deney` seçeneklerini taşır.
 
 **TurkishMMLU** (Yüksel vd., EMNLP 2024 Findings) lise müfredatından, MEB'in EBA platformundaki sorulardan derlenmiş bir
 ölçüttür. Açık kısmı 945 soru, 9 ders ve 5 şıktan oluşur; bir tekrar atılınca 944 soru kalır. Sabit bir sürümü indirilir,
@@ -259,8 +262,8 @@ Nasıl çalışır:
 python -m turkce_model hesapla --olc
 ```
 
-`hesapla` de eğitim gibi on kararın hepsini ister ve iki aşamanın eğitim ayarlarını `egit` gibi denetler. Şunları
-gösterir:
+`hesapla` de eğitim gibi on kararın hepsini ister ve iki aşamanın eğitim ayarlarını `egit` gibi denetler; ör.
+`tohum` 0 ile 2⁶³ − 1 arasında bir tam sayı olmalıdır. Şunları gösterir:
 
 - Parametre dökümü ve veri/parametre oranı.
 - Aşama 1 ve aşama 2 için ayrı bellek tahmini. Tahmin, ağırlıklarla birlikte cihaz belleğinin %70'ini geçerse hangi
@@ -291,8 +294,8 @@ python -m turkce_model egit --asama meb      # aşama 2: TDK modelinden devam, s
   - Değişebilir (bir notla): `degerlendirme_her`, `erken_durdurma`, `hassasiyet`, `derle`.
   - Sürdürülecek kontrol noktası yoksa `--devam` hata verir, yeni bir eğitim başlatmaz. `--devam` ile `--uzerine-yaz`
     birlikte verilemez.
-  - Yarıda kalan bir `--uzerine-yaz`'dan geri getirdiği eğitim bitmişse `--devam` ayarları karşılaştırmaz: "Bu eğitim
-    zaten bitmiş" der, değerlendirme komutunu yazar ve 0 koduyla çıkar.
+  - Yarıda kalan bir `--uzerine-yaz`'dan geri getirdiği eğitim bitmişse `--devam` ayarları karşılaştırmaz: `son.pt`'si
+    silinmiş olsa da "Bu eğitim zaten bitmiş" der, değerlendirme komutunu yazar ve 0 koduyla çıkar.
 - **Ctrl+C** tamamlanan son adımı kaydedip durur (çıkış kodu 130). Değerlendirme yapmaz; sürdürme ve değerlendirme
   komutlarını yazar. Değerlendirmesi yarıda kalan adım `--devam`'da baştan değerlendirilir. Eğitim bittikten sonraki
   otomatik değerlendirme kesilirse eğitim kayıtlı kalır; `durum` onu "değerlendirilmedi" diye gösterir. Kontrol
@@ -310,7 +313,12 @@ python -m turkce_model egit --asama meb      # aşama 2: TDK modelinden devam, s
   - Süreç dışarıdan öldürülürse (bellek yetmeyince işletim sistemi öldürdü, `kill -9`, elektrik kesildi) onu kullanan
     ilk komutta: o aşamada `egit`, `degerlendir`, `uret`, `tanimla`, `sor`; TDK modeli için `egit --asama meb`. O
     zamana kadar `durum` onu "eski eğitim kenarda" diye gösterir. Aşamayı başka bir süreç eğitirken `.eski`
-    dosyalarına dokunulmaz.
+    dosyalarına dokunulmaz; o aşamanın modelini isteyen komut (`--model` ile verilen `en_iyi.pt` ya da `son.pt` de)
+    aşamanın yeniden eğitildiğini söyleyip 2 koduyla çıkar.
+
+  Süreç eski dosyaları silerken öldürülürse model (`en_iyi.pt.eski`) `son.pt.eski`'den sonra silindiği için
+  kalabilir; `durum` onu da "eski eğitim kenarda" diye gösterir. Bitmiş eski eğitimi `egit --devam` modeliyle geri
+  getirir; bitmemiş olanın `son.pt`'si silinmiştir, sürdürülemez.
 - **Erken durdurma açık.** Doğrulama kaybı iyileşmeyi bırakınca eğitim durur ve en iyi model `en_iyi.pt`'de kalır.
   Kısa eğitimlerde değerlendirme en az ~10 kez yapılsın diye aralık kısalır. Ör. tek bir MEB kitapçığı ≈ 80 adım eder.
   Isınma da toplam adımın beşte birini geçmez. Komut bunları bir notla söyler.
@@ -465,8 +473,10 @@ ve "sıfırdan" ilkesini bozardı. Modül, modelin yanında çalışan ayrı bir
    harflerinin doğru okunma oranını yazar. Kitapçık okutmadan önce bu sonuca bak. Metin sınaması modele bir soru
    sorar ve cevabından şık harfini çıkarabildiğini gösterir.
 
-Kapalı bir modülü isteyen her komut, onu nasıl açacağını söyleyip 2 koduyla çıkar. `durum` açık modülleri sunucuya
-bağlanmadan tek satırda gösterir: `Modüller: ocr deepseek-ocr, metin kapalı (sınamak için: …)`.
+Kapalı bir modülü isteyen her komut, onu nasıl açacağını söyleyip 2 koduyla çıkar. `modul-liste`, `modul-dene`,
+`modul-kiyas` ve `ocr` komutlarının iletileri ayar dosyası olarak `--ayarlar` ile verdiğin dosyanın adını anar;
+yazdıkları komutlar (ör. `modul-liste`) çağrının `--ayarlar`, `--ayar` ve `--deney` seçeneklerini taşır. `durum` açık
+modülleri sunucuya bağlanmadan tek satırda gösterir: `Modüller: ocr deepseek-ocr, metin kapalı (sınamak için: …)`.
 
 Başka sunucular da olur; `[moduller] adres` değerini değiştirmen yeter. Adres, sunucunun OpenAI uyumlu köküdür ve
 `/v1` ile biter:
@@ -510,8 +520,9 @@ python -m turkce_model ocr kitap.pdf           # herhangi bir PDF ya da görünt
   modelin adı yazılır.
 - **Önbellek.** Okunan sayfalar `ciktilar/moduller/ocr/` altında saklanır: yarıda kesilirse kaldığı sayfadan sürer,
   aynı sayfa ikinci kez okunmaz. Boş çıktı saklanmaz; sonraki çalıştırma o sayfayı yeniden sorar.
-- **Hata olursa durur.** Sunucuya ulaşılamazsa, model yoksa ya da modül kapalıysa `meb-pdf --ocr` kendi iletisiyle
-  durur ve `meb_pdf.jsonl`'e dokunmaz.
+- **Hata olursa.** Sunucuya ulaşılamazsa, model yoksa ya da modül kapalıysa `meb-pdf --ocr` kendi iletisiyle durur
+  ve `meb_pdf.jsonl`'e dokunmaz. Açılamayan bir PDF (bozuk, boş ya da parolalı) ise `--ocr hepsi` ile de atlanır ve
+  özet satırında "okunamadı" diye sayılır; öbür kitapçıklar okunur.
 - **Kesik çıktı.** Sunucu bir sayfanın çıktısını `[moduller.ocr] en_fazla_token`'da (varsayılan 4096) keserse sayfa
   satırına "çıktı en_fazla_token (4096) sınırında kesildi" eklenir ve önbellekteki metnin sonuna `[KESİK]` yazılır. O
   sayfanın son sorusu şekilli sorular gibi elenir; sonraki sayfanın ilk sorusu da elenebilir.
@@ -523,13 +534,19 @@ python -m turkce_model ocr kitap.pdf           # herhangi bir PDF ya da görünt
     dersin adını yazar. Yanlış cevapla eğitmektense soruyu atmak daha iyidir.
   - Rakamla başlayan devam satırları ("2. Dünya Savaşı'ndan…") soru başı sanılmasın diye her derste en tutarlı soru
     dizisi seçilir. Hangi satırın soru başı olduğu ayırt edilemezse komşu sorular elenir.
+  - Testin sonundaki kapanış satırı ("TEST BİTTİ.", "Lütfen cevaplarınızı kontrol ediniz.", "Başarılar dileriz."
+    gibi) son seçeneğe eklenmez. Satırın tamamı böyle cümlelerden oluşmalıdır: "Sınav bitti, sonuçlar…" gibi bir
+    metin satırı da, ortak metnin ("2 - 3. soruları … cevaplayınız.") içindeki satır da metin olarak kalır.
   - Yine de OCR ile okunan soruları eğitimden önce gözle örnekle (`veri/meb/meb_pdf.jsonl`).
 - **Hız.** DeepSeek-OCR 3,3 milyar parametrelidir. Ekran kartında sayfa başına saniyeler, yalnız CPU'da dakikalar
-  sürebilir; `[moduller] zaman_asimi` buna göre geniştir (900 sn).
+  sürebilir; `[moduller] zaman_asimi` buna göre geniştir (900 sn). En çok 604800 sn (bir hafta) verilebilir; daha
+  büyük değer ayarlar okunurken reddedilir.
 - **`sor --resim`** fotoğraftaki tek soruyu (kök + "A) …" seçenekleri) okur; sıfırdan eğittiğin model şıkları
-  puanlar. Doğru cevap bilinmediği için yalnız modelin seçimini gösterir. Fotoğraf model yüklenmeden önce okunur;
-  `--adet` yok sayılır. Fotoğrafta birden çok soru varsa (iki "A)" satırı) ya da OCR çıktısı `en_fazla_token`'da
-  kesildiyse komut durur ve fotoğrafı tek soruyu içerecek biçimde kırpmanı söyler.
+  puanlar. Soru numarası "7." ya da "7)" olabilir. Numaradan önce yalnız büyük harfli sayfa başlığı ve sayfa numarası
+  ya da önceki sorunun seçenekleri varsa bu satırlar okunmaz; seçeneklerden sonra başlayan soru ("8. …" ya da
+  "8) …") son seçeneğe eklenmez. Doğru cevap bilinmediği için yalnız modelin seçimini gösterir. Fotoğraf model
+  yüklenmeden önce okunur; `--adet` yok sayılır. Fotoğrafta birden çok soru varsa (iki "A)" satırı) ya da OCR çıktısı
+  `en_fazla_token`'da kesildiyse komut durur ve fotoğrafı tek soruyu içerecek biçimde kırpmanı söyler.
 - **`ocr`** bir PDF'i ya da görüntüyü (`.png`, `.jpg`, `.jpeg`, `.webp`; `.bmp` ve `.gif` gönderilmeden önce PNG'ye
   çevrilir) metne çevirip `veri/ocr/<ad>.txt`'ye yazar (`--cikti` ile başka bir klasöre). Aynı adlı girdiler ayrı
   dosyalara yazılır (`IMG_0001.txt`, `IMG_0001-2.txt`). Çıktı `en_fazla_token`'da kesilirse komut bunu söyler;
@@ -549,13 +566,17 @@ ve `ilerleme.md`'ye "kıyas" aşamasıyla bir satır ekler. Böylece sıfırdan 
 - Her çalıştırmada aynı sorular seçilir; `--adet` büyüdükçe küme genişler ve önceki cevaplar yeniden kullanılır.
 - İki ölçüm aynı değildir. Senin modelin şıkların olasılığıyla puanlanır; modül modeli soruyu okuyup cevabı yazar
   ("üretimle") ve milyarlarca token'lık ön eğitimden gelir. Cevabından şık harfi çıkarılamayan sorular "cevapsız"
-  sayılır ve yanlış kabul edilir.
+  sayılır ve yanlış kabul edilir. Olumsuzlanan harf ("Cevap A değil.", "C şıkkı yanlış") cevap sayılmaz; başka bir
+  harf onaylanmışsa o alınır ("Cevap A değil, B'dir." → B).
 - DeepSeek-R1 damıtmaları cevaptan önce düşünür; CPU'da soru başına onlarca saniye sürebilir. Cevaplar soru soru
-  `ciktilar/moduller/kiyas/` altında saklanır (ham cevap ve çıkarılan şık); yarıda kesilirse kaldığı yerden sürer.
-  Şık her çalıştırmada saklanan ham cevaptan yeniden çıkarılır. Birkaç cevaba bakıp şıkkın doğru çıkarıldığını
-  denetle. Önbellek anahtarı model adını da içerir: bu sürümden önce saklanan cevaplar bir kez yeniden sorulur.
-- Cevabı `[moduller.metin] en_fazla_token`'da (varsayılan 1024) kesildiği için şıkkı çıkarılamayan sorular da
-  cevapsız sayılır; model çoğu kez düşünürken kesilir. Komut bunların sayısını yazar ve değeri büyütmeni söyler.
+  `ciktilar/moduller/kiyas/` altında saklanır (cevap metni ve çıkarılan şık); yarıda kesilirse kaldığı yerden sürer.
+  Şık her çalıştırmada saklanan cevaptan yeniden çıkarılır. Birkaç cevaba bakıp şıkkın doğru çıkarıldığını denetle.
+  Önbellek anahtarı model adını da içerir: bu sürümden önce saklanan cevaplar bir kez yeniden sorulur.
+- Cevabı `[moduller.metin] en_fazla_token`'da (varsayılan 1024) kesilen soru, cevapta kapanan bir düşünme bloğu
+  (`</think>`) yoksa cevapsız sayılır: model düşünürken kesilmiştir, metindeki harf cevap değildir. Sunucunun sohbet
+  şablonu düşünmeyi kendisi açtığında (cevapta `<think>` görünmez) da böyledir. Komut kesilen cevapsızların sayısını
+  yazar ve değeri büyütmeni söyler; `modul-dene metin` de aynı kuralla sınar. Düşünmenin kapanıp kapanmadığını
+  tutmayan eski önbellek kayıtları eskisi gibi okunur.
 - Bu küçük modellerin Türkçesi sınırlıdır; sonucu "bu boyuttaki hazır bir model ne yapıyor" diye oku.
 
 ### Sınanan ve sınanmayan

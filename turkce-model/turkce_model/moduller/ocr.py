@@ -75,6 +75,7 @@ _LATEX_SIMGELER = {
 }
 _LATEX_SIMGE = re.compile("|".join(re.escape(k) + r"(?![a-zA-Z])" for k in sorted(_LATEX_SIMGELER, key=len, reverse=True)))
 _LATEX_SINIR = re.compile(r"\\[()\[\]]")
+_US_DERECE = re.compile(r"\s*\^\s*(?:\(\s*°\s*\)|°)")  # "^(°)", "^°", " ^ °": derece işareti üst simge değildir
 _DOLAR_MATEMATIK = re.compile(r"\$\$(.+?)\$\$|(?<![\w\\$])\$(?=[^\s$])([^$\n]*?)(?<=[^\s$\\])\$(?![\w$])")
 _GORSEL_ETIKETLERI = {"image", "figure", "chart", "picture", "diagram"}
 
@@ -98,7 +99,7 @@ def _latex_sadelestir(s: str) -> str:
             break
         s = yeni
     s = _LATEX_US.sub(lambda m: f"{m.group(1)}({m.group(2).strip()})", s)
-    s = _LATEX_SIMGE.sub(lambda m: _LATEX_SIMGELER[m.group()], s).replace("^(°)", "°")
+    s = _US_DERECE.sub("°", _LATEX_SIMGE.sub(lambda m: _LATEX_SIMGELER[m.group()], s))  # "30^{\circ}", "45^\circ" → "…°"
     s = _DOLAR_MATEMATIK.sub(lambda m: m.group(1) if m.group(1) is not None else m.group(2), s)
     s = s.replace("$$", "")  # satırlara bölünmüş "$$ … $$" bloğunun sınırı (tek "$" ise fiyat olabilir, kalır)
     return _LATEX_SINIR.sub("", s)
@@ -236,6 +237,11 @@ def temiz_metin(ham: str) -> tuple[str, bool]:
 # ---- görüntüler ---------------------------------------------------------------------------------
 
 
+class PdfOkunamadi(ModulHatasi):
+    """PDF açılamadı (bozuk, boş ya da parolalı). Sunucu ya da model hatasından farklı olarak yalnız bu dosyaya
+    özgüdür: ``meb-pdf --ocr`` klasörü okurken dosyayı "okunamadı" diye atlar, öbürlerini okur."""
+
+
 def sayfa_gorselleri(pdf: Path, dpi: int = 150) -> Iterator[tuple[int, bytes]]:
     """PDF'in her sayfasını PNG'ye çevirir: ``(sayfa_no, png)``; sayfa numarası 1'den başlar."""
     from ..meb import _pymupdf
@@ -244,10 +250,10 @@ def sayfa_gorselleri(pdf: Path, dpi: int = 150) -> Iterator[tuple[int, bytes]]:
     try:
         belge = pymupdf.open(pdf)
     except Exception as e:  # pymupdf bozuk dosyada kendi hata türlerini atar
-        raise ModulHatasi(f"PDF açılamadı: {pdf} ({e})") from e
+        raise PdfOkunamadi(f"PDF açılamadı: {pdf} ({e})") from e
     with belge:
         if belge.needs_pass and not belge.authenticate(""):
-            raise ModulHatasi(f"PDF parola korumalı, açılamadı: {pdf}")
+            raise PdfOkunamadi(f"PDF parola korumalı, açılamadı: {pdf}")
         for no, sayfa in enumerate(belge, 1):
             yield no, sayfa.get_pixmap(dpi=dpi, alpha=False).tobytes("png")
 
@@ -328,7 +334,7 @@ class OcrModulu:
             with _pymupdf().open(pdf) as belge:
                 toplam = belge.page_count
         except Exception as e:  # noqa: BLE001 — pymupdf bozuk dosyada kendi hata türlerini atar
-            raise ModulHatasi(f"PDF açılamadı: {pdf} ({e})") from e
+            raise PdfOkunamadi(f"PDF açılamadı: {pdf} ({e})") from e
         for no, png in sayfa_gorselleri(pdf, self.ayar.dpi):
             bas = time.time()
             ham, onbellekten = self.ham_oku(png, istem=istem)
@@ -357,16 +363,17 @@ class OcrModulu:
         return [self.gorselden(gorsel, mime, yaz, istem)]
 
 
-def ocr_modulu(ayarlar) -> OcrModulu:
-    """Ayarlardan OCR modülünü kurar; kapalıysa nasıl açılacağını söyleyen ``ModulHatasi``."""
+def ocr_modulu(ayarlar, komut_eki: str = "", ayar_dosyasi: str = "ayarlar.toml") -> OcrModulu:
+    """Ayarlardan OCR modülünü kurar; kapalıysa nasıl açılacağını söyleyen ``ModulHatasi``. ``komut_eki`` ve
+    ``ayar_dosyasi`` iletilerde yazılan komutlar ve anılan ayar dosyası içindir (``YerelSunucu``)."""
     m = ayarlar.moduller
     if not m.ocr.model:
         raise ModulHatasi(
             "OCR modülü kapalı. Açmak için: yerel bir model sunucusu kur (ör. Ollama), modeli indir "
-            "(`ollama pull deepseek-ocr`) ve ayarlar.toml'da [moduller.ocr] model = \"deepseek-ocr\" yaz. "
+            f"(`ollama pull deepseek-ocr`) ve {ayar_dosyasi}'da [moduller.ocr] model = \"deepseek-ocr\" yaz. "
             "Ayrıntı: README, 'DeepSeek modülleri'."
         )
-    sunucu = YerelSunucu(m.adres, m.zaman_asimi, m.uzak_sunucu)
+    sunucu = YerelSunucu(m.adres, m.zaman_asimi, m.uzak_sunucu, komut_eki=komut_eki, ayar_dosyasi=ayar_dosyasi)
     return OcrModulu(sunucu, m.ocr, ayarlar.cikti_klasoru / "moduller" / "ocr")
 
 

@@ -151,12 +151,23 @@ def komut_meb_mmlu(arg, ayarlar: Ayarlar) -> None:
     except RuntimeError as e:  # ağ hatası ya da beklenmeyen veri biçimi
         raise AyarHatasi(str(e)) from e
     print(f"TurkishMMLU: {len(sorular)} soru. Yalnız değerlendirmede kullanılır, eğitime hiç girmez.")
-    if _yol(ayarlar, "meb", "meb_pdf.jsonl").exists():
+    meb_pdf = _yol(ayarlar, "meb", "meb_pdf.jsonl")
+    if meb_pdf.exists():
+        # Kopyalanıp çalıştırılacak komutlar: OCR ile okunmuş sorular aynı kiple yeniden okunur (OCR'sız meb-pdf
+        # onları silmemek için durur); her komut bu çağrının --ayarlar / --ayar / --deney seçeneklerini taşır.
+        kip = meb.ocr_kipi(meb_pdf)
+        okuma = ("meb-pdf --ocr" + (" hepsi" if kip == "hepsi" else "")) if kip else "meb-pdf"
+        komutlar = [okuma, "veri-hazirla"]
+        meb_klasoru = ayarlar.deney_klasoru / "meb"  # bu deneyin MEB modeli (.eski: yarıda kalan --uzerine-yaz'ınki)
+        if any((meb_klasoru / ad).exists() for ad in ("en_iyi.pt", "son.pt", "en_iyi.pt.eski", "son.pt.eski")):
+            komutlar.append("egit --asama meb --uzerine-yaz")
+        ek = _komut_eki(arg)
         print(
             "Not: meb_pdf.jsonl bundan önce üretilmiş. TurkishMMLU ile soru kökü aynı olan PDF soruları eğitimden "
-            "çıkarılsın diye meb-pdf'i, sonra veri-hazirla'yı yeniden çalıştır; MEB modeli eğitildiyse "
-            "egit --asama meb --uzerine-yaz ile yeniden eğit."
+            "çıkarılsın diye bunları sırayla çalıştır:"
         )
+        for komut in komutlar:
+            print(f"  python -m turkce_model {komut}{ek}")
 
 
 def komut_meb_pdf(arg, ayarlar: Ayarlar) -> None:
@@ -178,10 +189,10 @@ def komut_meb_pdf(arg, ayarlar: Ayarlar) -> None:
     # TurkishMMLU (değerlendirme) indirilmişse onunla soru kökü aynı olan PDF soruları eğitime alınmaz.
     mmlu_yolu = _yol(ayarlar, "meb", "turkishmmlu.jsonl")
     haric_kokler = [s.soru for s in meb.soru_oku(mmlu_yolu)] if mmlu_yolu.exists() else []
+    # Yazılan "meb-pdf --ocr" komutu aynı klasörü okusun: yoksa varsayılan klasörü okuyup bu çıktıyı ezerdi.
+    ek = _komut_eki(arg) + (f" --klasor {_tirnak(arg.klasor)}" if arg.klasor else "")
     try:
-        rapor = meb.pdf_klasoru_ayristir(
-            klasor, hedef, haric_kokler=haric_kokler, ayristirici=ayristirici, komut_eki=_komut_eki(arg)
-        )
+        rapor = meb.pdf_klasoru_ayristir(klasor, hedef, haric_kokler=haric_kokler, ayristirici=ayristirici, komut_eki=ek)
     except (FileNotFoundError, RuntimeError) as e:  # pymupdf yok, hiçbir PDF okunamadı, OCR'lı sorular silinecekti…
         raise AyarHatasi(str(e)) from e
     sorular = meb.bol(meb.soru_oku(hedef))
@@ -535,6 +546,9 @@ def _model_yukle(arg, ayarlar: Ayarlar):
         yol = Path(arg.model)
         if not yol.exists() and yol.name in ("en_iyi.pt", "son.pt"):  # aşama klasöründeki dosya kenarda olabilir
             kenardakini_geri_getir(yol.parent, _hata_yaz)
+            bekliyor = None if yol.exists() else yeniden_egitiliyor_notu(yol.parent)
+            if bekliyor:  # "Model dosyası yok" denmez: eski model kenarda, aşama şu an yeniden eğitiliyor
+                raise AyarHatasi(f"{bekliyor} Bitmesini bekle ya da belirli bir dosya için --model <yol> ver.")
     else:
         # Önce MEB, yoksa TDK modeli. Yarıda kalmış bir --uzerine-yaz'ın kenara aldığı model önce yerine konur;
         # aşama şu an yeniden eğitiliyorsa (eski modeli kenarda) bu söylenir.
@@ -718,6 +732,7 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
         YARIM_DURUMLAR,
         egitim_durumu_oku,
         egitim_suruyor_mu,
+        gosterim_yolu,
         tokenizer_klasoru,
         veri_klasoru,
     )
@@ -930,6 +945,9 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
             if k.kenarda:  # yarıda kalan --uzerine-yaz: --devam eski eğitimi yerine koyar (bitmişse "zaten bitmiş" der)
                 bas = f"  {d.name} / {asama}: yarıda kalan --uzerine-yaz; eski eğitim kenarda" + (f" ({ilerleme})" if bilgi else "")
                 neden = icerik_eskimesi(asama, bilgi, k.kayit, baslangic=False)
+                if not neden and bilgi.get("durum") not in BITMIS_DURUMLAR and not k.son.exists():
+                    # Kenardakiler silinirken öldürülmüş (son.pt.eski silinmiş): bitmemiş eğitim --devam ile sürmez.
+                    neden = "bitmedi ve son.pt yok, sürdürülemez"
                 yarim.append(f"{bas}; {neden}" if neden else f"{bas} → egit --asama {asama} --devam{secenek}")
                 continue
             if bilgi.get("durum") not in YARIM_DURUMLAR or not (klasor / "son.pt").exists():
@@ -977,7 +995,7 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
     elif siradaki:
         print(f"Sıradaki adım: python -m turkce_model {siradaki}{ek}")
         if siradaki.startswith("meb-pdf") and not pdfler:
-            print("  (önce MEB kitapçıklarını tarayıcıyla indirip veri/meb/pdf klasörüne koy; README, 3. adım)")
+            print(f"  (önce MEB kitapçıklarını tarayıcıyla indirip {gosterim_yolu(v / 'meb' / 'pdf')} klasörüne koy; README, 3. adım)")
     elif suren_bu:
         print(f"Sıradaki adım: süren eğitimin bitmesini bekle ({', '.join(suren_bu)}); sonra yeniden: python -m turkce_model durum{ek}")
     else:

@@ -35,6 +35,13 @@ _HARF_SIKKI = re.compile(r"(?<![\w'])([A-E])\s*(?:şıkkı|seçeneği)(?!\s+(?:i
 _BASTA_HARF = re.compile(r"^\(?([A-Ea-e])\)[\s.]")
 _SECENEK_ISARETI = re.compile(r"(?<![\w'])\(?[A-E]\)\s")
 _TEK_HARF = re.compile(r"(?<![\w'])([A-E])(?!\w)")  # "B'dir" de sayılır
+# Olumsuzlanan şık ("A değil", "C şıkkı yanlış", "B seçeneği ise hatalıdır", "A doğru değil", "not A"): hiçbir kural
+# bu harfi cevap diye döndürmez.
+_OLUMSUZ_HARF = re.compile(
+    r"(?<![\w'])\(?([A-E])\)?(?:\s+(?:şıkkı|seçeneği|şık))?(?:\s+ise)?\s*[,;:]?\s*(?:do[ğg]ru\s+)?"
+    r"(?:değil|olamaz|yanlış|hatalı|eksik|is\s+(?:not|incorrect|wrong))"
+    r"|\bnot\s+\(?([A-E])\)?(?![\w'])"
+)
 
 
 def soru_istemi(s: Soru) -> str:
@@ -46,15 +53,19 @@ def cevap_cikar(metin: str, secenek_sayisi: int) -> int | None:
     """Modelin cevabından şık sırasını çıkarır (0 = A); anlaşılamıyorsa ``None`` (cevapsız sayılır).
 
     Sırayla: yalnız harf ("C", "C)", "(C)"); "Cevap: C" gibi bir ifade (sonuncusu); "C şıkkı"; "C) …" ile
-    başlayan cevap; son satırda tek bir harf. Geçerli şık aralığı dışındaki harf cevap sayılmaz.
+    başlayan cevap; son satırda tek bir harf. Geçerli şık aralığı dışındaki harf ve olumsuzlanan harf ("Cevap A
+    değil.", "C şıkkı yanlış") hiçbir kuralda cevap sayılmaz; başka bir harf onaylanmışsa o alınır ("Cevap A değil,
+    B'dir." → B).
     """
     gecerli = HARFLER[:secenek_sayisi]
 
+    t = metin.replace("**", "").strip()
+    olumsuz = {h for ikili in _OLUMSUZ_HARF.findall(t) for h in ikili if h}
+
     def sira(harf: str) -> int | None:
         harf = harf.upper()
-        return gecerli.index(harf) if harf in gecerli else None
+        return gecerli.index(harf) if harf in gecerli and harf not in olumsuz else None
 
-    t = metin.replace("**", "").strip()
     if not t:
         return None
     m = _YALNIZ_HARF.match(t)
@@ -74,6 +85,14 @@ def cevap_cikar(metin: str, secenek_sayisi: int) -> int | None:
     son_satir = t.splitlines()[-1]
     harfler = {x for x in _TEK_HARF.findall(son_satir) if sira(x) is not None}
     return sira(harfler.pop()) if len(harfler) == 1 else None
+
+
+def dusunurken_kesildi(kesik: object, dusunme_kapandi: object) -> bool:
+    """Cevap ``en_fazla_token``'da kesildi ve ham içerikte kapanan düşünme bloğu (``</think>``) yok: model düşünürken
+    kesildi. Sohbet şablonu düşünmeyi kendisi açan sunucularda (vLLM, llama.cpp ``--jinja``) içerikte ``<think>``
+    görünmez; metin düşüncenin kendisidir ("cevap A olabilir mi?"), içinden şık çıkarılmaz. Bu bilgiyi taşımayan eski
+    önbellek kaydında ``dusunme_kapandi`` ``None``dır: kayıt eskisi gibi okunur."""
+    return bool(kesik) and dusunme_kapandi is False
 
 
 def ornekle(sorular: Sequence[Soru], adet: int) -> list[Soru]:
@@ -140,9 +159,12 @@ def kiyasla(
                     ayar.model, [{"role": "user", "content": soru_istemi(s)}], ayar.en_fazla_token, ek_istek=ayar.ek_istek
                 )
                 sureler.append(time.time() - bas)
+                sinirda = getattr(sunucu, "son_bitis", None) == "length"
+                kapandi = bool(getattr(sunucu, "son_dusunme_kapandi", False))
                 kayit = {
-                    "anahtar": anahtar, "kimlik": s.kimlik, "cevap": cevap, "secim": cevap_cikar(cevap, len(s.secenekler)),
-                    "kesik": getattr(sunucu, "son_bitis", None) == "length",
+                    "anahtar": anahtar, "kimlik": s.kimlik, "cevap": cevap,
+                    "secim": None if dusunurken_kesildi(sinirda, kapandi) else cevap_cikar(cevap, len(s.secenekler)),
+                    "kesik": sinirda, "dusunme_kapandi": kapandi,
                 }
                 if dosya is not None:
                     dosya.write(json.dumps(kayit, ensure_ascii=False) + "\n")
@@ -151,6 +173,8 @@ def kiyasla(
                     ort = sum(sureler) / len(sureler)
                     yaz(f"  {ad}: {i}/{len(sorular)} soru (soru başına ~{ort:.1f} sn, kalan ~{(len(sorular) - i) * ort / 60:.0f} dk)")
             secim = cevap_cikar(str(kayit.get("cevap", "")), len(s.secenekler))  # kurallar değişince eski harf kalmasın
+            if dusunurken_kesildi(kayit.get("kesik"), kayit.get("dusunme_kapandi")):
+                secim = None  # cevapsız ve kesik sayılır
             rastgele += 1.0 / len(s.secenekler)
             ders[s.ders]["n"] += 1
             if secim is None:

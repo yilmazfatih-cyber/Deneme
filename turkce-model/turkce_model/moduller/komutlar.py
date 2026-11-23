@@ -15,19 +15,35 @@ from .katalog import BUYUK_MODELLER, KATALOG, ROLLER, modul_bul
 
 _ACMA_ADIMLARI = (
     "yerel bir model sunucusu kur (ör. Ollama), modeli indir (`ollama pull {ornek}`) ve "
-    "ayarlar.toml'da [moduller.{rol}] model = \"{ornek}\" yaz"
+    "{dosya}'da [moduller.{rol}] model = \"{ornek}\" yaz"
 )
 _ACMA_IPUCU = "Açmak için: " + _ACMA_ADIMLARI + ". Ayrıntı: README, 'DeepSeek modülleri'."
 
 
-def _sunucu(ayarlar) -> YerelSunucu:
+def _ekler(arg) -> dict:
+    """``YerelSunucu`` ve ``ocr_modulu`` için ``komut_eki`` (yazılan komutlar ``--ayarlar``, ``--ayar`` ve ``--deney``
+    ile aynı ayarlara gitsin: ``cli._komut_eki``) ve ``ayar_dosyasi`` (ipuçlarında anılan dosya). ``arg`` yoksa boş."""
+    if arg is None:
+        return {}
+    from ..cli import VARSAYILAN_AYARLAR, _komut_eki
+
+    dosya = getattr(arg, "ayarlar", None)
+    return {"komut_eki": _komut_eki(arg), "ayar_dosyasi": Path(dosya).name if dosya else VARSAYILAN_AYARLAR}
+
+
+def _ayar_dosyasi(arg) -> str:
+    return _ekler(arg).get("ayar_dosyasi", "ayarlar.toml")
+
+
+def _sunucu(ayarlar, arg=None) -> YerelSunucu:
     m = ayarlar.moduller
-    return YerelSunucu(m.adres, m.zaman_asimi, m.uzak_sunucu)
+    return YerelSunucu(m.adres, m.zaman_asimi, m.uzak_sunucu, **_ekler(arg))
 
 
-def _metin_ayari(ayarlar):
+def _metin_ayari(ayarlar, arg=None):
     if not ayarlar.moduller.metin.model:
-        raise ModulHatasi("Kıyas (metin) modülü kapalı. " + _ACMA_IPUCU.format(ornek="deepseek-r1:1.5b", rol="metin"))
+        ipucu = _ACMA_IPUCU.format(ornek="deepseek-r1:1.5b", rol="metin", dosya=_ayar_dosyasi(arg))
+        raise ModulHatasi("Kıyas (metin) modülü kapalı. " + ipucu)
     return ayarlar.moduller.metin
 
 
@@ -56,7 +72,7 @@ def komut_modul_liste(arg, ayarlar) -> None:
         tanim = f" (katalogda: {bilgi.ad})" if bilgi else (" (katalogda yok: başka bir model)" if bolum.model else "")
         print(f"  {rol}: {bolum.model + tanim if bolum.model else 'kapalı'}")
     try:
-        modeller = _sunucu(ayarlar).modeller()
+        modeller = _sunucu(ayarlar, arg).modeller()
     except ModulHatasi as e:
         print(f"Sunucu: {e}")
         return
@@ -79,7 +95,7 @@ def _model_var(model: str, modeller: list[str]) -> bool:
 def _ocr_dene(arg, ayarlar) -> bool:
     from .ocr import DENEME_METNI, OcrModulu, benzerlik, deneme_gorseli, gorsel_oku, ocr_modulu
 
-    modul = ocr_modulu(ayarlar)
+    modul = ocr_modulu(ayarlar, **_ekler(arg))
     modul = OcrModulu(modul.sunucu, modul.ayar, None)  # sınamada önbellek yok: süre gerçek olsun
     if arg.gorsel:
         gorsel, mime = gorsel_oku(Path(arg.gorsel))
@@ -91,7 +107,7 @@ def _ocr_dene(arg, ayarlar) -> bool:
     if png is None:
         raise ModulHatasi(
             "Sınama sayfası çizilemedi: Türkçe harfleri içeren bir yazı tipi bulunamadı. Kendi görüntünle dene: "
-            "python -m turkce_model modul-dene ocr --gorsel sayfa.png"
+            f"python -m turkce_model modul-dene ocr --gorsel sayfa.png{_ekler(arg).get('komut_eki', '')}"
         )
     print(f"OCR modülü sınanıyor: {modul.ayar.model} @ {modul.sunucu.adres} (Türkçe harfli {len(DENEME_METNI)} satır)")
     bas = time.time()
@@ -115,17 +131,19 @@ def _ocr_dene(arg, ayarlar) -> bool:
 
 
 def _metin_dene(arg, ayarlar) -> bool:
-    from .kiyas import cevap_cikar, soru_istemi
+    from .kiyas import cevap_cikar, dusunurken_kesildi, soru_istemi
 
-    ayar = _metin_ayari(ayarlar)
+    ayar = _metin_ayari(ayarlar, arg)
     soru = Soru(
         kimlik="deneme:1", kaynak="deneme", ders="Coğrafya", soru="Türkiye'nin başkenti aşağıdakilerden hangisidir?",
         secenekler=["İzmir", "Ankara", "Bursa", "Konya"], cevap=1,
     )
     print(f"Metin modülü sınanıyor: {ayar.model} @ {ayarlar.moduller.adres}")
     bas = time.time()
-    cevap = _sunucu(ayarlar).sohbet(ayar.model, [{"role": "user", "content": soru_istemi(soru)}], ayar.en_fazla_token, ek_istek=ayar.ek_istek)
-    secim = cevap_cikar(cevap, len(soru.secenekler))
+    sunucu = _sunucu(ayarlar, arg)
+    cevap = sunucu.sohbet(ayar.model, [{"role": "user", "content": soru_istemi(soru)}], ayar.en_fazla_token, ek_istek=ayar.ek_istek)
+    kesildi = dusunurken_kesildi(sunucu.son_bitis == "length", sunucu.son_dusunme_kapandi)
+    secim = None if kesildi else cevap_cikar(cevap, len(soru.secenekler))
     print(f"Modelin cevabı ({time.time() - bas:.0f} sn): {cevap[:300]!r}")
     if secim is None:
         print("Sonuç: cevaptan şık harfi çıkarılamadı. Model yalnız harf yazmıyorsa [moduller.metin] en_fazla_token'ı büyüt.")
@@ -139,7 +157,7 @@ def komut_modul_dene(arg, ayarlar) -> int:
     if not roller:
         raise ModulHatasi(
             "Açık modül yok. OCR modülünü açmak için: "
-            + _ACMA_ADIMLARI.format(ornek="deepseek-ocr", rol="ocr")
+            + _ACMA_ADIMLARI.format(ornek="deepseek-ocr", rol="ocr", dosya=_ayar_dosyasi(arg))
             + ". Kıyas modülü için aynısı: `ollama pull deepseek-r1:1.5b`, [moduller.metin] model = "
             "\"deepseek-r1:1.5b\". Ayrıntı: README, 'DeepSeek modülleri'."
         )
@@ -155,7 +173,7 @@ def komut_modul_dene(arg, ayarlar) -> int:
 def komut_ocr(arg, ayarlar) -> None:
     from .ocr import KESIK_ISARETI, ocr_modulu
 
-    modul = ocr_modulu(ayarlar)
+    modul = ocr_modulu(ayarlar, **_ekler(arg))
     hedef = Path(arg.cikti) if arg.cikti else ayarlar.veri_klasoru / "ocr"
     hedef.mkdir(parents=True, exist_ok=True)
     istem = modul.ayar.istem if arg.duz else None
@@ -185,20 +203,22 @@ def komut_ocr(arg, ayarlar) -> None:
 # ---- meb-pdf ve sor bağlantıları -----------------------------------------------------------------
 
 
-def meb_ayristirici(ayarlar, kip: str) -> Callable:
-    """``meb-pdf --ocr``: taranmış (ya da ``hepsi`` ile bütün) kitapçıkları OCR modülüyle okuyan ayrıştırıcı."""
+def meb_ayristirici(ayarlar, kip: str, arg=None) -> Callable:
+    """``meb-pdf --ocr``: taranmış (ya da ``hepsi`` ile bütün) kitapçıkları OCR modülüyle okuyan ayrıştırıcı. ``arg``
+    (komutun seçenekleri) verilirse iletilerdeki komutlar ve ayar dosyası ona göre yazılır."""
     from .meb_metin import ocr_ayristirici
     from .ocr import ocr_modulu
 
-    return ocr_ayristirici(ocr_modulu(ayarlar), kip)
+    return ocr_ayristirici(ocr_modulu(ayarlar, **_ekler(arg)), kip)
 
 
-def resimden_soru(yol: str, ayarlar) -> Soru:
-    """``sor --resim``: bir soru fotoğrafını OCR ile okuyup ``Soru``ya çevirir (cevabı bilinmez)."""
+def resimden_soru(yol: str, ayarlar, arg=None) -> Soru:
+    """``sor --resim``: bir soru fotoğrafını OCR ile okuyup ``Soru``ya çevirir (cevabı bilinmez). ``arg``: bkz.
+    ``meb_ayristirici``."""
     from .meb_metin import tek_soru
     from .ocr import KESIK_ISARETI, ocr_modulu
 
-    modul = ocr_modulu(ayarlar)
+    modul = ocr_modulu(ayarlar, **_ekler(arg))
     metin = "\n\n".join(modul.dosya_oku(Path(yol), print, modul.ayar.istem))
     if KESIK_ISARETI in metin:
         raise ModulHatasi(
@@ -223,7 +243,7 @@ def komut_modul_kiyas(arg, ayarlar) -> None:
     from ..degerlendirme import OLCUM_SURUMU, ilerleme_ekle
     from .kiyas import kiyasla, ornekle
 
-    ayar = _metin_ayari(ayarlar)
+    ayar = _metin_ayari(ayarlar, arg)
     kaynaklar = [
         ("meb_test", "MEB test", ayarlar.cikti_klasoru / "veri" / "meb_sorular.jsonl", "test"),
         ("mmlu", "TurkishMMLU", ayarlar.veri_klasoru / "meb" / "turkishmmlu.jsonl", None),
@@ -236,7 +256,7 @@ def komut_modul_kiyas(arg, ayarlar) -> None:
                 kumeler.append((anahtar, ad, ornekle(sorular, arg.adet), len(sorular)))
     if not kumeler:
         raise AyarHatasi("Kıyaslanacak soru yok. Önce meb-mmlu (TurkishMMLU) ya da meb-pdf + veri-hazirla çalıştır.")
-    sunucu = _sunucu(ayarlar)
+    sunucu = _sunucu(ayarlar, arg)
     onbellek = ayarlar.cikti_klasoru / "moduller" / "kiyas"
     kayit: dict = {"deney": f"modül: {ayar.model}", "asama": "kıyas", "kiyas": True, "olcum": OLCUM_SURUMU}
     print(f"Kıyas: {ayar.model} @ {ayarlar.moduller.adres} (cevaplar {onbellek} altında saklanır; yarıda kesilirse sürer)")
@@ -266,6 +286,8 @@ def komut_modul_kiyas(arg, ayarlar) -> None:
 
 def komutlari_ekle(ekle: Callable) -> None:
     """``cli.ayristirici`` içinden çağrılır; ``ekle(ad, işlev, yardım)`` alt komut ayrıştırıcısını döndürür."""
+    from ..cli import _sayi_turu  # cli bu işlevi çağırırken yüklenmiştir
+
     ekle("modul-liste", komut_modul_liste, "DeepSeek'in küçük açık modelleri: hangisi modül olarak bağlanır, sunucu ne durumda?")
     p = ekle("modul-dene", komut_modul_dene, "Açık modülleri bu bilgisayarda sına (OCR: Türkçe harfli sınama sayfası)")
     p.add_argument("rol", nargs="?", choices=("ocr", "metin"), help="Yalnız bu rol (varsayılan: açık olanların hepsi)")
@@ -275,4 +297,4 @@ def komutlari_ekle(ekle: Callable) -> None:
     p.add_argument("--cikti", help="Metinlerin yazılacağı klasör (varsayılan: veri/ocr)")
     p.add_argument("--duz", action="store_true", help="PDF'lerde de düz metin istemini kullan (düzen ve şekil işareti olmadan)")
     p = ekle("modul-kiyas", komut_modul_kiyas, "Küçük bir DeepSeek metin modelini aynı test sorularında ölç, tabloya kıyas satırı ekle")
-    p.add_argument("--adet", type=int, default=100, help="Her kümeden en çok kaç soru (varsayılan 100; 0 = hepsi)")
+    p.add_argument("--adet", type=_sayi_turu(int, 0), default=100, help="Her kümeden en çok kaç soru (varsayılan 100; 0 = hepsi)")

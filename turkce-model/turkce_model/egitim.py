@@ -167,6 +167,17 @@ def sabit_dogrulama_yiginlari(
 # --------------------------------------------------------------------------------------------
 
 
+def gosterim_yolu(yol: Path) -> str:
+    """İletide gösterilen klasör: çalışma klasörünün altındaysa ona göre göreli (``v2/meb/pdf``), değilse tam yol.
+
+    Böylece ``[yollar] veri`` değiştirilmişse ipucu varsayılan ``veri/meb/pdf`` yerine gerçek klasörü söyler."""
+    yol = Path(yol)
+    try:
+        return str(yol.relative_to(Path.cwd().resolve()))
+    except (ValueError, OSError):  # başka bir yerde ya da çalışma klasörü silinmiş
+        return str(yol)
+
+
 def tokenizer_klasoru(ayarlar: Ayarlar) -> Path:
     return ayarlar.cikti_klasoru / "tokenizer"
 
@@ -390,6 +401,8 @@ def _kenara_al(klasor: Path) -> bool:
 
 
 def _eskileri_sil(klasor: Path) -> None:
+    """Kenara alınanları ters sırayla siler: model (``en_iyi.pt.eski``) ``son.pt.eski``'den sonra gider. Arada
+    öldürülen süreç eski eğitimi modeliyle bırakır; onu kullanan komut yerine koyar."""
     for ad in reversed(_ASAMA_DOSYALARI):
         (klasor / (ad + ".eski")).unlink(missing_ok=True)
 
@@ -417,7 +430,10 @@ def _yarim_uzerine_yazmayi_toparla(klasor: Path) -> bool:
     if not eskiler:
         return False
     canli = (klasor / "son.pt").exists() or (klasor / "en_iyi.pt").exists()
-    if not canli and "son.pt" in eskiler:  # kenara alma bitmişti: canlı durum/günlük yeni koşunun yarım dosyaları
+    # Kenara alma bitmişti (kontrol noktası kenarda, canlısı yok; kenardakiler silinirken öldürülmüşse yalnız
+    # en_iyi.pt.eski kalır): canlı durum/günlük yeni koşunun yarım dosyalarıdır. Önce silinir: geri koyma yarıda
+    # kesilse de geri gelen modelin yanında yeni koşunun kaydı durmaz.
+    if not canli and ("son.pt" in eskiler or "en_iyi.pt" in eskiler):
         for ad in ("durum.json", "gunluk.jsonl"):
             (klasor / ad).unlink(missing_ok=True)
     geri = False
@@ -659,8 +675,9 @@ def _egit(
     dogrulama_sorulari: list = []
     if asama == "meb":
         if not (vk / "meb_egitim.npz").exists():
+            pdf_klasoru = gosterim_yolu(ayarlar.veri_klasoru / "meb" / "pdf")
             raise AyarHatasi(
-                f"MEB eğitim soruları hazırlanmamış. Önce MEB kitapçıklarını veri/meb/pdf klasörüne koyup meb-pdf{veri_eki}, "
+                f"MEB eğitim soruları hazırlanmamış. Önce MEB kitapçıklarını {pdf_klasoru} klasörüne koyup meb-pdf{veri_eki}, "
                 f"sonra veri-hazirla{veri_eki} çalıştır (TurkishMMLU yalnız değerlendirme içindir)."
             )
         meb_egitim = SoruVeri(vk / "meb_egitim.npz")
@@ -682,14 +699,11 @@ def _egit(
         geri_getirildi = _yarim_uzerine_yazmayi_toparla(klasor)
         if geri_getirildi:
             yaz(_geri_getirildi_notu(klasor))
-    if devam and not son_yol.exists():
-        raise AyarHatasi(
-            f"--devam verildi ama sürdürülecek eğitim yok ({son_yol}). Yeni bir eğitim için --devam'sız çalıştır; "
-            "başka bir deney için --deney <ad> ver."
-        )
     if devam and geri_getirildi:
         # Yarıda kalan --uzerine-yaz'dan geri gelen eğitim bitmişse yapılacak bir şey yok. Bu, ayar karşılaştırmasından
         # önce söylenir: --uzerine-yaz çoğu kez yeni ayarlarla denenmiştir; geri getirme o ayarlarla da başarılı biter.
+        # son.pt'ye bakmadan da önce: kenardakiler silinirken öldürülen bir --uzerine-yaz (önce son.pt.eski silinir)
+        # bitmiş eğitimi son.pt'siz bırakır; modeli (en_iyi.pt) yine geri gelir.
         eski = egitim_durumu_oku(klasor) or {}
         if eski.get("durum") in BITMIS_DURUMLAR:
             neden = "erken durdurmayla" if eski["durum"] == "erken_durdu" else f"adım {eski.get('adim')}/{eski.get('toplam_adim')}"
@@ -700,6 +714,11 @@ def _egit(
                 f"Değerlendirmek için: python -m turkce_model degerlendir --asama {asama}{komut_eki}"
             )
             return {"zaten_bitti": True, "adim": eski.get("adim")}
+    if devam and not son_yol.exists():
+        raise AyarHatasi(
+            f"--devam verildi ama sürdürülecek eğitim yok ({son_yol}). Yeni bir eğitim için --devam'sız çalıştır; "
+            "başka bir deney için --deney <ad> ver."
+        )
     if son_yol.exists() and not devam and not uzerine_yaz:
         raise AyarHatasi(
             f"{klasor} içinde zaten bir eğitim var. Sürdürmek için --devam, silip baştan başlamak için "
@@ -1187,6 +1206,9 @@ def degerlendir(
         yol = Path(kontrol_noktasi)
         if not yol.exists() and yol.name in ("en_iyi.pt", "son.pt"):  # aşama klasöründeki dosya kenarda olabilir
             kenardakini_geri_getir(yol.parent, yaz)
+            bekliyor = None if yol.exists() else yeniden_egitiliyor_notu(yol.parent)
+            if bekliyor:  # "Model dosyası yok" denmez: eski model kenarda, aşama şu an yeniden eğitiliyor
+                raise AyarHatasi(f"{bekliyor} Yeni eğitimin ilk kaydını bekle ya da belirli bir dosya için --model <yol> ver.")
     model, kn = modeli_yukle(yol, tok, cihaz)
     deney = ayarlar.deney_adi
     if kontrol_noktasi is not None:
