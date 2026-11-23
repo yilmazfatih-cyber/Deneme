@@ -161,3 +161,44 @@ def test_yatirim_komutu_dosya_yazar(moduller_yok, tmp_path, capsys):
     assert len(veri["kartlar"]) == 2
     assert md.count("Yatırım tavsiyesi değildir") >= 3  # rapor başı, sonu ve her kart
     assert "## Çıkış uyarısı" in md
+
+
+def test_cikis_uyarisi_kucuk_payli_degerleri_atlar(moduller_yok, tmp_path):
+    """Fotoğraf sayımındaki çok küçük paylı TCX kodları çıkış uyarısına girmez (esikler.cikis.en_az_podyum_payi)."""
+    klasor = tmp_path / "s"
+    klasor.mkdir()
+
+    def kayit(sezon, kod, pay):
+        return {
+            "sezon": sezon,
+            "nitelik_ekseni": "renk",
+            "nitelik_degeri": kod,
+            "podyum_payi": pay,
+            "marka_sayisi": 5,
+            "kaynak_turu": "gorsel",
+            "kaynak_url": "https://x.invalid",
+            "kaynak_tarihi": "2026-03-01",
+        }
+
+    for sezon, buyuk, kucuk in (("SS25", 0.08, 0.002), ("SS26", 0.02, 0.0005)):
+        (klasor / f"{sezon}.json").write_text(
+            json.dumps(
+                {"sezon": sezon, "sinyaller": [kayit(sezon, "19-4052 TCX", buyuk), kayit(sezon, "17-1564 TCX", kucuk)]}
+            )
+        )
+    cikti = tmp_path / "out"
+    argv = ["yatirim", "--sezon", "SS26", "--segment", "orta", "--kategori", "kadin-ust", "--ilk", "1"]
+    argv += [
+        "--sinyaller",
+        str(klasor),
+        "--db",
+        str(tmp_path / "yok.db"),
+        "--cikti",
+        str(cikti),
+        "--bugun",
+        "2026-11-08",
+    ]
+    assert main(argv) == 0
+    veri = json.loads((cikti / "SS26" / "yatirim-orta.json").read_text("utf-8"))
+    kodlar = {c["nitelik_degeri"] for c in veri["cikis_uyarisi"]}
+    assert "17-1564 TCX" not in kodlar

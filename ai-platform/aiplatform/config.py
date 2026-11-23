@@ -41,12 +41,33 @@ class Settings(BaseSettings):
     erp_api_token: str | None = None
     erp_webhook_secret: str | None = Field(default=None, description="ERP'den gelen webhook imzası için paylaşılan sır")
 
+    # Kimlik doğrulama
+    auth_mode: Literal["auto", "on", "off"] = Field(
+        default="auto",
+        description="auto: yalnız 127.0.0.1/localhost'a bağlıysa kapalı, ağa açıksa açık; on/off: zorla",
+    )
+    session_hours: int = Field(default=12, ge=1, le=24 * 30, description="Tarayıcı oturumunun ömrü")
+    server_token: str | None = Field(
+        default=None, description="İstemci rolünde sunucuya giderken kullanılan API anahtarı (aiplatform token create --delegate)"
+    )
+    approval_four_eyes: bool = Field(
+        default=True, description="Kimlik doğrulama açıkken kişi kendi isteğini onaylayamaz"
+    )
+
     # KVKK
     audit_retention_days: int = 30
     mask_before_server: bool = Field(default=True, description="İstemci: sunucuya giden her metin maskelensin")
 
     hf_token: str | None = Field(default=None, description="Gated depolar için (Prompt Guard gibi); genelde gerekmez")
     hf_endpoint: str | None = Field(default=None, description="Şirket içi Hugging Face aynası varsa")
+
+    @property
+    def auth_enabled(self) -> bool:
+        if self.auth_mode == "on":
+            return True
+        if self.auth_mode == "off":
+            return False
+        return self.host not in {"127.0.0.1", "localhost", "::1"}
 
     @property
     def models_dir(self) -> Path:

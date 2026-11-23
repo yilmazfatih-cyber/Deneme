@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       sezon:
-        description: 'Podyum sezonu (SS27, FW26 ...) ya da guncel'
+        description: 'Podyum sezonu ya da virgülle sezonlar (SS27 · SS26,FW26 · guncel)'
         default: guncel
         required: true
       segment:
@@ -56,17 +56,25 @@ jobs:
         working-directory: moda-radar
         run: |
           s="${{ inputs.sezon }}"
-          if [ -z "$s" ] || [ "$s" = "guncel" ]; then
-            s=$(python -c "from moda_radar.veri.komut import guncel_sezon; print(guncel_sezon())")
-          fi
+          guncel=$(python -c "from moda_radar.veri.komut import guncel_sezon; print(guncel_sezon())")
+          if [ -z "$s" ]; then s="$guncel"; fi
+          s=$(echo "$s" | tr -d ' ' | sed "s/guncel/$guncel/g")
+          case "$s" in *[!A-Z0-9,]*) echo "Geçersiz sezon listesi: $s"; exit 1;; esac
           echo "ad=$s" >> "$GITHUB_OUTPUT"
-          echo "Sezon: $s"
+          echo "Sezonlar: $s"
 
       - name: Podyum (Vogue Runway)
         working-directory: moda-radar
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python -m moda_radar topla --sezon "${{ steps.sezon.outputs.ad }}" --kaynak podyum
+        run: |
+          # Birden çok sezon tek çalışmada sırayla toplanır; aynı eşzamanlılık grubunda bekleyen çalışmalar
+          # birbirini iptal ettiği için sezonları ayrı ayrı tetiklemek yerine virgülle verin.
+          for s in $(echo "${{ steps.sezon.outputs.ad }}" | tr ',' ' '); do
+            echo "::group::Podyum $s"
+            python -m moda_radar topla --sezon "$s" --kaynak podyum
+            echo "::endgroup::"
+          done
 
       - name: Perakende
         if: ${{ !cancelled() }}

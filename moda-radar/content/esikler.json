@@ -20,6 +20,7 @@
     "ust": 20
   },
   "celiski_olasilik_farki": 0.35,
+  "celiski_zayif_esik": 0.45,
   "cikis_baskin_agirlik": 0.25,
   "eksen_agirliklari": {
     "renk": 0.4,
@@ -85,6 +86,7 @@
       "erken": "%20",
       "orta": "%20–30",
       "olagan": "sezon sonu olağan oran"
-    }
+    },
+    "en_az_podyum_payi": 0.005
   }
 }

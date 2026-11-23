@@ -913,6 +913,534 @@
       "kaynak": "marka",
       "kaynak_kimligi": "mbfwi/ss26/niyazi-erdogan",
       "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Chanel",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/chanel",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Dior",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/christian-dior",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Saint Laurent",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/saint-laurent",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Louis Vuitton",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/louis-vuitton",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Balenciaga",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/balenciaga",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Loewe",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/loewe",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Hermès",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/hermes",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Miu Miu",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/miu-miu",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Chloé",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/chloe",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Givenchy",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/givenchy",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Valentino",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/valentino",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Isabel Marant",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/isabel-marant",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Rick Owens",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/rick-owens",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Prada",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/prada",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Gucci",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/gucci",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Fendi",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/fendi",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Versace",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/versace",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Bottega Veneta",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/bottega-veneta",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Max Mara",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/max-mara",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Jil Sander",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/jil-sander",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Ferragamo",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/ferragamo",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Dolce & Gabbana",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/dolce-gabbana",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Etro",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/etro",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Burberry",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/burberry",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Simone Rocha",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/simone-rocha",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Erdem",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/erdem",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "JW Anderson",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/jw-anderson",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Roksanda",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/roksanda",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Michael Kors",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/michael-kors-collection",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Carolina Herrera",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/carolina-herrera",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Tory Burch",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/tory-burch",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Khaite",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/khaite",
+      "tarih": null
+    },
+    {
+      "sezon": "FW25",
+      "marka": "Coach",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2025-ready-to-wear/coach",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Chanel",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/chanel",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Dior",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/christian-dior",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Saint Laurent",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/saint-laurent",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Louis Vuitton",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/louis-vuitton",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Balenciaga",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/balenciaga",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Loewe",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/loewe",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Hermès",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/hermes",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Miu Miu",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/miu-miu",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Chloé",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/chloe",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Givenchy",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/givenchy",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Valentino",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/valentino",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Isabel Marant",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/isabel-marant",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Rick Owens",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/rick-owens",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Prada",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/prada",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Gucci",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/gucci",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Fendi",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/fendi",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Versace",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/versace",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Bottega Veneta",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/bottega-veneta",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Max Mara",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/max-mara",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Jil Sander",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/jil-sander",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Ferragamo",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/ferragamo",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Dolce & Gabbana",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/dolce-gabbana",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Etro",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/etro",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Burberry",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/burberry",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Simone Rocha",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/simone-rocha",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Erdem",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/erdem",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "JW Anderson",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/jw-anderson",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Roksanda",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/roksanda",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Michael Kors",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/michael-kors-collection",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Carolina Herrera",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/carolina-herrera",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Tory Burch",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/tory-burch",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Khaite",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/khaite",
+      "tarih": null
+    },
+    {
+      "sezon": "SS25",
+      "marka": "Coach",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2025-ready-to-wear/coach",
+      "tarih": null
     }
   ]
 }
