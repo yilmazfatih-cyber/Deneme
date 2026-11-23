@@ -38,7 +38,8 @@ def _g(deger, ilk, segment="orta"):
 
 def _veri(n, gecikme):
     # markanın ilk tarama kaydı: sol sansür bu günü "zaten raftaydı" sayar, ölçüme girmez
-    s, g = [], [_g("ilk-tarama", date(2020, 1, 1))]
+    # taban kayıtlar: markanın ilk tarama günü (raf sansürü) ve verinin ilk podyum sezonu (podyum sansürü)
+    s, g = [_s("SS20", "taban")], [_g("ilk-tarama", date(2020, 1, 1))]
     for i in range(n):
         sezon = ("SS24", "FW24")[i % 2]
         s.append(_s(sezon, f"d{i}"))
@@ -87,7 +88,7 @@ def test_sentetik_gecikme_geri_bulunur():
 
 
 def test_ilk_taramada_rafta_olan_sol_sansurlu():
-    s = [_s("SS24", "a"), _s("SS24", "b")]
+    s = [_s("SS20", "taban"), _s("SS24", "a"), _s("SS24", "b")]
     ilk = sz.raf_tarihi("SS24", 2.0)
     g = [_g("a", ilk), _g("b", ilk + timedelta(days=30))]
     e = gk.eslesmeler(s, g, "orta")
@@ -95,3 +96,12 @@ def test_ilk_taramada_rafta_olan_sol_sansurlu():
     rapor = GozlemKaydi(**{**g[0].model_dump(), "kaynak_turu": "rapor"})
     taban = _g("ilk-tarama", date(2020, 1, 1))
     assert {x["deger"] for x in gk.eslesmeler(s, [taban, rapor, g[1]], "orta")} == {"a", "b"}  # rapor sansürlenmez
+
+
+def test_verinin_ilk_sezonunda_olan_deger_sayilmaz():
+    """Podyum sol sansürü: verinin en erken sezonunda zaten görünen değerin gerçek ilk sezonu bilinmez."""
+    taban = _g("ilk-tarama", date(2020, 1, 1))
+    s = [_s("SS24", "eski"), _s("SS25", "eski"), _s("SS25", "yeni")]
+    raf = sz.raf_tarihi("SS25", 2.0)
+    e = gk.eslesmeler(s, [taban, _g("eski", raf), _g("yeni", raf)], "orta")
+    assert [x["deger"] for x in e] == ["yeni"]

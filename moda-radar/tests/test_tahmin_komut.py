@@ -1,7 +1,17 @@
 import json
 
+import pytest
+
 from moda_radar.__main__ import main
 from moda_radar.tahmin import komut
+from moda_radar.tahmin import model as _md
+from moda_radar.tahmin import sentetik as _sentetik
+
+
+@pytest.fixture(autouse=True)
+def _sentetik_adim(monkeypatch):
+    """Sentetik dünyada eğri ardışık sezonda ilerler; gerçek veride model aynı mevsimle karşılaştırır."""
+    monkeypatch.setattr(_md, "KARSILASTIRMA_ADIMI", _sentetik.KARSILASTIRMA_ADIMI)
 
 
 def _sinyal_dosyasi(klasor, ornek=False):

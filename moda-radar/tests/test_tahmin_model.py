@@ -53,7 +53,7 @@ def test_sinyal_yok():
 
 
 def test_tipik_sinyal_temel_olasilik():
-    t = _t("x", [_s("SS27", "x", md.PAY_REF, md.MARKA_REF), _s("FW26", "x", md.PAY_REF, md.MARKA_REF)])
+    t = _t("x", [_s("SS27", "x", md.PAY_REF, md.MARKA_REF), _s("SS26", "x", md.PAY_REF, md.MARKA_REF)])
     assert t.yon == Yon.DUZ and t.olasilik == pytest.approx(0.5)
 
 
@@ -65,14 +65,16 @@ def test_pay_ve_marka_artirir():
 
 
 def test_yon_etkisi():
-    seri = {"FW26": 0.1, "SS27": 0.03}
+    # aynı mevsimle karşılaştırma: SS27 ↔ SS26 (FW26 mevsim etkisi taşır, yönü belirlemez)
+    seri = {"SS26": 0.1, "SS27": 0.03}
     assert md.yon_hesapla(seri, "SS27") == Yon.CIKIS
     assert md.yon_hesapla({"SS27": 0.03}, "SS27") == Yon.GIRIS
-    assert md.yon_hesapla({"FW26": 0.03, "SS27": 0.06}, "SS27") == Yon.YUKSELIS
-    assert md.yon_hesapla({"SS26": 0.02, "FW26": 0.05, "SS27": 0.05}, "SS27") == Yon.ZIRVE
-    assert md.yon_hesapla({"FW26": 0.05}, "SS27") == Yon.CIKIS
-    cikis = _t("x", [_s("FW26", "x", 0.10), _s("SS27", "x", 0.05)])
-    yukselis = _t("x", [_s("FW26", "x", 0.02), _s("SS27", "x", 0.05)])
+    assert md.yon_hesapla({"SS26": 0.03, "SS27": 0.06}, "SS27") == Yon.YUKSELIS
+    assert md.yon_hesapla({"SS25": 0.02, "SS26": 0.05, "SS27": 0.05}, "SS27") == Yon.ZIRVE
+    assert md.yon_hesapla({"SS26": 0.05}, "SS27") == Yon.CIKIS
+    assert md.yon_hesapla({"FW26": 0.10, "SS27": 0.03}, "SS27") == Yon.GIRIS  # FW26 karşılaştırmaya girmez
+    cikis = _t("x", [_s("SS26", "x", 0.10), _s("SS27", "x", 0.05)])
+    yukselis = _t("x", [_s("SS26", "x", 0.02), _s("SS27", "x", 0.05)])
     assert cikis.yon == Yon.CIKIS and yukselis.yon == Yon.YUKSELIS
     assert yukselis.olasilik > cikis.olasilik
 
@@ -123,3 +125,30 @@ def test_toplu_tahmin():
     assert olas == sorted(olas, reverse=True)
     renk = md.toplu_tahmin("SS27", "TR", "orta", "kadin-ust", s, [], SEG, eksen="renk")
     assert {t.nitelik_degeri for t in renk} == {"a", "b"}
+
+
+def test_renk_yonu_aileden():
+    """Kahverengi ailesi büyürken tek bir kahve kodunun payı düşse de yön aileden (yükseliş) gelir."""
+    from moda_radar.sema import SinyalKaydi
+
+    def g(sezon, kod, pay):
+        return SinyalKaydi(
+            sezon=sezon,
+            nitelik_ekseni="renk",
+            nitelik_degeri=kod,
+            podyum_payi=pay,
+            marka_sayisi=10,
+            kaynak_turu="gorsel",
+            kaynak_url="https://x.invalid",
+            kaynak_tarihi="2026-01-01",
+            guven=0.8,
+        )
+
+    s = [
+        g("SS26", "19-1419 TCX", 0.03),
+        g("SS27", "19-1419 TCX", 0.01),  # cikori kahvesi: kod düşüyor
+        g("SS26", "19-1230 TCX", 0.02),
+        g("SS27", "19-1230 TCX", 0.06),
+    ]  # aynı ailede başka kahve yükseliyor
+    t = md.tahmin_et("SS27", "TR", "orta", "kadin-ust", "renk", "19-1419 TCX", s, [], SEG)
+    assert t.yon == Yon.YUKSELIS and "ailesi" in t.gerekce

@@ -252,7 +252,19 @@ def yatirim(args) -> int:
             adaylar.append((t.olasilik, pay, kod))
         adaylar.sort(key=lambda x: (-x[0], -x[1], x[2]))
 
-        tipik = {e: segment_profili.tipik(segment.kod, e)[0] for e in ("siluet", "kumas_gorunumu", "desen")}
+        # Varsayılan ürün: segment profilindeki ilk 3 aday arasından podyum sinyali en güçlü olan (uzman önseli tek
+        # başına seçmez; ör. premium için "keten" fotoğraf sayımında zayıfsa yerine yünlü ya da ipeksi gelir).
+        tipik = {}
+        for e in ("siluet", "kumas_gorunumu", "desen"):
+            adaylar_e = segment_profili.tipik(segment.kod, e, 3) or segment_profili.tipik(segment.kod, e)
+            puanli = []
+            for d in adaylar_e:
+                if (e, d) not in onbellek:
+                    onbellek[(e, d)] = kaynaklar.eksen_tahmini(
+                        sezon, args.ulke, segment, kategori, e, d, sinyaller, gozlemler, esikler
+                    )
+                puanli.append((-onbellek[(e, d)][0].olasilik, adaylar_e.index(d), d))
+            tipik[e] = min(puanli)[2]
         kartlar = []
         for _, _, kod in adaylar[: args.ilk]:
             hex_, ad = _renk_hex(kod)

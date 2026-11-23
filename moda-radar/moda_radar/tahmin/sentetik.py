@@ -24,6 +24,8 @@ from moda_radar.tahmin import sezon as sz
 
 VARSAYILAN_SEZONLAR = ("SS23", "FW23", "SS24", "FW24")
 EGRI = ((0.4, Yon.GIRIS), (1.0, Yon.YUKSELIS), (0.5, Yon.CIKIS))
+# Bu dünyada eğri ARDIŞIK sezonda ilerler; model yönü bu adımla karşılaştırmalı (gerçek veride 2: aynı mevsim).
+KARSILASTIRMA_ADIMI = 1
 
 
 def _lojistik(r: random.Random) -> float:

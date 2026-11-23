@@ -2,22 +2,37 @@
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
-Güncelleme: 2026-11-16 · model v0 · kural-0 · veri: 96 Vogue Runway defilesi (SS26, FW26, SS27 · 32'şer), 5.708 look
-fotoğrafı, 22.832 parça rengi; SS27'de 96 look'ta 263 giysi parçasının nitelik etiketi; 171 rapor sinyali; perakende
-286 ürün, iki haftalık tarama (Beymen, Koton, DeFacto, Ipekyol).
+Güncelleme: 2026-11-23 · model v0.1 · kural-0 · veri: 159 Vogue Runway defilesi (SS25, FW25, SS26, FW26, SS27),
+9.338 look fotoğrafı, 37.351 parça rengi; SS26 ve SS27'de 192 look'ta 535 giysi parçasının nitelik etiketi;
+perakende 313 ürün, üç haftalık tarama (Beymen, Koton, DeFacto, Ipekyol). Geriye test: `docs/karne/kalicilik-2026-11.md`.
 Ayrıntı: `palet.md` (sezon paleti) ve `yatirim-<segment>.md` (kartlar).
 
-## Renk yönü: SS26 → SS27 (aynı mevsim, fotoğraf sayımı)
+## Renk yönü: aile düzeyinde, aynı mevsim (SS25 → SS26 → SS27)
 
-| Yön      | Renkler (Pantone TCX · SS27 payı · puan farkı)                                                                                                |
-| -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| Yükseliş | meteor (kahverengimsi siyah) 19-4008 · %4,1 · +1,6; demir kapı grisi 19-3910 · +1,7; liman sisi 14-4202 · +1,1; asfalt kahvesi 19-0822 · +1,0 |
-| Zirve    | siyah 19-3911 · %8,4 · +1,0 (29 defile): payı en yüksek, artışı yavaşlıyor                                                                    |
-| Çıkış    | cikori kahvesi 19-1419 · −3,0; köstebek kahvesi 19-1106 · −1,6; asfalt grisi 19-0201 · −1,5; ganaj 19-1018 · −0,8                             |
+Geriye test: tek Pantone kodunun yönü bir sonraki sezonda tersine dönüyor (r = −0,59); renk ailesinin yönü sürüyor.
+Bu yüzden yön aile düzeyinde okunur.
 
-Okuma: SS26'nın "sıcak kahve" hikâyesi SS27'de koyulaşıyor; orta kahveler geriliyor, kahverengimsi siyah (meteor) ve
-sıcak koyu griler yükseliyor. Kırık beyaz ve kum tonları yatay. FW26 → SS27 karşılaştırması (mevsim farkı içerir)
-kahveyi yükselişte gösteriyordu; aynı mevsim karşılaştırması daha güvenilirdir.
+| Aile       | SS25  | SS26  | SS27  | Okuma                       |
+| ---------- | ----- | ----- | ----- | --------------------------- |
+| Kahverengi | %12,2 | %17,0 | %20,7 | İki sezondur güçlü yükseliş |
+| Siyah      | %20,0 | %19,1 | %21,4 | Yatay, sezonun zemini       |
+| Nötr açık  | %21,4 | %17,4 | %17,1 | Geriledi, dengelendi        |
+| Mavi       | %9,6  | %7,6  | %5,0  | İki sezondur düşüş          |
+| Kırmızı    | %6,2  | %9,9  | %6,4  | SS26'da sıçradı, geri döndü |
+
+16 Kasım'daki "orta kahveler çıkışta" okuması kod düzeyindeydi ve yanıltıcıydı: tek tek kahve kodları değişiyor,
+kahverengi ailesi büyüyor.
+
+## Kumaş, desen, boy: SS26 → SS27 (fotoğraf etiketleri, 96'şar look)
+
+| Eksen | Yükselen                                     | Düşen                                 |
+| ----- | -------------------------------------------- | ------------------------------------- |
+| Kumaş | yünlü %8→%17 (20 defile), ipeksi %8→%16 (17) | tül %9→%3, deri %13→%8, teknik %11→%7 |
+| Desen | çizgili %4→%8, soyut %4→%7, ekose %3→%5      | çiçekli %11→%4                        |
+| Boy   | kalça %18→%25, diz üstü %10→%14, midi %7→%12 | maksi %30→%21, bel %14→%7             |
+| Detay | kapaklı cep %7→%12                           | önden düğme %9→%5, büzgü %5→%2        |
+
+Etiket uyumu (Opus denetimi): kumaş 0,83, boy 0,91, kol 1,00; siluet 0,38 (zayıf, siluet yönü okunmamalı).
 
 ## Podyum paleti (SS27 fotoğraf sayımı)
 
@@ -47,13 +62,17 @@ doku ve renk sayısı zayıf. Örneklem küçük; haftalık etiketleme oturumu h
 
 ## Segment kararları (kadın üst)
 
-| Segment               | YATIR                                                                        | DENE                                | BEKLE / GİRME                       |
-| --------------------- | ---------------------------------------------------------------------------- | ----------------------------------- | ----------------------------------- |
-| Premium (Ipekyol)     | Siyah 19-3911 / 19-0303, meteor 19-4008, çikolata 19-1214, parlak beyaz      | Bej, lavanta, ganaj, bordo          | Açık sarı (erken)                   |
-| Orta (Koton, DeFacto) | Siyah, meteor, çikolata, parlak beyaz, denizci mavisi 19-3831, bordo 19-1617 | Bej, lavanta, açık sarı             | —                                   |
-| Değer (Addax)         | — (bu renkler değer rafına SS28'de iner)                                     | 12 kartın hepsi; SS28 için hazırlık | —                                   |
-| Lüks (Beymen)         | Siyah 19-3911, lavanta, fildişi, acı biber kırmızısı 19-1557                 | Bej, bordo, kil                     | GİRME: jet siyahı 19-0303 ve meteor |
-| Pazar                 | Jet siyahı ve parlak beyaz pamuklu                                           | Kahve tonları, bej, çelik grisi     | Lavanta, bordo (erken)              |
+| Segment               | YATIR                                                                 | DENE                                              | Not                                     |
+| --------------------- | --------------------------------------------------------------------- | ------------------------------------------------- | --------------------------------------- |
+| Premium (Ipekyol)     | Yüksük çiçeği pembesi 16-1710 (tek kart)                              | Siyah, meteor, köstebek, bej (siyah ailesi yatay) | Varsayılan ürün artık düz pamuklu       |
+| Orta (Koton, DeFacto) | Siyah, cikori ve çikolata kahvesi, bej, kavun 15-1242 düz pamuklu üst | Kalan beş renk                                    | Kahverengi ailesi yükselişte            |
+| Değer (Addax)         | — (değer rafına SS28'de iner)                                         | 12 kartın hepsi                                   | Varsayılan ürün düz triko               |
+| Lüks (Beymen)         | Su yeşili 15-5516                                                     | Siyah, meteor, bej, turba                         | Siyah ailesi yatay: güçlü ama büyümüyor |
+| Pazar                 | Parlak beyaz, siyah, meteor, bej, krokus pamuklu                      | Yüksük çiçeği, kavun                              | —                                       |
+
+Ürün düzeyinde okuma (SS26 → SS27 etiketlerinden): yünlü ve ipeksi kumaş, çizgili desen, kalça ve diz üstü boy,
+kapaklı cep yükseliyor; çiçekli desen, tül ve maksi boy geriliyor. Pazar segmenti gecikmeyle çiçekliyi yine görebilir,
+ama premium ve orta için çiçekli maksi elbise siparişi temkinli olmalı.
 
 Ürün sorusu örnekleri (`/moda`): premium oversize yünlü ceket-gömlek meteor rengi → YATIR (ivme 0,71, marj %68);
 premium düz ipeksi bluz siyah → YATIR (0,84); premium oversize keten köstebek kahvesi → GİRME (renk çıkışta);
@@ -80,5 +99,6 @@ hassas; tek tek ürün sorusu (`/moda`) segment tablosundan daha güvenilir okum
 
 - Siyahın payı koyu podyum zemini yüzünden biraz şişkin olabilir.
 - Gecikmeler kısmen ölçülü: perakende 2 haftalık; orta segmentte ölçüm var, diğerlerinde önsel ağırlıklı.
-- Nitelik etiketi (siluet, kumaş) yalnız SS27'de; kumaş ve siluet yönü haftalık etiketleme ilerledikçe ölçülecek.
+- Nitelik etiketi yalnız SS26 ve SS27'de (96'şar look); FW sezonları ve daha büyük örneklem haftalık etiketlemeyle gelecek.
+- Gerçekleşmeye dayalı geriye test (Brier) için geçmiş perakende raf verisi yok; şimdilik yalnız podyum kalıcılığı sınandı.
 - Maliyet bantları tahmini; Addax henüz taranamıyor.
