@@ -1,5 +1,5 @@
 {
- "zaman": "2026-11-16T09:59",
+ "zaman": "2026-11-23T11:32",
  "rapor": {
   "tv": {
    "satir": 649,
@@ -45,8 +45,8 @@
    ],
    "gecersiz_ek": [],
    "hisse_listesi": 623,
-   "sure_sn": 12.8,
-   "zaman": "2026-11-14T13:55"
+   "sure_sn": 13.0,
+   "zaman": "2026-11-23T11:12"
   },
   "seri": {
    "sembol": 81,
@@ -156,7 +156,7 @@
    "zaman": "2026-11-12T11:18"
   },
   "_toplam": {
-   "sure_dk": 41.9,
+   "sure_dk": 19.7,
    "hisse": 623
   },
   "kesif": {
@@ -259,15 +259,15 @@
   },
   "yahoo": {
    "hisse": 621,
-   "satir": 411820,
+   "satir": 415544,
    "hata": {
     "ALTIN": "boş",
     "DMLKT": "boş"
    },
-   "yazilan_satir": 411820,
+   "yazilan_satir": 415544,
    "eski_dosyadan_korunan_hisse": 0,
-   "sure_sn": 52.0,
-   "zaman": "2026-11-16T09:18"
+   "sure_sn": 42.0,
+   "zaman": "2026-11-23T11:13"
   },
   "hisse_saatlik": {
    "sembol": 251,
@@ -281,17 +281,17 @@
   },
   "isy": {
    "hisse": 620,
-   "satir": 413887,
+   "satir": 416987,
    "hata_sayisi": 3,
    "hata_ornek": {
     "CITAS": "boş",
     "ALTIN": "boş",
     "DMLKT": "boş"
    },
-   "yazilan_satir": 413887,
+   "yazilan_satir": 416987,
    "eski_dosyadan_korunan_hisse": 0,
-   "sure_sn": 2453.7,
-   "zaman": "2026-11-16T09:59"
+   "sure_sn": 1118.9,
+   "zaman": "2026-11-23T11:32"
   },
   "mali": {
    "hisse": 585,
@@ -1113,33 +1113,33 @@
   },
   "kap_liste": {
    "liste": {
-    "ham_satir": 506,
-    "en_buyuk_pencere": 337,
+    "ham_satir": 921,
+    "en_buyuk_pencere": 277,
     "yanitsiz_ilk_tur": 0,
     "yanitsiz_pencere": [],
-    "en_eski_gun": "2026-11-11",
+    "en_eski_gun": "2026-11-13",
     "durum": {
-     "200": 3
+     "200": 6
     },
-    "sure_dk": 0.1,
-    "satir": 202,
+    "sure_dk": 0.2,
+    "satir": 356,
     "konu": {
-     "Payların Geri Alınmasına İlişkin Bildirim": 119,
-     "Pay Alım Satım Bildirimi": 70,
-     "Kar Payı Dağıtım İşlemlerine İlişkin Bildirim": 7,
-     "Fon Kurucusu Tarafından Yapılan Pay Alım Satım Bildirimi": 2,
-     "Sermaye Artırımı veya Azaltımı Bildirimi": 2,
-     "Birleşme İşlemlerine İlişkin Bildirim": 1,
-     "Geri Alınan Payların Elden Çıkarılması": 1
+     "Payların Geri Alınmasına İlişkin Bildirim": 230,
+     "Pay Alım Satım Bildirimi": 104,
+     "Kar Payı Dağıtım İşlemlerine İlişkin Bildirim": 10,
+     "Birleşme İşlemlerine İlişkin Bildirim": 5,
+     "Sermaye Artırımı - Azaltımı İşlemlerine İlişkin Bildirim": 3,
+     "Fon Kurucusu Tarafından Yapılan Pay Alım Satım Bildirimi": 3,
+     "Sermaye Artırımı veya Azaltımı Bildirimi": 1
     }
    },
    "artimli": {
-    "baslangic": "2026-11-11",
-    "eski_satir": 20594,
-    "toplam_satir": 20608
+    "baslangic": "2026-11-13",
+    "eski_satir": 20608,
+    "toplam_satir": 20902
    },
-   "sure_sn": 5.9,
-   "zaman": "2026-11-16T09:17"
+   "sure_sn": 10.8,
+   "zaman": "2026-11-23T11:13"
   },
   "kap_detay": {
    "aday": {
