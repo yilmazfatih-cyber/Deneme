@@ -1,0 +1,6 @@
+# Xcode kullanıcıya özel dosyalar ve derleme çıktıları
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+.DS_Store
