@@ -1,0 +1,426 @@
+{
+ "tarama": {
+  "an": "2026-11-24T10:55:00+03:00",
+  "kategoriler": [
+   "corap",
+   "ic-giyim-pijama",
+   "sutyen-korse"
+  ],
+  "not": "Günlük tarama; Alibaba ilan sayfaları ve Akakçe doğrudan okundu (Trendyol 403, Hepsiburada captcha). Sütyen/korsede silikon göğüs ucu kapatıcı yeni aday (çift başına 0,62–0,97 $; Türkiye karşılaştırması 12 Akakçe ilanı). Çorapta oran düşük. İç giyimde kadife pijama takımı (1,40 $) yazılmadı: Türkiye'de kadife karşılığı yok, saten/dantel takımlarla kıyas yanıltıcı. Takip: eldiven ölçüldü; sırt çantası (0,98 $ aynı) için markasız Türkiye ilanı bulunamadı (avcının listesindeki DeerHunter markalı, çıkarıldı); saat (1,83 $ aynı) için Akakçe'de yalnız markalı ilanlar; kolye ilanı showroom'da artık yok, takipten düşmeli; cüzdan ilanı kaldırılmış."
+ },
+ "adaylar": [
+  {
+   "urun": "Silikon göğüs ucu kapatıcı (yapışkanlı, tekrar kullanılabilir)",
+   "kategori": "sutyen-korse",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Custom-Packaging-Box-Invisible-Adhesive-Breast_1601222520853.html",
+    "baslik": "JOGOGO Invisible Adhesive Breast Nipple Pasties Reusable Opaque Thin Silicone Nipple Cover",
+    "tedarikci": "ilan sayfasında görünmedi",
+    "fiyat_usd": 0.62,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 0.62
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 5000,
+      "fiyat_usd": 0.49
+     },
+     {
+      "min_adet": 10000,
+      "fiyat_usd": 0.42
+     }
+    ],
+    "birim_agirlik_kg": 0.02,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 43.47,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatici-fiyati,1450703058.html",
+      "baslik": "Göğüs Ucu Kapatıcı (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 60.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-fiyati,1178000131.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 60.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatan-silikon-fiyati,1178001220.html",
+      "baslik": "Göğüs Ucu Kapatan Silikon (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 120.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-silikonu-nipple-silicone-fiyati,1178001211.html",
+      "baslik": "Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 145.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-gizleyici-bant-aparat-nipple-pad-fiyati,1178004509.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı Gizleyici Bant Aparat Nipple Pad (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 232.8,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ttt-gogus-ucu-silikonu-nipple-silicone-fiyati,1177647099.html",
+      "baslik": "TTT Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 270.25,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-krem-gogus-ucu-kapatici-ve-diklestirici-hayalet-sutyen-hayalet-kapatici-fiyati,682485448.html",
+      "baslik": "Krem Göğüs Ucu Kapatıcı ve Dikleştirici Hayalet Sütyen (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 297.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ozel-uretim-kadin-ten-meme-ic-giyim-100-silikon-gogus-ucu-kapatan-gizleyen-ped-nipple-pad-7-cm-fiyati,1342845415.html",
+      "baslik": "Özel Üretim %100 Silikon Göğüs Ucu Kapatan Ped 7 cm (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 300.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-eco-port-gogus-ucu-silikon-kapatici-fiyati,1344129456.html",
+      "baslik": "Eco Port Göğüs Ucu Silikon Kapatıcı (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 333.06,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ince-silikon-nipple-cover-gorunmez-ve-iz-yapmaz-tasarim-fiyati,1427051043.html",
+      "baslik": "İnce Silikon Nipple Cover Görünmez ve İz Yapmaz (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 333.06,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-yapiskanli-silikon-gogus-ucu-pedi-seamless-dogal-gorunum-fiyati,1425056166.html",
+      "baslik": "Yapışkanlı Silikon Göğüs Ucu Pedi Seamless (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 371.93,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-forwhat-buro-ev-ofis-kadini-icin-silikon-gogus-ucu-kapatici-aparat-pad-l-xl-fiyati,1177713944.html",
+      "baslik": "ForWhat Silikon Göğüs Ucu Kapatıcı Aparat Pad L-XL (Akakçe en düşük teklif)"
+     }
+    ],
+    "not": "Baş doğrulaması: Akakçe 'göğüs bandı' kategorisindeki tüm silikon göğüs ucu kapatıcı ilanları (bant ve destek pedi hariç) alındı; avcının dışarıda bıraktığı 43–60 TL'lik ucuz ilanlar da dahil. İlan başına çift/adet doğrulanmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Straplez/dekolte giyimde sürekli satan, hafif ve bedensiz aksesuar.",
+   "riskler": [
+    "Ağırlık ilanda yok, çift için 0,02 kg tahmin",
+    "Silikon ürünlerde iade yok; cilt temas ürünü",
+    "GTİP emin değil (6212.90 olabilir), gümrük sınıflaması doğrulanmalı",
+    "GTİP 6212 yerine 3926.20 (plastikten giyim aksesuarı) olabilir; vergi oranı gümrük müşavirine sorulmalı",
+    "Türkiye fiyatları 43–372 TL arasında geniş dağılıyor; ucuz ilanlar tek adet ya da düşük kalite olabilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Custom-Packaging-Box-Invisible-Adhesive-Breast_1601222520853.html",
+    "https://www.akakce.com/gogus-bandi/en-ucuz-ozel-uretim-kadin-ten-meme-ic-giyim-100-silikon-gogus-ucu-kapatan-gizleyen-ped-nipple-pad-7-cm-fiyati,1342845415.html"
+   ]
+  },
+  {
+   "urun": "Silikon göğüs ucu kapatıcı (yapışkanlı, tekrar kullanılabilir)",
+   "kategori": "sutyen-korse",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Fashion-Design-Adhesive-Cloth-Silicone-Nipple_60732202351.html",
+    "baslik": "Fashion Design Adhesive Cloth Silicone Nipple Cover",
+    "tedarikci": "ilan sayfasında görünmedi",
+    "fiyat_usd": 0.68,
+    "moq": 200,
+    "kademeler": [
+     {
+      "min_adet": 200,
+      "fiyat_usd": 0.68
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 2000,
+      "fiyat_usd": 0.49
+     }
+    ],
+    "birim_agirlik_kg": 0.02,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 43.47,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatici-fiyati,1450703058.html",
+      "baslik": "Göğüs Ucu Kapatıcı (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 60.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-fiyati,1178000131.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 60.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatan-silikon-fiyati,1178001220.html",
+      "baslik": "Göğüs Ucu Kapatan Silikon (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 120.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-silikonu-nipple-silicone-fiyati,1178001211.html",
+      "baslik": "Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 145.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-gizleyici-bant-aparat-nipple-pad-fiyati,1178004509.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı Gizleyici Bant Aparat Nipple Pad (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 232.8,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ttt-gogus-ucu-silikonu-nipple-silicone-fiyati,1177647099.html",
+      "baslik": "TTT Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 270.25,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-krem-gogus-ucu-kapatici-ve-diklestirici-hayalet-sutyen-hayalet-kapatici-fiyati,682485448.html",
+      "baslik": "Krem Göğüs Ucu Kapatıcı ve Dikleştirici Hayalet Sütyen (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 297.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ozel-uretim-kadin-ten-meme-ic-giyim-100-silikon-gogus-ucu-kapatan-gizleyen-ped-nipple-pad-7-cm-fiyati,1342845415.html",
+      "baslik": "Özel Üretim %100 Silikon Göğüs Ucu Kapatan Ped 7 cm (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 300.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-eco-port-gogus-ucu-silikon-kapatici-fiyati,1344129456.html",
+      "baslik": "Eco Port Göğüs Ucu Silikon Kapatıcı (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 333.06,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ince-silikon-nipple-cover-gorunmez-ve-iz-yapmaz-tasarim-fiyati,1427051043.html",
+      "baslik": "İnce Silikon Nipple Cover Görünmez ve İz Yapmaz (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 333.06,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-yapiskanli-silikon-gogus-ucu-pedi-seamless-dogal-gorunum-fiyati,1425056166.html",
+      "baslik": "Yapışkanlı Silikon Göğüs Ucu Pedi Seamless (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 371.93,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-forwhat-buro-ev-ofis-kadini-icin-silikon-gogus-ucu-kapatici-aparat-pad-l-xl-fiyati,1177713944.html",
+      "baslik": "ForWhat Silikon Göğüs Ucu Kapatıcı Aparat Pad L-XL (Akakçe en düşük teklif)"
+     }
+    ],
+    "not": "Baş doğrulaması: Akakçe 'göğüs bandı' kategorisindeki tüm silikon göğüs ucu kapatıcı ilanları (bant ve destek pedi hariç) alındı; avcının dışarıda bıraktığı 43–60 TL'lik ucuz ilanlar da dahil. İlan başına çift/adet doğrulanmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Straplez/dekolte giyimde sürekli satan, hafif ve bedensiz aksesuar.",
+   "riskler": [
+    "Ağırlık ilanda yok, çift için 0,02 kg tahmin",
+    "Silikon ürünlerde iade yok; cilt temas ürünü",
+    "GTİP emin değil (6212.90 olabilir), gümrük sınıflaması doğrulanmalı",
+    "GTİP 6212 yerine 3926.20 (plastikten giyim aksesuarı) olabilir; vergi oranı gümrük müşavirine sorulmalı",
+    "Türkiye fiyatları 43–372 TL arasında geniş dağılıyor; ucuz ilanlar tek adet ya da düşük kalite olabilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Fashion-Design-Adhesive-Cloth-Silicone-Nipple_60732202351.html",
+    "https://www.akakce.com/gogus-bandi/en-ucuz-ozel-uretim-kadin-ten-meme-ic-giyim-100-silikon-gogus-ucu-kapatan-gizleyen-ped-nipple-pad-7-cm-fiyati,1342845415.html"
+   ]
+  },
+  {
+   "urun": "Silikon göğüs ucu kapatıcı (yapışkanlı, tekrar kullanılabilir)",
+   "kategori": "sutyen-korse",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Invisible-Silicone-6-5-Small-Breast_1601227974909.html",
+    "baslik": "Invisible Silicone 6.5 Small Breast Patch Self Adhesive Nipple Cover",
+    "tedarikci": "ilan sayfasında görünmedi",
+    "fiyat_usd": 0.97,
+    "moq": 50,
+    "kademeler": [
+     {
+      "min_adet": 50,
+      "fiyat_usd": 0.97
+     }
+    ],
+    "birim_agirlik_kg": 0.02,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 43.47,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatici-fiyati,1450703058.html",
+      "baslik": "Göğüs Ucu Kapatıcı (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 60.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-fiyati,1178000131.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 60.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatan-silikon-fiyati,1178001220.html",
+      "baslik": "Göğüs Ucu Kapatan Silikon (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 120.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-silikonu-nipple-silicone-fiyati,1178001211.html",
+      "baslik": "Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 145.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-gizleyici-bant-aparat-nipple-pad-fiyati,1178004509.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı Gizleyici Bant Aparat Nipple Pad (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 232.8,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ttt-gogus-ucu-silikonu-nipple-silicone-fiyati,1177647099.html",
+      "baslik": "TTT Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 270.25,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-krem-gogus-ucu-kapatici-ve-diklestirici-hayalet-sutyen-hayalet-kapatici-fiyati,682485448.html",
+      "baslik": "Krem Göğüs Ucu Kapatıcı ve Dikleştirici Hayalet Sütyen (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 297.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ozel-uretim-kadin-ten-meme-ic-giyim-100-silikon-gogus-ucu-kapatan-gizleyen-ped-nipple-pad-7-cm-fiyati,1342845415.html",
+      "baslik": "Özel Üretim %100 Silikon Göğüs Ucu Kapatan Ped 7 cm (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 300.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-eco-port-gogus-ucu-silikon-kapatici-fiyati,1344129456.html",
+      "baslik": "Eco Port Göğüs Ucu Silikon Kapatıcı (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 333.06,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ince-silikon-nipple-cover-gorunmez-ve-iz-yapmaz-tasarim-fiyati,1427051043.html",
+      "baslik": "İnce Silikon Nipple Cover Görünmez ve İz Yapmaz (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 333.06,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-yapiskanli-silikon-gogus-ucu-pedi-seamless-dogal-gorunum-fiyati,1425056166.html",
+      "baslik": "Yapışkanlı Silikon Göğüs Ucu Pedi Seamless (Akakçe en düşük teklif)"
+     },
+     {
+      "fiyat_tl": 371.93,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-forwhat-buro-ev-ofis-kadini-icin-silikon-gogus-ucu-kapatici-aparat-pad-l-xl-fiyati,1177713944.html",
+      "baslik": "ForWhat Silikon Göğüs Ucu Kapatıcı Aparat Pad L-XL (Akakçe en düşük teklif)"
+     }
+    ],
+    "not": "Baş doğrulaması: Akakçe 'göğüs bandı' kategorisindeki tüm silikon göğüs ucu kapatıcı ilanları (bant ve destek pedi hariç) alındı; avcının dışarıda bıraktığı 43–60 TL'lik ucuz ilanlar da dahil. İlan başına çift/adet doğrulanmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Straplez/dekolte giyimde sürekli satan, hafif ve bedensiz aksesuar.",
+   "riskler": [
+    "Ağırlık ilanda yok, çift için 0,02 kg tahmin",
+    "Silikon ürünlerde iade yok; cilt temas ürünü",
+    "GTİP emin değil (6212.90 olabilir), gümrük sınıflaması doğrulanmalı",
+    "Fiyat aralık ($0.19-$0.97), kademe görünmedi; üst uç yazıldı",
+    "GTİP 6212 yerine 3926.20 (plastikten giyim aksesuarı) olabilir; vergi oranı gümrük müşavirine sorulmalı",
+    "Türkiye fiyatları 43–372 TL arasında geniş dağılıyor; ucuz ilanlar tek adet ya da düşük kalite olabilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Invisible-Silicone-6-5-Small-Breast_1601227974909.html",
+    "https://www.akakce.com/gogus-bandi/en-ucuz-ozel-uretim-kadin-ten-meme-ic-giyim-100-silikon-gogus-ucu-kapatan-gizleyen-ped-nipple-pad-7-cm-fiyati,1342845415.html"
+   ]
+  },
+  {
+   "urun": "Dokunmatik ekran uyumlu orme kislik eldiven",
+   "kategori": "orme-atki-eldiven",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Danleiyuan P7 Solid Magic Gloves, warm knit mittens for outdoor activities (capacitive touch)",
+    "tedarikci": "Danleiyuan (yil/dogrulama ilan metninde okunamadi)",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 36,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 60,
+      "fiyat_usd": 0.44
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.06,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 248.57,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kislik-eldiven/en-ucuz-axe-sportswear-kadin-kislik-yumusak-dokulu-triko-orgu-eldiven-bas-ve-isaret-parmak-dokunmatik-ekran-uyumlu-telefon-tablet-kullanimli-soguktan-koruyucu-sicak-tutan-eldiven-fiyati,1798876458.html",
+      "baslik": "AXE Sportswear kadin kislik triko orgu eldiven, dokunmatik ekran uyumlu (1 teklif)"
+     },
+     {
+      "fiyat_tl": 302.6,
+      "liste_fiyat_tl": 340.0,
+      "kaynak": "idefix",
+      "url": "https://www.idefix.com/oil-company-unisex-ruzgar-gecirmez-esnek-kislik-soft-parmak-touch-siyah-eldiven-dokunmatik-parmak-ozellikli-p-7452946",
+      "baslik": "Oil Company unisex ruzgar gecirmez kislik soft touch eldiven (arama ozeti)"
+     }
+    ],
+    "not": "Yalniz 2 urun sayfasi dogrulandi; Akakce aramalari agirlikla motosiklet eldiveni cikardi. Trendyol SISTEM PELUS 299 TL urun sayfasi baglantisi bulunamadi, dahil edilmedi."
+   },
+   "taklit_riski": false,
+   "gerekce": "Dokunmatik uyumlu sicak tutan eldiven kis boyunca surekli satan, hafif ve bedensiz bir aksesuar.",
+   "riskler": [
+    "Turkiye karsilastirmasi yalniz 2 ilan",
+    "Agirlik ilanda yok, tahmin",
+    "Iletken iplik/dokunmatik performansi ornekle denenmeli",
+    "Ilanda 80% polyester, 20% iletken iplik; indirim kampanyasi gorulmedi"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.akakce.com/kislik-eldiven.html"
+   ]
+  }
+ ]
+}
