@@ -54,7 +54,7 @@ Durum "Etkin" (Active) olana dek birkaç gün sürebilir.
 
 1. Uygulamanın sayfasında **Abonelikler** (Subscriptions) → **Abonelik Grubu Oluştur**: `Canlı Çeviri Sınırsız`.
 2. Grubun içinde **+** ile abonelik ekleyin:
-   - Referans adı: `Haftalık`
+   - Referans adı: `Sınırsız haftalık`
    - Ürün kimliği: **`canliceviri.sinirsiz.haftalik`** (harfi harfine; uygulama bu kimliği arar)
 3. Süre: **1 Hafta**.
 4. Fiyat: ülke ve tutarı seçin. Fiyatı siz belirlersiniz; uygulama fiyatı Apple'dan okur, kodda fiyat yoktur.

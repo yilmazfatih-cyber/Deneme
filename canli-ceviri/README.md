@@ -66,7 +66,8 @@ Xcode sürümleriyle denenmedi.)
 
 1. `CanliCeviri.xcodeproj` dosyasını çift tıklayıp Xcode'da açın.
 2. Soldaki listede en üstteki **CanliCeviri**'yi seçin → **Signing & Capabilities** sekmesi → **Team** kutusunda kendi
-   Apple hesabınızı seçin. (Paket kimliği ekip kimliğinizle otomatik olarak benzersiz olur, değiştirmeniz gerekmez.)
+   Apple hesabınızı seçin. Paket kimliği `com.yilmazfatih.canliceviri`; Xcode "cannot be registered" derse aynı sekmede
+   **Bundle Identifier** alanına kendinize özgü bir kimlik yazın. Adım adım: `docs/xcode.md`.
 3. iPhone'u kabloyla bağlayın, Xcode'un üst çubuğundan iPhone'unuzu seçin ve ▶︎ düğmesine basın.
    - İlk seferde iPhone'da **Ayarlar → Gizlilik ve Güvenlik → Geliştirici Modu**'nu açın (telefon yeniden başlar).
    - Ücretsiz hesapta **Ayarlar → Genel → VPN ve Aygıt Yönetimi**'nden kendi geliştirici hesabınıza güvenin.
