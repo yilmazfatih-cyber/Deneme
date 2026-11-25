@@ -318,17 +318,39 @@ def ner_scan(
         _GLINER_DISABLED_REASON = str(e)
         log.warning("GLiNER çalışmadı, NER atlanıyor: %s", e)
         return None
-    return [  # pragma: no cover
-        Finding(
-            GLINER_LABELS.get(p["label"], p["label"].upper()),
-            int(p["start"]),
-            int(p["end"]),
-            float(p.get("score", 0.5)),
-            text[int(p["start"]) : int(p["end"])],
-            "gliner",
-        )
-        for p in preds
-    ]
+    out = []
+    for p in preds:  # pragma: no cover
+        et = GLINER_LABELS.get(p["label"], p["label"].upper())
+        start, end = trim_honorific(text, et, int(p["start"]), int(p["end"]))
+        if end > start:
+            out.append(Finding(et, start, end, float(p.get("score", 0.5)), text[start:end], "gliner"))
+    return out
+
+
+# Hitap sözcükleri kişi adının parçası değildir: "Sayın Ahmet Yılmaz" → yalnız "Ahmet Yılmaz" maskelenir,
+# metin "Sayın <KISI_1>" olarak okunur kalır.
+_HONORIFIC_RE = re.compile(
+    r"^(?:(?:sayın|sn\.?|sevgili|değerli|bay|bayan|sayin|dr\.?|av\.?|prof\.?|doç\.?|mr\.?|mrs\.?|ms\.?|dear)\s+)+",
+    re.IGNORECASE,
+)
+
+
+def trim_honorific(text: str, entity_type: str, start: int, end: int) -> tuple[int, int]:
+    if entity_type != "PERSON":
+        return start, end
+    m = _HONORIFIC_RE.match(text[start:end])
+    return (start + m.end(), end) if m else (start, end)
+
+
+def warm_up_ner() -> None:
+    """Sunucu açılınca GLiNER'ı arka planda yükler; ilk maskeleme isteği ~45 sn beklemez."""
+    if not ner_available():
+        return
+    try:  # pragma: no cover - gliner bu ortamda kurulu değil
+        _GLINER.get()
+        log.info("GLiNER önceden yüklendi")
+    except Exception as e:  # noqa: BLE001 — ısınma başarısızsa ilk istek aynı hatayı açıklar
+        log.warning("GLiNER önceden yüklenemedi: %s", e)
 
 
 # ----------------------------------------------------------------------------- birleşik tarama

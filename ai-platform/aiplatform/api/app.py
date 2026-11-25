@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import importlib
 import logging
+import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -60,6 +61,15 @@ async def lifespan(app: FastAPI):
             importlib.import_module(pkg)
         except ModuleNotFoundError as e:
             log.warning("çalışma zamanı paketi yüklenemedi: %s (%s)", pkg, e)
+    if os.environ.get("AIP_NO_WARMUP") != "1":  # KVKK NER modelini arka planda ısıt (testlerde kapalı)
+        try:
+            import threading
+
+            from ..kvkk.recognizers import warm_up_ner
+
+            threading.Thread(target=warm_up_ner, name="aip-ner-warmup", daemon=True).start()
+        except Exception as e:  # noqa: BLE001
+            log.warning("NER ısınması başlatılamadı: %s", e)
     log.info("aiplatform %s rolünde %s:%s", settings.role, settings.host, settings.port)
     yield
 
@@ -81,6 +91,7 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
     # Sözleşme: tüm hatalar {"error": {"code", "message", "hint"}} biçiminde döner
     @app.exception_handler(HTTPException)
     async def _http_error(_, exc: HTTPException):
@@ -100,7 +111,10 @@ def create_app() -> FastAPI:
                 "error": {
                     "code": "validation_error",
                     "message": "İstek gövdesi veya parametreler şemaya uymuyor",
-                    "hint": "; ".join(f"{'.'.join(str(x) for x in e.get('loc', []))}: {e.get('msg')}" for e in exc.errors()[:5]),
+                    "hint": "; ".join(
+                        f"{'.'.join(str(x) for x in e.get('loc', []))}: {e.get('msg')}"
+                        for e in exc.errors()[:5]
+                    ),
                 }
             },
         )

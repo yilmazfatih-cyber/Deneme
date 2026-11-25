@@ -129,3 +129,17 @@ def test_structure_and_stream_unmask():
     su = StreamUnmasker(m.placeholders)
     out = su.feed("Kimlik: <TC") + su.feed("KN_1> doğrulandı") + su.flush()
     assert out == f"Kimlik: {TCKN} doğrulandı"
+
+
+def test_honorific_is_not_part_of_person_name():
+    from aiplatform.kvkk.recognizers import trim_honorific
+
+    t = "Sayın Ahmet Yılmaz, merhaba. Sn. Dr. Ayşe Kaya geldi."
+    a = t.index("Sayın")
+    assert t[slice(*trim_honorific(t, "PERSON", a, a + len("Sayın Ahmet Yılmaz")))] == "Ahmet Yılmaz"
+    b = t.index("Sn.")
+    assert t[slice(*trim_honorific(t, "PERSON", b, b + len("Sn. Dr. Ayşe Kaya")))] == "Ayşe Kaya"
+    # kişi dışındaki türler ve hitapsız adlar değişmez
+    assert trim_honorific(t, "ADDRESS", a, a + 5) == (a, a + 5)
+    c = t.index("Ahmet")
+    assert trim_honorific(t, "PERSON", c, c + 12) == (c, c + 12)

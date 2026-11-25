@@ -14,6 +14,7 @@ def aip_data_dir(tmp_path, monkeypatch):
     data = tmp_path / "aipdata"
     monkeypatch.setenv("AIP_DATA_DIR", str(data))
     monkeypatch.setenv("AIP_ROLE", "server")
+    monkeypatch.setenv("AIP_NO_WARMUP", "1")
     reset_settings()
     reset_db()
     get_settings()  # klasörleri oluşturur
