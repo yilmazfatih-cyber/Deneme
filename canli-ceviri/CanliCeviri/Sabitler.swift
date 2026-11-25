@@ -31,6 +31,7 @@ let tanimaBitisPenceresi: TimeInterval = 5     // aynı "tanıma bitti" bu süre
 let bekciAraligi: TimeInterval         = 1     // bekçinin denetim aralığı, sn (C6)
 let bekciSiniri: TimeInterval          = 2     // bu kadar sn mikrofon tamponu gelmezse kesinti (K15)
 let yenidenDenemeArasi: TimeInterval   = 0.5   // kesintiden dönüşte ikinci deneme, sn (C7)
+let kesintiNotuSuresi: TimeInterval    = 10    // telefon kesintisi bu kadar sn sürerse çıkış yolu notu (K4)
 let ceviriHataSiniri                   = 3     // art arda bu kadar çeviri hatası = dinleme durur (Ö-9)
 let tanilamaSiniri                     = 300   // Tanılama kaydındaki en çok olay (brief K3)
 

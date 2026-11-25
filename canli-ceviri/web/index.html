@@ -387,6 +387,13 @@
         font-size: 15px;
         color: var(--acik-mavi);
       }
+      /* Aşama satırı: "Hazırlanıyor…" mavi, "Duraklatıldı: …" sarı (iPhone ile aynı, KR3) */
+      .dinliyorum.duraklatildi {
+        color: var(--sari);
+      }
+      .dinliyorum svg {
+        flex: none;
+      }
       .satir {
         display: flex;
         flex-direction: column;
@@ -1070,6 +1077,21 @@
       </symbol>
       <symbol id="i-dur" viewBox="0 0 24 24">
         <rect x="5" y="5" width="14" height="14" rx="2.6" fill="currentColor" />
+      </symbol>
+      <symbol id="i-kum" viewBox="0 0 24 24">
+        <path
+          d="M6.5 3h11M6.5 21h11M7.5 3c0 4.5 4.5 6 4.5 9s-4.5 4.5-4.5 9M16.5 3c0 4.5-4.5 6-4.5 9s4.5 4.5 4.5 9"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.9"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-duraklat" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.9" />
+        <rect x="8.7" y="7.6" width="2.3" height="8.8" rx="0.8" fill="currentColor" />
+        <rect x="13" y="7.6" width="2.3" height="8.8" rx="0.8" fill="currentColor" />
       </symbol>
       <symbol id="i-baloncuk" viewBox="0 0 24 24">
         <path

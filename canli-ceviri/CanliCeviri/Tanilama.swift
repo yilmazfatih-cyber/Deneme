@@ -24,6 +24,8 @@ final class Tanilama {
 
     /// En eskisi başta, yenisi sonda; en çok `tanilamaSiniri` olay.
     private(set) var olaylar: [TanilamaOlayi] = []
+    /// Sınır aşıldığı için en eski olaylar atıldı mı (kopya başlığında söylenir).
+    @ObservationIgnored private var eskiAtildi = false
 
     /// Olay ekler. `ayrinti` asla konuşma ya da çeviri metni, cihaz ya da kulaklık adı içermemeli.
     /// `tekrarPenceresi` > 0 ise aynı olay aynı ayrıntıyla bu süre içinde yinelenince yeni satır açılmaz,
@@ -43,6 +45,7 @@ final class Tanilama {
 
     func temizle() {
         olaylar.removeAll()
+        eskiAtildi = false
     }
 
     /// Panoya gidecek düz metin: başta sürüm, iOS ve cihaz modeli; olaylar eskiden yeniye,
@@ -52,7 +55,9 @@ final class Tanilama {
             "Canlı Çeviri \(Tanilama.uygulamaSurumu)",
             "iOS \(UIDevice.current.systemVersion)",
             "Cihaz \(Tanilama.cihazModeli)",
-            "Sıra: eskiden yeniye · \(olaylar.count) olay (en çok \(tanilamaSiniri))",
+            "Saat dilimi \(Tanilama.saatDilimi)",
+            "Sıra: eskiden yeniye · \(olaylar.count) olay (en çok \(tanilamaSiniri)"
+                + (eskiAtildi ? "; eski olaylar atıldı)" : ")"),
             "",
         ]
         for o in olaylar {
@@ -73,6 +78,17 @@ final class Tanilama {
         let surum = bilgi?["CFBundleShortVersionString"] as? String ?? "?"
         let yapi = bilgi?["CFBundleVersion"] as? String ?? "?"
         return "\(surum) (\(yapi))"
+    }
+
+    /// Ör. "UTC+03:00": satırlardaki saatin hangi dilimde olduğu (yer adı yazılmaz).
+    static var saatDilimi: String {
+        let dakika = TimeZone.current.secondsFromGMT() / 60
+        let mutlak = abs(dakika)
+        return "UTC\(dakika < 0 ? "-" : "+")\(ikiHane(mutlak / 60)):\(ikiHane(mutlak % 60))"
+    }
+
+    private nonisolated static func ikiHane(_ sayi: Int) -> String {
+        sayi < 10 ? "0\(sayi)" : "\(sayi)"
     }
 
     /// Donanım modeli (ör. "iPhone17,1"); cihazın kullanıcı verdiği adı değil.
@@ -102,6 +118,7 @@ final class Tanilama {
                                      temel: ayrinti, tekrar: 1, sonZaman: zaman))
         if olaylar.count > tanilamaSiniri {
             olaylar.removeFirst(olaylar.count - tanilamaSiniri)
+            eskiAtildi = true
         }
     }
 }
