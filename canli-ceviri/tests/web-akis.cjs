@@ -1393,6 +1393,52 @@ function bekle(kosul, ad, ayrinti) {
     await ortam.close()
   }
 
+  // ---------- Gizlilik ve Destek sayfaları ----------
+  console.log('Gizlilik ve Destek sayfaları')
+  {
+    const ortam = await tarayici.newContext()
+    for (const [dosya, baslik, anahtar] of [
+      ['gizlilik.html', 'Gizlilik Politikası', 'patientdesk.ai'],
+      ['destek.html', 'Destek', 'github.com/yilmazfatih-cyber/Deneme/issues'],
+    ]) {
+      for (const g of [320, 390, 1280]) {
+        const s = await ortam.newPage()
+        s.on(
+          'console',
+          (m) => m.type() === 'error' && !m.text().startsWith('Failed to load resource') && hatalar.push(m.text()),
+        )
+        s.on('pageerror', (e) => hatalar.push(String(e)))
+        await s.setViewportSize({ width: g, height: 800 })
+        const yanit = await s.goto(ADRES + dosya)
+        const h1 = await s.locator('h1').allTextContents()
+        const tasma = await s.evaluate(
+          () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        )
+        bekle(
+          yanit.status() === 200 && h1.length === 1 && h1[0] === baslik,
+          `${dosya} açılıyor, tek h1 "${baslik}" (${g})`,
+          h1,
+        )
+        bekle(tasma <= 0, `${dosya} ${g} px'te yatay taşma yok`, tasma)
+        if (g === 320) {
+          const geri = await s.locator('a[href="./index.html"]').count()
+          const html = await s.content()
+          bekle(
+            geri === 1 && html.includes(anahtar) && !/<script/i.test(html),
+            `${dosya} dönüş bağlantısı, içerik, betik yok`,
+          )
+        }
+        await s.close()
+      }
+    }
+    const s = await ortam.newPage()
+    await s.goto(ADRES)
+    await s.click('.sekme[data-sekme="ayarlar"]')
+    const baglar = await s.locator('.yasal a').evaluateAll((a) => a.map((x) => x.getAttribute('href')))
+    bekle(baglar.join() === './gizlilik.html,./destek.html', 'Ayarlar altında Gizlilik ve Destek bağlantıları', baglar)
+    await ortam.close()
+  }
+
   bekle(hatalar.length === 0, 'betik ya da güvenlik politikası (CSP) hatası yok', hatalar)
   await tarayici.close()
   sunucu.close()

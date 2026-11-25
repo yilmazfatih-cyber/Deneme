@@ -741,6 +741,20 @@
         color: var(--ikincil);
       }
 
+      .yasal {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0 24px;
+        font-size: 15px;
+      }
+      .yasal a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        color: var(--mavi-metin);
+      }
+
       /* ---------- Tanılama sayfası (ekranın içinde tam ekran) ---------- */
       .sayfa {
         position: absolute;
@@ -1339,6 +1353,11 @@
                       <svg class="tani-satiri-ok" width="14" height="14" aria-hidden="true"><use href="#i-ok" /></svg>
                     </button>
                   </div>
+
+                  <nav class="yasal" aria-label="Bağlantılar">
+                    <a href="./gizlilik.html">Gizlilik Politikası</a>
+                    <a href="./destek.html">Destek</a>
+                  </nav>
                 </div>
               </div>
             </section>
