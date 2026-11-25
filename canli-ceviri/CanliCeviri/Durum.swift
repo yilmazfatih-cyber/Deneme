@@ -37,6 +37,7 @@ enum NotTuru: Hashable {
     case ceviri         // Ö-9: bir cümle çevrilemedi
     case okunmayanCeviri   // S4: telefon / arka plan kesintisinde gelen çeviri okunmadı
     case uzunKesinti       // K4: kesinti 10 sn'dir sürüyor; çıkış yolu söylenir
+    case sonDakika         // S03 KR3: günlük ücretsiz sürenin son dakikası
 }
 
 /// Ekranda sarı not (uyarı rengi, hata değil).
@@ -56,11 +57,21 @@ final class Durum {
     var hata: String?
     var notlar: [EkranNotu] = []
     let hat = Hat()
+    let abonelik = Abonelik()
+    /// Günlük ücretsiz süre doldu: Çeviri ekranında açıklama (KR2); abone olunca ya da yeni başlatmada kalkar.
+    var sinirMetni: String?
+    /// Abonelik sayfası açık mı (Çeviri ekranı ve Ayarlar açar).
+    var abonelikAcik = false
 
     @ObservationIgnored private var dil = diller[0]
     /// Oturum kimliği (şartname D-1): her Başlat ve Durdur artırır; eski işler yan etki yapmadan çıkar.
     @ObservationIgnored private var kimlik = 0
     @ObservationIgnored private var ceviriHatasi = 0
+    /// Ücretsiz süre sayacı: saniyede bir bakar, yalnız "dinliyor" aşamasında sayar.
+    @ObservationIgnored private var sayacGorevi: Task<Void, Never>?
+    @ObservationIgnored private var sonTik = Date()
+    /// Süre dolunca çalan çeviri bitene kadar bekleyip hattı kapatan görev (KR2).
+    @ObservationIgnored private var kapanisGorevi: Task<Void, Never>?
 
     /// Duruyor dışındaki her aşama (ana düğme "Durdur" yazar).
     var calisiyor: Bool { asama != .duruyor }
@@ -79,11 +90,20 @@ final class Durum {
         #endif
         if calisiyor {
             Tanilama.ortak.kaydet("durdur", "neden=düğme")
+            sayaciDurdur()
             hat.durdur()
             ayar = nil
             asama = .duruyor
             notlar = []
         } else {
+            kapanisiBitir()
+            if !abonelik.abone && GunlukSure.doldu() {
+                Tanilama.ortak.kaydet("sınır", "günlük süre doldu")
+                sinirMetni = Durum.sinirAciklamasi
+                abonelikAcik = true
+                return
+            }
+            sinirMetni = nil
             hata = nil
             notlar = []
             ceviriHatasi = 0
@@ -147,6 +167,7 @@ final class Durum {
             return
         }
         asama = .dinliyor
+        sayaciBaslat()
 
         // Her biten cümle buraya düşer: çevir, ekrana yaz, seslendir.
         // Mikrofon geri açılamazsa akış hatayla biter ve hata ekranda görünür.
@@ -179,6 +200,78 @@ final class Durum {
             let (mesaj, kod) = Durum.turkce(error)
             hataylaBitir(mesaj, neden: "hata \(kod)")
         }
+    }
+
+    // MARK: Günlük ücretsiz süre (S03)
+
+    static let sinirAciklamasi =
+        "Bugünkü 10 dakikalık ücretsiz süre doldu. Yarın yeniden kullanabilir ya da abone olabilirsiniz."
+
+    private func sayaciBaslat() {
+        sayacGorevi?.cancel()
+        sonTik = Date()
+        sayacGorevi = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(1))
+                guard let self, !Task.isCancelled else { return }
+                self.sureyiSay()
+            }
+        }
+    }
+
+    private func sayaciDurdur() {
+        sayacGorevi?.cancel()
+        sayacGorevi = nil
+    }
+
+    /// Son tikten bu yana geçen süreyi, aşama "dinliyor" ise ve abone değilse bugünün toplamına ekler.
+    private func sureyiSay() {
+        let simdi = Date()
+        let gecen = min(max(simdi.timeIntervalSince(sonTik), 0), 2)
+        sonTik = simdi
+        guard asama == .dinliyor else { return }
+        guard !abonelik.abone else {
+            notKaldir(.sonDakika)
+            return
+        }
+        let kalan = gunlukUcretsizSure - GunlukSure.ekle(gecen, simdi)
+        if kalan <= 0 {
+            sureDoldu()
+        } else if kalan <= sonDakikaEsigi {
+            notEkle(.sonDakika, "Bugünkü ücretsiz sürenin son dakikası.")
+        }
+    }
+
+    /// KR2: yeni cümle alınmaz, çalan çeviri bitirilir, sonra mikrofon kapanır; ekran ne olduğunu söyler.
+    private func sureDoldu() {
+        kimlik += 1   // çeviri döngüsü yeni cümle çevirmez
+        sayaciDurdur()
+        Tanilama.ortak.kaydet("sınır", "günlük süre doldu")
+        Tanilama.ortak.kaydet("durdur", "neden=günlük süre")
+        ayar = nil
+        asama = .duruyor
+        notlar = []
+        sinirMetni = Durum.sinirAciklamasi
+        abonelikAcik = true
+        kapanisGorevi = Task { [weak self] in
+            // Sigorta: en çok 20 sn beklenir (Alania süresi + okuma).
+            for _ in 0..<80 {
+                guard let self, !Task.isCancelled else { return }
+                if !self.hat.sesSuruyor { break }
+                try? await Task.sleep(for: .milliseconds(250))
+            }
+            guard let self, !Task.isCancelled else { return }
+            self.hat.durdur()
+            self.kapanisGorevi = nil
+        }
+    }
+
+    /// Bekleyen kapanış varsa hattı hemen kapatır (yeni Başlat'tan önce).
+    private func kapanisiBitir() {
+        guard let gorev = kapanisGorevi else { return }
+        gorev.cancel()
+        kapanisGorevi = nil
+        hat.durdur()
     }
 
     // MARK: Notlar
@@ -223,6 +316,8 @@ final class Durum {
     private func hataylaBitir(_ mesaj: String, neden: String) {
         kimlik += 1
         Tanilama.ortak.kaydet("durdur", "neden=\(neden)", uyari: true)
+        sayaciDurdur()
+        kapanisiBitir()
         hat.durdur()
         ayar = nil
         asama = .duruyor

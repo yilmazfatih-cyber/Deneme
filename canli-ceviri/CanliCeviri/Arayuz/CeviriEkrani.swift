@@ -198,6 +198,9 @@ struct CeviriEkrani: View {
         if let hata = durum.hata {
             UyariSatiri(metin: hata, renk: Renk.acikKirmizi)
         }
+        if let sinir = durum.sinirMetni, !durum.abonelik.abone {
+            UyariSatiri(metin: sinir, renk: Renk.sari)
+        }
         ForEach(durum.notlar) { not in
             UyariSatiri(metin: not.metin, renk: Renk.sari)
         }

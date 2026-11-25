@@ -23,12 +23,12 @@ enum Sekme: CaseIterable {
 /// Arka plan, açık sekme, alttaki sekme çubuğu ve Tanılama sayfası. Çeviri oturumu ve VoiceOver duyuruları da burada.
 struct KokEkran: View {
     /// Uygulama boyunca tek örnek; `CeviriApp` oluşturur (Ön-5).
-    let durum: Durum
+    @Bindable var durum: Durum
     @State private var sekme: Sekme
     @State private var tanilamaAcik: Bool
 
     init(durum: Durum, sekme: Sekme = .ceviri, tanilamaAcik: Bool = false) {
-        self.durum = durum
+        _durum = Bindable(durum)
         _sekme = State(initialValue: sekme)
         _tanilamaAcik = State(initialValue: tanilamaAcik)
     }
@@ -44,7 +44,7 @@ struct KokEkran: View {
             switch sekme {
             case .ceviri:  CeviriEkrani(durum: durum)
             case .gecmis:  GecmisEkrani(durum: durum)
-            case .ayarlar: AyarlarEkrani(tanilamaAcik: $tanilamaAcik)
+            case .ayarlar: AyarlarEkrani(durum: durum, tanilamaAcik: $tanilamaAcik)
             }
         }
         .safeAreaInset(edge: .bottom) {
@@ -63,11 +63,21 @@ struct KokEkran: View {
                 .presentationBackground(Renk.zemin)
                 .preferredColorScheme(.dark)
         }
+        .sheet(isPresented: $durum.abonelikAcik) {
+            AbonelikEkrani(abonelik: durum.abonelik)
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+                .presentationBackground(Renk.zemin)
+                .preferredColorScheme(.dark)
+        }
         // Durum değişimleri VoiceOver'a duyurulur (B-5, tasarim § 5.3).
         .onChange(of: durum.asama) { eski, yeni in
             asamaDegisti(eski, yeni)
         }
         .onChange(of: durum.hata) { _, yeni in
+            if let yeni { duyur(yeni) }
+        }
+        .onChange(of: durum.sinirMetni) { _, yeni in
             if let yeni { duyur(yeni) }
         }
         // C-7: yalnız yeni eklenen ya da metni değişen sarı not duyurulur.

@@ -1,7 +1,8 @@
 import SwiftUI
 
-/// Ayarlar sekmesi: Alania-2 anahtarı, ses seçimi, kısa açıklama ve Tanılama kaydı.
+/// Ayarlar sekmesi: abonelik, Alania-2 anahtarı, ses seçimi, kısa açıklama, Tanılama kaydı ve bağlantılar.
 struct AyarlarEkrani: View {
+    let durum: Durum
     @Binding var tanilamaAcik: Bool
     /// Anahtar Anahtar Zinciri'nde durur (K5); bu alan yalnız ekrandaki kopyasıdır.
     @State private var anahtar = ""
@@ -17,6 +18,12 @@ struct AyarlarEkrani: View {
                 Text("Ayarlar")
                     .font(.largeTitle.weight(.bold))
                     .accessibilityAddTraits(.isHeader)
+
+                bolumBasligi("Abonelik")
+                abonelikSatiri
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 6)
+                    .background(Renk.kart, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
 
                 bolumBasligi("Alania-2 API anahtarı")
                 VStack(alignment: .leading, spacing: 12) {
@@ -74,6 +81,16 @@ struct AyarlarEkrani: View {
                     .padding(.horizontal, 18)
                     .padding(.vertical, 6)
                     .background(Renk.kart, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+
+                bolumBasligi("Bilgi")
+                VStack(alignment: .leading, spacing: 0) {
+                    baglantiSatiri("hand.raised.fill", "Gizlilik Politikası", Adres.gizlilik)
+                    Divider().overlay(Renk.ayrac)
+                    baglantiSatiri("questionmark.circle.fill", "Destek", Adres.destek)
+                }
+                .padding(.horizontal, 18)
+                .padding(.vertical, 6)
+                .background(Renk.kart, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
             }
             .padding(.horizontal, 20)
             .padding(.top, 12)
@@ -114,6 +131,67 @@ struct AyarlarEkrani: View {
                 .accessibilityHidden(true)
             Text(metin).font(.subheadline)
         }
+    }
+
+    private var abonelikSatiri: some View {
+        let abone = durum.abonelik.abone
+        let durumMetni = abone ? "Sınırsız: etkin" : "Ücretsiz: günde 10 dakika"
+        return Button {
+            durum.abonelikAcik = true
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: abone ? "checkmark.seal.fill" : "infinity")
+                    .font(.title3)
+                    .foregroundStyle(Renk.acikMavi)
+                    .frame(width: simgeSutunu)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Abonelik")
+                        .font(.subheadline)
+                        .foregroundStyle(.white)
+                    Text(durumMetni)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+                .multilineTextAlignment(.leading)
+                Spacer(minLength: 8)
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.bold))
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Abonelik")
+        .accessibilityValue(durumMetni)
+        .accessibilityHint("Abonelik sayfasını açar")
+        .accessibilityAddTraits(.isButton)
+    }
+
+    private func baglantiSatiri(_ simge: String, _ baslik: String, _ adres: URL) -> some View {
+        Link(destination: adres) {
+            HStack(spacing: 14) {
+                Image(systemName: simge)
+                    .font(.title3)
+                    .foregroundStyle(Renk.acikMavi)
+                    .frame(width: simgeSutunu)
+                Text(baslik)
+                    .font(.subheadline)
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.leading)
+                Spacer(minLength: 8)
+                Image(systemName: "arrow.up.right")
+                    .font(.footnote.weight(.bold))
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
+            .contentShape(Rectangle())
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(baslik)
+        .accessibilityHint("Safari'de açar")
+        .accessibilityAddTraits(.isLink)
     }
 
     private var tanilamaSatiri: some View {

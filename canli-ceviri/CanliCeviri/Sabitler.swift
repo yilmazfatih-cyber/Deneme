@@ -36,11 +36,26 @@ let kesintiNotuSuresi: TimeInterval    = 10    // telefon kesintisi bu kadar sn 
 let ceviriHataSiniri                   = 3     // art arda bu kadar çeviri hatası = dinleme durur (Ö-9)
 let tanilamaSiniri                     = 300   // Tanılama kaydındaki en çok olay (brief K3)
 
+// Abonelik (S03)
+let gunlukUcretsizSure: TimeInterval   = 600   // abone olmayana günde bu kadar sn dinleme (yalnız "dinliyor" sayılır)
+let sonDakikaEsigi: TimeInterval       = 60    // kalan süre bunun altına inince sarı not (KR3)
+let abonelikUrunu = "canliceviri.sinirsiz.haftalik"   // App Store Connect'teki ürün kimliği
+
+/// Abonelik ekranı ve Ayarlar'daki bağlantılar.
+enum Adres {
+    static let kosullar = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
+    static let gizlilik = URL(string: "https://yilmazfatih-cyber.github.io/Deneme/canli-ceviri/gizlilik.html")!
+    static let destek   = URL(string: "https://yilmazfatih-cyber.github.io/Deneme/canli-ceviri/destek.html")!
+    static let abonelikleriYonet = URL(string: "https://apps.apple.com/account/subscriptions")!
+}
+
 /// Telefonda saklanan ayarların adları (UserDefaults / @AppStorage).
 enum Kayit {
     static let kaynakDil      = "kaynakDil"
     static let alaniaAnahtari = "alaniaAnahtar"
     static let alaniaSesi     = "alaniaSes"
+    static let ucretsizGun    = "ucretsizGun"      // ücretsiz sürenin sayıldığı yerel gün (yyyy-aa-gg)
+    static let ucretsizSaniye = "ucretsizSaniye"   // o gün kullanılan dinleme saniyesi
 }
 
 /// Tema renkleri
