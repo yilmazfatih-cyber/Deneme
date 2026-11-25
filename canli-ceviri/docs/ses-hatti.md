@@ -1,16 +1,18 @@
 # Ses hattı şartnamesi
 
-Sahibi: `ses-uzmani` · İlk sürüm: S01 plan kapısı (25.11.2026) · Güncelleme: S01 tur 2 (plan kapısı kararları KR1–KR12)
+Sahibi: `ses-uzmani` · İlk sürüm: S01 plan kapısı (25.11.2026) · Güncelleme: S01 tur 2 (plan kapısı kararları KR1–KR12),
+S01 tur 3 (uygulanmış davranışla eşitleme)
 
 Bu belge iPhone uygulamasının (ve farkları ayrıca yazılarak web deneme sürümünün) ses hattının **nasıl davranması
-gerektiğini** yazar. Kodu anlatmaz; kod buna uyar. Kodun bugünkü hâliyle farkları `docs/sprints/S01/reviews/ses-uzmani-1.md`
-ve `ses-uzmani-2.md` içindedir. Kimlikli kurallar (ör. **Y3**, **C2**) incelemelerde ve `docs/cihaz-testi.md` içinde bu
+gerektiğini** yazar. Kodu anlatmaz; kod buna uyar. Kodun bugünkü hâliyle farkları `docs/sprints/S01/reviews/ses-uzmani-1.md`,
+`ses-uzmani-2.md` ve `ses-uzmani-3.md` içindedir. Kimlikli kurallar (ör. **Y3**, **C2**) incelemelerde ve `docs/cihaz-testi.md` içinde bu
 kimlikle anılır.
 
 **Kararlarla uyum.** `docs/sprints/S01/brief.md` "Kararlar" bölümü bu belgeden önce gelir. Bir karar yüzünden değişen
 kuralın yanında "(S01 kararı KRn)" yazar; kural kimlikleri değişmedi. Tur 2'de karar dışı netleştirilen kuralların yanında
 "(S01 tur 2)" yazar. Değişen kurallar: D-0, D-1, § 2.1 tablosu, G1, G4, G5, G11, G12, T1, T4, K4–K8, K12, K15, C6, C7, S4,
-S5, S6, S8, § 6, § 7 (D4, D19–D25); yeni: G11a, S4a, § 5.1 (A1–A3).
+S5, S6, S8, § 6, § 7 (D4, D19–D25); yeni: G11a, S4a, § 5.1 (A1–A3). Tur 3'te "(S01 tur 3)" diye
+işaretlenenler: D-0, G6, G9, G11a, G12, G13, G14, K4, K5, K11, K15, C6, C7, T1, S4, A2, A3, § 2.3, § 6, § 7 (D26–D35).
 
 **Kaynak notu.** Bu belge yazılırken Apple geliştirici belgelerinin JSON sürümüne erişilebildi; aşağıda "(Apple belgesi)"
 diye işaretlenen cümleler oradan okunmuştur. Geri kalanı deneyime dayanır; emin olunmayan her şey § 7
@@ -87,7 +89,9 @@ kesintide(neden). Ekranda "Dinliyorum…" ya da CANLI rozeti **yalnız "dinliyor
 "Hazırlanıyor…", "kesintide"de "Duraklatıldı: <neden>" yazar. Ana düğme "duruyor" dışındaki **her** aşamada "Durdur"
 yazar. Arayüz aşamayı yalnız bu alandan okur; `ayar != nil` gibi dolaylı bir işaretten çıkarmaz. "Dinliyor"a geçiş motor
 başlayınca yapılır; bekçi (C6) ilk 2 saniyeyi bu andan sayar, sonrasında "dinliyor" ancak bekçi son 2 saniyede tampon
-gördükçe sürer (S01 tur 2: bekçinin başlangıç payı açıkça yazıldı).
+gördükçe sürer (S01 tur 2: bekçinin başlangıç payı açıkça yazıldı). Hat dinlemeyi kendi içinden hatayla bitirince
+aşama, çeviri döngüsünün bitmesini beklemeden **hemen** "duruyor" olur (S01 tur 3). Bekçi kesintisinden dönüşte aşama
+mikrofondan gerçek bir tampon gelene dek "kesintide(bekçi)" kalır (K15; S01 tur 3).
 
 **Oturum kimliği (D-1):** Her Başlat ve her Durdur — ve hata ile durma (S01 tur 2) — bir tamsayı kimliği artırır. Bir `await`'ten dönen her iş (izin,
 dil paketi, çeviri, Alania isteği, tanıma geri çağrısı, sayaç) kendi kimliğini o anki kimlikle karşılaştırır; tutmuyorsa
@@ -108,16 +112,16 @@ cihaz ya da kulaklık adı yazılmaz.
 | G3  | HAZIRLANIYOR (içinde)       | İzin istemleri                                    | Konuşma tanıma izni, sonra mikrofon izni                                                                                                                     | `izin  mikrofon=verildi konuşma=reddedildi` — ikisi de yanıtlanınca, tek satır                    |
 | G4  | HAZIRLANIYOR → DURUYOR      | İzin yok / dil paketi hatası / Durdur (KR3)       | Hiçbir ses kaynağı açılmamıştır; yalnız yapılandırma `nil`. Ses motoruna (giriş düğümü dahil) dokunulmaz (S01 tur 2)                                         | `durdur  neden=izin yok` / `neden=hata dil paketi` / `neden=düğme`                                 |
 | G5  | HAZIRLANIYOR → DİNLİYOR     | İzinler tamam, kimlik hâlâ geçerli                | Y1 sırası; tanıyıcı cihazda tanımayı desteklemiyorsa **yine açılır**, ekranda kalıcı sarı not (T1, S01 kararı KR2); kesinti gözlemcileri; bekçi; ekran kilidi engeli; durum = DİNLİYOR | `ses yolu  çıkış=bluetooth giriş=dahili`, ardından `tanıma açıldı  en-US cihazda` ya da `tanıma açıldı  ar-SA sunucuda` (KR2) |
-| G6  | DİNLİYOR (döngü)            | Cümle kapandı (§ 3)                               | Cümle akışa yazılır; yeni tanıma görevi açılır                                                                                                               | `cümle  kelime=7` (cümle akışa yazıldığı anda)                                                     |
+| G6  | DİNLİYOR (döngü)            | Cümle kapandı (§ 3)                               | Cümle akışa yazılır; yeni tanıma görevi açılır                                                                                                               | Sessizlikle kapandıysa `tanıma bitti  neden=sessizlik` (S01 tur 3), ardından `cümle  kelime=7` (cümle akışa yazıldığı anda) |
 | G7  | DİNLİYOR (döngü)            | Çeviri döndü                                      | Kimlik denetimi → satır eklenir → seslendirme sırasına girer                                                                                                  | `çeviri  182 ms` ya da `çeviri  hata <kod>` (çeviri bitince)                                       |
 | G8  | DİNLİYOR (döngü)            | Ses çalındı                                       | § 5                                                                                                                                                         | `ses  alania 640 ms` (yanıt gelince; ms = istekten ilk bayta) / `ses  apple` (okuma başlarken) / `ses  alania hatası http=401` ya da `zaman aşımı` |
-| G9  | DİNLİYOR (döngü)            | Tanıma görevi kendiliğinden bitti                 | § 3.2                                                                                                                                                       | `tanıma bitti  neden=son sonuç` / `neden=hata <alan>/<kod> <açıklama>`; art arda aynı neden 5 sn içinde tekrarlanırsa satır yazılmaz, sayaç artar (`×12`) |
+| G9  | DİNLİYOR (döngü)            | Tanıma görevi kendiliğinden bitti                 | § 3.2                                                                                                                                                       | `tanıma bitti  neden=son sonuç` / `neden=hata <alan>/<kod>` (sistemin açıklama metni yazılmaz; içeriğini sistem belirler, ilke 3; S01 tur 3); art arda aynı neden 5 sn içinde tekrarlanırsa satır yazılmaz, sayaç artar (`×12`) |
 | G10 | DİNLİYOR (döngü)            | Ses yolu değişti                                  | Kulaklık satırı güncellenir; motor durduysa G11                                                                                                              | `ses yolu  çıkış=ahize neden=eski cihaz gitti`                                                     |
 | G11 | DİNLİYOR → KESİNTİDE        | Kesinti başladı / arka plan / motor yapılandırması değişti / bekçi alarmı | Yarım cümle gönderilir (C4); tanıma görevi iptal (tur +1); mikrofon bağlantısı sökülür; motor durur; durum = KESİNTİDE. **Neden telefon ya da arka plan ise** çalan ses kesilir, ses sırası boşaltılır, uçuştaki Alania isteği iptal. **Neden yapılandırma ya da bekçi ise** seslendirme sürer, sıra korunur (S01 tur 2; K1–K3 ile uyum) | `kesinti  başladı neden=telefon|arka plan|yapılandırma|bekçi`                                      |
-| G11a | KESİNTİDE → KESİNTİDE      | Yapılandırma/bekçi kesintisinin yeniden denemesi beklenirken telefon kesintisi ya da arka plan geldi | Neden "telefon" / "arka plan" olur (ekran güncellenir); bekleyen yeniden deneme iptal edilir (kesinti numarası +1); bu nedenin gerektirdiği ses kesme yapılır (S01 tur 2) | `kesinti  neden değişti=telefon`                                                                    |
-| G12 | KESİNTİDE → DİNLİYOR        | Kesinti bitti / ön plana dönüldü / yapılandırma değişikliği işlendi | Y1 sırası (kategori zaten ayarlı; `setActive(true)` dahil); yeni tanıma; bekçi sıfırlanır. Yeniden deneme zamanlayıcısı kendi kesinti numarasını denetler; o kesinti bitmiş ya da nedeni değişmişse hiçbir şey yapmaz (S01 tur 2) | `kesinti  bitti`, ardından `motor  yeniden başlatıldı` ve `ses yolu …`                              |
-| G13 | KESİNTİDE → DURUYOR (hata)  | Yeniden başlatma iki denemede başarısız / medya servisleri sıfırlandı / tanıma kullanılamaz | Kapatma sırası; ekranda ne yapılacağını söyleyen Türkçe hata                                                                                                  | `motor  başlatılamadı <alan>/<kod>`, ardından `durdur  neden=hata`                                  |
-| G14 | DİNLİYOR → DURUYOR (hata)   | Art arda boş tanıma (T3) / mikrofon biçimi geçersiz | Kapatma sırası; Türkçe hata                                                                                                                                 | `durdur  neden=hata tanıma <kod>`                                                                  |
+| G11a | KESİNTİDE → KESİNTİDE      | Kesintideyken **farklı** bir telefon kesintisi ya da arka plan geldi (yapılandırma/bekçi → telefon/arka plan; telefon ↔ arka plan) | Neden yeni nedene döner (ekran güncellenir); bekleyen yeniden deneme ve 10 sn notu geçersiz olur (kesinti numarası +1); bekçi alarmı silinir; çalan ses kesilir, okunmayan varsa S4 notu. Yapılandırma/bekçi, telefon ya da arka planın yerini almaz (S01 tur 2, tur 3) | `kesinti  neden değişti=telefon` / `=arka plan`                                                     |
+| G12 | KESİNTİDE → DİNLİYOR        | Kesinti bitti / ön plana dönüldü / yapılandırma değişikliği işlendi | Y1 sırası (kategori zaten ayarlı; `setActive(true)` dahil); yeni tanıma; bekçi sıfırlanır; 10 sn notu kalkar. Yeniden deneme zamanlayıcısı kendi kesinti numarasını denetler; o kesinti bitmiş ya da nedeni değişmişse hiçbir şey yapmaz (S01 tur 2). Neden bekçi ise aşama tampon gelene dek "kesintide" kalır (K15; S01 tur 3). Arka plandayken deneme yapılmaz, ön plana dönüşe kalır | `kesinti  bitti`, ardından `motor  yeniden başlatıldı` ve `ses yolu …`; bekçide `motor  yeniden başlatıldı, tampon bekleniyor`, tampon gelince `motor  tampon geldi`; görüşme sürerken `kesinti  öncelik yetersiz, görüşme sürüyor olabilir` (S01 tur 3) |
+| G13 | KESİNTİDE → DURUYOR (hata)  | Yeniden başlatma iki denemede başarısız / medya servisleri sıfırlandı / tanıma kullanılamaz | Kapatma sırası; aşama hemen "duruyor" (D-0); ekranda ne yapılacağını söyleyen Türkçe hata. İleti hatanın nedenine göre seçilir: görüşme sürüyorsa (`insufficientPriority`) "Görüşme sürerken dinleme sürdürülemez. Görüşme bitince Başlat'a dokunun.", mikrofon başka uygulamadaysa (`cannotStartRecording`) K11 iletisi, değilse "Mikrofon yeniden açılamadı. Dinlemeyi yeniden başlatın." (S01 tur 3; KR4: davranış değişmez, yalnız ileti) | `motor  başlatılamadı <alan>/<kod>`, ardından `durdur  neden=hata <kod>`                            |
+| G14 | DİNLİYOR → DURUYOR (hata)   | Art arda boş tanıma (T3) / mikrofon biçimi geçersiz / bekçinin ikinci alarmı (K15) | Kapatma sırası; aşama hemen "duruyor" (S01 tur 3); Türkçe hata                                                                                                                                 | `durdur  neden=hata tanıma <kod>`                                                                  |
 | G15 | Her durum → DURDURULUYOR    | Durdur'a dokunuş                                  | Kapatma sırası                                                                                                                                              | `durdur  neden=düğme`                                                                              |
 | G16 | (her durumda)               | Uygulama etkin oldu / etkinliğini yitirdi        | DİNLİYOR'da: arka plana geçişte G11, dönüşte G12. Yalnız etkinlik kaybı (Kontrol Merkezi, bildirim) dinlemeyi durdurmaz                                     | `uygulama  etkinliğini yitirdi` / `arka planda` / `etkin oldu`                                     |
 
@@ -128,7 +132,8 @@ Her adım bir önceki başarısız olsa da çalışır:
 1. Oturum kimliği +1 ve tanıma turu +1 (geç gelen her sonuç bundan sonra yok sayılır).
 2. Duraklama sayacı ve bekçi sayacı iptal.
 3. Tanıma görevi iptal, referansı bırakılır.
-4. Mikrofon bağlantısı sökülür, motor durdurulur.
+4. Mikrofon bağlantısı sökülür, motor durdurulur — yalnız bağlantı kurulmuşsa; hazırlıkta durdurulan oturumda giriş
+   düğümüne dokunulmaz (G4, D23; S01 tur 3). Kapatma sırasının iki kez çalışması zararsızdır.
 5. Cümle akışı kapatılır. **Akışta bekleyen ama henüz çevrilmemiş cümleler çevrilmez** (D-1 denetimi bunu sağlar).
    Ekrandaki yarım cümle atılır (çevrilmez, okunmaz).
 6. Uçuştaki Alania isteği iptal; çalan ses (oynatıcı ve Apple sesi) hemen kesilir; ses sırası boşaltılır.
@@ -168,8 +173,9 @@ S02'de cihaz gözlemine göre karar verilecek öneridir (ROADMAP).
   belgesi). Dinleme **reddedilmez** (proje sahibinin özgün tasarımı; ilke 3'ün ilk istisnası). Bunun yerine:
   - ekranda dinleme boyunca kalıcı sarı not: "Bu dilde konuşma tanıma Apple'ın sunucusunda yapılır." (Durdur'da kalkar);
   - Tanılama: `tanıma açıldı  ar-SA sunucuda` (uyarı olayı);
-  - sunucu tanımasında internet yoksa görevler hemen hatayla biter; T3 sayacı dolunca durma iletisi internet gerektiğini
-    söyler: "Bu dilde konuşma tanıma için internet gerekli." (S01 tur 2; hangi hata kodlarıyla bittiği D22'de görülür).
+  - sunucu tanımasında internet yoksa iki yoldan biri işler: başlarken tanıyıcı kullanılamaz görünür ya da görevler hemen
+    hatayla biter (T3). İkisinde de ileti "Bu dilde konuşma tanıma için internet gerekli. Bağlanıp yeniden başlatın."
+    olur; kod Tanılama'ya gider (S01 tur 2, tur 3; hangi yolun işlediği D22, D32'de görülür).
   Hangi dillerin cihazda tanındığı D4'te görülür.
 - **T2 — Sonuçla biten görev:** C4'teki gibi cümle gönderilir, yeni görev açılır.
 - **T3 — Sonuçsuz biten görev:** Yeni görev hemen açılır. Açıldıktan sonraki 2 saniye içinde metin üretmeden biten
@@ -192,28 +198,31 @@ S02'de cihaz gözlemine göre karar verilecek öneridir (ROADMAP).
 | K1   | AirPods takıldı / bağlandı (dinlerken)          | Ses AirPods'a geçer. Motor yapılandırması değişirse G11→G12 (yarım cümle gönderilir; seslendirme kesilmez, S01 tur 2). Giriş iPhone'da kalır. | Kulaklık satırı "AirPods … bağlı"                              | `routeChangeNotification` (neden `newDeviceAvailable`), `AVAudioEngineConfigurationChange`         |
 | K2   | AirPods çıkarıldı / kutuya kondu / kulaktan alındı | Dinleme sürer; ses ahizeye geçer; çalmakta olan cümle ahizeden sürer, sıradakiler atılmaz (G11, neden yapılandırma) | Sarı uyarı (kulaklık yok)                                       | `routeChangeNotification` (neden `oldDeviceUnavailable`) + gerekirse yapılandırma değişikliği       |
 | K3   | AirPods başka cihaza geçti (otomatik geçiş)     | K2 ile aynı                                                                                                         | Sarı uyarı                                                      | Aynı                                                                                                |
-| K4   | Telefon çağrısı geldi                           | Kesinti başlar: G11 (neden telefon); başka bir kesinti sürerken gelirse G11a. Çağrı reddedilir ya da biter: G12. Bitiş bildirimi gelmezse ön plana dönüşte G12; uygulama hiç etkinliğini yitirmediyse 10 sn sonra ekranda "Devam etmek için Durdur'a, sonra Başlat'a dokunun." (S01 tur 2, KR4: davranış değişmez, yalnız görünür kılınır; D8) | "Duraklatıldı: arama, alarm ya da Siri" (KR3)                  | `interruptionNotification` `.began` / `.ended`; dönüşte `didBecomeActive`                          |
-| K5   | Görüşme sürerken Başlat                         | Oturum etkinleşemez (`insufficientPriority`, Apple belgesi): G4 benzeri durma                                        | "Görüşme sürerken dinleme başlatılamaz."                        | `setActive(true)` hatasının alan **ve** koduna göre Türkçe mesaj                                   |
+| K4   | Telefon çağrısı geldi                           | Kesinti başlar: G11 (neden telefon); başka bir kesinti sürerken gelirse G11a. Çağrı reddedilir ya da biter: G12. Bitiş bildirimi gelmezse ön plana dönüşte G12; kesinti (telefon nedeniyle) 10 sn sürerse ekranda sarı not "Devam etmek için Durdur'a, sonra Başlat'a dokunun." ve Tanılama `kesinti  10 sn sürdü, bitiş bildirimi yok`; kesinti bitince not kalkar. Çalan ama açılmamış aramada da çıkar (D29; metin önerisi `ses-uzmani-3.md` Z-4). Arama açılınca uygulama arka plana gider, neden "arka plan" olur (G11a) ve not çıkmaz; görüşme sürerken dönülürse G13, görüşme iletisiyle (S01 tur 2, tur 3; KR4: davranış değişmez, yalnız görünür kılınır; D8, D30) | "Duraklatıldı: arama, alarm ya da Siri" (KR3)                  | `interruptionNotification` `.began` / `.ended`; dönüşte `didBecomeActive`                          |
+| K5   | Görüşme sürerken Başlat                         | Oturum etkinleşemez (`insufficientPriority`, Apple belgesi): G4 benzeri durma                                        | "Görüşme sürerken dinleme başlatılamaz."                        | `setActive(true)` / `engine.start()` hatasının alan **ve** koduna göre Türkçe mesaj. Kabul edilen alanlar: `NSOSStatusErrorDomain` ve `com.apple.coreaudio.avfaudio` (motor hataları büyük olasılıkla ikincisiyle gelir; emin değilim, D26; S01 tur 3) |
 | K6   | Siri                                            | Uygulama etkinliğini yitirir, ses oturumu kesilir: G11; Siri kapanınca G12                                          | "Duraklatıldı: arama, alarm ya da Siri"                         | `.began`/`.ended` + `didBecomeActive`                                                               |
 | K7   | Alarm / zamanlayıcı                             | Kesinti: G11; kapatılınca G12; `.ended` gelmezse K4'teki 10 sn notu                                                 | "Duraklatıldı: arama, alarm ya da Siri"                         | `interruptionNotification`                                                                          |
 | K8   | Uygulama arka plana gitti                       | Arka plan kipi yok (plan). `didEnterBackground`'da G11 (neden arka plan; zaten kesintideyse G11a) ve oturum etkisizleştirilir (Apple belgesi önerisi); ön plana dönüşte **koşulsuz** G12. `.ended` arka plandayken gelirse G12 ön plana dönüşe ertelenir | Dönüşte kısa süre "Duraklatıldı: uygulama arka planda", sonra "Dinliyorum" | `didEnterBackgroundNotification`, `didBecomeActiveNotification`. Dönüşte gelen gecikmeli `.began` (neden `appWasSuspended`) yok sayılır |
 | K9   | Ekran kilitlendi (yan tuş)                      | K8 ile aynı. Kendiliğinden kararma dinlerken engellidir                                                             | Aynı                                                            | `isIdleTimerDisabled` + K8                                                                          |
 | K10  | Kontrol Merkezi / bildirim perdesi              | Dinleme **sürer** (yalnız etkinlik kaybı); kesinti gelirse K4 kuralları                                             | Değişmez                                                        | `willResignActive` yalnız Tanılama'ya yazılır                                                       |
-| K11  | Başka uygulama mikrofonu aldı                   | Kesinti olarak gelir: G11; mikrofon geri alınamazsa iki denemeden sonra G13                                          | "Duraklatıldı", gerekirse "Mikrofon başka bir uygulamada."       | `.began`; biçim 0 Hz ise Y2 hatası                                                                  |
+| K11  | Başka uygulama mikrofonu aldı                   | Kesinti olarak gelir: G11; mikrofon geri alınamazsa iki denemeden sonra G13                                          | "Duraklatıldı", gerekirse "Mikrofon başka bir uygulamada. O uygulamayı kapatıp yeniden başlatın." | `.began`; biçim 0 Hz ise Y2 hatası; `cannotStartRecording` (`'!rec'`, 561145187) K5'teki iki alanda da eşlenir (S01 tur 3, D26) |
 | K12  | İnternet kesildi                                | Tanıma ve çeviri cihazda olduğu için akış sürer. Alania: § 5 yedeği (5 sn, 3 hatada kesici; S01 kararı KR10). Sunucuda tanınan dilde (T1, KR2) tanıma durur: T3 → G14, internet iletisiyle | "Alania'ya ulaşılamadı; Apple sesi kullanılıyor." / sunucu tanımasında "Bu dilde konuşma tanıma için internet gerekli." | Alania zaman aşımı / hata yolu; T3 sayacı                                                            |
 | K13  | Medya servisleri sıfırlandı                     | Apple belgesi: ses nesneleri yeniden kurulur, kayıt kullanıcı başlatmadan sürdürülmez → G13; motor ve sentezleyici yeni nesneyle değiştirilir | "Ses sistemi yeniden başladı. Dinlemeyi yeniden başlatın."      | `mediaServicesWereResetNotification`                                                                |
 | K14  | Motor yapılandırması değişti (örnekleme hızı)   | Motor kendini durdurur (Apple belgesi): G11 → bağlantı yeni biçimle → G12                                            | Kısa "Duraklatıldı" görünmeyebilir                              | `AVAudioEngineConfigurationChange`                                                                  |
-| K15  | Bekçi: 2 sn mikrofon tamponu gelmedi            | DİNLİYOR'da tampon 2 sn gelmezse G11 (neden bekçi) → G12. G12 hata vermeden "başarılı" olsa da arada tek tampon gelmeden bekçi **art arda ikinci kez** alarm verirse G13 (S01 tur 2) | "Duraklatıldı: mikrofondan ses gelmiyor", sonra hata: "Mikrofondan ses gelmiyor. Dinlemeyi yeniden başlatın." | Mikrofon bağlantısında son tampon zamanı + 1 sn'lik ana aktör sayacı + ardışık alarm sayacı         |
+| K15  | Bekçi: 2 sn mikrofon tamponu gelmedi            | DİNLİYOR'da tampon 2 sn gelmezse G11 (neden bekçi) → G12. G12 hata vermeden "başarılı" olsa da arada tek tampon gelmeden bekçi **art arda ikinci kez** alarm verirse G13 (S01 tur 2) | "Duraklatıldı: mikrofondan ses gelmiyor" — motor yeniden başlasa da **ilk gerçek tampon gelene dek** kalır; tampon gelince "Dinliyorum"; gelmezse hata: "Mikrofondan ses gelmiyor. Dinlemeyi yeniden başlatın." (S01 tur 3) | Mikrofon bağlantısında son tampon zamanı ve yalnız gerçek tamponun güncellediği ayrı zaman + 1 sn'lik ana aktör sayacı + alarm anı (S01 tur 3) |
 | K16  | Çıkış hoparlöre / AirPlay'e alındı              | Dinleme sürer                                                                                                        | Sarı uyarı (Y4 tablosu)                                         | `routeChangeNotification`                                                                            |
 
 **C6 — Bekçi.** Mikrofon bağlantısının geri çağrısı her tamponda kilitli bir "son tampon zamanı"nı günceller. Ana aktörde
 1 saniyelik sayaç DİNLİYOR durumunda bu zamanı okur. Bekçi; bildirim gelmeyen ya da `isRunning` yanlış `true` dönen
 durumlara karşı son çaredir ve D-0'ın tek doğrulayıcısıdır. KESİNTİDE ve HAZIRLANIYOR'da bekçi **çalışmaz**. Ardışık
 alarm sayacı, bir tampon geldiğinde (son tampon zamanı alarmdan sonraki bir anı gösterdiğinde) sıfırlanır (S01 tur 2).
+Yeniden başlatmanın "başlangıç payı" (sayacı şimdiye çekmek) bu karşılaştırmaya girmez; yalnız gerçek tampon sayılır.
+Telefon ve arka plan kesintisi alarmı siler; yapılandırma kesintisi silmez (S01 tur 3; bkz. Z-3).
 
 **C7 — Yeniden başlatma.** G12 iki kez denenir (ikincisi 0,5 sn sonra). İkisi de başarısızsa G13. Başarısızlık sessiz
 kalmaz. "Başarı" yalnız `start()`'ın hata vermemesi değildir: bekçi kesintisinden dönüşte başarı, ardından tampon
-gelmesidir (K15). Yeniden deneme zamanlayıcısı kesinti numarasını taşır (G12) (S01 tur 2).
+gelmesidir (K15). Yeniden deneme zamanlayıcısı kesinti numarasını taşır (G12) (S01 tur 2). Son başarısızlığın iletisi G13'teki gibi
+nedene göre seçilir (S01 tur 3).
 
 ---
 
@@ -228,8 +237,9 @@ gelmesidir (K15). Yeniden deneme zamanlayıcısı kesinti numarasını taşır (
 - **S4 — Durdur ve kesinti:** Durdur'da ve telefon / arka plan kesintisinde çalan ses hemen kesilir (`stop`,
   `stopSpeaking(at: .immediate)`), uçuştaki Alania isteği iptal edilir, sıra boşaltılır. Yapılandırma ve bekçi
   kesintisinde ses kesilmez, sıra korunur (S01 tur 2; K1–K3). Durdur'dan sonra yeni oturumun ilk cümlesi eski isteği
-  beklemez (S01 kararı KR10). Kesinti yüzünden okunmayan bir çeviri varsa ekranda bir kez "Kesinti sırasında gelen çeviri
-  okunmadı." notu çıkar (ilke 5; S01 tur 2).
+  beklemez (S01 kararı KR10). Kesinti yüzünden okunmayan bir çeviri varsa (kesilen, sırada bekleyen ya da kesinti sürerken gelen)
+  ekranda tek bir "Kesinti sırasında gelen çeviri okunmadı." notu çıkar ve her biri için Tanılama'ya `ses  atlandı
+  (kesinti)` yazılır (ilke 5; S01 tur 2, tur 3). Not bugün Durdur'a dek kalır (kaldırma önerisi Z-5).
 - **S4a — Bitiş bildirimi kime ait (S01 tur 2):** Bir öğenin bitişini bekleyen kod, gelen "bitti / iptal" geri çağrısının
   **o öğeye** (o `AVSpeechUtterance`'a, o `AVAudioPlayer`'a) ait olduğunu denetler. Önceki öğenin geç gelen `didCancel`'ı
   sonraki öğenin beklemesini bitiremez (yoksa S2 bozulur).
@@ -255,9 +265,10 @@ gelmesidir (K15). Yeniden deneme zamanlayıcısı kesinti numarasını taşır (
   geçmez, iCloud'a gitmez). `UserDefaults`'ta kalmaz.
 - **A2** Eski kurulumda `UserDefaults`'ta kalan değer ilk okumada taşınır. İkisi birden varsa **`UserDefaults`'taki
   kazanır** (orada yalnız eski arayüz yazmış olabilir, o da kullanıcının en son girdiğidir); Anahtar Zinciri'ne yazılamazsa
-  eski değer silinmez (S01 tur 2).
+  eski değer silinmez (S01 tur 2). Baştaki ve sondaki boşluklar kırpılır; okunan değer bellekte tutulur, her cümlede
+  Anahtar Zinciri'ne gidilmez; geçici okuma hatası (kilitli cihaz) önbelleğe yazılmaz (S01 tur 3).
 - **A3** Yazma başarısız olursa Tanılama'ya `anahtar  kaydedilemedi <OSStatus>` yazılır; anahtarın kendisi hiçbir yere
-  yazılmaz (S01 tur 2).
+  yazılmaz (S01 tur 2). Bu durumda ekranda da söylenmesi önerilir (Z-8).
 
 ---
 
@@ -265,13 +276,18 @@ gelmesidir (K15). Yeniden deneme zamanlayıcısı kesinti numarasını taşır (
 
 Web sürümü aynı durum adlarını ve aynı Tanılama olaylarını kullanır; şu farklarla:
 
-- **Aşamalar (S01 kararı KR3'ün web karşılığı; S01 tur 2):** "hazırlanıyor" Başlat'tan tanımanın ilk `start` /
-  `audiostart` olayına kadar sürer (izin istemi bu aşamadadır); "kesintide" okurken bekletme ve gizli sekme içindir
+- **Aşamalar (S01 kararı KR3'ün web karşılığı; S01 tur 2, tur 3):** "hazırlanıyor" Başlat'tan dinlemenin gerçekten
+  başladığını gösteren ilk olaya (`audiostart` ya da ilk sonuç) kadar sürer (izin istemi bu aşamadadır). Hangi olayın
+  geçişi yaptığı Tanılama'ya `aşama  dinliyor olay=<ad> <ms>` diye yazılır. Bugünkü kod `start` olayını ve olay hiç
+  gelmezse 5 sn'lik yedek süreyi de (`olay=yedek`, uyarı) geçiş sayar; yedek süre izin istemi açıkken "Dinliyorum…"
+  gösterebileceği için kaldırılmalı (Z-9, D34); "kesintide" okurken bekletme ve gizli sekme içindir
   ("Duraklatıldı: okuma sürüyor" / "Duraklatıldı: sayfa arka planda"). CANLI ve "Dinliyorum…" yalnız "dinliyor"da.
 - **Tanılama farkları:** `dil paketi` olayı yoktur (çeviri internettedir); `tanıma açıldı` satırına `konum=bilinmiyor`
-  yazılır (tarayıcı cihazda mı sunucuda mı tanıdığını söylemez); `izin` satırı ilk `audiostart`ta `mikrofon=verildi`,
+  yazılır (tarayıcı cihazda mı sunucuda mı tanıdığını söylemez); `izin` satırı ilk `audiostart`ta (ya da ilk sonuçta) bir kez `mikrofon=verildi`,
   reddedilince `not-allowed` / `service-not-allowed` ile yazılır; arka plan / ön plan `sekme  gizlendi / göründü` olarak
-  yazılır. Kopya başlığında sayfa sürümü bulunur; dosya yolu (`file://` içinde kullanıcı adı olabilir) yazılmaz.
+  yazılır; kesinti satırları `kesinti  başladı neden=okuma|gizli sekme`, `neden eklendi=…`, `neden kalktı=…`,
+  `bitti neden=…` (S01 tur 3). Kopya başlığında sayfa sürümü, saat dilimi ve "eski olaylar atıldı" bilgisi bulunur; dosya yolu (`file://` içinde
+  kullanıcı adı olabilir) yazılmaz, yalnız protokol ve dosya adı (S01 tur 3).
 - **Alania (S01 kararı KR10):** iPhone ile aynı: toplam 5 sn, Durdur uçuştaki isteği iptal eder, 3 hatada kesici, yedeğe
   düşüş notla ve HTTP koduyla.
 
@@ -281,8 +297,9 @@ Web sürümü aynı durum adlarını ve aynı Tanılama olaylarını kullanır; 
 - **Askıya alma nedenleri ayrı tutulur:** "okurken beklet" ve "sekme gizli" iki ayrı işarettir; tanıma ancak ikisi de
   kalkınca yeniden açılır. Gizli sekmede tanıma açılmaz.
 - **Durdur**, bekleyen cihaz seslendirmesinin sözünü (Promise) hemen çözer; yeni oturum eski sesin sigortasını beklemez.
-  Aynı kural uçuştaki çeviri isteği için de geçerlidir: Durdur onu iptal eder, yeni oturumun ilk cümlesi eski çeviriyi
-  beklemez (S01 tur 2).
+  Aynı kural uçuştaki çeviri isteği için de geçerlidir: Durdur onu iptal eder (oturum başına bir iptal denetleyicisi),
+  iptal hata sayılmaz, Tanılama'ya `çeviri  istek iptal edildi` yazılır; yeni oturumun ilk cümlesi eski çeviriyi
+  beklemez (S01 tur 2, tur 3).
 - Çeviri hatası dinlemeyi durdurmaz (bugünkü kod buna uyuyor).
 
 ---
@@ -291,7 +308,8 @@ Web sürümü aynı durum adlarını ve aynı Tanılama olaylarını kullanır; 
 
 `kalite-sorumlusu` her birini `docs/cihaz-testi.md` içinde en az bir senaryoya çevirir. S01 kararı KR4 gereği bu
 listedeki davranışlar cihazda denenmeden değiştirilmez; yalnız sessiz başarısızlığı görünür kılan savunma denetimleri
-eklenir. Ön-7 (D7) ve Ön-9 (D15) KR1 gereği yalnız cihaz sorusudur.
+eklenir. Ön-7 (D7) ve Ön-9 (D15) KR1 gereği yalnız cihaz sorusudur. Numaralar kalıcıdır: yeni sorular sona eklenir,
+geçersiz kalan soru silinmez, "geçersiz: …" diye işaretlenir. D26 ve sonrası S01 tur 3'te eklendi.
 
 | No  | Soru                                                                                                                                         | Nasıl gözlenir                                                                  |
 | --- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
@@ -320,3 +338,13 @@ eklenir. Ön-7 (D7) ve Ön-9 (D15) KR1 gereği yalnız cihaz sorusudur.
 | D23 | Mikrofon izni reddedilmişken ya da oturum hiç açılmamışken `AVAudioEngine.inputNode`'a dokunmak (Durdur'daki `removeTap`) sorunsuz mu (S01 tur 2) | İzni reddet, Başlat, sonra hazırlanırken Durdur                                 |
 | D24 | `stopSpeaking(at: .immediate)` sonrası `didCancel` ne kadar gecikmeyle geliyor (S4a)                                                         | Apple sesi okurken AirPods'u çıkar/tak, sonra hızlı bir cümle; sesler üst üste binmemeli |
 | D25 | Uygulama silinip yeniden kurulunca Alania anahtarı Anahtar Zinciri'nde kalıyor mu (A1; iOS davranışı sürüme göre değişmiş olabilir)         | Anahtarı gir, uygulamayı sil, kur; Ayarlar'da anahtar alanı                     |
+| D26 | Mikrofon başka uygulamadayken ya da görüşme sürerken `AVAudioEngine.start()` ve `setActive(true)` hangi **hata alanı ve koduyla** dönüyor (`NSOSStatusErrorDomain` mı, `com.apple.coreaudio.avfaudio` mı; ör. 561145187 `'!rec'`, 561017449 `'!pri'`); ekrandaki ileti doğru nedeni söylüyor mu (K5, K11; S01 tur 3) | (a) Bir sesli not / kamera video kaydı açıkken uygulamaya geç, Başlat. (b) Görüşme sürerken Başlat. Tanılama'daki `motor  başlatılamadı <alan>/<kod>` ve `durdur  neden=hata …` satırları; ekrandaki hata metni |
+| D27 | Yapılandırma kesintisinde (AirPods çıkar/tak) **çalmakta olan** çeviri ahizeden / AirPods'tan kesintisiz sürüyor mu; `AVAudioPlayer` ve Apple sesi motorun yeniden başlatılmasından etkileniyor mu; sıradaki cümleler sonra okunuyor mu (K1–K3, G11, S4; S01 tur 3) | Alania anahtarlı ve anahtarsız iki kez: uzun bir cümle okunurken AirPods'u kutuya koy; `ses  …` ve `kesinti  başladı neden=yapılandırma` satırları; kulakla dinle |
+| D28 | Telefon kesintisinde okunmakta olan çeviri hemen kesiliyor mu ve kesinti bitince ekranda "Kesinti sırasında gelen çeviri okunmadı." notu bir kez görünüyor mu; Tanılama'da `ses  atlandı (kesinti)` satırı var mı (S4; S01 tur 3) | Bir cümle okunurken kendini başka telefondan ara, reddet |
+| D29 | Gelen çağrı **çalarken** (henüz açılmadan) 10 sn geçince "Devam etmek için Durdur'a, sonra Başlat'a dokunun." notu çıkıyor mu; çağrı reddedilince `.ended` gelip not kalkıyor ve dinleme kendiliğinden sürüyor mu (K4, Ön-5; S01 tur 3) | Kendini ara, 15 sn çaldır, reddet; ekran ve `kesinti` satırları |
+| D30 | Telefon kesintisinde aramayı **açınca** (uygulama arka plana gider) ve görüşme sürerken uygulamaya dönünce: `setActive` hangi hatayı veriyor, ekranda hangi ileti çıkıyor; görüşme bitince `.ended` gelip dinleme sürüyor mu yoksa dinleme önceden hatayla mı bitmiş (K4, K5, Ön-4; S01 tur 3) | Kendini ara, aç, görüşme sürerken Canlı Çeviri'ye dön, 10 sn bekle, görüşmeyi kapat; `kesinti`, `motor`, `durdur` satırları |
+| D31 | Bekçi alarmından sonra mikrofon gerçekten geri geliyor mu: `kesinti  başladı neden=bekçi` ile `motor  tampon geldi` arası kaç ms (`kesinti  bitti` satırı tampondan **önce**, yeniden başlatma denenirken yazılır); ekran bu arada "Duraklatıldı: mikrofondan ses gelmiyor"da mı kalıyor; ikinci alarmda "Mikrofondan ses gelmiyor. Dinlemeyi yeniden başlatın." çıkıyor mu (K15, C6, C7; S01 tur 3) | Bekçi kendiliğinden tetiklenmez; D11/D19 sırasında `neden=bekçi` satırı görülürse ardından gelen satırlar ve ekran not edilir |
+| D32 | Sunucuda tanınan dilde (KR2) internet yokken iki yoldan hangisi işliyor: başlarken `isAvailable == false` mı, yoksa art arda boş bitiş mi; her ikisinde de "Bu dilde konuşma tanıma için internet gerekli. Bağlanıp yeniden başlatın." çıkıyor mu; cihazda tanınan dilde uçak kipinde bu ileti **çıkmıyor** mu (T1, T3, YÖ-5; S01 tur 3) | Uçak kipinde önce `en`, sonra `ar` (ya da D4'te sunucuda çıkan dil) ile Başlat; `tanıma açıldı`, `tanıma bitti`, `durdur` satırları ve ekran |
+| D33 | Eski sürümden güncellemede (`UserDefaults`'ta anahtar varken) anahtar ilk okumada Anahtar Zinciri'ne taşınıyor mu, Ayarlar'daki alan dolu görünüyor mu; anahtar alanını boşaltınca Alania gerçekten kapanıyor mu (A2; S01 tur 3) | Eski yapıyı kur, anahtar gir, yeni yapıyı üstüne kur; Ayarlar ve bir cümlede `ses  alania`/`ses  apple` satırı. Eski yapı yoksa yalnız boşaltma adımı |
+| D34 | (web) iPhone Safari'de Başlat'tan sonra `start`, `audiostart` ve ilk `result` olaylarından hangileri, kaç ms'de geliyor; ekran "Hazırlanıyor…"dan "Dinliyorum…"a ne zaman geçiyor; `olay=yedek` uyarısı çıkıyor mu (§ 6 aşamalar; S01 tur 3) | Web sürümünde Başlat; Tanılama'da `izin`, `tanıma açıldı` ve varsa `olay=yedek` satırları |
+| D35 | (web) iPhone Safari'de ekran kilitlenince ya da sekme değişince tanıma nasıl bitiyor (`end`, `error` kodu); dönüşte "Duraklatıldı: sayfa arka planda"dan "Dinliyorum…"a dönülüyor mu; mikrofon izni yeniden soruluyor mu (§ 6; S01 tur 3) | Web'de dinlerken ekranı kilitle, aç; sekme değiştir, dön; `sekme`, `kesinti`, `tanıma` satırları |

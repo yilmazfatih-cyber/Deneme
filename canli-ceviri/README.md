@@ -6,7 +6,8 @@ Karşınızdaki kişinin konuşmasını iPhone mikrofonuyla dinler, cümle cüml
 iPhone mikrofonu → konuşma tanıma (Apple) → çeviri (Apple, cihazda) → Türkçe ses (Alania-2 ya da Apple) → AirPods
 ```
 
-Konuşma tanıma ve çeviri Apple'ın kendi çatılarıyla yapılır; dil paketi bir kez indirildikten sonra internet gerekmez.
+Konuşma tanıma ve çeviri Apple'ın kendi çatılarıyla yapılır; çoğu dilde dil paketi bir kez indirildikten sonra internet
+gerekmez (hangi dillerin telefonda, hangilerinin Apple'ın sunucusunda tanındığı cihaz testinde görülecek).
 Alania-2 sesi isteğe bağlıdır; anahtar yoksa ya da Alania'ya ulaşılamazsa Apple'ın Türkçe sesi okur.
 
 > **Durum:** Uygulama GitHub'ın Mac makinelerinde derleniyor ve ekranları iOS simülatöründe görülüyor
@@ -27,9 +28,9 @@ iPhone'da **Safari** ile açın, AirPods'u takın, **Dinlemeyi Başlat**'a dokun
 | -------------- | ----------------------------- | --------------------------------------------------------------- |
 | Konuşma tanıma | Cihazda (Apple Speech)        | Tarayıcının hizmeti (Safari'de Apple'ın dikte altyapısı)        |
 | Çeviri         | Cihazda (Apple Translation)   | İnternet üzerinden [MyMemory](https://mymemory.translated.net/) |
-| Mikrofon       | Her zaman iPhone'unki         | Tarayıcı seçer (AirPods takılıyken çoğunlukla AirPods'unki)     |
+| Mikrofon       | Her zaman iPhone'unki         | Tarayıcı seçer (AirPods'unki olabilir; cihaz testinde görülecek) |
 | Türkçe ses     | Alania-2 ya da Apple sesi     | Alania-2 ya da cihazın Türkçe sesi                              |
-| İnternet       | Dil paketi indikten sonra yok | Gerekli                                                         |
+| İnternet       | Çoğu dilde paket indikten sonra gerekmez | Gerekli                                              |
 
 - Söylenen cümleler çevrilmek üzere MyMemory hizmetine gider; ücretsiz kullanım günde yaklaşık 5.000 karakterle sınırlıdır.
 - Konuşma tanıma Chrome'da ve ana ekrana eklenmiş hâlde çalışmayabilir; Safari'nin kendisinde açın. iPhone'da
@@ -73,7 +74,8 @@ Xcode sürümleriyle denenmedi.)
    indirme penceresi açılır.
 
 Alania-2 sesi için **Ayarlar** sekmesine API anahtarınızı girin (https://speech.patientdesk.ai/signup). Anahtar
-telefonun Anahtar Zinciri'nde saklanır.
+telefonun Anahtar Zinciri'nde saklanır. Anahtar girerseniz Türkçe çeviri metni seslendirmek için Alania'ya gönderilir;
+söylenen asıl cümle gönderilmez.
 
 > Ücretsiz Apple hesabıyla yüklenen uygulama 7 gün sonra açılmaz olur; Xcode'dan yeniden ▶︎ yapmak yeter.
 
@@ -123,11 +125,12 @@ Yeni bir `.swift` dosyasını `CanliCeviri/` klasörüne koymanız yeterli; Xcod
   AirPods bağlı değilse çeviri kulak hoparlöründen (ahize) gelir: hoparlörden çalsaydı mikrofon kendi sesini duyup
   yeniden çevirirdi.
 - **Kesintiler:** Arama, alarm ya da Siri gelince ve uygulama arka plana gidince ekran "Duraklatıldı: …" der; kesinti
-  bitince dinleme kendiliğinden sürer. Arama ve arka plan çalan çeviriyi keser, okunmayan çeviri sarı notla söylenir.
-  AirPods takılıp çıkarılınca mikrofon yeni ses yoluyla yeniden bağlanır, çalan çeviri sürer. Mikrofon geri açılamazsa
-  dinleme durur ve ekranda ne yapılacağını söyleyen bir açıklama çıkar.
-- **Bekçi:** Mikrofondan 2 saniye ses verisi gelmezse dinleme bir kez yeniden açılır; yine gelmezse "Mikrofondan ses
-  gelmiyor" hatasıyla durur. Ekran, mikrofon sağırken "Dinliyorum" demez.
+  bitince dinlemenin kendiliğinden sürmesi beklenir. Sistem bitişi bildirmezse 10 saniye sonra ekranda çıkış yolu yazar
+  (Durdur, sonra Başlat). Görüşme sürerken uygulamaya dönülürse dinleme durur ve ekran nedenini söyler. Arama ve arka
+  plan çalan çeviriyi keser, okunmayan çeviri sarı notla söylenir. AirPods takılıp çıkarılınca mikrofon yeni ses yoluyla
+  yeniden bağlanır, çalan çeviri sürer. Mikrofon geri açılamazsa dinleme durur ve ekranda ne yapılacağı yazar.
+- **Bekçi:** Mikrofondan 2 saniye ses verisi gelmezse ekran en geç üç saniye içinde "Duraklatıldı: mikrofondan ses
+  gelmiyor" der ve dinleme bir kez yeniden açılır; yine gelmezse "Mikrofondan ses gelmiyor" hatasıyla durur.
 - **Sunucuda tanıma:** Cihazda tanıması olmayan dillerde konuşma tanıma Apple'ın sunucusunda yapılır; ekran bunu sarı
   notla söyler ve bu dillerde internet gerekir.
 - **Alania yedeği:** Alania 5 saniyede yanıt vermezse o cümleyi Apple sesi okur ve ekranda not çıkar; art arda üç hatadan
@@ -145,6 +148,7 @@ Bu klasörün kuralları `CLAUDE.md` içindedir (sekiz ilke, dosya sahipliği, "
 | `python3 canli-ceviri/scripts/swift-sozdizimi.py --proje` | Swift sözdizimi ve proje dosyası (derleme değildir)                      |
 | Dala `git push`                                           | "Canlı Çeviri (iOS derleme)" iş akışı: Mac'te derleme + simülatör görüntüleri |
 | `node canli-ceviri/tests/web-akis.cjs`                    | Web sürümünün akışı (sahte tanıma, çeviri ve seslendirme ile)            |
+| `npm run check` (depo kökünde)                            | Depo geneli denetim; `.github/` ya da kök yapılandırma değiştiyse        |
 
 Mac derlemesi yalnız `CanliCeviri/`, `CanliCeviri.xcodeproj/` ya da iş akışı dosyası değişince çalışır; simülatör
 görüntülerini `canli-ceviri-ekran` dalına yazar. Hiçbir otomatik denetim mikrofonu, gerçek tanımayı, çeviriyi ya da
