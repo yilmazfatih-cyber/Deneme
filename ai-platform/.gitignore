@@ -8,3 +8,4 @@ docker/.env
 docker/data/
 *.db
 *.gguf
+kur.log

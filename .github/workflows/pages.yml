@@ -3,6 +3,7 @@ name: Yayınla (GitHub Pages)
 # Her güncellemede uygulamayı derler ve https://<kullanıcı>.github.io/<depo>/ adresinde yayınlar.
 # Bölüş (ortak harcama uygulaması) derleme gerektirmez; bolus/ klasörü olduğu gibi /bolus/ altında yayınlanır.
 # Fiş (masada hesap bölüşme) de derlemesizdir; fis/ klasörü /fis/ altında yayınlanır.
+# Canlı Çeviri'nin web deneme sürümü de derlemesizdir; canli-ceviri/web/ klasörü /canli-ceviri/ altında yayınlanır.
 # TV+ gösterimi /tvplus/ altında yayınlanır (hazır derlenmiş site gh-pages dalından alınır).
 on:
   push:
@@ -33,6 +34,8 @@ jobs:
         run: cp -r bolus dist/bolus
       - name: Fiş uygulamasını ekle
         run: cp -r fis dist/fis
+      - name: Canlı Çeviri web deneme sürümünü ekle
+        run: cp -r canli-ceviri/web dist/canli-ceviri
       # TV+ (tvplus/) sunucusuz çalışan durağan bir sitedir; derlenmiş hâli gh-pages dalında durur
       # (tvplus klasöründe `npm run build:pages` çıktısı) ve /tvplus/ altında yayınlanır. Dal yoksa adım atlanır.
       - name: TV+ sitesini al (gh-pages dalı)

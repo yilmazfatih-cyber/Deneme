@@ -9,6 +9,19 @@
 | İsteğe bağlı | NVIDIA sürücü 550+ ve Docker (nvidia-container-toolkit) → vLLM; Ollama | — |
 | Ağ | Yalnız kurulumda huggingface.co (veya şirket içi ayna `AIP_HF_ENDPOINT`) | Sunucuya HTTP |
 
+## 0. En kolay yol: kurulum betiği (macOS / Linux)
+
+```bash
+cd ai-platform
+./scripts/kur.sh            # ortam + bağımlılıklar + donanım taraması + testler
+./scripts/kur.sh --demo     # + demo modülleri, sunucu ve tarayıcıda Demo ERP
+./scripts/baslat.sh         # sonraki seferlerde yalnız başlatma
+```
+
+Seçenekler: `--testsiz`, `--tarayicisiz`, `--yardim`. Betik tekrar çalıştırılabilir; mevcut `.venv` yeniden
+kullanılır. Her adımın ayrıntısı `kur.log` dosyasına yazılır, hata olursa son satırlar ekrana basılır.
+Windows'ta şimdilik aşağıdaki elle kurulum adımları geçerlidir.
+
 ## 1. Sunucu (GPU veya CPU)
 
 ```bash
