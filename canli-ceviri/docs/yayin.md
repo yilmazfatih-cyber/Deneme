@@ -77,6 +77,36 @@ Durum "Etkin" (Active) olana dek birkaç gün sürebilir.
 6. Mağazaya göndermek için: üstte hedef olarak **Any iOS Device** seçin → **Product → Archive** → açılan pencerede
    **Distribute App** → **App Store Connect** → **Upload**.
 
+## 5b. Xcode'suz yol: GitHub uygulamayı sizin yerinize yüklesin
+
+Xcode kullanmak istemiyorsanız 5. adımın 6. maddesi yerine bunu yapın. GitHub uygulamayı derler, imzalar ve Apple'a
+yükler; siz yalnız telefonda TestFlight'tan kurarsınız. Önce 1, 2 ve 3. adımlar bitmiş olmalı. **Bu yol henüz hiç
+çalıştırılmadı** (hesap yoktu); ilk denemede bir hata çıkarsa iş akışının kaydını gönderin.
+
+**Bir kez yapılır: Apple'dan anahtar alıp GitHub'a girin**
+
+1. https://appstoreconnect.apple.com → **Kullanıcılar ve Erişim** (Users and Access) → **Entegrasyonlar** (Integrations)
+   → **App Store Connect API** → **Takım Anahtarları** (Team Keys). İlk seferde **Erişim İste** çıkarsa kabul edin.
+2. **+** ile anahtar oluşturun. Ad: `GitHub TestFlight`. Erişim: **Admin**.
+3. **API Anahtarını İndir**'e dokunun. Dosya (`AuthKey_….p8`) yalnız bir kez indirilir; saklayın.
+4. GitHub'da depo sayfası → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**. Dört değeri
+   tek tek ekleyin (adlar harfi harfine):
+
+| Ad | Değer | Nerede |
+| -- | ----- | ------ |
+| `ASC_KEY_P8` | İndirdiğiniz dosyanın tüm içeriği (`-----BEGIN PRIVATE KEY-----` ile başlar) | Dosyayı TextEdit ile açın, hepsini kopyalayın |
+| `ASC_KEY_ID` | Anahtar Kimliği (Key ID), 10 karakter | Anahtarın satırında |
+| `ASC_ISSUER_ID` | Issuer ID, uzun ve tireli | Aynı sayfanın üstünde |
+| `APPLE_TEAM_ID` | Takım Kimliği (Team ID), 10 karakter | https://developer.apple.com/account → Üyelik ayrıntıları |
+
+Bu değerleri yalnız GitHub'ın bu sayfasına girin; sohbete, e-postaya ya da depodaki bir dosyaya yazmayın.
+
+**Her yeni sürümde: tek düğme**
+
+1. GitHub'da depo → **Actions** → **Canlı Çeviri (TestFlight'a yükle)** → **Run workflow** → **Run workflow**.
+2. 10–20 dakika sonra iş yeşil olur; sürüm TestFlight'ta 10–30 dakika içinde görünür.
+3. Telefonda **TestFlight** uygulamasını açıp **Yükle**'ye dokunun (6. adım).
+
 ## 6. TestFlight ile gerçek ortamda deneyin
 
 1. Yükleme App Store Connect → **TestFlight** sekmesinde 10–30 dakika içinde görünür.

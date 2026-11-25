@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  TestFlight iş akışının (.github/workflows/canli-ceviri-testflight.yml) dışa aktarma ayarları.
+  teamID burada yok: iş akışı bu dosyanın geçici bir kopyasına APPLE_TEAM_ID gizli değerinden ekler.
+  destination = upload: dışa aktarılan paket doğrudan App Store Connect'e yüklenir.
+  manageAppVersionAndBuildNumber = false: yapı numarasını iş akışı verir (github.run_number); Xcode değiştirmez.
+-->
+<plist version="1.0">
+<dict>
+	<key>method</key>
+	<string>app-store-connect</string>
+	<key>destination</key>
+	<string>upload</string>
+	<key>signingStyle</key>
+	<string>automatic</string>
+	<key>manageAppVersionAndBuildNumber</key>
+	<false/>
+	<key>uploadSymbols</key>
+	<true/>
+</dict>
+</plist>
