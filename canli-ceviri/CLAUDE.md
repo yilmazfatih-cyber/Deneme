@@ -12,8 +12,9 @@ Bu dosya `canli-ceviri/` klasörü içindir; depo kökündeki `CLAUDE.md` Köpr�
    sınıf konulardır; kulaklık bağlı değilse ekran bunu açıkça söyler.
 2. **Mikrofon karşıya, ses kulağa:** Dinleyen her zaman iPhone'un mikrofonudur. AirPods'un mikrofonu açılmaz; açılırsa
    kulaklıktaki ses telefon görüşmesi kalitesine düşer.
-3. **Cihazda ve gizli:** Tanıma ve çeviri cihazda yapılır; konuşma metni telefondan çıkmaz. Tek istisna, kullanıcının
-   anahtar girerek açtığı Alania sesidir (yalnız Türkçe çeviri metni gider). Tanılama kaydı konuşma içeriği tutmaz.
+3. **Cihazda ve gizli:** Tanıma ve çeviri cihazda yapılır; konuşma metni telefondan çıkmaz. İki istisna vardır ve ikisi
+   de ekranda söylenir: cihazda tanıması olmayan dillerde tanıma Apple'ın sunucusunda yapılır; kullanıcı anahtar girdiyse
+   Türkçe çeviri metni Alania'ya gider. Tanılama kaydı konuşma içeriği ve cihaz adı tutmaz.
 4. **Gecikme düşmandır:** Cümle bitince çeviri hemen görünür ve okunur. Hiçbir adım dinlemeyi bekletmez; ağ hatası
    akışı durdurmaz.
 5. **Sessizce bozulmaz:** Dinleme durduysa, kulaklık koptuysa ya da ses yedeğe düştüyse ekran bunu söyler.

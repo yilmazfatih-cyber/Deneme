@@ -101,6 +101,23 @@ VoiceOver), 7 (derlenmeyen kod bitmemiştir), 8 (denenmeyeni denenmiş gösterme
 - **Ses hattında davranış değişikliği** cihazda denenmeden yapılır. Uzmanın "emin değilim" dediği değişiklikler
   yapılmaz; cihaz testine soru olarak yazılır.
 
-## Kararlar (plan kapısından sonra lider doldurur)
+## Kararlar (plan kapısı, 25.11.2026)
 
-_Henüz karar yok._
+Girdi: `docs/ses-hatti.md`, `docs/tasarim.md`, `reviews/ses-uzmani-1.md` (3 Engel, 12 Önemli, 12 Öneri),
+`reviews/arayuz-denetcisi-1.md` (0 Engel, 12 Önemli, 10 Öneri). **Bir karar şartnameyle çelişiyorsa karar geçerlidir;**
+şartnamenin sahibi bir sonraki turda metnini buna göre günceller.
+
+| No   | Karar                                                                                                                                                                                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| KR1  | **Ses uzmanı bulguları:** E1–E3 ve Ö-1…Ö-12'nin hepsi bu sprintte kapatılır. Önerilerden Ön-1, 2, 3, 4, 5, 6, 10, 11, 12 yapılır. Ön-7 ve Ön-9 cihaz sorusudur, kod değişmez. Ön-8 (tanıyıcı kullanılabilirliği, şartname T4) birikime yazılır.                                                   |
+| KR2  | **Cihazda tanıması olmayan dil (şartname T1'in yerine):** dinleme reddedilmez; proje sahibinin özgün tasarımı sunucu tanımasına izin veriyordu. Bunun yerine ekranda kalıcı sarı not çıkar ("Bu dilde konuşma tanıma Apple'ın sunucusunda yapılır.") ve Tanılama'ya `tanıma açıldı <bölge> sunucuda` yazılır. İlke 3 buna göre güncellendi. |
+| KR3  | **Aşama tek kaynaktır (D-0):** `Durum.asama` = duruyor / hazırlanıyor / dinliyor / kesintide(neden). CANLI rozeti ve "Dinliyorum…" yalnız "dinliyor"da görünür; "hazırlanıyor"da "Hazırlanıyor…", "kesintide"de "Duraklatıldı: <neden>". Ana düğme duruyor dışındaki her aşamada "Durdur" yazar.        |
+| KR4  | **"Emin değilim" denen davranışlar** (şartname § 7) cihazda denenmeden değiştirilmez; yalnız sessiz başarısızlığı görünür kılan savunma denetimleri eklenir.                                                                                                                                       |
+| KR5  | **Arayüz bulguları:** B-1…B-12 kapatılır. Önerilerden B-13, 14, 15, 17, 19, 20 (yalnız `lang`), 21 (kısmen, bkz. KR8) ve 22 yapılır. B-16: iPhone'a "okurken duraklat" eklenmez; web'de açıklaması "yalnız bu web sürümünde" der. B-18 (web'de `rem` ve Dinamik Yazı) birikime yazılır.            |
+| KR6  | **Renk belirteçleri (B-6, B-7):** karşıtlık için dört belirteç eklenir, iki sürümde de: `maviDolgu` `#2b72e5` ve `kirmiziDolgu` `#de3530` (beyaz yazılı dolgular), `maviMetin` `#4a8ff7` (mavi metin ve simge), `acikKirmizi` `#ff7a73` (hata metni). Fark gözle neredeyse seçilmez; tema değişmez. Demo notunda proje sahibine bildirilir. |
+| KR7  | **Dinlerken dil şeridi (B-9):** duruyor dışındaki aşamalarda şerit tek satıra iner (alt yazı kalkar, yükseklik 56); başlık tek satırda kalır. Amaç, çevirinin küçük ekranda görünür kalmasıdır.                                                                                                    |
+| KR8  | **"Şu An" başlığı değişmez** (proje sahibinin metni). B-21'in geri kalanı yapılır: hata satırının başında uyarı simgesi, bölüm başlıklarında büyük harf biçemle (`textCase`), ayraç opaklığı iki sürümde 0,14.                                                                                     |
+| KR9  | **Geçmiş (B-13):** "Temizle" onay ister ("Geçmiş silinsin mi?" — "Geçmişi sil" / "Vazgeç"); listenin altında "Geçmiş uygulama kapanınca silinir." yazar.                                                                                                                                          |
+| KR10 | **Alania:** iki sürümde toplam bekleme 5 sn; Durdur uçuştaki isteği iptal eder; art arda 3 hatadan sonra o oturum boyunca cihazın sesi kullanılır; yedeğe düşüş ekranda notla söylenir ve Tanılama'ya HTTP koduyla yazılır.                                                                        |
+| KR11 | **iPhone işi iki adımda yapılır, her adımdan sonra Mac derlemesi:** (A) mantık katmanı: `Hat.swift`, `Durum.swift`, `Sabitler.swift`, yeni `Tanilama.swift` ve `Anahtarlik.swift`; arayüzün bugün kullandığı adlar bozulmaz. (B) arayüz: `Arayuz/`, `CeviriApp.swift`, `-ekran` başlatma argümanı, Tanılama ekranı, erişilebilirlik, iş akışındaki ekran görüntüsü adımı. |
+| KR12 | **Tanılama ekranı** `docs/tasarim.md` § 4.4'e, VoiceOver etiketleri § 5.2 tablosuna, duyurular § 5.3'e göre yapılır.                                                                                                                                                                              |
