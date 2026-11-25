@@ -118,10 +118,14 @@ komutu söyler:
   "yarıda kalan --uzerine-yaz; eski eğitim kenarda: …" diye görünür. Önerilen komut onu önce yerine koyar; bitmiş bir
   eğitim için bu "geri getirmek için: egit --asama … --devam" olur.
 - **Başka deneyler.** Listenin altındaki "Yarıda kalan başka deneyler" bölümü, `ciktilar/deneyler` altında yarıda
-  kalmış her aşamayı sürdürme komutuyla gösterir. Bu komut `--deney` ve `--ayarlar`'ı taşır, `--ayar`'ları taşımaz: o
-  deneyi `--ayar` ile başlattıysan aynılarını ekle. Tokenizer'ı ya da hazır verisi değişmiş bir koşu "sürdürülemez"
-  notuyla listelenir. Kenarda kalmış eski eğitimler de burada listelenir; bitmemiş ve `son.pt`'si silinmiş olan
-  "sürdürülemez" notunu alır (6. adım, "Eski eğitim korunur").
+  kalmış her aşamayı sürdürme komutuyla gösterir. Bu komut `--deney` ve `--ayarlar`'ı taşır, `durum`'a verdiğin
+  `--ayar`'ları taşımaz. Bitmemiş eğitimin `--devam`'da değişemeyen ayarlarından (6. adım) biri ayar dosyasında kayıtlı
+  olandan farklıysa satır "ayar dosyası kayıtlı eğitimden farklı (…)" der ve komuta her fark için
+  `--ayar <alan>=<kayıtlı değer>` ekler. Bu, ör. bir gömme kararını dosyada değiştirdiğinde ya da deneyi böyle bir
+  ayarı `--ayar` ile vererek başlattığında olur. Deneyi değişebilen bir ayarla (ör. `degerlendirme_her`) başlattıysan
+  o `--ayar`'ı kendin ekle. Önceki sürümün yarıda bıraktığı eğitimde bu karşılaştırma yapılmaz. Tokenizer'ı ya da
+  hazır verisi değişmiş bir koşu "sürdürülemez" notuyla listelenir. Kenarda kalmış eski eğitimler de burada
+  listelenir; bitmemiş ve `son.pt`'si silinmiş olan "sürdürülemez" notunu alır (6. adım, "Eski eğitim korunur").
 
 Listedeki ve "Sıradaki adım"daki komutlar `durum`'a verdiğin `--ayarlar`, `--ayar` ve `--deney` seçeneklerini tekrarlar;
 yalnız kayıtlı eğitimle çelişen `--ayar` sürdürme komutuna yazılmaz. Kopyaladığın komut aynı deneye gider. İndirilen
@@ -186,11 +190,20 @@ okuduysan aynı `--ocr` seçeneğiyle), sonra `veri-hazirla`'yı yeniden çalı�
 `--deney` seçenekleriyle sırayla yazar. Klasöre sonradan kitapçık eklersen `durum` `meb-pdf`'i yeniden önerir;
 sorular OCR ile okunduysa aynı kiple: `meb-pdf --ocr` ya da `meb-pdf --ocr hepsi`. Kitapçıkları
 `meb-pdf --klasor <klasör>` ile okuduysan bu klasör hatırlanır: `durum` yeni kitapçıkları orada arar; `meb-mmlu`,
-`durum` ve `egit --asama meb`'in yazdığı `meb-pdf` komutu `--klasor <klasör>`'ü taşır.
+`durum` ve `egit --asama meb`'in yazdığı `meb-pdf` komutu `--klasor <klasör>`'ü taşır. Klasör ayar dosyasının
+klasörüne göre saklanır; komutlar onu çalıştıkları klasöre göre (dışındaysa tam yoluyla) yazar. Böylece başka bir
+klasörden `--ayarlar` ile çalışan komut da aynı kitapçıkları okur.
+
+MEB eğitim verisi hazırlanmamışsa `egit --asama meb` durur ve sıradaki komutu yazar: `meb_pdf.jsonl`'de eğitim
+sorusu varsa yalnız `veri-hazirla`'yı, yoksa `meb-pdf`'i (sorular OCR ile okunduysa aynı kiple), sonra
+`veri-hazirla`'yı.
 
 `meb-pdf` şunları yapar:
 
 - Ders başlıklarını, soruları, şıkları ve cevap anahtarını eşleştirir.
+- Ders adını başlıktan düzeyiyle alır ("(333) FELSEFE - II" → "Felsefe - II"); ad her soru isteminde geçer
+  (`Ders: Felsefe - II`). Önceki sürüm Roma rakamlı düzeyi bozuyordu ("Felsefe - Iı"): öyle okunmuş kitapçıklar için
+  `meb-pdf`'i ilk okumadaki seçeneklerle, sonra `veri-hazirla`'yı yeniden çalıştır.
 - Satır sonu tirelerini birleştirir.
 - Şekil, grafik ya da tablo gerektiren soruları, yabancı dil derslerini ve düzeni bozuk çıkan soruları ayıklar.
 - Soruları eğitim / doğrulama / test (%80 / 10 / 10) diye böler. Aynı soru her çalıştırmada aynı bölüme düşer,
@@ -302,7 +315,9 @@ python -m turkce_model egit --asama meb      # aşama 2: TDK modelinden devam, s
   - Sürdürülecek kontrol noktası yoksa `--devam` hata verir, yeni bir eğitim başlatmaz. `--devam` ile `--uzerine-yaz`
     birlikte verilemez.
   - Yarıda kalan bir `--uzerine-yaz`'dan geri getirdiği eğitim bitmişse `--devam` ayarları karşılaştırmaz: `son.pt`'si
-    silinmiş olsa da "Bu eğitim zaten bitmiş" der, değerlendirme komutunu yazar ve 0 koduyla çıkar.
+    silinmiş olsa da "Bu eğitim zaten bitmiş" der, değerlendirme komutunu yazar ve 0 koduyla çıkar. Eski model de
+    silinmiş, yalnız kayıtları geri gelmişse "sürdürülecek eğitim yok" der ve 2 koduyla çıkar; yeni eğitimi
+    `--devam`'sız `egit` başlatır, `durum` da onu önerir.
 - **Ctrl+C** tamamlanan son adımı kaydedip durur (çıkış kodu 130). Değerlendirme yapmaz; sürdürme ve değerlendirme
   komutlarını yazar. Değerlendirmesi yarıda kalan adım `--devam`'da baştan değerlendirilir. Eğitim bittikten sonraki
   otomatik değerlendirme kesilirse eğitim kayıtlı kalır; `durum` onu "değerlendirilmedi" diye gösterir. Kontrol
@@ -541,15 +556,22 @@ python -m turkce_model ocr kitap.pdf           # herhangi bir PDF ya da görünt
   - Cevap anahtarında bir dersin altında aynı soru numarası iki farklı harfle okunursa (yan yana sütunlar karışmış
     olabilir) o dersin bütün soruları elenir. Ders başlığının altında hiç cevap okunamazsa da öyle. İki durumda da uyarı
     dersin adını yazar. Yanlış cevapla eğitmektense soruyu atmak daha iyidir.
-  - Sayfa başında yinelenen ders başlığı atılır; iki satıra sarılmış başlığın ikinci satırı da, dersin ilk
-    başlığındakiyle aynı okunduysa (I/İ gibi harf işareti, boşluk ve noktalama farkı sayılmaz).
+  - Sayfa başında yinelenen ders başlığı atılır. Başlık, ilk satırı dersin ilk başlığındakiyle aynıysa ya da kodu aynı
+    ve devam satırlarıyla birlikte okunan adı ona yakınsa yinelenmiş sayılır: OCR'ın harf ya da rakam farkı (adın
+    beşte birine, kısa adda ikiye kadar), başka satır bölmesi ya da tek satırda okunmuş sarılı başlık. I/İ gibi harf
+    işareti, boşluk ve noktalama farkı hiç sayılmaz. İlk satırı farklı başlıktan sonra sorular 1'den başlıyorsa başlık
+    yeni bir dersindir ("(111) TARİH - 1" ardından "(111) TARİH - 2"). Adı tamamlayan devam satırları ve başlığın
+    altında birden çok sayfada yinelenen üst bilgi ("A KİTAPÇIĞI") de atılır; sayfaya taşan seçenek, öncül, yönerge ve
+    parça atılmaz.
   - Rakamla başlayan devam satırları ("2. Dünya Savaşı'ndan…") soru başı sanılmasın diye her derste en tutarlı soru
     dizisi seçilir. Hangi satırın soru başı olduğu ayırt edilemezse komşu sorular elenir.
   - Testin sonundaki kapanış satırı ("TEST BİTTİ.", "Lütfen cevaplarınızı kontrol ediniz.", "Sınav bitti, başarılar
     dileriz." gibi) son seçeneğe eklenmez. Satırın tamamı böyle cümlelerden oluşmalıdır: "Sınav bitti, sonuçlar…" gibi
     bir satır metin olarak kalır. Büyük harfle yazılmamış kapanış cümlesi soru kökünde ve ortak metinde
-    ("2 - 3. soruları … cevaplayınız.") de metin olarak kalır; metinde boş satır varsa, seçeneğin hemen altına boş
-    satır bırakmadan yazılmışsa seçeneğin devamı sayılır.
+    ("2 - 3. soruları … cevaplayınız.") de metin olarak kalır. Seçeneğin hemen altında, sayfa başında ya da boş
+    satırsız metinde yazılmışsa ardından aynı dersin başka sorusunun gelip gelmediğine bakılır: gelmiyorsa (dersin ya
+    da kitapçığın sonu) kapanıştır, geliyorsa seçeneğin devamıdır (sayfa sonunda "… büyük", sonraki sayfanın başında
+    "başarılar").
   - Yine de OCR ile okunan soruları eğitimden önce gözle örnekle (`veri/meb/meb_pdf.jsonl`).
 - **Hız.** DeepSeek-OCR 3,3 milyar parametrelidir. Ekran kartında sayfa başına saniyeler, yalnız CPU'da dakikalar
   sürebilir; `[moduller] zaman_asimi` buna göre geniştir (900 sn). En çok 604800 sn (bir hafta) verilebilir; daha
@@ -557,9 +579,11 @@ python -m turkce_model ocr kitap.pdf           # herhangi bir PDF ya da görünt
 - **`sor --resim`** fotoğraftaki tek soruyu (kök + "A) …" seçenekleri) okur; sıfırdan eğittiğin model şıkları
   puanlar. Soru numarası "7." ya da "7)" olabilir. Numaradan önce yalnız büyük harfli sayfa başlığı ve sayfa numarası
   ya da önceki sorunun seçenekleri varsa bu satırlar okunmaz; seçeneklerden sonra başlayan soru ("8. …" ya da
-  "8) …") son seçeneğe eklenmez. Doğru cevap bilinmediği için yalnız modelin seçimini gösterir. Fotoğraf model
-  yüklenmeden önce okunur; `--adet` yok sayılır. Fotoğrafta birden çok soru varsa (iki "A)" satırı) ya da OCR çıktısı
-  `en_fazla_token`'da kesildiyse komut durur ve fotoğrafı tek soruyu içerecek biçimde kırpmanı söyler.
+  "8) …") son seçeneğe eklenmez. Önceki sorunun seçeneklerinden sonra numarasız kök ve "1) …", "2) …" öncülleri
+  gelirse soru kökle başlar; aradaki büyük harfli sayfa başlığı ve sayfa numarası okunmaz. Doğru cevap bilinmediği
+  için yalnız modelin seçimini gösterir. Fotoğraf model yüklenmeden önce okunur; `--adet` yok sayılır. Fotoğrafta
+  birden çok soru varsa (iki "A)" satırı) ya da OCR çıktısı `en_fazla_token`'da kesildiyse komut durur ve fotoğrafı
+  tek soruyu içerecek biçimde kırpmanı söyler.
 - **`ocr`** bir PDF'i ya da görüntüyü (`.png`, `.jpg`, `.jpeg`, `.webp`; `.bmp` ve `.gif` gönderilmeden önce PNG'ye
   çevrilir) metne çevirip `veri/ocr/<ad>.txt`'ye yazar (`--cikti` ile başka bir klasöre). Aynı adlı girdiler ayrı
   dosyalara yazılır (`IMG_0001.txt`, `IMG_0001-2.txt`). Çıktı `en_fazla_token`'da kesilirse komut bunu söyler;

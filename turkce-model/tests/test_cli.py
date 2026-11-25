@@ -1697,3 +1697,283 @@ def test_d6_meb_mmlu_notu_kenardaki_meb_modeli_icin_de_egit_satirini_yazar(tam_c
     (meb_klasoru / "en_iyi.pt.eski").unlink()  # model yok: eğitilecek bir şey yok, satır yazılmaz
     assert main(["meb-mmlu", *shlex.split(ek)]) == 0
     assert not any("egit --asama meb" in s for s in _not_satirlari(capsys.readouterr().out))
+
+
+# --------------------------------------------------------------------------------------------
+# Yedinci tur: başka deneylerin --devam'ı ve ayar dosyası (C1), egit --asama meb'in ipucu (C2), modeli silinmiş bitmiş
+# eğitimde elle --devam (C3)
+# --------------------------------------------------------------------------------------------
+
+
+def _baska_deneyler(cikti: str) -> list[str]:
+    """``durum`` çıktısındaki "Yarıda kalan başka deneyler" satırları (yoksa boş)."""
+    if "Yarıda kalan başka deneyler:\n" not in cikti:
+        return []
+    return cikti.split("Yarıda kalan başka deneyler:\n")[1].split("\n\n")[0].splitlines()
+
+
+def _yapistir(satir: str, capsys) -> str:
+    """Listedeki satırın komutunu aynen çalıştırır (0 ile bitmeli); çıktısını döndürür."""
+    komut = satir.split(" → ", 1)[1]
+    assert main(shlex.split(komut)) == 0, komut
+    return capsys.readouterr().out
+
+
+def test_c1_gomme_karari_dosyada_degisince_listedeki_devam_kayitli_degerle_calisir(tam_calisma, tmp_path, monkeypatch, capsys):
+    # C1: GOMME_KARARLARI'nın iş akışı: ayarlar.toml'da bir kararı değiştir, yeniden eğit. Yeni ayarlar yeni bir deney
+    # türetir; yarıda kalan eski deney "Yarıda kalan başka deneyler"de listelenir. Eskiden satırın "--devam --deney <ad>"
+    # komutu yapıştırılınca "gomme.dropout: kayıtlı 0.0, şimdi 0.1" ile 2 dönerdi; adı açıkça verilen deneyde de.
+    kok = _kopya(tam_calisma, tmp_path / "ws", monkeypatch)
+    eski = _deney(kok).name
+    durumlar = {eski: _yarida_kalan_tdk(kok), "acik": _yarida_kalan_tdk(kok, "acik")}
+    capsys.readouterr()
+    ayar = kok / "ayarlar.toml"
+    metin = ayar.read_text(encoding="utf-8")
+    assert metin.count("dropout = 0.0") == 2  # önce [gomme], sonra [model]
+    ayar.write_text(metin.replace("dropout = 0.0", "dropout = 0.1", 1), encoding="utf-8")  # yalnız gomme.dropout
+    assert _deney(kok).name != eski
+    sirali = sorted(durumlar.items())
+    satirlar = _baska_deneyler(_durum(capsys))
+    assert satirlar == [
+        f"  {ad} / tdk: adım 2/{d['toplam_adim']}; ayar dosyası kayıtlı eğitimden farklı (gomme.dropout) → egit --asama "
+        f"tdk --devam --deney {ad} --ayar gomme.dropout=0.0"
+        for ad, d in sirali
+    ]
+    for satir, (ad, d) in zip(satirlar, sirali):
+        assert f"Kaldığı yerden devam: adım 2/{d['toplam_adim']}" in _yapistir(satir, capsys)
+        sonra = json.loads((kok / "ciktilar" / "deneyler" / ad / "tdk" / "durum.json").read_text(encoding="utf-8"))
+        assert (sonra["kosu"], sonra["kilitli"]) == (d["kosu"], d["kilitli"])  # aynı eğitim, kayıtlı ayarlarla sürdü
+        assert sonra["durum"] in ("bitti", "erken_durdu")
+    assert _baska_deneyler(_durum(capsys)) == []
+
+
+@sigkill_gerekli
+def test_c1_egitim_ayari_dosyada_degisince_adi_verilen_ve_kenardaki_deneyin_devami_calisir(
+    tam_calisma, tmp_path, monkeypatch, capsys
+):
+    # C1: adı açıkça verilen deneyler ve ayar dosyasında değişen [egitim.tdk] ogrenme_orani (--devam'da kilitli). "kenarda":
+    # yarıda kalan eğitimi yeni dosyayla --uzerine-yaz ilk adımında kill -9 ile öldü; eski eğitim kenarda. "kenara-alma":
+    # --uzerine-yaz kenara alırken ilk dosyadan (durum.json) hemen sonra öldü; kayıt kenarda, kontrol noktaları yerinde.
+    # "eski-kayit": kayıtlı ayarları taşımayan önceki sürüm kaydı (karşılaştırılamaz; satır bugünkü gibi).
+    kok = _kopya(tam_calisma, tmp_path / "ws", monkeypatch)
+    adlar = ("acik", "eski-kayit", "kenara-alma", "kenarda")
+    durumlar = {ad: _yarida_kalan_tdk(kok, ad) for ad in adlar}
+    toplam = durumlar["acik"]["toplam_adim"]
+    deneyler = kok / "ciktilar" / "deneyler"
+    _durum_yaz(deneyler / "eski-kayit" / "tdk", kilitli=...)
+    capsys.readouterr()
+    (kok / "ayarlar.toml").rename(kok / "deney 2.toml")
+    ayar = kok / "deney 2.toml"
+    secenek = ["--ayarlar", "deney 2.toml"]
+    ayarlar_eki = f" --ayarlar {cli._tirnak('deney 2.toml')}"
+    # Bu çağrının --ayar'ı listeye karışmaz: satırın komutu onu taşımaz, dosya kayıtlı eğitimlerle aynı.
+    satirlar = _baska_deneyler(_durum(capsys, *secenek, "--ayar", "egitim.tdk.ogrenme_orani=0.003"))
+    assert satirlar == [
+        f"  {ad} / tdk: adım 2/{toplam} → egit --asama tdk --devam --deney {ad}{ayarlar_eki}" for ad in adlar
+    ]
+    ayar.write_text(ayar.read_text(encoding="utf-8").replace("[egitim.tdk]\n", "[egitim.tdk]\nogrenme_orani = 0.003\n"), encoding="utf-8")
+    _oldurulen_egitim(kok, "--asama", "tdk", "--uzerine-yaz", "--deney", "kenarda", *secenek)
+    assert (deneyler / "kenarda" / "tdk" / "son.pt.eski").exists() and not (deneyler / "kenarda" / "tdk" / "son.pt").exists()
+    os.replace(deneyler / "kenara-alma" / "tdk" / "durum.json", deneyler / "kenara-alma" / "tdk" / "durum.json.eski")
+    fark = "; ayar dosyası kayıtlı eğitimden farklı (egitim.tdk.ogrenme_orani) → egit --asama tdk --devam --deney"
+    geri_al = " --ayar egitim.tdk.ogrenme_orani=0.0006"
+    satirlar = _baska_deneyler(_durum(capsys, *secenek))
+    assert satirlar == [
+        f"  acik / tdk: adım 2/{toplam}{fark} acik{ayarlar_eki}{geri_al}",
+        f"  eski-kayit / tdk: adım 2/{toplam} → egit --asama tdk --devam --deney eski-kayit{ayarlar_eki}",
+        f"  kenara-alma / tdk: adım 2/{toplam}{fark} kenara-alma{ayarlar_eki}{geri_al}",
+        f"  kenarda / tdk: yarıda kalan --uzerine-yaz; eski eğitim kenarda (adım 2/{toplam}){fark} kenarda{ayarlar_eki}{geri_al}",
+    ]
+    assert f"Kaldığı yerden devam: adım 2/{toplam}" in _yapistir(satirlar[0], capsys)
+    for satir, ad in zip(satirlar[2:], adlar[2:]):  # kenardaki kayıt önce geri gelir, eğitim kayıtlı ayarlarla sürer
+        cikti = _yapistir(satir, capsys)
+        assert "kenara alınmış eski eğitim geri getirildi" in cikti and f"Kaldığı yerden devam: adım 2/{toplam}" in cikti
+        sonra = json.loads((deneyler / ad / "tdk" / "durum.json").read_text(encoding="utf-8"))
+        assert sonra["kosu"] == durumlar[ad]["kosu"] and not list((deneyler / ad).rglob("*.eski"))
+    # Bitmiş eğitim kenardaysa --devam ayarları karşılaştırmadan "zaten bitmiş" der: satır --ayar eklemez.
+    _oldurulen_egitim(kok, "--asama", "tdk", "--uzerine-yaz", "--deney", "acik", *secenek)
+    once = _ozetler(deneyler / "acik" / "tdk")
+    satirlar = _baska_deneyler(_durum(capsys, *secenek))
+    assert satirlar[0] == (
+        f"  acik / tdk: yarıda kalan --uzerine-yaz; eski eğitim kenarda (adım {toplam}/{toplam}) → egit --asama tdk "
+        f"--devam --deney acik{ayarlar_eki}"
+    )
+    assert f"Bu eğitim zaten bitmiş (adım {toplam}/{toplam})" in _yapistir(satirlar[0], capsys)
+    once = {ad.removesuffix(".eski"): ozet for ad, ozet in once.items() if ad.endswith(".eski")}
+    assert _ozetler(deneyler / "acik" / "tdk") == once  # eski eğitim bayt bayt geri geldi
+
+
+@pymupdf_gerekli
+@pytest.mark.parametrize("klasor", [None, "eski kitaplar"], ids=["varsayilan", "klasor"])
+def test_c2_ocr_ile_okunan_sorularda_egit_meb_ipucu_yapistirilinca_calisir(sunucu, tmp_path, monkeypatch, capsys, klasor):
+    # C2: meb-pdf --ocr (--klasor'la ya da onsuz) soruları okudu, veri-hazirla çalışmadı. Eskiden egit --asama meb'in ipucu
+    # kitapçıkları klasöre koyup OCR'sız meb-pdf çalıştırmayı söylerdi; yapıştırılınca OCR ile okunmuş soruları silmemek
+    # için reddedilirdi (2). Eksik olan yalnız veri-hazirla. Yeniden okuma gerekiyorsa da komut aynı kip ve klasörle yazılır.
+    monkeypatch.chdir(tmp_path)
+    modul = f'\n[moduller]\nadres = "{sunucu.adres}"\nzaman_asimi = 10\n\n[moduller.ocr]\nmodel = "deepseek-ocr"\ndpi = 72\n'
+    calisma_kur(tmp_path, ayarlar=TEST_AYARLARI + modul)
+    (tmp_path / "ayarlar.toml").rename(tmp_path / "mod dosyası.toml")
+    ek = f" --ayarlar {cli._tirnak('mod dosyası.toml')}"
+    for komut in ("tdk-derlem", "tokenizer-egit", "veri-hazirla"):
+        assert main([komut, *shlex.split(ek)]) == 0
+    _taranmis_pdf((tmp_path / klasor if klasor else tmp_path / "veri" / "meb" / "pdf") / "kitapcik.pdf", len(KITAPCIK))
+    okunan: dict[str, str] = {}  # sayfa görüntüsü → metin: ilk üç farklı sayfa kitapçığınkiler
+
+    def cevapla(govde: dict) -> str:
+        sayfa = json.dumps(govde["messages"], sort_keys=True)
+        if sayfa not in okunan:
+            okunan[sayfa] = KITAPCIK[len(okunan)] if len(okunan) < len(KITAPCIK) else ""
+        return okunan[sayfa]
+
+    sunucu.cevapla = cevapla
+    klasor_secenek = ["--klasor", klasor] if klasor else []
+    assert main(["meb-pdf", "--ocr", *klasor_secenek, *shlex.split(ek)]) == 0
+    hedef = tmp_path / "veri" / "meb" / "meb_pdf.jsonl"
+    sorular = meb.soru_oku(hedef)
+    assert any(s.bolum == "egitim" for s in sorular) and any(s.bolum != "egitim" for s in sorular)
+    egit_meb = ["egit", "--asama", "meb", "--sifirdan", *shlex.split(ek), "--cihaz", "cpu"]
+    capsys.readouterr()
+    assert main(egit_meb) == 2
+    hata = " ".join(capsys.readouterr().err.split())
+    assert hata == (
+        f"MEB soruları okunmuş ({Path('veri', 'meb', 'meb_pdf.jsonl')}) ama eğitim verisi hazırlanmamış. Önce: "
+        f"python -m turkce_model veri-hazirla{ek}"
+    )
+    assert main(shlex.split(hata.split("Önce: ")[1])[3:]) == 0  # yapıştırılan ipucu
+    assert main(egit_meb) == 0  # MEB eğitimi artık başlar
+    # Okunan soruların hiçbiri eğitim bölümünde değilse yeniden okuma gerekir: meb-pdf aynı kip ve klasörle yazılır.
+    meb.soru_yaz([s for s in sorular if s.bolum != "egitim"], hedef)
+    assert main(["veri-hazirla", *shlex.split(ek)]) == 0
+    capsys.readouterr()
+    egit_meb.append("--uzerine-yaz")
+    assert main(egit_meb) == 2
+    hata = " ".join(capsys.readouterr().err.split())
+    okuma = "meb-pdf --ocr" + (f" --klasor {cli._tirnak(klasor)}" if klasor else "")
+    yer = klasor or str(Path("veri", "meb", "pdf"))
+    assert f"Önce MEB kitapçıklarını {yer} klasörüne koyup {okuma}{ek}, sonra veri-hazirla{ek} çalıştır" in hata
+    for komut in hata.split("klasörüne koyup ")[1].split(" çalıştır")[0].split(", sonra "):
+        assert main(shlex.split(komut)) == 0, komut  # OCR'lı sorular aynı kiple yeniden okunur (reddedilmez)
+    assert sorted(s.soru for s in meb.soru_oku(hedef)) == sorted(s.soru for s in sorular)
+    assert main(egit_meb) == 0
+
+
+# Gerçek bir eğitim süreci; yeni eğitim ilk adımını bitirip kenara alınan eski eğitimi silerken, N. silmeden hemen sonra
+# kendini SIGKILL ile öldürür (silme sırası: son.pt.eski, en_iyi.pt.eski, gunluk.jsonl.eski, durum.json.eski).
+_N_SILMEDE_OLDUREN = (
+    "import os, signal, sys\n"
+    "from pathlib import Path\n"
+    "from turkce_model import cli\n"
+    "asil, sayac = Path.unlink, [0]\n"
+    "def sil(self, *a, **k):\n"
+    "    asil(self, *a, **k)\n"
+    "    if self.name.endswith('.eski'):\n"
+    "        sayac[0] += 1\n"
+    "        if sayac[0] == N:\n"
+    "            os.kill(os.getpid(), signal.SIGKILL)\n"
+    "Path.unlink = sil\n"
+    "sys.exit(cli.main(sys.argv[1:]))\n"
+)
+
+
+@sigkill_gerekli
+@pytest.mark.parametrize("n", [2, 3], ids=["sil2", "sil3"])
+def test_c3_model_silinmisken_elle_devam_zaten_bitmis_demez(tam_calisma, tmp_path, monkeypatch, capsys, n):
+    # C3: --uzerine-yaz kenardakileri silerken kill -9 ile öldü; eski model de silinmiş, kenarda yalnız kaydı kalmış.
+    # Elle yazılan "egit --devam" kaydı geri getirir; eskiden sonra "Bu eğitim zaten bitmiş" der, 0 ile biter ve modeli
+    # olmayan bir degerlendir yazardı (yapıştırılınca "Değerlendirilecek model yok", 2).
+    kok = _kopya(tam_calisma, tmp_path / "ws", monkeypatch)
+    tdk_klasoru = _deney(kok) / "tdk"
+    _oldurulen_egitim(kok, "--asama", "tdk", "--uzerine-yaz", betik=_N_SILMEDE_OLDUREN.replace("N:", f"{n}:"))
+    dosyalar = {y.name for y in tdk_klasoru.iterdir()}
+    assert "durum.json.eski" in dosyalar and not {"son.pt", "en_iyi.pt", "son.pt.eski", "en_iyi.pt.eski"} & dosyalar
+    capsys.readouterr()
+    assert main(["egit", "--asama", "tdk", "--devam", "--cihaz", "cpu"]) == 2
+    cikis = capsys.readouterr()
+    assert "kenara alınmış eski eğitimden yalnız kayıt dosyaları geri getirildi" in cikis.out
+    assert f"--devam verildi ama sürdürülecek eğitim yok ({tdk_klasoru / 'son.pt'})" in cikis.err
+    assert "zaten bitmiş" not in cikis.out + cikis.err and "degerlendir" not in cikis.out + cikis.err
+    # durum düz egit önerir; yapıştırılınca yeni eğitim başlar, sonra değerlendirme çalışır.
+    siradaki = "python -m turkce_model egit --asama tdk"
+    assert f"Sıradaki adım: {siradaki}\n" in _durum(capsys)
+    assert main([*shlex.split(siradaki)[3:], "--cihaz", "cpu"]) == 0
+    assert main(["degerlendir", "--asama", "tdk", "--cihaz", "cpu"]) == 0
+
+
+def test_c5_adi_verilen_deneyde_mimari_degisince_meb_egitimi_sonraki_adimi_yazar(tam_calisma, tmp_path, monkeypatch, capsys):
+    # C5: adı açıkça verilen deneyin TDK aşaması bitmiş; ayar dosyasında mimari (model.katman) değişti. durum
+    # "egit --asama meb --deney <ad>" önerir; o "TDK modelinin mimarisi şimdiki ayarlardan farklı" ile 2 döner. Eskiden
+    # ileti sonraki adımı yazmazdı; artık TDK'yi yeniden eğiten komutu ve öbür seçenekleri yazar.
+    kok = _kopya(tam_calisma, tmp_path / "ws", monkeypatch)
+    assert main(["egit", "--asama", "tdk", "--deney", "diger", "--cihaz", "cpu"]) == 0
+    ayar = kok / "ayarlar.toml"
+    ayar.write_text(ayar.read_text(encoding="utf-8").replace("katman = 1\n", "katman = 2\n"), encoding="utf-8")
+    siradaki = "python -m turkce_model egit --asama meb --deney diger"
+    assert f"Sıradaki adım: {siradaki}\n" in _durum(capsys, "--deney", "diger")
+    assert main([*shlex.split(siradaki)[3:], "--cihaz", "cpu"]) == 2
+    hata = capsys.readouterr().err
+    yeniden = "python -m turkce_model egit --asama tdk --uzerine-yaz --deney diger --cihaz cpu"
+    assert "TDK modelinin mimarisi şimdiki ayarlardan farklı:\n  • model.katman: kayıtlı 1, şimdi 2\n" in hata
+    assert f"TDK modelini şimdiki ayarlarla yeniden eğitmek için (eski TDK modeli silinir): {yeniden}\n" in hata
+    assert "ayarı kayıtlı değerine geri al; yeni mimariyi ayrı bir deneyde denemek için --deney <ad> ver." in hata
+    assert main(shlex.split(yeniden)[3:]) == 0  # yazılan komut aynen: TDK yeni mimariyle eğitilir
+    assert main([*shlex.split(siradaki)[3:], "--cihaz", "cpu"]) == 0  # MEB aşaması artık başlar
+
+
+@pymupdf_gerekli
+def test_c4_goreli_pdf_klasoru_baska_klasorden_calisan_komutlarda_da_bulunur(sunucu, tmp_path, monkeypatch, capsys):
+    # C4: "meb-pdf --klasor kitaplar" ayar dosyasının klasöründe çalıştı. Klasör yazıldığı gibi saklanır, sonraki komutlar
+    # onu kendi çalışma klasörlerine göre çözerdi: üst klasörden "--ayarlar k/mod.toml" ile çalışan durum oraya konan yeni
+    # kitapçığı görmez, meb-mmlu'nun notundaki "meb-pdf --ocr --klasor kitaplar" yapıştırılınca "kitaplar içinde PDF yok"
+    # ile 2 dönerdi. Artık klasör ayar dosyasının klasörüne göre saklanır; komutlar onu çalıştıkları klasöre göre yazar.
+    kok = tmp_path / "k"
+    kok.mkdir()
+    modul = f'\n[moduller]\nadres = "{sunucu.adres}"\nzaman_asimi = 10\n\n[moduller.ocr]\nmodel = "deepseek-ocr"\ndpi = 72\n'
+    calisma_kur(kok, ayarlar=TEST_AYARLARI + modul)
+    (kok / "ayarlar.toml").rename(kok / "mod.toml")
+    _taranmis_pdf(kok / "kitaplar" / "kitapcik.pdf", len(KITAPCIK))
+    okunan: dict[str, str] = {}  # sayfa görüntüsü → metin: ilk üç farklı sayfa kitapçığınkiler, sonrakiler boş
+
+    def cevapla(govde: dict) -> str:
+        sayfa = json.dumps(govde["messages"], sort_keys=True)
+        if sayfa not in okunan:
+            okunan[sayfa] = KITAPCIK[len(okunan)] if len(okunan) < len(KITAPCIK) else ""
+        return okunan[sayfa]
+
+    sunucu.cevapla = cevapla
+    monkeypatch.chdir(kok)
+    assert main(["tdk-derlem", "--ayarlar", "mod.toml"]) == 0
+    assert main(["meb-pdf", "--ocr", "--klasor", "kitaplar", "--ayarlar", "mod.toml"]) == 0
+    hedef = kok / "veri" / "meb" / "meb_pdf.jsonl"
+    rapor = hedef.with_suffix(".rapor.json")
+    assert json.loads(rapor.read_text(encoding="utf-8"))["klasor"] == "kitaplar"  # ayar dosyasının klasörüne göre
+    monkeypatch.chdir(tmp_path)  # sonraki komutlar üst klasörden
+    ayar = str(Path("k", "mod.toml"))
+    ek = f" --ayarlar {cli._tirnak(ayar)}"
+    okuma = f"meb-pdf --ocr --klasor {cli._tirnak(str(Path('k', 'kitaplar')))}{ek}"
+    assert _isaret(_durum(capsys, "--ayarlar", ayar), "MEB soruları") == "[x]"
+    _kaydir(_taranmis_pdf(kok / "kitaplar" / "yeni.pdf", 1), 10)  # kayıtlı klasöre yeni kitapçık
+    cikti = _durum(capsys, "--ayarlar", ayar)
+    assert f"girdileri sonradan değişti → yeniden: {okuma}" in _satir(cikti, "MEB soruları")
+    assert f"Sıradaki adım: python -m turkce_model {okuma}\n" in cikti
+    assert main(shlex.split(okuma)) == 0  # üst klasörden yapıştırılan komut aynı kitapçıkları okur
+    assert len(meb.soru_oku(hedef)) == 3 and json.loads(rapor.read_text(encoding="utf-8"))["klasor"] == "kitaplar"
+    monkeypatch.setattr(meb, "mmlu_indir", lambda yol: [])  # ağ yok: indirme hiç denenmez
+    capsys.readouterr()
+    assert main(["meb-mmlu", "--ayarlar", ayar]) == 0
+    satir = _not_satirlari(capsys.readouterr().out)[1]
+    assert satir == f"  python -m turkce_model {okuma}"
+    assert main(shlex.split(satir)[3:]) == 0
+    # Ayar dosyasının klasörü dışındaki klasör tam yoluyla saklanır ve yazılır.
+    dis = tmp_path / "dis kitaplar"
+    shutil.copytree(kok / "kitaplar", dis)
+    assert main(["meb-pdf", "--ocr", "--klasor", "dis kitaplar", "--ayarlar", ayar]) == 0
+    assert json.loads(rapor.read_text(encoding="utf-8"))["klasor"] == str(dis.resolve())
+    monkeypatch.chdir(kok)
+    _kaydir(_taranmis_pdf(dis / "ucuncu.pdf", 1), 10)
+    cikti = _durum(capsys, "--ayarlar", "mod.toml")
+    assert f"Sıradaki adım: python -m turkce_model meb-pdf --ocr --klasor {cli._tirnak(str(dis.resolve()))} --ayarlar mod.toml\n" in cikti
+    # Eski rapor: göreli klasör yazıldığı gibi saklanmıştı; ayar dosyasının klasörüne göre okunur.
+    rapor.write_text(json.dumps({"ocr": "gerekirse", "klasor": "kitaplar"}), encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    _kaydir(_taranmis_pdf(kok / "kitaplar" / "dorduncu.pdf", 1), 20)
+    assert f"Sıradaki adım: python -m turkce_model {okuma}\n" in _durum(capsys, "--ayarlar", ayar)

@@ -654,6 +654,33 @@ def test_d1b_yalniz_kaydi_geri_gelen_egitimin_notu_modeli_geri_getirdi_demez(cal
     assert not list(klasor.glob("*.eski")) and (klasor / "en_iyi.pt").exists()
 
 
+@pytest.mark.parametrize("kalan", [3, 2, 1], ids=["sil1", "sil2", "sil3"])
+def test_c3_modeli_silinmis_bitmis_egitimde_devam_zaten_bitmis_demez(calisma, kalan):
+    # C3: --uzerine-yaz kenardakileri silerken öldürülmüş. sil2/sil3: model de silinmiş, kenarda yalnız kaydı kalmış.
+    # Elle yazılan --devam kaydı geri getirip eskiden "Bu eğitim zaten bitmiş" der, 0 ile biter ve modeli olmayan bir
+    # degerlendir yazardı. Artık "sürdürülecek eğitim yok" ile reddeder (durum'un önerdiği düz egit ile aynı yön).
+    # sil1 (karşı durum): model (en_iyi.pt.eski) kalmış; geri gelir ve "zaten bitmiş" doğrudur.
+    a = _ayarlar(calisma, f"c3_{kalan}", "egitim.tdk.en_fazla_adim=2")
+    egit(a, "tdk", cihaz="cpu", yaz=_sus)
+    klasor = a.deney_klasoru / "tdk"
+    _olmus_uzerine_yaz(klasor)
+    for ad in ("son.pt", "en_iyi.pt", "gunluk.jsonl", "durum.json")[: 4 - kalan]:  # silme sırası: _eskileri_sil
+        (klasor / f"{ad}.eski").unlink()
+    satirlar: list[str] = []
+    if kalan == 3:
+        assert egit(a, "tdk", devam=True, cihaz="cpu", yaz=satirlar.append) == {"zaten_bitti": True, "adim": 2}
+        assert any(s.startswith("Bu eğitim zaten bitmiş (adım 2/2)") for s in satirlar) and (klasor / "en_iyi.pt").exists()
+        return
+    with pytest.raises(AyarHatasi) as hata:
+        egit(a, "tdk", devam=True, cihaz="cpu", yaz=satirlar.append)
+    assert str(hata.value).startswith(f"--devam verildi ama sürdürülecek eğitim yok ({klasor / 'son.pt'}). Yeni bir eğitim")
+    assert any("eski model yok" in s for s in satirlar)
+    assert not any("zaten bitmiş" in s or "degerlendir" in s for s in satirlar)
+    assert not list(klasor.glob("*.pt*"))  # hiçbir model yazılmadı
+    egit(a, "tdk", cihaz="cpu", yaz=_sus)  # düz egit (durum'un önerisi) yeni eğitimi başlatır
+    assert (klasor / "en_iyi.pt").exists() and egitim_durumu_oku(klasor)["kosu"] != "yeni0001"
+
+
 def test_veri_iletileri_veri_komut_ekini_tasir(calisma, tmp_path):
     kok = _kopya(calisma, tmp_path / "ws")
     (kok / "ciktilar" / "veri" / "meta.json").unlink()
@@ -879,6 +906,7 @@ def test_baslik_asamanin_kendi_verisini_gosterir_not_boyut_onermez(calisma):
 def test_meb_egitim_sorulari_yoksa_mesaj_kitapciklari_ister(calisma, tmp_path):
     kok = _kopya(calisma, tmp_path / "ws")
     (kok / "ciktilar" / "veri" / "meb_egitim.npz").unlink()
+    (kok / "veri" / "meb" / "meb_pdf.jsonl").unlink()  # hiç soru okunmamış (okunmuşsa ipucu veri-hazirla der: C2)
     with pytest.raises(AyarHatasi, match="MEB eğitim soruları hazırlanmamış.*meb-pdf, sonra veri-hazirla") as hata:
         egit(_ayarlar(kok, "sorusuz"), "meb", sifirdan=True, cihaz="cpu", yaz=_sus)
     assert "TurkishMMLU yalnız değerlendirme içindir" in str(hata.value) and "meb-mmlu" not in str(hata.value)
@@ -889,6 +917,7 @@ def test_meb_sorulari_yoksa_ipucu_gercek_pdf_klasorunu_gosterir(calisma, tmp_pat
     # klasörünün altındaysa göreli, değilse tam yoluyla.
     kok = _kopya(calisma, tmp_path / "ws")
     (kok / "ciktilar" / "veri" / "meb_egitim.npz").unlink()
+    (kok / "veri" / "meb" / "meb_pdf.jsonl").unlink()  # hiç soru okunmamış
     (kok / "veri").rename(kok / "v2")
     ayar = kok / "ayarlar.toml"
     ayar.write_text(ayar.read_text(encoding="utf-8") + '\n[yollar]\nveri = "v2"\n', encoding="utf-8")
@@ -902,20 +931,58 @@ def test_meb_sorulari_yoksa_ipucu_gercek_pdf_klasorunu_gosterir(calisma, tmp_pat
         assert f"Önce MEB kitapçıklarını {klasor} klasörüne koyup meb-pdf, sonra veri-hazirla" in str(hata.value)
 
 
-def test_d3_meb_sorulari_klasor_ile_okunduysa_ipucu_o_klasoru_okutur(calisma, tmp_path):
+def test_d3_meb_sorulari_klasor_ile_okunduysa_ipucu_o_klasoru_okutur(calisma, tmp_path, monkeypatch):
     # D3: meb_pdf.jsonl "meb-pdf --klasor <klasör>" ile okunmuşsa (raporunda) ipucu o klasörü ve --klasor'u yazar; eskiden
     # varsayılan klasörü okuyan "meb-pdf" yazardı (oradaki başka kitapçıklar --klasor'dan okunan soruların yerine geçerdi).
     kok = _kopya(calisma, tmp_path / "ws")
+    monkeypatch.chdir(kok)  # raporun göreli klasörü ayar dosyasının klasörüne göredir; ileti bu klasöre göre yazar (C4)
     (kok / "ciktilar" / "veri" / "meb_egitim.npz").unlink()
-    (kok / "veri" / "meb" / "meb_pdf.rapor.json").write_text(json.dumps({"ocr": None, "klasor": "eski kitaplar"}), encoding="utf-8")
-    with pytest.raises(AyarHatasi) as hata:
-        egit(_ayarlar(kok, "klasorlu"), "meb", sifirdan=True, cihaz="cpu", yaz=_sus, veri_komut_eki=" --ayarlar x.toml")
+    # Okunan soruların hiçbiri eğitim bölümünde değil: yeniden okuma gerekir (eğitim sorusu varsa ipucu veri-hazirla der).
+    meb_pdf = kok / "veri" / "meb" / "meb_pdf.jsonl"
+    meb.soru_yaz([s for s in meb.soru_oku(meb_pdf) if s.bolum != "egitim"], meb_pdf)
     from turkce_model.cli import _tirnak
 
-    assert (
-        f"Önce MEB kitapçıklarını eski kitaplar klasörüne koyup meb-pdf --klasor {_tirnak('eski kitaplar')} --ayarlar "
-        "x.toml, sonra veri-hazirla --ayarlar x.toml"
-    ) in str(hata.value)
+    # C2: sorular OCR ile okunduysa yeniden okuma da aynı kiple yazılır (OCR'sız meb-pdf onları silmemek için reddedilirdi).
+    for kip, okuma in ((None, "meb-pdf"), ("gerekirse", "meb-pdf --ocr"), ("hepsi", "meb-pdf --ocr hepsi")):
+        rapor = {"ocr": kip, "klasor": "eski kitaplar"}
+        (kok / "veri" / "meb" / "meb_pdf.rapor.json").write_text(json.dumps(rapor), encoding="utf-8")
+        with pytest.raises(AyarHatasi) as hata:
+            egit(_ayarlar(kok, "klasorlu"), "meb", sifirdan=True, cihaz="cpu", yaz=_sus, veri_komut_eki=" --ayarlar x.toml")
+        assert (
+            f"Önce MEB kitapçıklarını eski kitaplar klasörüne koyup {okuma} --klasor {_tirnak('eski kitaplar')} --ayarlar "
+            "x.toml, sonra veri-hazirla --ayarlar x.toml"
+        ) in str(hata.value), kip
+    # C4: başka bir klasörden çalışan egit klasörü kendi çalışma klasörüne göre yazar (yapıştırılınca aynı klasörü okur).
+    monkeypatch.chdir(tmp_path)
+    with pytest.raises(AyarHatasi) as hata:
+        egit(_ayarlar(kok, "klasorlu"), "meb", sifirdan=True, cihaz="cpu", yaz=_sus)
+    klasor = str(Path("ws", "eski kitaplar"))
+    assert f"Önce MEB kitapçıklarını {klasor} klasörüne koyup meb-pdf --ocr hepsi --klasor {_tirnak(klasor)}, sonra" in str(hata.value)
+
+
+def test_c2_meb_sorulari_okunmus_ama_hazirlanmamissa_ipucu_yalniz_veri_hazirla_der(calisma, tmp_path, monkeypatch):
+    # C2: meb-pdf (burada --ocr ile, --klasor'la) eğitim sorularını okumuş, veri-hazirla çalışmamış. Eskiden ipucu
+    # kitapçıkları klasöre koyup OCR'sız meb-pdf çalıştırmayı söylerdi: yapıştırılınca OCR ile okunmuş soruları silmemek
+    # için reddedilirdi (2). Eksik olan yalnız veri-hazirla.
+    kok = _kopya(calisma, tmp_path / "ws")
+    monkeypatch.chdir(kok)
+    (kok / "ciktilar" / "veri" / "meb_egitim.npz").unlink()
+    rapor = kok / "veri" / "meb" / "meb_pdf.rapor.json"
+    rapor.write_text(json.dumps({"ocr": "gerekirse", "klasor": "eski kitaplar"}), encoding="utf-8")
+    a = _ayarlar(kok, "okunmus")
+    with pytest.raises(AyarHatasi) as hata:
+        egit(a, "meb", sifirdan=True, cihaz="cpu", yaz=_sus, veri_komut_eki=" --ayarlar 'x y.toml'")
+    assert str(hata.value) == (
+        f"MEB soruları okunmuş ({Path('veri', 'meb', 'meb_pdf.jsonl')}) ama eğitim verisi hazırlanmamış. Önce: "
+        "python -m turkce_model veri-hazirla --ayarlar 'x y.toml'"
+    )
+    # Okunamayan (bozuk) soru dosyası: yeniden okuma önerilir, aynı kip ve klasörle.
+    (kok / "veri" / "meb" / "meb_pdf.jsonl").write_text("{bozuk\n", encoding="utf-8")
+    from turkce_model.cli import _tirnak
+
+    with pytest.raises(AyarHatasi) as hata:
+        egit(a, "meb", sifirdan=True, cihaz="cpu", yaz=_sus)
+    assert f"koyup meb-pdf --ocr --klasor {_tirnak('eski kitaplar')}, sonra veri-hazirla çalıştır" in str(hata.value)
 
 
 def test_egitim_tohumunun_en_buyugu_de_calisir(calisma):

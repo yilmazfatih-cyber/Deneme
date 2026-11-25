@@ -93,6 +93,34 @@ def _devam_anahtari(satir: str) -> str:
     return re.sub(r"\W+", "", kucuk(satir).translate(meb._ASCII))
 
 
+def _uzaklik(a: str, b: str) -> int:
+    """İki dizginin harf düzeyinde düzeltme uzaklığı (Levenshtein): eklenen, silinen ya da değişen harf sayısı."""
+    onceki = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        simdiki = [i]
+        for j, cb in enumerate(b, 1):
+            simdiki.append(min(onceki[j] + 1, simdiki[j - 1] + 1, onceki[j - 1] + (ca != cb)))
+        onceki = simdiki
+    return onceki[-1]
+
+
+def _baslik_onegi(ad: str, devami: list[str], kayitli: str) -> int | None:
+    """Yinelenen ders başlığının devam satırlarından kaçı başlığın kendisidir? İlk satırdaki adla birleşince dersin ilk
+    başlığından kaydedilen ada (``_devam_anahtari``'yla) en yakın okunan önek seçilir; eşit uzaklıkta uzunu ("- 3"
+    yerine okunan "- 8" de başlığındır). Uzaklık kayıtlı adın beşte birini (en az 2 harf) aşarsa ``None``: başlık
+    o derse ait değil. OCR'ın harf farkı ("HAYAT", "- 7"), satır bölme farkı (iki ya da üç satır) ve tek satırda
+    okunmuş sarılı başlık böylece aynı ders sayılır; sayfaya taşan içerik başlığa katılmaz: uzaklığı artırır."""
+    en_iyi: tuple[int, int] | None = None
+    okunan = ad
+    for k in range(len(devami) + 1):
+        if k:
+            okunan += _devam_anahtari(devami[k - 1])
+        d = _uzaklik(okunan, kayitli)
+        if d <= max(2, len(kayitli) // 5) and (en_iyi is None or d <= en_iyi[0]):
+            en_iyi = (d, k)
+    return None if en_iyi is None else en_iyi[1]
+
+
 def _kenar_adayi_mi(s: str) -> bool:
     """Sayfa başlığı olabilir mi? Ders başlığı, soru başı, seçenek, cevap çifti, "CEVAP ANAHTARI", soru cümlesi
     ("…?"), modelin işaretleri, birden çok soruya ait yönerge ("5 - 6. SORULARI … CEVAPLAYINIZ.") ve tek başına
@@ -281,10 +309,34 @@ def _sahte_soru_baslarini_birlestir(satirlar: list) -> list:
     return sonuc
 
 
+def _sonra_soru_var_mi(ham_sayfalar: list[list[str]], no: int, i: int, kod: str | None, kenarlar: set[str]) -> bool:
+    """``no``. sayfanın ``i``. satırından sonra aynı dersin bir sorusu geliyor mu? Başka bir dersin başlığına ya da
+    cevap anahtarına kadar bakılır; sayfa kenarları ve dersin sayfa başında yinelenen başlığı atlanır. "1." ile
+    başlayan soru yeni bir dersindir (kodu aynı olsa da)."""
+    for p in range(no - 1, len(ham_sayfalar)):
+        for t in ham_sayfalar[p][i + 1 if p == no - 1 else 0 :]:
+            t = t.strip()
+            if not t or _kenar_anahtari(t) in kenarlar:
+                continue
+            baslik = meb._DERS_BASLIGI.match(t)
+            if (baslik and baslik.group(1) != kod) or _anahtar_basligi_mi(t):
+                return False
+            m = meb._SORU_BASI.match(t)
+            if m and _icerik_satiri_mi(t):
+                return int(m.group(1)) != 1
+    return False
+
+
 def metinden_ayrik(sayfalar: Iterable[str]) -> tuple[list, list, meb._Belge, dict]:
     """Sayfa metinlerinden, ``meb._ayristir``'ın döndürdüğü dörtlüyü kurar: (bölümler, anahtarlar, belge, bilgi)."""
     ham_sayfalar = [[normallestir(s) for s in metin.split("\n")] for metin in sayfalar]
     kenarlar = _tekrarlayan_kenarlar(ham_sayfalar)
+    devamlar = [_baslik_devamlari(satirlar) for satirlar in ham_sayfalar]
+    # Ders başlığının altında (devam satırı yerinde) birden çok sayfada okunan satır sayfa üst bilgisidir ("A KİTAPÇIĞI");
+    # sayfaya taşan içerik sayfadan sayfaya değişir, yinelenmez.
+    basliga_bitisik = Counter(
+        k for satirlar, devam in zip(ham_sayfalar, devamlar) for k in {_kenar_anahtari(satirlar[j]) for j in devam}
+    )
     bosluklu = any(
         b - a > 1 for satirlar in ham_sayfalar for a, b in pairwise([i for i, s in enumerate(satirlar) if s.strip()])
     )
@@ -299,8 +351,9 @@ def metinden_ayrik(sayfalar: Iterable[str]) -> tuple[list, list, meb._Belge, dic
     anahtarda = False
     tasinan_gorsel = False  # önceki sayfa şekil işaretiyle bitti: bu sayfanın ilk satırı da şekle değer
     son_satir: meb._Satir | None = None  # önceki sayfalardaki son satır
-    son_baslik: str | None = None  # soru bölümünde görülen son ders başlığı
-    son_baslik_devami: list[str] = []  # o başlığın dersin başında okunan devam satırları (_devam_anahtari)
+    son_baslik: str | None = None  # soru bölümünde görülen son ders başlığının ilk satırı
+    son_kod: str | None = None  # o dersin kodu
+    son_ad = ""  # o dersin ilk başlığındaki adı, devam satırlarıyla (_devam_anahtari)
     secenek_goruldu = False  # son ders başlığından beri seçenek satırı okundu mu
     secenekli_soru = False  # son soru başından beri seçenek satırı okundu mu (kök bitti)
     ortak_metinde = False  # birden çok soruya ait yönergeden sonra, ilk soru başından önce
@@ -315,7 +368,7 @@ def metinden_ayrik(sayfalar: Iterable[str]) -> tuple[list, list, meb._Belge, dic
         sayfa_satirlari: list[meb._Satir] = []
         bekleyen_gorsel: float | None = None  # işaretten önceki satırın üst kenarı
         gorseller: list[tuple[float, float]] = []
-        devam = _baslik_devamlari(satirlar)
+        devam = devamlar[no - 1]
         atlanacak: set[int] = set()  # atılan yinelenen ders başlığının devam satırları
         for i, metin in enumerate(satirlar):
             metin = metin.strip()
@@ -341,35 +394,50 @@ def metinden_ayrik(sayfalar: Iterable[str]) -> tuple[list, list, meb._Belge, dic
             ):
                 anahtarda = True
                 continue
-            if not anahtarda and meb._DERS_BASLIGI.match(metin):
+            if not anahtarda and (baslik := meb._DERS_BASLIGI.match(metin)):
                 # Sayfa başında yinelenen ders başlığı (üst bilgi) yeni bir ders değildir: numaralar sürüyorsa ya da
-                # o dersin seçenekleri okunmaya başlandıysa (son sorunun devamı, ardından yeni ders) atılır; sarılmış
-                # başlığın devam satırı ("PEYGAMBERİMİZİN HAYATI - 2") da, ama yalnız dersin başındaki başlıkta da
-                # okunduysa: düzeysiz başlıktan ("(111) TARİH") sonra sayfaya taşan büyük harfli seçenek ("C) 32"),
-                # öncül ("II. AYDIN") ya da yönerge de başlığa katılır, atılsaydı soru eksik tutulurdu. Kapaktaki ders
+                # o dersin seçenekleri okunmaya başlandıysa (son sorunun devamı, ardından yeni ders) atılır. Aynı ders:
+                # ilk satırı dersin ilk başlığındakiyle aynı, ya da kodu aynı, adı devam satırlarıyla birlikte ona
+                # yakın (_baslik_onegi: OCR'ın harf farkı, başka satır bölmesi, tek satırda okunmuş sarılı başlık) ve
+                # numaralar yeniden başlamıyor. Başlığın devam satırları da atılır: adı tamamlayan önek ve ardından
+                # başlığın altında birden çok sayfada okunan üst bilgi ("A KİTAPÇIĞI"). Düzeysiz başlıktan ("(111)
+                # TARİH") sonra sayfaya taşan büyük harfli içerik kalır: atılsaydı soru eksik tutulurdu. Kapaktaki ders
                 # dizininden sonra gelen gerçek başlık (sıradaki soru "1.") kalır.
                 anahtar = re.sub(r"\s+", " ", buyuk(metin))
                 devami = [j for j, b in devam.items() if b == i]
-                if anahtar == son_baslik and (
-                    secenek_goruldu or _siradaki_soru_no(satirlar[i + 1 :]) not in (None, 1)
+                ad = _devam_anahtari(baslik.group(2))
+                onek = _baslik_onegi(ad, [satirlar[j] for j in devami], son_ad) if baslik.group(1) == son_kod else None
+                sonraki = _siradaki_soru_no(satirlar[i + 1 :])
+                if (anahtar == son_baslik and (secenek_goruldu or sonraki not in (None, 1))) or (
+                    onek is not None and sonraki != 1 and (secenek_goruldu or sonraki is not None)
                 ):
-                    for j, beklenen in zip(devami, son_baslik_devami):
-                        if _devam_anahtari(satirlar[j]) != beklenen:
+                    atla = devami[: onek or 0]
+                    for j in devami[onek or 0 :]:  # başlığın altındaki üst bilgi; içerik başlayınca durulur
+                        t = satirlar[j].strip()
+                        # Ders adına benzeyen içerik ("TARİH KONULARI") başlığın yinelenen devamıyla sayılıp atılmaz.
+                        ust_bilgi = basliga_bitisik[_kenar_anahtari(t)] >= 2 and _devam_anahtari(t) not in son_ad
+                        if not (ust_bilgi and _kenar_adayi_mi(t)):
                             break
-                        atlanacak.add(j)
+                        atla.append(j)
+                    atlanacak.update(atla)
                     continue
-                son_baslik, secenek_goruldu = anahtar, False
-                son_baslik_devami = [_devam_anahtari(satirlar[j]) for j in devami]
+                son_baslik, son_kod, secenek_goruldu = anahtar, baslik.group(1), False
+                son_ad = ad + "".join(_devam_anahtari(satirlar[j]) for j in devami)
             if not anahtarda:
-                # Paragraf başı: boş satırdan sonra, sayfanın ilk satırı ya da boş satırsız metinde her satır.
-                paragraf_basi = bosluk or not sayfa_satirlari or not bosluklu
                 if meb._GRUP_YONERGESI.match(kucuk(metin)):
                     ortak_metinde, secenekli_soru = True, False
                 elif (
                     _SINAV_SONU_OCR.match(kucuk(metin))
                     and not ortak_metinde  # parçadaki "Sınav bitti." değil
                     and secenekli_soru  # kökteki ("… şöyle dedi:" + "Başarılar dileriz.") değil
-                    and (paragraf_basi or meb._buyuk_harfli(metin))  # seçeneğin "başarılar" diye süren satırı değil
+                    # Seçeneğin "başarılar" diye süren satırı değil: büyük harfli, sayfa içinde boş satırdan sonra ya da
+                    # ardından dersin başka sorusu gelmiyor (ders ya da kitapçık sonu, son seçeneğin hemen altında da).
+                    # Sayfa başındaki ve boş satırsız metindeki satır da ileriye bakılarak ayrılır.
+                    and (
+                        meb._buyuk_harfli(metin)
+                        or (bosluk and bool(sayfa_satirlari))
+                        or not _sonra_soru_var_mi(ham_sayfalar, no, i, son_kod, kenarlar)
+                    )
                 ):
                     metin = "TEST BİTTİ."  # meb._sorulari_topla soruyu burada kapatır
                 elif meb._SORU_BASI.match(metin) or meb._DERS_BASLIGI.match(metin):
@@ -570,11 +638,19 @@ def _oncul_listesi_mi(satirlar: list[str], i: int, no: int) -> bool:
     return False
 
 
+def _kok_satiri_mi(t: str) -> bool:
+    """Fotoğrafta soru numarasından önceki satır kökün parçası mı? Boş satır, şekil işareti, sayfa başlığı (soru
+    cümlesi olmayan büyük harfli satır) ve sayfa numarası değildir."""
+    baslik = meb._buyuk_harfli(t) and not t.endswith("?")
+    return bool(t) and t != GORSEL_ISARETI and not (baslik or _YALNIZ_RAKAM.match(t))
+
+
 def _ilk_soru_basi(satirlar: list[str]) -> int:
     """Fotoğrafta sorunun başladığı satırın sırası. İlk soru başından ("5. …" ya da "5) …") önce yalnız sayfa başlığı
     (büyük harfli satır, sayfa numarası) ya da önceki sorunun seçenekleri varsa o satırlar atlanır; önceki satır kökün
     başıysa ("…hangisi" + "2. Dünya Savaşı'ndan…") hiçbir satır atlanmaz (0). Önceki sorunun seçeneklerinden sonra
-    numarasız kök ve "1) …", "2) …" öncülleri geliyorsa soru seçeneklerden hemen sonra başlar."""
+    numarasız kök ve "1) …", "2) …" öncülleri geliyorsa soru, aradaki sayfa başlığı ve numarası atlanarak kökün ilk
+    satırında başlar."""
     onceki: list[str] = []
     son_kalinti = -1  # önceki sorunun son seçenek satırı
     for i, satir in enumerate(satirlar):
@@ -586,7 +662,10 @@ def _ilk_soru_basi(satirlar: list[str]) -> int:
             kalinti = any(meb._SECENEK.match(s) for s in onceki)
             baslik = all((meb._buyuk_harfli(s) and not s.endswith("?")) or _YALNIZ_RAKAM.match(s) for s in onceki)
             if kalinti and _oncul_listesi_mi(satirlar, i, int(m.group(1))):
-                return son_kalinti + 1
+                # Seçeneklerle numara arasındaki sayfa başlığı, sayfa numarası ve şekil işareti atlanır; arada kök
+                # yoksa numara sorunun numarasıdır ("18. Aşağıdakilerden hangisi" + "19. yüzyılda …"), atılır.
+                kok = [j for j in range(son_kalinti + 1, i) if _kok_satiri_mi(satirlar[j].strip())]
+                return kok[0] if kok else i
             return i if kalinti or baslik else 0
         if meb._SECENEK.match(t):
             son_kalinti = i

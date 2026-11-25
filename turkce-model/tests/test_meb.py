@@ -865,6 +865,87 @@ def test_kisa_belgede_icerik_satirlari_sayfa_basligi_sanilmaz(tmp_path):
     assert any("soruları bulunamayan dersler: (999) MATEMATİK - 2" in m for m in mesajlar)
 
 
+# ---- 7. tur M4: Roma rakamlı ders düzeyi ----------------------------------------------------------------------------
+# Düzey yalnız sayı ("- 1") sayılıyordu: "FELSEFE - II" başlık harfine çevrilip "Felsefe - Iı" oluyor, bu ad her MEB eğitim
+# isteğine giriyordu. PDF ve OCR yolu aynı kuralı kullanır.
+
+
+@pytest.mark.parametrize(
+    ("baslik", "ad"),
+    [
+        pytest.param("FELSEFE - II", "Felsefe - II", id="M4-II"),
+        pytest.param("TARİH - III", "Tarih - III", id="M4-III"),
+        pytest.param("COĞRAFYA - IV", "Coğrafya - IV", id="M4-IV"),
+        pytest.param("FELSEFE -XII", "Felsefe - XII", id="M4-XII-bosluksuz"),
+        pytest.param("FELSEFE - İİ", "Felsefe - II", id="M4-ocr-noktali-i"),
+        pytest.param("DİN KÜL. VE AHL. BİL. - II", "Din Kültürü ve Ahlak Bilgisi - II", id="M4-kisaltma"),
+        pytest.param("TARİH - 2", "Tarih - 2", id="M4-karsi-durum-sayi"),
+        pytest.param("TARİH", "Tarih", id="M4-karsi-durum-duzeysiz"),
+    ],
+)
+def test_M4_tur7_roma_rakamli_duzey_buyuk_harfle_kalir(baslik, ad):  # 7. tur M4
+    assert meb._ders_adi(baslik) == ad
+
+
+def _satirlar(*metinler: str) -> list[meb._Satir]:
+    return [meb._Satir(1, 0, [_parca(m, 45.0, 100.0 + 10 * i)], m) for i, m in enumerate(metinler)]
+
+
+@pytest.mark.parametrize(
+    ("metinler", "beklenen"),
+    [
+        # Seçenek, öncül ve tek başına madde işareti düzeysiz başlığa katılmaz: düzeyleri ders düzeyi sanılırdı.
+        pytest.param(("(111) TARİH", "C) 10 - 12"), ("111", "TARİH", 1), id="M4-sayi-araligi-secenek"),
+        pytest.param(("(111) TARİH", "B) I VE II"), ("111", "TARİH", 1), id="M4-roma-secenek"),
+        pytest.param(("(111) TARİH", "E) I, II VE III"), ("111", "TARİH", 1), id="M4-roma-secenek-virgullu"),
+        pytest.param(("(111) TARİH", "II. AYDIN"), ("111", "TARİH", 1), id="M4-oncul"),
+        pytest.param(("(111) TARİH", "III."), ("111", "TARİH", 1), id="M4-tek-basina-oncul-isareti"),
+        # Sarılmış başlığın Roma rakamlı düzeyi ve ayrı satıra sarılmış düzey başlığa katılır, sonrası katılmaz.
+        pytest.param(("(532) SEÇMELİ", "PEYGAMBERİMİZİN HAYATI - II", "A KİTAPÇIĞI"),
+                     ("532", "SEÇMELİ PEYGAMBERİMİZİN HAYATI - II", 2), id="M4-sarili-roma-duzey"),
+        pytest.param(("(114) TÜRK DİLİ VE", "EDEBİYATI", "- 3"), ("114", "TÜRK DİLİ VE EDEBİYATI - 3", 3),
+                     id="M4-ayri-satirda-duzey"),
+    ],
+)
+def test_M4_tur7_ders_basligi_duzeyi(metinler, beklenen):  # 7. tur M4
+    assert meb._ders_basligi(_satirlar(*metinler), 0) == beklenen
+
+
+def _roma_duzeyli_kitapcik(yol: Path) -> Path:
+    """Üç soru sayfası (``_kisa_kitapcik`` düzeni); iki dersin başlığında Roma rakamlı düzey."""
+
+    def sayfa(baslik: str | None, no1: int, no2: int, kok2: str):
+        def ciz(s) -> None:
+            y = 60.0
+            if baslik:
+                _s(s, S1, 60, baslik, 8.5)
+                y = 85.0
+            _soru_ciz(s, S1, y, no1, [f"Soru {no1}: hangisi bir gezegendir?"], ["Mars", "Ay", "Güneş", "Sirius"])
+            _soru_ciz(s, S2, 60, no2, [kok2], ["Su", "Demir", "Taş", "Tahta"])
+
+        return ciz
+
+    return _kitapcik(
+        yol,
+        [
+            sayfa("(333) FELSEFE – II", 1, 2, "Hangisi bir sıvıdır?"),
+            sayfa("(334) FELSEFE – III", 1, 2, "Hangisi bir sıvıdır?"),
+            sayfa(None, 3, 4, "Hangisi suda yüzer?"),
+        ],
+        [("(333) FELSEFE – II", "AA"), ("(334) FELSEFE – III", "AAAA")],
+    )
+
+
+@pdf_gerekli
+def test_M4_tur7_pdf_roma_rakamli_duzey(tmp_path):  # 7. tur M4
+    sorular, rapor, _ = _ayir(_roma_duzeyli_kitapcik(tmp_path / "roma.pdf"))
+    assert rapor["tutulan"] == 6, rapor
+    assert {k: s.ders for k, s in sorular.items()} == {
+        **{f"333:felsefe-ii:{n}": "Felsefe - II" for n in (1, 2)},
+        **{f"334:felsefe-iii:{n}": "Felsefe - III" for n in (1, 2, 3, 4)},
+    }
+
+
 # ---- beş seçenekli ders, Arap harfli seçenekler -------------------------------------------------
 
 

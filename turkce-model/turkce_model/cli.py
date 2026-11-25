@@ -143,22 +143,42 @@ def komut_tdk_derlem(arg, ayarlar: Ayarlar) -> None:
     print(f"Kök sözlüğü: {_sayi(len(kokler))} biçim ({dokum}) → {_yol(ayarlar, 'tdk', 'kokler.tsv')}")
 
 
-def _pdf_klasoru(meb_pdf: Path) -> str | None:
-    """``meb_pdf.jsonl``'i üreten ``meb-pdf``in ``--klasor``'u, yazıldığı gibi (``meb_pdf.rapor.json``, "klasor");
-    varsayılan klasörden okunduysa ya da rapor bu alanı taşımıyorsa (eski sürüm) ``None``."""
+def _klasor_kaydi(klasor: Path, kok: Path) -> str:
+    """``meb-pdf --klasor``un raporda saklanan biçimi: ayar dosyasının klasörüne (``ayarlar.kok``) göre (onun
+    altındaysa), değilse tam yol. Sonraki komut başka bir klasörden (``--ayarlar`` ile) çalışsa da aynı klasörü bulur."""
+    tam = klasor.resolve()
+    try:
+        return tam.relative_to(kok.resolve()).as_posix()
+    except ValueError:
+        return str(tam)
+
+
+def _pdf_klasoru(meb_pdf: Path, kok: Path) -> Path | None:
+    """``meb_pdf.jsonl``'i üreten ``meb-pdf``in ``--klasor``'u (``meb_pdf.rapor.json``, "klasor"), tam yol olarak: göreli
+    kayıt ayar dosyasının klasörüne (``kok``) göredir. Varsayılan klasörden okunduysa ya da rapor bu alanı taşımıyorsa
+    (eski sürüm) ``None``."""
     try:
         rapor = json.loads(meb_pdf.with_suffix(".rapor.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
     klasor = rapor.get("klasor") if isinstance(rapor, dict) else None
-    return klasor if isinstance(klasor, str) and klasor else None
+    return (Path(kok) / klasor).resolve() if isinstance(klasor, str) and klasor else None
 
 
-def _klasor_eki(meb_pdf: Path) -> str:
+def _klasor_secenegi(klasor: Path | None) -> str:
+    """``_pdf_klasoru``nun verdiği klasörün ``--klasor`` seçeneği, bu komutun çalıştığı klasöre göre yazılır
+    (``gosterim_yolu``); klasör yoksa boş."""
+    if klasor is None:
+        return ""
+    from .egitim import gosterim_yolu
+
+    return f" --klasor {_tirnak(gosterim_yolu(klasor))}"
+
+
+def _klasor_eki(meb_pdf: Path, kok: Path) -> str:
     """Yeniden okuyan ``meb-pdf`` komutunun ``--klasor`` seçeneği (``_pdf_klasoru``); yoksa boş: yazılan komut
     varsayılan klasörü okuyup ``--klasor`` ile okunmuş soruların yerine başkalarını yazmasın."""
-    klasor = _pdf_klasoru(meb_pdf)
-    return f" --klasor {_tirnak(klasor)}" if klasor else ""
+    return _klasor_secenegi(_pdf_klasoru(meb_pdf, kok))
 
 
 def komut_meb_mmlu(arg, ayarlar: Ayarlar) -> None:
@@ -175,7 +195,7 @@ def komut_meb_mmlu(arg, ayarlar: Ayarlar) -> None:
         # onları silmemek için durur); her komut bu çağrının --ayarlar / --ayar / --deney seçeneklerini taşır.
         kip = meb.ocr_kipi(meb_pdf)
         okuma = ("meb-pdf --ocr" + (" hepsi" if kip == "hepsi" else "")) if kip else "meb-pdf"
-        komutlar = [okuma + _klasor_eki(meb_pdf), "veri-hazirla"]  # --klasor ile okunduysa aynı klasör
+        komutlar = [okuma + _klasor_eki(meb_pdf, ayarlar.kok), "veri-hazirla"]  # --klasor ile okunduysa aynı klasör
         meb_klasoru = ayarlar.deney_klasoru / "meb"  # bu deneyin MEB modeli (.eski: yarıda kalan --uzerine-yaz'ınki)
         if any((meb_klasoru / ad).exists() for ad in ("en_iyi.pt", "son.pt", "en_iyi.pt.eski", "son.pt.eski")):
             komutlar.append("egit --asama meb --uzerine-yaz")
@@ -219,8 +239,8 @@ def komut_meb_pdf(arg, ayarlar: Ayarlar) -> None:
     for s in sorular:
         dagilim[s.bolum] = dagilim.get(s.bolum, 0) + 1
     rapor["ocr"] = arg.ocr  # durum, yeniden okumayı aynı kiple önersin (None: OCR'sız)
-    if arg.klasor:  # yazıldığı gibi: durum ve meb-mmlu yeniden okumayı aynı klasörle yazsın
-        rapor["klasor"] = arg.klasor
+    if arg.klasor:  # durum ve meb-mmlu yeniden okumayı aynı klasörle yazsın (başka bir klasörden çalışsalar da)
+        rapor["klasor"] = _klasor_kaydi(Path(arg.klasor), ayarlar.kok)
     (hedef.with_suffix(".rapor.json")).write_text(json.dumps(rapor, ensure_ascii=False, indent=2), encoding="utf-8")
     bolumler = ", ".join(f"{ad} {dagilim[b]}" for b, ad in (("egitim", "eğitim"), ("dogrulama", "doğrulama"), ("test", "test")) if b in dagilim)
     print(f"{len(sorular)} soru → {hedef} ({bolumler})")
@@ -766,6 +786,22 @@ def _devam_eki(arg, durum: dict, farkli: list[str], asama: str) -> str:
     return _komut_eki(argparse.Namespace(**{**vars(arg), "ayar": kalan + geri_al}))
 
 
+def _baska_deney_farklari(arg, deney: str, durum: dict, asama: str) -> tuple[list[str], str]:
+    """"Yarıda kalan başka deneyler"deki bir eğitimin ``--devam``'ı için: ayar dosyasının (bu çağrının ``--ayar``'ları
+    olmadan; satırın komutu onları taşımaz) kayıtlı eğitimden farklı verdiği kilitli ayarlar ve onları kayıtlı
+    değerleriyle geri veren ``--ayar <alan>=<kayıtlı değer>``'ler. Ör. bir gömme kararı dosyada değişince eski deney
+    burada listelenir; bunlar olmadan yapıştırılan ``--devam`` reddedilirdi. Kayıtlı ayarları taşımayan eski kayıtta boş."""
+    kayitli = durum.get("kilitli")
+    if not isinstance(kayitli, dict):
+        return [], ""
+    try:
+        deney_ayarlari = _ayarlar(argparse.Namespace(ayarlar=arg.ayarlar, ayar=[], deney=deney))
+    except AyarHatasi:  # dosya bu çağrının --ayar'ları olmadan okunamıyor: karşılaştırılamaz
+        return [], ""
+    farkli = _devam_farklari(durum, deney_ayarlari, asama)
+    return farkli, "".join(f" --ayar {_tirnak(ad + '=' + _toml_degeri(kayitli[ad]))}" for ad in farkli)
+
+
 def komut_durum(arg, ayarlar: Ayarlar) -> None:
     """Her adımın durumu ve sıradaki komut.
 
@@ -773,8 +809,10 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
     dosyalar karşılaştırılarak; imzası olmayan eski kayıtlarda ve ham veri adımlarında dosya zamanlarıyla. Bir
     adım yenilenecekse ona bağlı adımlar da "önceki adım yenilenecek" olur. Yazılan her komut bu çağrının
     ``--ayarlar`` / ``--ayar`` / ``--deney`` seçeneklerini taşır; yalnız yarıda kalan eğitimin ``--devam``'ı, kayıtlı
-    eğitimle çelişen ayarları kayıtlı değerleriyle yazar (``_devam_eki``). Yarıda kalmış bir ``--uzerine-yaz``ın kenara
-    aldığı eski eğitim (``*.eski``) aşamanın eğitimi sayılır ve öyle gösterilir; önerilen komut onu önce yerine koyar.
+    eğitimle çelişen ayarları kayıtlı değerleriyle yazar (``_devam_eki``). Başka deneylerin ``--devam``'ı ``--deney`` ve
+    ``--ayarlar``'ı taşır; ayar dosyası kayıtlı eğitimden farklıysa kayıtlı değerleri de (``_baska_deney_farklari``).
+    Yarıda kalmış bir ``--uzerine-yaz``ın kenara aldığı eski eğitim (``*.eski``) aşamanın eğitimi sayılır ve öyle
+    gösterilir; önerilen komut onu önce yerine koyar.
     """
     from . import meb, tdk
     from .egitim import (
@@ -839,9 +877,9 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
     mmlu_adimi = adim("TurkishMMLU (yalnız değerlendirme)", mmlu, "meb-mmlu", (), "  (isteğe bağlı; meb-pdf'ten önce)")
     # Var olan sorular meb-pdf --klasor ile okunduysa (raporunda) eskime o klasöre bakar, yeniden okuma da onu okur:
     # yazılan komut varsayılan klasörü okuyup o soruların yerine başkalarını yazmasın.
-    kayitli_klasor = _pdf_klasoru(meb_pdf) if meb_pdf.exists() else None
-    pdf_klasoru = Path(kayitli_klasor) if kayitli_klasor else v / "meb" / "pdf"
-    klasor_eki = f" --klasor {_tirnak(kayitli_klasor)}" if kayitli_klasor else ""
+    kayitli_klasor = _pdf_klasoru(meb_pdf, ayarlar.kok) if meb_pdf.exists() else None
+    pdf_klasoru = kayitli_klasor or v / "meb" / "pdf"
+    klasor_eki = _klasor_secenegi(kayitli_klasor)
     pdfler = meb.pdf_dosyalari(pdf_klasoru)
     # TurkishMMLU sonradan indirildiyse onunla aynı sorular hâlâ eğitimdedir; sonradan eklenen kitapçık da okunmamıştır.
     meb_pdf_adimi = adim(
@@ -1017,18 +1055,27 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
             if k.kenarda:  # yarıda kalan --uzerine-yaz: --devam eski eğitimi yerine koyar (bitmişse "zaten bitmiş" der)
                 bas = f"  {d.name} / {asama}: yarıda kalan --uzerine-yaz; eski eğitim kenarda" + (f" ({ilerleme})" if bilgi else "")
                 neden = icerik_eskimesi(asama, bilgi, k.kayit, baslangic=False)
-                if not neden and bilgi.get("durum") not in BITMIS_DURUMLAR and not k.son.exists():
+                bitmemis = bilgi.get("durum") not in BITMIS_DURUMLAR
+                if not neden and bitmemis and not k.son.exists():
                     # Kenardakiler silinirken öldürülmüş (son.pt.eski silinmiş): bitmemiş eğitim --devam ile sürmez.
                     neden = "bitmedi ve son.pt yok, sürdürülemez"
-                yarim.append(f"{bas}; {neden}" if neden else f"{bas} → egit --asama {asama} --devam{secenek}")
-                continue
-            if bilgi.get("durum") not in YARIM_DURUMLAR or not (klasor / "son.pt").exists():
-                continue
-            neden = icerik_eskimesi(asama, bilgi, klasor / "son.pt", baslangic=False)
-            if neden:  # --devam bu durumda reddedilir
-                yarim.append(f"  {d.name} / {asama}: {ilerleme}; {neden}, sürdürülemez")
+                if neden:
+                    yarim.append(f"{bas}; {neden}")
+                    continue
+                # Bitmemiş eski eğitimin --devam'ı ayarları karşılaştırır (bitmişinki karşılaştırmadan "zaten bitmiş" der).
+                farkli, ayar_eki = _baska_deney_farklari(arg, d.name, bilgi, asama) if bitmemis else ([], "")
             else:
-                yarim.append(f"  {d.name} / {asama}: {ilerleme} → egit --asama {asama} --devam{secenek}")
+                if bilgi.get("durum") not in YARIM_DURUMLAR or not (klasor / "son.pt").exists():
+                    continue
+                neden = icerik_eskimesi(asama, bilgi, klasor / "son.pt", baslangic=False)
+                if neden:  # --devam bu durumda reddedilir
+                    yarim.append(f"  {d.name} / {asama}: {ilerleme}; {neden}, sürdürülemez")
+                    continue
+                bas = f"  {d.name} / {asama}: {ilerleme}"
+                farkli, ayar_eki = _baska_deney_farklari(arg, d.name, bilgi, asama)
+            if farkli:  # yapıştırılan --devam kayıtlı değerlerle sürdürür (reddedilmez)
+                bas += f"; ayar dosyası kayıtlı eğitimden farklı ({', '.join(farkli)})"
+            yarim.append(f"{bas} → egit --asama {asama} --devam{secenek}{ayar_eki}")
     if yarim:
         print("Yarıda kalan başka deneyler:")
         print("\n".join(yarim))

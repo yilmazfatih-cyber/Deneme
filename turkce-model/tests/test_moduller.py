@@ -2,8 +2,8 @@
 
 Gerçek bir model çalıştırılmaz: testler bu süreçte açılan sahte bir OpenAI uyumlu sunucuyla konuşur.
 Tüm metinler sentetiktir. Adlardaki bulgu numaraları önceki incelemelerin (M1 … M8, m1 … m13), beşinci turun
-(M2, M5, M6, M7, M9 … M12) ya da altıncı turun ("6. tur" yorumlu R4, R5, R6) bulgularıdır: aynı numara iki turda
-farklı kusurları gösterebilir.
+(M2, M5, M6, M7, M9 … M12), altıncı turun ("6. tur" yorumlu R4, R5, R6) ya da yedinci turun ("7. tur" yorumlu O1)
+bulgularıdır: aynı numara iki turda farklı kusurları gösterebilir.
 """
 
 from __future__ import annotations
@@ -414,6 +414,22 @@ def test_B2_ozel_token_artigi_etiket_gibi_temizlenir():
     ],
 )
 def test_ocr_temizle_metni_bozmaz(ham, temiz):  # B3, M5, m12, m13, R4, R5, M7 (tur 5), R5 (tur 6)
+    assert ocr_temizle(ham) == temiz
+
+
+@pytest.mark.parametrize(
+    ("ham", "temiz"),
+    [
+        # Harfle bitmeyen simge ("\,", "\;", "\!") ardından harf gelince de açılır: "4\,cm", "30°\!C" kalıyordu.
+        pytest.param(r"Kenarı \(4\,\mathrm{cm}\) olan kare", "Kenarı 4 cm olan kare", id="O1-ince-bosluk"),
+        pytest.param(r"\(3\;\mathrm{m}\) uzunluk", "3 m uzunluk", id="O1-orta-bosluk"),
+        pytest.param(r"\(30^{\circ}\!\mathrm{C}\)", "30°C", id="O1-eksi-bosluk"),
+        pytest.param(r"\(x\,y\)", "x y", id="O1-harfler-arasinda"),
+        # Karşı durum: harfle biten komutun ardından harf gelirse başka komuttur ("\in" ile "\inf" ayrı).
+        pytest.param(r"\(\inf A\) ve \(x \in A\)", r"\inf A ve x ∈ A", id="O1-karsi-durum-harfle-biten-komut"),
+    ],
+)
+def test_O1_tur7_harfle_bitmeyen_latex_simgesi_harften_once_de_acilir(ham, temiz):  # 7. tur O1
     assert ocr_temizle(ham) == temiz
 
 

@@ -73,7 +73,11 @@ _LATEX_SIMGELER = {
     r"\subset": "⊂", r"\subseteq": "⊆", r"\emptyset": "∅", r"\angle": "∠", r"\triangle": "△",
     r"\log": "log", r"\ln": "ln", r"\sin": "sin", r"\cos": "cos", r"\tan": "tan", r"\cot": "cot",
 }
-_LATEX_SIMGE = re.compile("|".join(re.escape(k) + r"(?![a-zA-Z])" for k in sorted(_LATEX_SIMGELER, key=len, reverse=True)))
+# Harfle biten komutun ("\in") ardından harf gelirse başka bir komuttur ("\inf"); harfle bitmeyen ("\,", "\;", "\!")
+# her yerde simgedir: "4\,cm", "30°\!C" kalmaz.
+_LATEX_SIMGE = re.compile(
+    "|".join(re.escape(k) + (r"(?![a-zA-Z])" if k[-1].isalpha() else "") for k in sorted(_LATEX_SIMGELER, key=len, reverse=True))
+)
 _LATEX_SINIR = re.compile(r"\\[()\[\]]")
 _LATEX_DERECE = re.compile(r"\\(?:circ|degree)(?![a-zA-Z])")
 _US_DERECE = re.compile(r"\s*\^\s*(?:\(\s*°\s*\)|°)")  # "^(°)", "^°", " ^ °": derece işareti üst simge değildir

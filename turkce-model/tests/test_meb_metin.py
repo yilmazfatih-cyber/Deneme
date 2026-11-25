@@ -2,8 +2,8 @@
 
 Her sınamanın adında, parametre kimliğinde ya da yorumunda bulgu numarası geçer (F1 …, B1, G1 …; R1/R2: ikinci
 incelemede bulunan kusurlar; M1 … M13: beşinci turun bulguları; "6. tur R1 … R7" yorumlu bölümler: altıncı turun
-bulguları, aynı numaralı eski R1/R2'den ayrıdır). Bütün metinler sentetiktir; gerçek kitapçık ya da TDK/MEB içeriği
-kullanılmaz.
+bulguları, aynı numaralı eski R1/R2'den ayrıdır; adında "tur7" geçen M1 … M4, O1, O2: yedinci turun bulguları, beşinci
+turun M1 … M4'ünden ayrıdır). Bütün metinler sentetiktir; gerçek kitapçık ya da TDK/MEB içeriği kullanılmaz.
 Asıl ölçüt: hiçbir soru yanlış cevapla ya da kirli kök/seçenekle tutulmaz; emin olunamayan soru elenir.
 """
 
@@ -803,17 +803,17 @@ def test_R1_duzeysiz_yinelenen_baslik_sayfaya_tasan_icerigi_yutmaz(baslik, tur):
     assert {s.ders for s in sorular.values()} == {R1_DERS_ADLARI[baslik]}
 
 
-def _r1_uzun_kitapcik(ilk_baslik: list[str], yinelenen: list[str] | None = None) -> list[str]:
+def _r1_uzun_kitapcik(ilk_baslik: list[str], yinelenen: list[str] | None = None, farkli: tuple[int, ...] = (1, 2)) -> list[str]:
     """Kapak + beş ders, her biri üç sayfa (sayfa başına iki soru, cevap "A"), ders başlığı her sayfanın başında + anahtar.
-    17 sayfa: ilk dersin başlık devamı 4 sayfada görülür, kenar sayılmaz (eşik 5). ``yinelenen``: ilk dersin 2. ve 3.
-    sayfasında başlığın okunuşu (OCR farkı)."""
+    17 sayfa: ilk dersin başlık devamı 4 sayfada görülür, kenar sayılmaz (eşik 5). ``yinelenen``: ilk dersin ``farkli``
+    sayfalarında (0'dan sayılır; varsayılan 2. ve 3. sayfa) başlığın okunuşu (OCR farkı)."""
     dersler = [ilk_baslik] + [[f"({k}) {ad} - 1"] for k, ad in (("111", "TARİH"), ("222", "COĞRAFYA"), ("333", "FELSEFE"),
                                                                 ("444", "KİMYA"))]
     sayfalar, anahtar = [R1_KAPAK], ["CEVAP ANAHTARI", ""]
     for d, baslik in enumerate(dersler):
         no = 1
         for p in range(3):
-            g = ["1. OTURUM", "", *(yinelenen if d == 0 and p and yinelenen else baslik), ""]
+            g = ["1. OTURUM", "", *(yinelenen if d == 0 and p in farkli and yinelenen else baslik), ""]
             for _ in range(2):
                 kok, secenekler = KONULAR[no % 4]
                 g += [f"{no}. {kok}", "", *(f"{h}) {s}" for h, s in zip("ABCD", secenekler)), ""]
@@ -986,6 +986,259 @@ def test_R7_onceki_seceneklerden_sonraki_numarasiz_kok_atilmaz(metin, kok):  # 6
 )
 def test_R7_karsi_durum_soru_numarasi_yine_atilir(metin, kok):  # 6. tur R7, M10
     assert meb_metin.tek_soru(metin).soru == kok
+
+
+# ---- 7. tur M1, O2, M4: yinelenen ders başlığı ve düzeyi ----------------------------------------------------------
+# M1: yinelenen başlığın devam satırı yalnız dersin ilk başlığındakiyle harfi harfine aynıysa atılıyordu. OCR'ın harf farkı
+# ("- 7", "HAYAT", "HAYAT1"), başka satır bölmesi ya da yalnız sonraki sayfalarda başlığın altına basılmış üst bilgi ("A
+# KİTAPÇIĞI") önceki sayfanın son seçeneğine yapışıyordu ("Kum PEYGAMBERİMİZİN HAYATI - 7"). O2: bir sayfada sarılı,
+# ötekinde tek satırda okunan başlık yeni ders sanılıyor, dersin 6 sorusundan 4'ü kayboluyordu. M4: Roma rakamlı düzey ("-
+# II") başlık harfine çevrilip "Iı" oluyordu.
+
+T7_SECMELI = ["(532) SEÇMELİ", "PEYGAMBERİMİZİN HAYATI - 2"]
+T7_SECMELI_DUZEYSIZ = ["(532) SEÇMELİ", "PEYGAMBERİMİZİN HAYATI"]
+T7_AD = "Seçmeli Peygamberimizin Hayatı - 2"
+T7_AD_DUZEYSIZ = "Seçmeli Peygamberimizin Hayatı"
+
+
+# id → (ilk sayfadaki başlık, sonraki sayfalardaki okunuşu, ders adı, okunuşun yinelenebileceği sayfa sayıları)
+T7_OKUNUSLAR = {
+    # OCR farkı: tek sayfadaki fark başlığın altında yinelenmez, yalnız adın okunuşuna bakılarak atılır.
+    "M1-duzey-baska-okunmus": (T7_SECMELI, ["(532) SEÇMELİ", "PEYGAMBERİMİZİN HAYATI - 7"], T7_AD, (1, 2)),
+    "M1-harf-eksik": (T7_SECMELI, ["(532) SEÇMELİ", "PEYGAMBERİMİZİN HAYAT - 2"], T7_AD, (1, 2)),
+    "M1-harf-rakam-okunmus": (T7_SECMELI, ["(532) SEÇMELİ", "PEYGAMBERİMİZİN HAYAT1 - 2"], T7_AD, (1, 2)),
+    "M1-iki-yerde-fark": (T7_SECMELI, ["(532) SEÇMELİ", "PEYGAMBERLİMİZİN HAYATI - II"], T7_AD, (1, 2)),
+    "M1-duzeysiz-harf-eksik": (T7_SECMELI_DUZEYSIZ, ["(532) SEÇMELİ", "PEYGAMBERİMİZİN HAYAT"], T7_AD_DUZEYSIZ, (1, 2)),
+    # Satır bölmesi farklı: üç satır / iki satır.
+    "M1-uc-satir-sonra-iki-satir": (["(532) SEÇMELİ", "PEYGAMBERİMİZİN", "HAYATI - 2"], T7_SECMELI, T7_AD, (1, 2)),
+    "M1-iki-satir-sonra-uc-satir": (T7_SECMELI, ["(532) SEÇMELİ", "PEYGAMBERİMİZİN", "HAYATI - 2"], T7_AD, (1, 2)),
+    # Üst bilgi yalnız sonraki sayfalarda, düzeysiz başlığın altında: başlığın devamı sanılıyordu. Birden çok sayfada
+    # yinelendiği için ayrılır (sayfaya taşan içerik yinelenmez).
+    "M1-ust-bilgi-sonraki-sayfalarda": (T7_SECMELI_DUZEYSIZ, [*T7_SECMELI_DUZEYSIZ, "A KİTAPÇIĞI"], T7_AD_DUZEYSIZ, (2,)),
+    "M1-ust-bilgi-tek-satirli-baslik": (["(532) SEÇMELİ"], ["(532) SEÇMELİ", "A KİTAPÇIĞI"], "Seçmeli", (2,)),
+    # O2: sarılı başlık öteki sayfalarda tek satırda okunmuş (ya da tersi).
+    "O2-sarili-sonra-tek-satir": (T7_SECMELI, [" ".join(T7_SECMELI)], T7_AD, (1, 2)),
+    "O2-tek-satir-sonra-sarili": ([" ".join(T7_SECMELI)], T7_SECMELI, T7_AD, (1, 2)),
+    "O2-duzeysiz": (T7_SECMELI_DUZEYSIZ, [" ".join(T7_SECMELI_DUZEYSIZ)], T7_AD_DUZEYSIZ, (1, 2)),
+}
+
+
+@pytest.mark.parametrize(
+    ("ilk", "sonraki", "ad", "farkli"),
+    [
+        pytest.param(ilk, sonraki, ad, (2,) if n == 1 else (1, 2), id=f"{kimlik}-{n}-sayfada")
+        for kimlik, (ilk, sonraki, ad, sayilar) in T7_OKUNUSLAR.items()
+        for n in (1, 2)
+        if n in sayilar
+    ],
+)
+def test_M1_tur7_yinelenen_basligin_farkli_okunan_devami_secenege_karismaz(ilk, sonraki, ad, farkli):  # 7. tur M1, O2
+    sorular, rapor, mesajlar = _ayikla(_r1_uzun_kitapcik(ilk, sonraki, farkli))
+    assert rapor["tutulan"] == 30 and _secenekleri_temiz(sorular)
+    assert {s.ders for k, s in sorular.items() if k.startswith("532:")} == {ad}
+    assert rapor["farkli_sayili_dersler"] == {} and not any("Uyarı" in m for m in mesajlar)
+
+
+# Sayfaya taşan içerik türü → (1. sayfanın sonu, 2. sayfada yinelenen başlıktan sonraki satırlar, beklenen {no: (kök,
+# seçenekler)}); "{ad}" başlığın son satırındaki addır (başlığa benzeyen içerik). Sayısal seçenek, öncüller, yönerge ve
+# parça 6. tur R1'deki gibi.
+T7_GEZEGEN = "\n\n3. Hangisi bir gezegendir?\n\n" + "\n".join(f"{h}) {s}" for h, s in zip("ABCD", R1_GEZEGEN))
+T7_TASAN = {
+    **R1_TASAN,
+    "buyuk-harfli-tek-kelime-secenek": (
+        "\n\n2. Hangisi bir sıvıdır?\n\nA) KUM\nB) TAŞ", "C) SU\nD) HAVA" + T7_GEZEGEN,
+        {2: ("Hangisi bir sıvıdır?", ["KUM", "TAŞ", "SU", "HAVA"]), 3: ("Hangisi bir gezegendir?", R1_GEZEGEN)},
+    ),
+    "sayi-araligi-ve-roma-secenek": (
+        "\n\n2. Hangisi bir yaş aralığıdır?\n\nA) 1 - 3\nB) 4 - 6", "C) 10 - 12\nD) I VE II" + T7_GEZEGEN,
+        {2: ("Hangisi bir yaş aralığıdır?", ["1 - 3", "4 - 6", "10 - 12", "I VE II"]), 3: ("Hangisi bir gezegendir?", R1_GEZEGEN)},
+    ),
+    "kisa-buyuk-harfli-secenek-devami": (
+        "\n\n2. Hangisi bir yer şeklidir?\n\nA) Ova\nB) Dağ\nC) Vadi\nD) KIZIL", "KUM" + T7_GEZEGEN,
+        {2: ("Hangisi bir yer şeklidir?", ["Ova", "Dağ", "Vadi", "KIZIL KUM"]), 3: ("Hangisi bir gezegendir?", R1_GEZEGEN)},
+    ),
+    "basliga-benzeyen-secenek-devami": (
+        "\n\n2. Hangisi bir ders adıdır?\n\nA) Resim\nB) Müzik\nC) Spor\nD) DERS:", "{ad}" + T7_GEZEGEN,
+        {2: ("Hangisi bir ders adıdır?", ["Resim", "Müzik", "Spor", "DERS: {ad}"]), 3: ("Hangisi bir gezegendir?", R1_GEZEGEN)},
+    ),
+}
+# Düzeysiz başlık (tek satır, sarılı, uzun sarılı): sonraki büyük harfli satırlar devamına katılır; düzeyli başlık karşı durum.
+T7_BASLIKLAR = {
+    "duzeysiz": ("(111) TARİH", "Tarih"),
+    "sarili-duzeysiz": ("(111) SEÇMELİ\nTARİH KONULARI", "Seçmeli Tarih Konuları"),
+    "uzun-sarili-duzeysiz": ("(111) SEÇMELİ PEYGAMBERİMİZİN\nHAYATI VE ÖĞRETİLERİ", "Seçmeli Peygamberimizin Hayatı ve Öğretileri"),
+    "duzeyli": ("(111) TARİH - 1", "Tarih - 1"),
+}
+
+
+@pytest.mark.parametrize(("bicim", "tur"), [pytest.param(b, t, id=f"M1-karsi-durum-{t}-{b}") for t in T7_TASAN for b in T7_BASLIKLAR])
+def test_M1_tur7_karsi_durum_yinelenen_basliktan_sonra_tasan_icerik_kalir(bicim, tur):  # 7. tur M1
+    # OCR farkını bağışlayan kural sayfaya taşan içeriği başlığa katmamalı: atılan seçenek soruyu eletir, atılan öncül,
+    # yönerge ya da seçenek devamı soruyu eksik tutar.
+    baslik, ders = T7_BASLIKLAR[bicim]
+    ad = baslik.split("\n")[-1].split(") ")[-1]
+    son, tasan, beklenen = T7_TASAN[tur]
+    sayfalar = [
+        R1_KAPAK,
+        f"1. OTURUM\n\n{baslik}\n\n{R1_SORU1}{son}\n\n2",
+        f"1. OTURUM\n\n{baslik}\n\n{tasan.format(ad=ad)}\n\n3",
+        _anahtar((baslik, "A" + "B" * len(beklenen))),
+    ]
+    sorular, rapor, _ = _ayikla(sayfalar)
+    beklenen = {no: (kok, [s.format(ad=ad) for s in secenekler]) for no, (kok, secenekler) in beklenen.items()}
+    beklenen = {1: ("Hangisi bir başkenttir?", ["Ankara", "Deniz", "Hava", "Uzay"]), **beklenen}
+    assert {s.ek["soru_no"]: (" ".join(s.soru.split()), s.secenekler) for s in sorular.values()} == beklenen
+    assert rapor["elenen"] == {} and {s.ders for s in sorular.values()} == {ders}
+
+
+@pytest.mark.parametrize("bicim", [pytest.param(b, id=f"M1-{b}") for b in T7_BASLIKLAR])
+def test_M1_tur7_baslik_altindaki_ust_bilgi_atilir_tasan_secenek_kalir(bicim):  # 7. tur M1
+    # Üst bilgi yalnız sonraki sayfalarda başlığın altında; sayfanın son sorusunun son iki seçeneği sonraki sayfaya taşıyor.
+    # Üst bilgi seçeneğe yapışıyordu ("21 A KİTAPÇIĞI"); birden çok sayfada yinelendiği için atılır, her sayfada başka olan
+    # taşan seçenekler kalır.
+    baslik, ders = T7_BASLIKLAR[bicim]
+
+    def sayi_sorusu(no: int, tam: bool = False) -> str:
+        return f"{no}. Bir sayının {no} katı kaçtır?\n\nA) {10 * no}\nB) {10 * no + 1}" + ("\n" + kalan(no) if tam else "")
+
+    def kalan(no: int) -> str:
+        return f"C) {10 * no + 2}\nD) {10 * no + 3}"
+
+    sayfalar = [
+        R1_KAPAK,
+        f"1. OTURUM\n\n{baslik}\n\n{R1_SORU1}\n\n{sayi_sorusu(2)}\n\n2",
+        f"1. OTURUM\n\n{baslik}\nA KİTAPÇIĞI\n\n{kalan(2)}\n\n{_soru(3)}\n\n{sayi_sorusu(4)}\n\n3",
+        f"1. OTURUM\n\n{baslik}\nA KİTAPÇIĞI\n\n{kalan(4)}\n\n{_soru(5)}\n\n{sayi_sorusu(6, tam=True)}\n\n4",
+        _anahtar((baslik, "ABABAB")),
+    ]
+    sorular, rapor, _ = _ayikla(sayfalar)
+    assert rapor["tutulan"] == 6 and rapor["elenen"] == {} and {s.ders for s in sorular.values()} == {ders}
+    assert {no: sorular[f"111:{no}"].secenekler for no in (2, 4, 6)} == {no: [str(10 * no + j) for j in range(4)] for no in (2, 4, 6)}
+    assert [sorular[f"111:{no}"].secenekler for no in (1, 3, 5)] == [["Ankara", "Deniz", "Hava", "Uzay"]] + [["Bir", "İki", "Üç", "Dört"]] * 2
+
+
+@pytest.mark.parametrize(
+    ("ilk", "sonraki", "ad"),
+    [
+        pytest.param(["(532) SEÇMELİ", "PEYGAMBERİMİZİN HAYATI - II"], None, "Seçmeli Peygamberimizin Hayatı - II",
+                     id="M4-sarili-roma-duzey"),
+        pytest.param(["(532) SEÇMELİ", "PEYGAMBERİMİZİN HAYATI - İİ"], None, "Seçmeli Peygamberimizin Hayatı - II",
+                     id="M4-ocr-noktali-i"),
+        pytest.param(["(532) SEÇMELİ FELSEFE - III"], None, "Seçmeli Felsefe - III", id="M4-tek-satir-III"),
+        # Ayrı satıra sarılmış düzey ("- 3") de başlığındır; yinelenen başlıkta başka okunmuşu ("- 8", "- E") atılır.
+        pytest.param(["(532) TÜRK DİLİ VE", "EDEBİYATI", "- 3"], None, "Türk Dili ve Edebiyatı - 3", id="M4-ayri-satirda-duzey"),
+        pytest.param(["(532) TÜRK DİLİ VE", "EDEBİYATI", "- 3"], ["(532) TÜRK DİLİ VE", "EDEBİYATI", "- 8"],
+                     "Türk Dili ve Edebiyatı - 3", id="M4-M1-ayri-satirdaki-duzey-baska-okunmus"),
+        pytest.param(["(532) TÜRK DİLİ VE", "EDEBİYATI", "- 3"], ["(532) TÜRK DİLİ VE", "EDEBİYATI", "- E"],
+                     "Türk Dili ve Edebiyatı - 3", id="M4-M1-ayri-satirdaki-duzey-harf-okunmus"),
+    ],
+)
+def test_M4_tur7_roma_rakamli_ve_ayri_satirdaki_duzey(ilk, sonraki, ad):  # 7. tur M4 (M1 ile birlikte)
+    sorular, rapor, _ = _ayikla(_r1_uzun_kitapcik(ilk, sonraki))
+    assert rapor["tutulan"] == 30 and _secenekleri_temiz(sorular)
+    assert {s.ders for k, s in sorular.items() if k.startswith("532:")} == {ad}
+
+
+# ---- 7. tur M2: son seçeneğin hemen altındaki küçük harfli kapanış ---------------------------------------------------
+# 6. tur R3'ten beri boş satırlı kitapçıkta küçük harfli kapanış yalnız boş satırdan sonra tanınıyordu: son seçeneğin hemen
+# altındaki "Test bitti." seçeneğe yapışıyor ("Dört Test bitti."), uzun kapanış soruyu "bozuk düzen" diye eletiyordu. Sayfa
+# aşan seçenek devamı ("… büyük" + sonraki sayfanın başında "başarılar") ise kapanış sanılıp seçenek yarım kalıyordu.
+
+T7_COGRAFYA = "1. OTURUM\n\n(222) COĞRAFYA - 1\n\n" + _soru(1, "Hangisi bir ırmaktır?", ["Fırat", "Uludağ", "Van", "Ege"])
+T7_ANAHTAR = _anahtar(("(111) TARİH - 1", "AB"), ("(222) COĞRAFYA - 1", "A"))
+
+
+@pytest.mark.parametrize("yer", ["ders-sonu", "kitapcik-sonu"])
+@pytest.mark.parametrize(
+    "kapanis",
+    [pytest.param(k, id=f"M2-{ad}") for ad, k in (("test-bitti", "Test bitti."), ("basarilar", "Başarılar dileriz."),
+                                                  ("uzun", "Sınav bitti. Cevaplarınızı kontrol ediniz."))],
+)
+def test_M2_tur7_son_secenegin_hemen_altindaki_kapanis_secenege_yapismaz(kapanis, yer):  # 7. tur M2
+    tarih = "1. OTURUM\n\n(111) TARİH - 1\n\n" + _soru(1) + "\n\n" + _soru(2)
+    cografya = T7_COGRAFYA
+    if yer == "ders-sonu":
+        tarih += "\n" + kapanis
+    else:
+        cografya += "\n" + kapanis
+    sorular, rapor, _ = _ayikla([tarih + "\n\n2", cografya + "\n\n3", T7_ANAHTAR])
+    assert rapor["tutulan"] == 3 and rapor["elenen"] == {}
+    assert [s.secenekler for s in sorular.values()] == [["Bir", "İki", "Üç", "Dört"]] * 2 + [["Fırat", "Uludağ", "Van", "Ege"]]
+
+
+def test_M1_M2_tur7_karsi_durum_ayni_kodlu_yeni_ders_yinelenen_baslik_sayilmaz():  # 7. tur M1, M2
+    # Kodu aynı, adı yakın ("TARİH - 1" / "TARİH - 2") ama soruları 1'den başlayan ders yeni derstir: yinelenen başlık
+    # sayılıp öncekine katılmaz. Önceki dersin son seçeneğinin hemen altındaki kapanış da seçeneğe yapışmaz.
+    sayfalar = [
+        "1. OTURUM\n\n(111) TARİH - 1\n\n" + _soru(1) + "\n\n" + _soru(2) + "\nTest bitti.\n\n2",
+        "1. OTURUM\n\n(111) TARİH - 2\n\n" + _soru(1, "Hangisi bir ırmaktır?", ["Fırat", "Uludağ", "Van", "Ege"]) + "\n\n3",
+        _anahtar(("(111) TARİH - 1", "AB"), ("(111) TARİH - 2", "A")),
+    ]
+    sorular, rapor = meb_metin.metinden_ayristir(sayfalar, "k.pdf", yaz=lambda _: None)  # iki dersin "111:1"i var
+    assert rapor["tutulan"] == 3 and rapor["elenen"] == {}
+    assert [(s.ders, s.secenekler) for s in sorular] == [("Tarih - 1", ["Bir", "İki", "Üç", "Dört"])] * 2 + [
+        ("Tarih - 2", ["Fırat", "Uludağ", "Van", "Ege"])
+    ]
+
+
+T7_UZUN = _soru(2, "Bu zaferin sonucu hangisidir?", ["Moral bozuldu", "Savaş uzadı", "Halk küstü", "Ordunun ardından gelen büyük"])
+T7_TARIH = "1. OTURUM\n\n(111) TARİH - 1\n\n"
+
+
+@pytest.mark.parametrize("devam", [pytest.param("başarılar", id="basarilar"), pytest.param("iyi şanslar", id="iyi-sanslar")])
+@pytest.mark.parametrize(
+    "kur",
+    [
+        # Aynı sayfada; dersin sonraki sorusu öbür sayfada, sayfa başında yinelenen ders başlığından sonra.
+        pytest.param(lambda d: [T7_TARIH + _soru(1) + "\n\n" + T7_UZUN + "\n" + d + "\n\n2", T7_TARIH + _soru(3) + "\n\n3"],
+                     id="M2-karsi-durum-ayni-sayfa-sonraki-soru-obur-sayfada"),
+        # Sayfa aşan devam: sonraki sayfanın başında (yinelenen ders başlığından sonra da).
+        pytest.param(lambda d: [T7_TARIH + _soru(1) + "\n\n" + T7_UZUN + "\n\n2", "1. OTURUM\n\n" + d + "\n\n" + _soru(3) + "\n\n3"],
+                     id="M2-karsi-durum-sayfa-asan-devam"),
+        pytest.param(lambda d: [T7_TARIH + _soru(1) + "\n\n" + T7_UZUN + "\n\n2", T7_TARIH + d + "\n\n" + _soru(3) + "\n\n3"],
+                     id="M2-karsi-durum-sayfa-asan-devam-baslikli"),
+        # Boş satırsız metin: her satır paragraf başıdır, ileriye bakılarak ayrılır.
+        pytest.param(lambda d: [(T7_TARIH + _soru(1) + "\n" + T7_UZUN + "\n" + d + "\n" + _soru(3)).replace("\n\n", "\n")],
+                     id="M2-karsi-durum-bos-satirsiz-metin"),
+    ],
+)
+def test_M2_tur7_karsi_durum_secenegin_kapanis_sozuyle_suren_satiri_secenekte_kalir(kur, devam):  # 7. tur M2
+    sayfalar = kur(devam)
+    anahtar = _anahtar(("(111) TARİH - 1", "ADA"))
+    sorular, _, _ = _ayikla(sayfalar + [anahtar if "\n\n" in sayfalar[0] else anahtar.replace("\n\n", "\n")])
+    assert sorular["111:2"].secenekler[3] == f"Ordunun ardından gelen büyük {devam}"
+    assert sorular["111:3"].secenekler == ["Bir", "İki", "Üç", "Dört"]
+
+
+# ---- 7. tur M3: fotoğrafta önceki seçeneklerle numaralı soru arasındaki başlık ya da sayfa numarası -------------------
+# 6. tur R7'den beri soru önceki seçeneklerin hemen ardından başlıyordu: aradaki sayfa numarası ya da büyük harfli başlık
+# köke giriyor, soru numarası atılmıyordu ("12 18. Aşağıdakilerden hangisi 19. yüzyılda kurulmuştur?").
+
+T7_DORT = "A) Bir\nB) İki\nC) Üç\nD) Dört"
+T7_ONCULLU_KOK = "Aşağıdakilerden hangileri doğrudur? 1) Ankara başkenttir. 2) İzmir bir ilçedir."
+T7_ONCULLER = "\n1) Ankara başkenttir.\n2) İzmir bir ilçedir.\n" + R7_SECENEKLER
+
+
+@pytest.mark.parametrize(
+    ("metin", "kok"),
+    [
+        pytest.param("D) Uzay\n12\nAşağıdakilerden hangileri doğrudur?" + T7_ONCULLER, T7_ONCULLU_KOK, id="M3-sayfa-numarasi-arada"),
+        pytest.param("D) Uzay\nTARİH - 1\nAşağıdakilerden hangileri doğrudur?" + T7_ONCULLER, T7_ONCULLU_KOK, id="M3-baslik-arada"),
+        pytest.param("D) Uzay\n12\n18. Aşağıdakilerden hangisi\n19. yüzyılda kurulmuştur?\n" + T7_DORT,
+                     "Aşağıdakilerden hangisi 19. yüzyılda kurulmuştur?", id="M3-sayfa-numarasi-ve-sayiyla-suren-kok"),
+        pytest.param("D) Uzay\nTARİH - 1\n18. Aşağıdakilerden hangisi\n19. yüzyılda kurulmuştur?\n" + T7_DORT,
+                     "Aşağıdakilerden hangisi 19. yüzyılda kurulmuştur?", id="M3-baslik-ve-sayiyla-suren-kok"),
+        pytest.param("D) Uzay\nAÇIK ÖĞRETİM LİSESİ\n1) Aşağıdakilerden hangisi\n2) Dünya Savaşı'ndan sonra olmuştur?\n" + T7_DORT,
+                     "Aşağıdakilerden hangisi 2) Dünya Savaşı'ndan sonra olmuştur?", id="M3-baslik-ve-parantezli-sayiyla-suren-kok"),
+        # Karşı durum: büyük harfli soru cümlesi ("…?") başlık değildir, kökte kalır.
+        pytest.param("D) Uzay\nHANGİLERİ DOĞRUDUR?" + T7_ONCULLER,
+                     "HANGİLERİ DOĞRUDUR? 1) Ankara başkenttir. 2) İzmir bir ilçedir.", id="M3-karsi-durum-buyuk-harfli-soru-cumlesi"),
+    ],
+)
+def test_M3_tur7_seceneklerle_soru_arasindaki_baslik_ve_sayfa_numarasi_koke_girmez(metin, kok):  # 7. tur M3
+    s = meb_metin.tek_soru(metin)
+    beklenen = ["Bir", "İki", "Üç", "Dört"] if T7_DORT in metin else ["Yalnız 1", "Yalnız 2", "1 ve 2", "Hiçbiri"]
+    assert (s.soru, s.secenekler) == (kok, beklenen)
 
 
 # ---- sentetik kitapçık aileleri: çeşitli OCR kusurlarında yanlış tutulan soru yok ----------------------------

@@ -443,7 +443,10 @@ _SINAV_SONU = re.compile(r"^(?:(?:TEST|SINAV|OTURUM)\s+BİTTİ\b.*|CEVAPLARINIZI
 # Arap harfli yazı (Osmanlı Türkçesi, ayet metinleri): sağdan sola yazı PDF'ten görsel sırayla, ters çıkar.
 _ARAP_YAZISI = re.compile("[\u0600-\u06ff\u0750-\u077f\u08a0-\u08ff\ufb50-\ufdff\ufe70-\ufefc]")
 _KALIN_YAZI_TIPI = re.compile(r"bold|black|heavy", re.IGNORECASE)
-_SEVIYE = re.compile(r"-\s*\d{1,2}$")  # başlığın sonu: kısa çizgi + düzey numarası
+# Ders düzeyi: sayı ya da Roma rakamı (I … XII); OCR'ın Türkçe okuduğu "İ" de I sayılır ("FELSEFE - İİ").
+_ROMA_DUZEYI = r"(?:X[Iİ]{0,2}|[Iİ]X|[Iİ]V|V[Iİ]{0,3}|[Iİ]{1,3})"
+_SEVIYE = re.compile(rf"-\s*(?:\d{{1,2}}|{_ROMA_DUZEYI})$")  # başlığın sonu: kısa çizgi + düzey
+_YALNIZ_SEVIYE = re.compile(rf"^-\s*(?:\d{{1,2}}|{_ROMA_DUZEYI})$")  # ayrı satıra sarılmış düzey ("- 3")
 _SORU_BASI = re.compile(r"^(\d{1,2})\.(?:\s+(.*))?$")  # "1.  Aşağıdaki…"
 _TEK_HANELI_SORU = re.compile(r"^[1-9]\.(?:\s|$)")
 _SECENEK = re.compile(r"(?:(?<=\s)|^)([A-E])\)\s*")
@@ -808,12 +811,15 @@ def _kisaltma_ac(ad: str) -> str:
 
 
 def _seviye_ayir(ders_basligi: str) -> tuple[str, str]:
-    m = re.match(r"^(.*?)\s*-\s*(\d{1,2})$", ders_basligi)
-    return (m.group(1), m.group(2)) if m else (ders_basligi, "")
+    """(ad, düzey): "TARİH - 1" → ("TARİH", "1"). Roma rakamı yazıldığı gibi büyük harfle kalır, OCR'ın "İ"si I olur
+    ("FELSEFE - İİ" → ("FELSEFE", "II")); düzeysiz başlıkta düzey boştur."""
+    m = re.match(rf"^(.*?)\s*-\s*(\d{{1,2}}|{_ROMA_DUZEYI})$", ders_basligi)
+    return (m.group(1), m.group(2).replace("İ", "I")) if m else (ders_basligi, "")
 
 
 def _ders_adi(ders_basligi: str) -> str:
-    """ "DİN KÜL. VE AHL. BİL. - 1" → "Din Kültürü ve Ahlak Bilgisi - 1"."""
+    """ "DİN KÜL. VE AHL. BİL. - 1" → "Din Kültürü ve Ahlak Bilgisi - 1", "FELSEFE - II" → "Felsefe - II" (düzey
+    başlık harfine çevrilmez: "Iı" olurdu)."""
     ad, seviye = _seviye_ayir(ders_basligi)
     ad = baslik(_kisaltma_ac(ad))
     return f"{ad} - {seviye}" if seviye else ad
@@ -831,9 +837,11 @@ def _ders_basligi(satirlar: list[_Satir], i: int) -> tuple[str, str, int] | None
     """``satirlar[i]`` bir ders başlığıysa ``(kod, başlık, kullanılan satır sayısı)``.
 
     Başlık "(kod) AD - düzey" biçimindedir ve büyük harfle yazılır; sığmazsa sonraki satıra taşar
-    ("(532) SEÇMELİ" + "PEYGAMBERİMİZİN HAYATI - 2"). Düzey numarasına ulaşana kadar en çok iki satır eklenir.
-    Büyük harfli grup yönergesi ("1 - 2. SORULARI … CEVAPLAYINIZ.") eklenmez: düzeyi okunamamış başlık onu yutunca
-    ders adı bozuluyor, sorular parçasız kalıyordu.
+    ("(532) SEÇMELİ" + "PEYGAMBERİMİZİN HAYATI - 2"). Düzeye (sayı ya da Roma rakamı: "- 2", "- II") ulaşana kadar en
+    çok iki satır eklenir; yalnız düzeyden oluşan satır ("- 3") da eklenir. Büyük harfli grup yönergesi ("1 - 2.
+    SORULARI … CEVAPLAYINIZ.") eklenmez: düzeyi okunamamış başlık onu yutunca ders adı bozuluyor, sorular parçasız
+    kalıyordu. Seçenek ("C) 10 - 12", "B) I VE II"), öncül ("II. AYDIN") ve tek başına madde işareti ("III.") da
+    eklenmez: düzeyleri ders düzeyi sanılır, başlık içeriği yutardı.
     """
     s = satirlar[i]
     m = _DERS_BASLIGI.match(s.metin)
@@ -845,11 +853,13 @@ def _ders_basligi(satirlar: list[_Satir], i: int) -> tuple[str, str, int] | None
     n = 1
     while not _SEVIYE.search(ad) and n < 3 and i + n < len(satirlar):
         t = satirlar[i + n]
-        if (t.sayfa, t.sutun) != (s.sayfa, s.sutun) or not _buyuk_harfli(t.metin):
+        if (t.sayfa, t.sutun) != (s.sayfa, s.sutun) or not (_buyuk_harfli(t.metin) or _YALNIZ_SEVIYE.match(t.metin)):
             break
         if _SORU_BASI.match(t.metin) or _DERS_BASLIGI.match(t.metin) or _CEVAP_SATIRI.match(t.metin):
             break
-        if _GRUP_YONERGESI.match(kucuk(t.metin)):
+        if _GRUP_YONERGESI.match(kucuk(t.metin)) or _SECENEK.match(t.metin) or _ONCUL.match(t.metin):
+            break
+        if _ISARET.match(t.metin):
             break
         ad = f"{ad} {t.metin}".strip()
         n += 1

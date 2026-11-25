@@ -691,17 +691,29 @@ def _egit(
     dogrulama_sorulari: list = []
     if asama == "meb":
         if not (vk / "meb_egitim.npz").exists():
-            from .cli import _pdf_klasoru, _tirnak
+            from . import meb
+            from .cli import _klasor_secenegi, _pdf_klasoru
 
-            # Var olan sorular meb-pdf --klasor ile okunduysa (raporunda) o klasör: yazılan meb-pdf varsayılan klasörü
-            # okuyup onların yerine başkalarını yazmasın.
             meb_pdf = ayarlar.veri_klasoru / "meb" / "meb_pdf.jsonl"
-            kayitli = _pdf_klasoru(meb_pdf) if meb_pdf.exists() else None
-            pdf_klasoru = gosterim_yolu(Path(kayitli) if kayitli else ayarlar.veri_klasoru / "meb" / "pdf")
-            klasor_eki = f" --klasor {_tirnak(kayitli)}" if kayitli else ""
+            try:
+                okunmus = meb_pdf.exists() and any(s.bolum == "egitim" for s in meb.soru_oku(meb_pdf))
+            except (OSError, ValueError, TypeError):  # bozuk dosya: yeniden okunur
+                okunmus = False
+            if okunmus:  # meb-pdf eğitim soruları okumuş, eksik olan yalnız veri-hazirla (yeniden okuma gerekmez)
+                raise AyarHatasi(
+                    f"MEB soruları okunmuş ({gosterim_yolu(meb_pdf)}) ama eğitim verisi hazırlanmamış. Önce: "
+                    f"python -m turkce_model veri-hazirla{veri_eki}"
+                )
+            # Var olan sorular meb-pdf --klasor ile okunduysa (raporunda) o klasör, OCR ile okunduysa aynı kip: yazılan
+            # meb-pdf varsayılan klasörü okuyup onların yerine başkalarını yazmasın, OCR'sız okuma da reddedilmesin.
+            kayitli = _pdf_klasoru(meb_pdf, ayarlar.kok) if meb_pdf.exists() else None
+            pdf_klasoru = gosterim_yolu(kayitli or ayarlar.veri_klasoru / "meb" / "pdf")
+            kip = meb.ocr_kipi(meb_pdf) if meb_pdf.exists() else None
+            okuma = ("meb-pdf --ocr" + (" hepsi" if kip == "hepsi" else "")) if kip else "meb-pdf"
+            klasor_eki = _klasor_secenegi(kayitli)
             raise AyarHatasi(
                 f"MEB eğitim soruları hazırlanmamış. Önce MEB kitapçıklarını {pdf_klasoru} klasörüne koyup "
-                f"meb-pdf{klasor_eki}{veri_eki}, sonra veri-hazirla{veri_eki} çalıştır (TurkishMMLU yalnız değerlendirme içindir)."
+                f"{okuma}{klasor_eki}{veri_eki}, sonra veri-hazirla{veri_eki} çalıştır (TurkishMMLU yalnız değerlendirme içindir)."
             )
         meb_egitim = SoruVeri(vk / "meb_egitim.npz")
         meb_dogrulama = SoruVeri(vk / "meb_dogrulama.npz") if (vk / "meb_dogrulama.npz").exists() else None
@@ -726,9 +738,10 @@ def _egit(
         # Yarıda kalan --uzerine-yaz'dan geri gelen eğitim bitmişse yapılacak bir şey yok. Bu, ayar karşılaştırmasından
         # önce söylenir: --uzerine-yaz çoğu kez yeni ayarlarla denenmiştir; geri getirme o ayarlarla da başarılı biter.
         # son.pt'ye bakmadan da önce: kenardakiler silinirken öldürülen bir --uzerine-yaz (önce son.pt.eski silinir)
-        # bitmiş eğitimi son.pt'siz bırakır; modeli (en_iyi.pt) yine geri gelir.
+        # bitmiş eğitimi son.pt'siz bırakır; modeli (en_iyi.pt) yine geri gelir. Model de silinmişse (yalnız kaydı geri
+        # geldi) "zaten bitmiş" denmez: değerlendirilecek model yok; aşağıdaki "sürdürülecek eğitim yok" iletisi verilir.
         eski = egitim_durumu_oku(klasor) or {}
-        if eski.get("durum") in BITMIS_DURUMLAR:
+        if eski.get("durum") in BITMIS_DURUMLAR and (en_iyi_yol.exists() or son_yol.exists()):
             neden = "erken durdurmayla" if eski["durum"] == "erken_durdu" else f"adım {eski.get('adim')}/{eski.get('toplam_adim')}"
             for yarim in klasor.glob("*.yaziliyor"):
                 yarim.unlink(missing_ok=True)
@@ -812,8 +825,13 @@ def _egit(
         tdk_kn = kontrol_noktasi_yukle(kaynak, cihaz)
         tokenizer_uyumu(tdk_kn, tok, kaynak)
         farklar = ayar_farklari(tdk_kn["ayarlar"], ayarlar, devam=False)
-        if farklar:
-            raise AyarHatasi("TDK modelinin mimarisi şimdiki ayarlardan farklı:\n  • " + "\n  • ".join(farklar))
+        if farklar:  # adı açıkça verilen deneyde olur (türetilen ad mimariyle değişir): sonraki adımlar yazılır
+            raise AyarHatasi(
+                "TDK modelinin mimarisi şimdiki ayarlardan farklı:\n  • " + "\n  • ".join(farklar)
+                + "\nTDK modelini şimdiki ayarlarla yeniden eğitmek için (eski TDK modeli silinir): python -m turkce_model "
+                f"egit --asama tdk --uzerine-yaz{komut_eki}\nKayıtlı TDK modelinden başlamak için ayarı kayıtlı değerine "
+                "geri al; yeni mimariyi ayrı bir deneyde denemek için --deney <ad> ver."
+            )
         durumu_yukle(model, tdk_kn, kaynak)
         gorulen = int(tdk_kn.get("gorulen_token", 0))  # görülen token birikimlidir: TDK aşaması dahil
         baslangic = {"kosu": tdk_kn.get("kosu"), "adim": tdk_kn.get("adim")}
