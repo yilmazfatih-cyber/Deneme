@@ -20,15 +20,17 @@ enum Sekme: CaseIterable {
     }
 }
 
-/// Arka plan, açık sekme ve alttaki sekme çubuğu. Çeviri oturumu da burada açılır.
+/// Arka plan, açık sekme, alttaki sekme çubuğu ve Tanılama sayfası. Çeviri oturumu ve VoiceOver duyuruları da burada.
 struct KokEkran: View {
-    @State private var durum: Durum
+    /// Uygulama boyunca tek örnek; `CeviriApp` oluşturur (Ön-5).
+    let durum: Durum
     @State private var sekme: Sekme
+    @State private var tanilamaAcik: Bool
 
-    /// Parametreler önizlemeler içindir; uygulama `KokEkran()` ile açılır.
-    init(durum: Durum? = nil, sekme: Sekme = .ceviri) {
-        _durum = State(initialValue: durum ?? Durum())
+    init(durum: Durum, sekme: Sekme = .ceviri, tanilamaAcik: Bool = false) {
+        self.durum = durum
         _sekme = State(initialValue: sekme)
+        _tanilamaAcik = State(initialValue: tanilamaAcik)
     }
 
     var body: some View {
@@ -42,16 +44,55 @@ struct KokEkran: View {
             switch sekme {
             case .ceviri:  CeviriEkrani(durum: durum)
             case .gecmis:  GecmisEkrani(durum: durum)
-            case .ayarlar: AyarlarEkrani()
+            case .ayarlar: AyarlarEkrani(tanilamaAcik: $tanilamaAcik)
             }
         }
         .safeAreaInset(edge: .bottom) {
             SekmeCubugu(secili: $sekme)
         }
         // Apple'ın çeviri oturumu yalnızca bu yolla alınabiliyor.
-        // `ayar` dolunca çalışır, nil olunca iptal edilir.
+        // `ayar` dolunca çalışır; Durdur'dan sonra eski oturum Durum'daki kimlik denetimiyle durur.
         .translationTask(durum.ayar) { oturum in
             await durum.calistir(oturum)
+        }
+        .sheet(isPresented: $tanilamaAcik) {
+            TanilamaEkrani()
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+                .presentationBackground(Renk.zemin)
+                .preferredColorScheme(.dark)
+        }
+        // Durum değişimleri VoiceOver'a duyurulur (B-5, tasarim § 5.3).
+        .onChange(of: durum.asama) { eski, yeni in
+            asamaDegisti(eski, yeni)
+        }
+        .onChange(of: durum.hata) { _, yeni in
+            if let yeni { duyur(yeni) }
+        }
+        .onChange(of: durum.hat.kulaklik) { eski, yeni in
+            guard (eski == nil) != (yeni == nil) else { return }
+            duyur(yeni == nil ? "Kulaklık bağlantısı koptu" : "Kulaklık bağlandı")
+        }
+        .onChange(of: durum.satirlar.count) { eski, yeni in
+            guard yeni > eski, let son = durum.satirlar.last else { return }
+            duyur(son.ceviri)
+        }
+    }
+
+    private func asamaDegisti(_ eski: Asama, _ yeni: Asama) {
+        switch yeni {
+        case .dinliyor:
+            if case .kesintide = eski {
+                duyur("Dinleme sürüyor")
+            } else {
+                duyur("Dinleme başladı")
+            }
+        case .kesintide:
+            if let metin = yeni.duraklatmaMetni { duyur(metin) }
+        case .duruyor:
+            if durum.hata == nil { duyur("Dinleme durdu") }
+        case .hazirlaniyor:
+            duyur("Hazırlanıyor")
         }
     }
 }
@@ -59,6 +100,7 @@ struct KokEkran: View {
 /// Altta yüzen, kapsül biçimli sekme çubuğu.
 struct SekmeCubugu: View {
     @Binding var secili: Sekme
+    @ScaledMetric(relativeTo: .body) private var simgeBoyu: CGFloat = 21
 
     var body: some View {
         HStack(spacing: 4) {
@@ -67,15 +109,18 @@ struct SekmeCubugu: View {
                     secili = s
                 } label: {
                     VStack(spacing: 4) {
-                        Image(systemName: s.simge).font(.system(size: 21, weight: .semibold))
+                        Image(systemName: s.simge)
+                            .font(.system(size: simgeBoyu, weight: .semibold))
+                            .accessibilityHidden(true)
                         Text(s.ad).font(.caption.weight(.semibold))
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
-                    .foregroundStyle(secili == s ? Renk.mavi : Color.white)
+                    .foregroundStyle(secili == s ? Renk.maviMetin : Color.white)
                     .background(secili == s ? Renk.alan : Color.clear, in: Capsule())
                     .contentShape(Capsule())   // simgenin çevresine dokunmak da sekmeyi açsın
                 }
+                .accessibilityLabel(s.ad)
                 .accessibilityAddTraits(secili == s ? .isSelected : [])
             }
         }
@@ -84,5 +129,8 @@ struct SekmeCubugu: View {
         .overlay(Capsule().stroke(Color.white.opacity(0.12), lineWidth: 1))
         .padding(.horizontal, 28)
         .padding(.bottom, 4)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Sekmeler")
     }
 }
