@@ -12,11 +12,13 @@ Bu dosya `canli-ceviri/` klasörü içindir; depo kökündeki `CLAUDE.md` Köpr�
    sınıf konulardır; kulaklık bağlı değilse ekran bunu açıkça söyler.
 2. **Mikrofon karşıya, ses kulağa:** Dinleyen her zaman iPhone'un mikrofonudur. AirPods'un mikrofonu açılmaz; açılırsa
    kulaklıktaki ses telefon görüşmesi kalitesine düşer.
-3. **Cihazda ve gizli:** Tanıma ve çeviri cihazda yapılır; konuşma metni telefondan çıkmaz. İki istisna vardır ve ikisi
-   de ekranda söylenir: cihazda tanıması olmayan dillerde tanıma Apple'ın sunucusunda yapılır; kullanıcı anahtar girdiyse
-   Türkçe çeviri metni Alania'ya gider. Tanılama kaydı konuşma içeriği ve cihaz adı tutmaz.
-4. **Gecikme düşmandır:** Cümle bitince çeviri hemen görünür ve okunur. Hiçbir adım dinlemeyi bekletmez; ağ hatası
-   akışı durdurmaz.
+3. **Cihazda ve gizli:** Varsayılan motorda tanıma ve çeviri cihazda yapılır; konuşma metni telefondan çıkmaz. Üç
+   istisna vardır ve üçü de ekranda söylenir: cihazda tanıması olmayan dillerde tanıma Apple'ın sunucusunda yapılır;
+   kullanıcı Alania anahtarı girdiyse Türkçe çeviri metni Alania'ya gider; kullanıcı Soniox anahtarı girip bulut motorunu
+   seçtiyse karşıdakinin sesi tanıma ve çeviri için Soniox'a gider. Tanılama kaydı hiçbir motorda konuşma içeriği, cihaz
+   adı ya da anahtar tutmaz.
+4. **Gecikme düşmandır:** Cümle bitince çeviri hemen görünür ve okunur. Hiçbir adım dinlemeyi bekletmez. Cihaz motorunda
+   ağ hatası akışı durdurmaz; bulut motorunda bağlantı koparsa ekran bunu söyler (ilke 5), motor sessizce değişmez.
 5. **Sessizce bozulmaz:** Dinleme durduysa, kulaklık koptuysa ya da ses yedeğe düştüyse ekran bunu söyler.
    Ekranda "Dinliyorum" yazarken duymamak en ağır hatadır.
 6. **Tek elle, bakmadan:** Ekranda tek birincil eylem vardır (Başlat / Durdur). Dokunma alanı en az 44 pt, her denetimin
@@ -33,6 +35,7 @@ Bu dosya `canli-ceviri/` klasörü içindir; depo kökündeki `CLAUDE.md` Köpr�
 | `python3 canli-ceviri/scripts/swift-sozdizimi.py` | Swift dosyalarında sözdizimi ön denetimi (derleme değildir; bkz. aşağısı)   |
 | Dala `git push`                                   | "Canlı Çeviri (iOS derleme)" iş akışını çalıştırır: Mac'te derleme + ekranlar |
 | `node canli-ceviri/tests/web-akis.cjs`            | Web sürümünün uçtan uca akış testi (sahte tanıma, çeviri ve seslendirme)    |
+| Çözücü testi (Mac iş akışında, `swiftc` ile)      | Bulut motorunun saf mantığı: `tests/ios/cozucu-testi.swift` (Mac gerekir)   |
 | `npm run check` (depo kökünde)                    | Depo geneli denetim; `.github/` ve kök yapılandırma değiştiyse çalıştırılır |
 
 Mac derlemesi yalnızca `canli-ceviri/CanliCeviri/**`, `CanliCeviri.xcodeproj/**` ya da iş akışı dosyası değişince çalışır.
@@ -43,12 +46,14 @@ Sonucu ve kaydı GitHub Actions'tan okunur; simülatör ekran görüntüleri `ca
 | Yol                                                                                                 | Sahibi           |
 | --------------------------------------------------------------------------------------------------- | ---------------- |
 | `CLAUDE.md`, `docs/PLAN.md`, `docs/ROADMAP.md`, `docs/EKIP.md`, `docs/sprints/*/brief.md`, `demo.md` | ceviri-lideri    |
-| `CanliCeviri/`, `CanliCeviri.xcodeproj/`, `scripts/`, `.github/workflows/canli-ceviri-ios.yml`      | ios-gelistirici  |
-| `web/`, `tests/`                                                                                    | web-gelistirici  |
+| `CanliCeviri/`, `CanliCeviri.xcodeproj/`, `scripts/`, `tests/ios/`, `.github/workflows/canli-ceviri-ios.yml` | ios-gelistirici  |
+| `web/`, `tests/` (`tests/ios/` hariç)                                                               | web-gelistirici  |
 | `docs/ses-hatti.md`                                                                                 | ses-uzmani       |
 | `docs/tasarim.md`                                                                                   | arayuz-denetcisi |
 | `docs/cihaz-testi.md`                                                                               | kalite-sorumlusu |
 | `README.md`                                                                                         | ceviri-lideri    |
+| `docs/yayin.md`                                                                                     | ceviri-lideri    |
+| `docs/buyume/`                                                                                      | buyume-sorumlusu |
 
 Ajanlar birbirinin dosyasını değiştirmez; geri bildirim `docs/sprints/SNN/reviews/<ajan>-<tur>.md` dosyasına yazılır.
 Her bulgu: **önem** (Engel / Önemli / Öneri) + **yer** (dosya:satır ya da ekran) + **somut düzeltme önerisi**.
@@ -56,8 +61,11 @@ Engel varsa iş geri döner; Önemli olanlar aynı sprintte kapanır; Öneriler 
 
 ## Mimari özeti
 
-- **Akış:** iPhone mikrofonu → konuşma tanıma (Speech, cihazda) → çeviri (Translation, cihazda) → Türkçe ses
-  (Alania-2, anahtar yoksa ya da ulaşılamazsa Apple sesi) → AirPods.
+- **Akış (cihaz motoru, varsayılan):** iPhone mikrofonu → konuşma tanıma (Speech, cihazda) → çeviri (Translation,
+  cihazda) → Türkçe ses (Alania-2, anahtar yoksa ya da ulaşılamazsa Apple sesi) → AirPods.
+- **Akış (bulut motoru, isteğe bağlı):** iPhone mikrofonu → Soniox (tanıma ve çeviri tek akışta, WebSocket) → aynı
+  Türkçe ses sırası → AirPods. Yalnız Soniox anahtarı girilip Ayarlar'da seçilince çalışır; ses yolu ve mikrofon iki
+  motorda aynıdır. Protokol özeti `docs/sprints/S02/brief.md` içindedir.
 - **Dosyalar:** `Sabitler.swift` (diller, süreler, renkler) · `Durum.swift` (ekranların paylaştığı durum, çeviri döngüsü) ·
   `Hat.swift` (mikrofon, cümle ayırma, seslendirme, kesintiler) · `Tanilama.swift` (cihazda tutulan olay kaydı) ·
   `Anahtarlik.swift` (Alania anahtarı, Anahtar Zinciri) · `Arayuz/` (ekranlar ve bileşenler; Tanılama sayfası dahil).
@@ -78,7 +86,8 @@ Engel varsa iş geri döner; Önemli olanlar aynı sprintte kapanır; Öneriler 
 - [ ] Değişen her ekranın simülatör görüntüsü sprint klasöründe; arayüz incelemesinde Engel yok
 - [ ] Her denetimin VoiceOver etiketi var; dokunma alanları en az 44 pt; en büyük Dinamik Yazı boyutunda metin kesilmiyor
 - [ ] Hata durumunda ekranda Türkçe, ne yapılacağını söyleyen bir açıklama var; sessiz başarısızlık yok
-- [ ] Konuşma ya da çeviri metni cihaz dışına çıkmıyor ve Tanılama kaydına yazılmıyor
+- [ ] Cihaz motorunda konuşma ya da çeviri metni cihaz dışına çıkmıyor; hiçbir motorda Tanılama kaydına yazılmıyor;
+      bulut motorunda sesin Soniox'a gittiği ekranda yazıyor
 - [ ] Web sürümü değiştiyse `node canli-ceviri/tests/web-akis.cjs` yeşil
 - [ ] Gerçek cihazda denenmesi gereken her şey `docs/cihaz-testi.md` içinde adım adım yazılı
 

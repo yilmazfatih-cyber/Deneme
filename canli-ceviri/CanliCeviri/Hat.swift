@@ -904,6 +904,9 @@ final class Hat {
         sesSirasinaEkle.yield((sesNo, metin))
     }
 
+    /// Çalan ya da sırada bekleyen çeviri sesi var mı (yalnız okunur; S03 KR2: süre dolunca çalan çeviri bitirilir).
+    var sesSuruyor: Bool { sesGorevi != nil || sirada > 0 }
+
     /// S4: kesinti yüzünden okunmayan çeviri ekranda söylenir (not türü başına tek not).
     private func okunmadiNotu() {
         Tanilama.ortak.kaydet("ses", "atlandı (kesinti)")

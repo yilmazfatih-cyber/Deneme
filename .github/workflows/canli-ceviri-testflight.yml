@@ -1,0 +1,209 @@
+name: Canlı Çeviri (TestFlight'a yükle)
+
+# iPhone uygulamasını GitHub'ın Mac makinesinde arşivler, App Store için imzalar ve App Store Connect'e yükler.
+# Yükleme 10–30 dakika sonra iPhone'daki TestFlight uygulamasında görünür; Xcode ve Mac gerekmez.
+# Elle başlatılır (Actions → bu iş akışı → Run workflow) ve yalnız varsayılan dalda çalışır.
+# Gerekli gizli değerler (Settings → Secrets and variables → Actions):
+#   ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8 (App Store Connect API anahtarının .p8 içeriği), APPLE_TEAM_ID.
+# Gizli değerler hiçbir adımda kayda yazılmaz; saklanan kayıt dosyalarından da silinir.
+on:
+  workflow_dispatch:
+    inputs:
+      surum_notu:
+        description: 'Sürüm notu (isteğe bağlı; iş özetine yazılır)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: canli-ceviri-testflight
+  cancel-in-progress: false
+
+jobs:
+  yukle:
+    runs-on: macos-latest
+    timeout-minutes: 45
+    env:
+      YAPI_NO: ${{ github.run_number }}
+    steps:
+      - name: Dal denetimi
+        env:
+          VARSAYILAN: ${{ github.event.repository.default_branch }}
+        run: |
+          if [ "$GITHUB_REF_NAME" != "$VARSAYILAN" ]; then
+            echo "::error title=Yanlış dal::Bu iş yalnız '$VARSAYILAN' dalında çalışır; siz '$GITHUB_REF_NAME' dalını seçtiniz. Run workflow menüsünde '$VARSAYILAN' dalını seçip yeniden başlatın. Hiçbir şey yüklenmedi."
+            exit 1
+          fi
+          echo "Dal: $GITHUB_REF_NAME (varsayılan dal)"
+
+      - name: Gizli değerleri denetle
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          # Yalnız adlar yazılır; değerler asla.
+          eksik=""
+          for ad in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8 APPLE_TEAM_ID; do
+            if [ -z "${!ad:-}" ]; then
+              eksik="$eksik $ad"
+            fi
+          done
+          if [ -n "$eksik" ]; then
+            echo "::error title=Eksik gizli değer::Şu gizli değerler girilmemiş:$eksik. GitHub'da Settings → Secrets and variables → Actions → New repository secret ile ekleyip işi yeniden başlatın."
+            exit 1
+          fi
+          if ! printf '%s' "$ASC_KEY_P8" | grep -q "BEGIN PRIVATE KEY"; then
+            echo "::error title=ASC_KEY_P8 biçimi::ASC_KEY_P8 bir .p8 dosyasının içeriğine benzemiyor. Dosyayı metin düzenleyiciyle açıp '-----BEGIN PRIVATE KEY-----' satırından '-----END PRIVATE KEY-----' satırına dek hepsini yapıştırın."
+            exit 1
+          fi
+          echo "Dört gizli değer de girilmiş."
+
+      - uses: actions/checkout@v4
+
+      - name: Xcode sürümü
+        run: |
+          xcodebuild -version
+          xcodebuild -list -project canli-ceviri/CanliCeviri.xcodeproj
+
+      - name: API anahtarını geçici klasöre yaz
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          set -euo pipefail
+          umask 077
+          klasor="$RUNNER_TEMP/asc"
+          mkdir -p "$klasor"
+          chmod 700 "$klasor"
+          anahtar="$klasor/AuthKey_${ASC_KEY_ID}.p8"
+          printf '%s\n' "$ASC_KEY_P8" > "$anahtar"
+          chmod 600 "$anahtar"
+          echo "ASC_ANAHTAR_YOLU=$anahtar" >> "$GITHUB_ENV"
+          echo "Anahtar dosyası yazıldı (yalnız bu iş okuyabilir; iş bitince silinir)."
+
+      - name: Arşivle (Release, App Store için imzalı)
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          set -o pipefail
+          echo "Yapı numarası: $YAPI_NO"
+          ARSIV="$RUNNER_TEMP/CanliCeviri.xcarchive"
+          durum=0
+          xcodebuild archive \
+            -project canli-ceviri/CanliCeviri.xcodeproj \
+            -scheme CanliCeviri \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$ARSIV" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+            CURRENT_PROJECT_VERSION="$YAPI_NO" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_ANAHTAR_YOLU" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            > arsiv.log 2>&1 || durum=$?
+          echo "== Arşiv: hata ve uyarı satırları =="
+          grep -E -A4 "(: error:|error: |: warning:|^warning: )" arsiv.log || echo "(yok)"
+          if [ "$durum" -ne 0 ] || ! grep -q "ARCHIVE SUCCEEDED" arsiv.log; then
+            echo "== Kaydın sonu =="
+            tail -40 arsiv.log
+            echo "::error title=Arşiv başarısız::Uygulama arşivlenemedi. Yukarıdaki 'error' satırları nedeni söyler; imza ya da hesapla ilgiliyse kaydı ekibe gönderin."
+            exit 1
+          fi
+          echo "Arşiv tamam: ARCHIVE SUCCEEDED"
+
+      - name: Dışa aktar ve App Store Connect'e yükle
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          set -o pipefail
+          ARSIV="$RUNNER_TEMP/CanliCeviri.xcarchive"
+          DISA="$RUNNER_TEMP/disa-aktarma"
+          ayarlar="$RUNNER_TEMP/ExportOptions.plist"
+          cp canli-ceviri/scripts/ExportOptions.plist "$ayarlar"
+          /usr/libexec/PlistBuddy -c "Add :teamID string $APPLE_TEAM_ID" "$ayarlar"
+          durum=0
+          xcodebuild -exportArchive \
+            -archivePath "$ARSIV" \
+            -exportPath "$DISA" \
+            -exportOptionsPlist "$ayarlar" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_ANAHTAR_YOLU" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            > yukleme.log 2>&1 || durum=$?
+          echo "== Yükleme: hata ve uyarı satırları =="
+          grep -E -A4 "(: error:|error: |: warning:|^warning: )" yukleme.log || echo "(yok)"
+          if [ "$durum" -ne 0 ] || ! grep -q "EXPORT SUCCEEDED" yukleme.log; then
+            echo "== Kaydın sonu =="
+            tail -40 yukleme.log
+            echo "::error title=Yükleme başarısız::Uygulama App Store Connect'e yüklenemedi. Yukarıdaki 'error' satırları nedeni söyler."
+            exit 1
+          fi
+          echo "::notice title=Yükleme tamam::Yükleme tamam; TestFlight'ta 10–30 dakika içinde görünür (yapı $YAPI_NO)."
+          echo "Yükleme tamam; TestFlight'ta 10–30 dakika içinde görünür."
+
+      - name: İş özeti
+        if: always()
+        env:
+          SURUM_NOTU: ${{ inputs.surum_notu }}
+          ISIN_DURUMU: ${{ job.status }}
+        run: |
+          {
+            echo "## Canlı Çeviri → TestFlight"
+            echo ""
+            echo "- Yapı numarası: $YAPI_NO"
+            echo "- Commit: $GITHUB_SHA"
+            if [ "$ISIN_DURUMU" = "success" ]; then
+              echo "- Sonuç: Yükleme tamam; TestFlight'ta 10–30 dakika içinde görünür."
+            else
+              echo "- Sonuç: Yükleme yapılmadı. Kayıtta kırmızı işaretli adıma bakın."
+            fi
+            if [ -n "$SURUM_NOTU" ]; then
+              echo ""
+              echo "### Sürüm notu"
+              echo ""
+              printf '%s\n' "$SURUM_NOTU"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Kayıtlardan gizli değerleri temizle
+        if: always()
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          # xcodebuild komut satırını kayda yazar; saklanan kopyada kimlikler gizlenir.
+          for dosya in arsiv.log yukleme.log; do
+            [ -f "$dosya" ] || continue
+            for deger in "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$APPLE_TEAM_ID"; do
+              [ -n "$deger" ] || continue
+              LC_ALL=C sed -i '' "s|$deger|***|g" "$dosya"
+            done
+          done
+
+      - name: Kayıtları sakla
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: testflight-kaydi
+          path: |
+            arsiv.log
+            yukleme.log
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: API anahtarını sil
+        if: always()
+        run: |
+          rm -rf "$RUNNER_TEMP/asc" "$RUNNER_TEMP/ExportOptions.plist"
+          echo "Geçici anahtar dosyası silindi."

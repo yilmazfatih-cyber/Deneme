@@ -8,13 +8,16 @@
 | 23.11.2026 | AirPods durum satırı; web deneme sürümü ve akış testi; `/canli-ceviri/` altında yayın                       |
 | 25.11.2026 | Mac derleme iş akışı: uygulama ilk kez derlendi (Xcode 26.6; derleyici hatası ve uyarısı yok); ekip ve anayasa kuruldu |
 | 25.11.2026 | S01: ses hattı ve tasarım şartnameleri, Tanılama (iPhone ve web), Anahtar Zinciri, aşama (hazırlanıyor / dinliyor / duraklatıldı), erişilebilirlik ve büyük yazı, cihaz testi belgesi; Mac derlemesi Debug ve Release, uyarıda kırılır; 13 simülatör görüntüsü |
+| 25.11.2026 | S01 tur 4 yayına alındı (PR #25); canlı web sayfası doğrulandı (sahte mikrofon ve çeviriyle)                 |
 
 ## Sprintler
 
 | Sprint | Hedef                                                                                                   | Durum   |
 | ------ | ------------------------------------------------------------------------------------------------------- | ------- |
 | S01    | Cihaz denemesine hazır sürüm: bağımsız kod incelemesi, Tanılama, anahtarın Anahtar Zinciri'nde saklanması, erişilebilirlik, simülatör ekran görüntüleri, cihaz testi belgesi | otomatik kapı ve uzman incelemesi geçti; **insan kapısını bekliyor** (`docs/sprints/S01/demo.md`) |
-| S02    | Cihaz denemesinden çıkan sorunlar (proje sahibinin `docs/cihaz-testi.md` sonuçlarına göre)               | bekliyor |
+| S02    | İkinci motor: bulut hattı (Soniox). Görev tanımı yazıldı; proje sahibinin isteğiyle **beklemede** (25.11.2026) | beklemede |
+| S03    | Ödeme ve App Store hazırlığı: haftalık abonelik, günlük ücretsiz süre, gizlilik sayfası, yayın kılavuzu, büyüme ajanı | sürüyor |
+| S04    | Cihaz denemesinden çıkan sorunlar (proje sahibinin `docs/cihaz-testi.md` sonuçlarına göre)               | bekliyor |
 
 ## Birikim (öncelik sırasıyla)
 

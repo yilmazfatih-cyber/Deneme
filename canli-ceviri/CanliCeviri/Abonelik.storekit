@@ -1,0 +1,71 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "tr",
+        "policyText" : "",
+        "policyURL" : "https://yilmazfatih-cyber.github.io/Deneme/canli-ceviri/gizlilik.html"
+      }
+    ]
+  },
+  "identifier" : "C3A1B2D4",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "tr",
+    "_storefront" : "TUR",
+    "_storeKitErrors" : [
+
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21000001",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "Canlı Çeviri Sınırsız",
+          "locale" : "tr"
+        }
+      ],
+      "name" : "Canlı Çeviri Sınırsız",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "49.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6700000001",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Sınırsız dinleme süresi",
+              "displayName" : "Sınırsız çeviri (haftalık)",
+              "locale" : "tr"
+            }
+          ],
+          "productID" : "canliceviri.sinirsiz.haftalik",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Sınırsız haftalık",
+          "subscriptionGroupID" : "21000001",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

@@ -19,6 +19,7 @@ from pathlib import Path
 KOK = Path(__file__).resolve().parent.parent
 KAYNAK = KOK / "CanliCeviri"
 PROJE = KOK / "CanliCeviri.xcodeproj" / "project.pbxproj"
+SEMALAR = KOK / "CanliCeviri.xcodeproj" / "xcshareddata" / "xcschemes"
 
 
 def swift_denetle(dosyalar):
@@ -69,7 +70,47 @@ def proje_denetle():
         print(f"SORUN  {PROJE.relative_to(KOK)}: tanımsız başvuru {tanimsiz or proje['rootObject']}")
         return 1
     print(f"TAMAM  {PROJE.relative_to(KOK)} ({len(nesneler)} nesne, tüm başvurular tanımlı)")
-    return 0
+    return sema_denetle(nesneler)
+
+
+def sema_denetle(nesneler):
+    """Paylaşılan şemalar: XML okunur mu, hedef kimlikleri projede var mı, StoreKit dosyası yerinde mi."""
+    import xml.etree.ElementTree as ET
+
+    sorun = 0
+    for yol in sorted(SEMALAR.glob("*.xcscheme")):
+        ad = yol.relative_to(KOK)
+        try:
+            kok = ET.parse(yol).getroot()
+        except ET.ParseError as hata:
+            print(f"SORUN  {ad}: XML okunamadı ({hata})")
+            sorun += 1
+            continue
+        bulunan = []
+        for ref in kok.iter("BuildableReference"):
+            kimlik = ref.get("BlueprintIdentifier")
+            if kimlik not in nesneler:
+                bulunan.append(f"tanımsız hedef {kimlik}")
+            if ref.get("ReferencedContainer") != "container:CanliCeviri.xcodeproj":
+                bulunan.append(f"beklenmeyen kap {ref.get('ReferencedContainer')}")
+        arsiv = kok.find("ArchiveAction")
+        if arsiv is None or arsiv.get("buildConfiguration") != "Release":
+            bulunan.append("ArchiveAction Release değil")
+        for eylem in kok:
+            sk = eylem.find("StoreKitConfigurationFileReference")
+            if sk is None:
+                continue
+            if eylem.tag != "LaunchAction":
+                bulunan.append(f"StoreKit yapılandırması {eylem.tag} içinde (yalnız LaunchAction olmalı)")
+            # Yol, xcshareddata klasörüne göredir (Xcode'un yazdığı "../../…" biçimi).
+            hedef = (SEMALAR.parent / sk.get("identifier", "")).resolve()
+            if not hedef.is_file():
+                bulunan.append(f"StoreKit dosyası yok: {sk.get('identifier')}")
+        sorun += len(bulunan)
+        print(("TAMAM  " if not bulunan else "SORUN  ") + str(ad))
+        for satir in bulunan:
+            print(f"    {satir}")
+    return sorun
 
 
 def main():

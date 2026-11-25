@@ -9,6 +9,7 @@
 //   Hat.swift                   mikrofon, cümle ayırma, seslendirme, kesintiler
 //   Tanilama.swift              cihazda tutulan olay kaydı (içerik ve cihaz adı yazılmaz)
 //   Anahtarlik.swift            Alania anahtarı (Anahtar Zinciri)
+//   Abonelik.swift              haftalık abonelik (StoreKit 2) ve günlük ücretsiz süre
 //   Arayuz/KokEkran.swift       arka plan, sekme çubuğu, çeviri oturumu, duyurular
 //   Arayuz/*Ekrani.swift        Çeviri, Geçmiş, Ayarlar ve Tanılama ekranları
 //   Arayuz/Bilesenler.swift     kart, satır ve uyarı satırı
@@ -33,7 +34,9 @@ struct CeviriApp: App {
             return
         }
         #endif
-        _durum = State(initialValue: Durum())
+        let yeni = Durum()
+        yeni.abonelik.basla()   // işlem güncellemeleri açılıştan itibaren dinlenir (S03)
+        _durum = State(initialValue: yeni)
         ilkSekme = .ceviri
         tanilamaAcik = false
     }

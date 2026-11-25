@@ -86,9 +86,10 @@ Tasarımınıza dokunan ya da sizin adınıza verilen kararlar; istemediğiniz o
 ## Bilinen açıklar
 
 - **Gerçek cihazda hiçbir şey denenmedi.** Yukarıdaki ✓'lerin hiçbiri "telefonda çalışıyor" demek değildir.
-- **Yayındaki web sürümü eski ve bir hata taşıyor:** birkaç cümlelik bir dinlemeden sonra Tanılama sayfası açılınca ekran
-  kayıyor, "Bitti" görünmüyor (Chromium'da ölçüldü; Safari'de denenmedi). Bu sürümde düzeltildi; siz onaylayıp yayına
-  alınana dek yayındaki sayfada "Kopyala" yine çalışır, sonra sayfayı yenilemek gerekir.
+- **Önceki yayın bir hata taşıyordu:** birkaç cümlelik bir dinlemeden sonra Tanılama sayfası açılınca ekran kayıyor,
+  "Bitti" görünmüyordu (Chromium'da ölçüldü; Safari'de denenmedi). Bu sürümde düzeltildi ve 25.11.2026'da onayınızla
+  yayına alındı (PR #25). Canlı sayfa sahte mikrofon ve sahte çeviriyle yeniden denendi: `Sürüm: S01 tur 4`, üç ekran
+  boyutunda kayma yok, "Bitti" sayfayı kapatıyor. Telefonunuz eski sayfayı gösterirse bir kez yenileyin (W-0).
 - **Web yalnız Chromium'da denendi.** Safari'nin mikrofonun açıldığını ne zaman bildirdiği bilinmiyor (D34); bildirmezse
   ekran ilk kelimeye dek "Hazırlanıyor…" ya da "Mikrofon bekleniyor…" der.
 - **Web'de Alania sesi gerçek hizmetle hiç denenmedi** (test sahte hizmet kullanıyor): W-6.
@@ -105,10 +106,10 @@ Tasarımınıza dokunan ya da sizin adınıza verilen kararlar; istemediğiniz o
 
 ## Sizden beklenenler
 
-1. **Yayın onayı:** bu sürümün varsayılan dala birleştirilip GitHub Pages'te yayınlanması için onayınız gerekiyor.
-2. **Cihaz denemesi:** yukarıdaki iki kısa senaryo; sonuç ve Tanılama kopyası bir sonraki sprintin (S02) girdisi.
-3. **Mac'iniz var mı?** iPhone uygulaması telefona yalnız Mac ve Xcode ile yüklenebiliyor. Yoksa söyleyin: Mac'siz kurulum
-   (TestFlight; ücretli geliştirici hesabı gerekir) birikimde, öne alınır.
+1. **Cihaz denemesi:** yukarıdaki iki kısa senaryo; sonuç ve Tanılama kopyası bir sonraki sprintin (S02) girdisi.
+   Mac'iniz olduğunu söylediniz: iPhone uygulamasını `README.md` → "Çalıştırma" adımlarıyla yükleyip U-0 ve U-1'i de
+   deneyebilirsiniz.
+2. Yayın onayı verildi ve sürüm yayında (25.11.2026, PR #25).
 
 ## Birikime düşenler
 

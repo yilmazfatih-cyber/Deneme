@@ -5,7 +5,7 @@
 #if DEBUG
 import SwiftUI
 
-/// Brief "Sözleşmeler" tablosundaki sekiz ekran; ham değer `-ekran` argümanının değeridir.
+/// Brief "Sözleşmeler" tablosundaki ekranlar (S03: abonelik, sinir-doldu); ham değer `-ekran` argümanının değeridir.
 enum OrnekEkran: String, CaseIterable {
     case ceviriBos = "ceviri-bos"
     case ceviri
@@ -15,6 +15,8 @@ enum OrnekEkran: String, CaseIterable {
     case gecmisBos = "gecmis-bos"
     case ayarlar
     case tanilama
+    case abonelik
+    case sinirDoldu = "sinir-doldu"
 
     /// `-ekran <ad>` ile açıldıysa o ekran; yoksa nil.
     static var baslangic: OrnekEkran? {
@@ -23,7 +25,7 @@ enum OrnekEkran: String, CaseIterable {
 
     var sekme: Sekme {
         switch self {
-        case .ceviriBos, .ceviri, .dinliyor, .kulakliksiz: .ceviri
+        case .ceviriBos, .ceviri, .dinliyor, .kulakliksiz, .abonelik, .sinirDoldu: .ceviri
         case .gecmis, .gecmisBos:                         .gecmis
         case .ayarlar, .tanilama:                         .ayarlar
         }
@@ -45,6 +47,12 @@ enum OrnekEkran: String, CaseIterable {
             durum.asama = .dinliyor
         case .tanilama:
             Tanilama.ortak.ornekleDoldur()
+        case .abonelik:
+            durum.abonelik.ornekFiyat = "₺49,99"   // yalnız önizleme verisi; gerçek fiyat App Store'dan gelir
+            durum.abonelikAcik = true
+        case .sinirDoldu:
+            durum.satirlar = Satir.ornekler
+            durum.sinirMetni = Durum.sinirAciklamasi
         case .ceviriBos, .gecmisBos, .ayarlar:
             break
         }
@@ -73,5 +81,7 @@ extension Satir {
 #Preview("Geçmiş") { KokEkran(durum: OrnekEkran.gecmis.durum(), sekme: .gecmis) }
 #Preview("Geçmiş — boş") { KokEkran(durum: OrnekEkran.gecmisBos.durum(), sekme: .gecmis) }
 #Preview("Ayarlar") { KokEkran(durum: OrnekEkran.ayarlar.durum(), sekme: .ayarlar) }
+#Preview("Abonelik") { KokEkran(durum: OrnekEkran.abonelik.durum()) }
+#Preview("Süre doldu") { KokEkran(durum: OrnekEkran.sinirDoldu.durum()) }
 #Preview("Tanılama") { KokEkran(durum: OrnekEkran.tanilama.durum(), sekme: .ayarlar, tanilamaAcik: true) }
 #endif

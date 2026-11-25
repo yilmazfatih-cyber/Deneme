@@ -125,7 +125,7 @@ jobs:
             xcrun simctl io "$UDID" screenshot "ekran/$2.png"
             xcrun simctl terminate "$UDID" "$PAKET" > /dev/null 2>&1 || true
           }
-          for ad in ceviri-bos ceviri dinliyor kulakliksiz gecmis gecmis-bos ayarlar tanilama; do
+          for ad in ceviri-bos ceviri dinliyor kulakliksiz gecmis gecmis-bos ayarlar tanilama abonelik sinir-doldu; do
             cek "$ad" "$ad"
           done
           # En büyük Dinamik Yazı (AX5) boyutunda dört ekran, AX3'te Çeviri; sonra boyut eski hâline döner.
