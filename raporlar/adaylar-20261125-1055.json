@@ -1,0 +1,1078 @@
+{
+ "tarama": {
+  "an": "2026-11-25T10:55:00+03:00",
+  "kategoriler": [
+   "kemer",
+   "canta-kumas",
+   "tisort"
+  ],
+  "not": "Günlük tarama; Alibaba ilan sayfaları ve Akakçe doğrudan okundu. Baş düzeltmeleri: erkek kemerlerde aynı satıcının 3 sayfası bire indirildi ve 2'li/3'lü paketler adet başına eklendi; korse kemerde markalı ve hakiki deri kıyaslar çıkarıldı; katlanır alışveriş çantasında farklı ürün (BROCARD akordeon) çıkarıldı. Takip: silikon kapatıcılar (0,62/0,68 $ aynı; Türkiye 13 Akakçe ilanı yeniden ölçüldü), eldiven ölçüldü. Sırt çantası (0,98 $ aynı) ve saat (1,83 $ aynı) için markasız Türkiye ilanı yok; 0,97 $'lık silikon ilanında fiyat görünmedi. Kolye ve cüzdan ilanları artık yok."
+ },
+ "adaylar": [
+  {
+   "urun": "Silikon göğüs ucu kapatıcı (yapışkanlı, tekrar kullanılabilir)",
+   "kategori": "sutyen-korse",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Custom-Packaging-Box-Invisible-Adhesive-Breast_1601222520853.html",
+    "baslik": "JOGOGO Invisible Adhesive Breast Nipple Pasties Reusable Opaque Thin Silicone Nipple Cover",
+    "tedarikci": "ilan sayfasında görünmedi",
+    "fiyat_usd": 0.62,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 0.62
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 5000,
+      "fiyat_usd": 0.49
+     },
+     {
+      "min_adet": 10000,
+      "fiyat_usd": 0.42
+     }
+    ],
+    "birim_agirlik_kg": 0.02,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 43.47,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatici-fiyati,1450703058.html",
+      "baslik": "Göğüs Ucu Kapatıcı (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 70.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatan-silikon-fiyati,1178001220.html",
+      "baslik": "Göğüs Ucu Kapatan Silikon (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 82.28,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-fiyati,1178000131.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 130.2,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-silikonu-nipple-silicone-fiyati,1178001211.html",
+      "baslik": "Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 145.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-gizleyici-bant-aparat-nipple-pad-fiyati,1178004509.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı Gizleyici Bant Aparat Nipple Pad (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 155.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatici-silikon-gogus-ucu-kapatici-nipple-pad-gogus-kapama-bandi-fiyati,1098256356.html",
+      "baslik": "Göğüs Ucu Kapatıcı, Silikon Göğüs Ucu Kapatıcı, Nipple Pad (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 270.25,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-krem-gogus-ucu-kapatici-ve-diklestirici-hayalet-sutyen-hayalet-kapatici-fiyati,682485448.html",
+      "baslik": "Krem Göğüs Ucu Kapatıcı ve Dikleştirici Hayalet Kapatıcı (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 300.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-eco-port-gogus-ucu-silikon-kapatici-fiyati,1344129456.html",
+      "baslik": "Eco Port Göğüs Ucu Silikon Kapatıcı (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 301.67,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ttt-gogus-ucu-silikonu-nipple-silicone-fiyati,1177647099.html",
+      "baslik": "TTT Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 336.69,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-forwhat-buro-ev-ofis-kadini-icin-silikon-gogus-ucu-kapatici-aparat-pad-l-xl-fiyati,1177713944.html",
+      "baslik": "ForWhat Silikon Göğüs Ucu Kapatıcı Aparat Pad L-XL (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 345.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ince-silikon-nipple-cover-gorunmez-ve-iz-yapmaz-tasarim-fiyati,1427051043.html",
+      "baslik": "İnce Silikon Nipple Cover Görünmez ve İz Yapmaz (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 345.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-yapiskanli-silikon-gogus-ucu-pedi-seamless-dogal-gorunum-fiyati,1425056166.html",
+      "baslik": "Yapışkanlı Silikon Göğüs Ucu Pedi Seamless (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 345.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-tekrar-kullanilabilir-silikon-nipple-pad-gun-boyu-sabit-fiyati,1637076144.html",
+      "baslik": "Tekrar Kullanılabilir Silikon Nipple Pad (Akakçe en düşük teklif, 25.11)"
+     }
+    ],
+    "not": "25.11 yeniden ölçüm: Akakçe göğüs bandı kategorisindeki tüm silikon göğüs ucu kapatıcı ilanları (bant, destek pedi, dikleştirici aparat ve StopEver markalı hariç) + TTT ürün sayfası. 'Özel Üretim 7 cm' stokta yok, çıkarıldı. İlan başına çift/adet doğrulanmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Straplez/dekolte giyimde sürekli satan, hafif ve bedensiz aksesuar.",
+   "riskler": [
+    "Ağırlık ilanda yok, çift için 0,02 kg tahmin",
+    "Silikon ürünlerde iade yok; cilt temas ürünü",
+    "GTİP emin değil (6212.90 olabilir), gümrük sınıflaması doğrulanmalı",
+    "GTİP 6212 yerine 3926.20 (plastikten giyim aksesuarı) olabilir; vergi oranı gümrük müşavirine sorulmalı",
+    "Türkiye fiyatları 43–372 TL arasında geniş dağılıyor; ucuz ilanlar tek adet ya da düşük kalite olabilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Custom-Packaging-Box-Invisible-Adhesive-Breast_1601222520853.html",
+    "https://www.akakce.com/gogus-bandi/en-ucuz-ozel-uretim-kadin-ten-meme-ic-giyim-100-silikon-gogus-ucu-kapatan-gizleyen-ped-nipple-pad-7-cm-fiyati,1342845415.html"
+   ]
+  },
+  {
+   "urun": "Silikon göğüs ucu kapatıcı (yapışkanlı, tekrar kullanılabilir)",
+   "kategori": "sutyen-korse",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Fashion-Design-Adhesive-Cloth-Silicone-Nipple_60732202351.html",
+    "baslik": "Fashion Design Adhesive Cloth Silicone Nipple Cover",
+    "tedarikci": "ilan sayfasında görünmedi",
+    "fiyat_usd": 0.68,
+    "moq": 200,
+    "kademeler": [
+     {
+      "min_adet": 200,
+      "fiyat_usd": 0.68
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 2000,
+      "fiyat_usd": 0.49
+     }
+    ],
+    "birim_agirlik_kg": 0.02,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 43.47,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatici-fiyati,1450703058.html",
+      "baslik": "Göğüs Ucu Kapatıcı (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 70.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatan-silikon-fiyati,1178001220.html",
+      "baslik": "Göğüs Ucu Kapatan Silikon (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 82.28,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-fiyati,1178000131.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 130.2,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-silikonu-nipple-silicone-fiyati,1178001211.html",
+      "baslik": "Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 145.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-gizleyici-bant-aparat-nipple-pad-fiyati,1178004509.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı Gizleyici Bant Aparat Nipple Pad (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 155.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatici-silikon-gogus-ucu-kapatici-nipple-pad-gogus-kapama-bandi-fiyati,1098256356.html",
+      "baslik": "Göğüs Ucu Kapatıcı, Silikon Göğüs Ucu Kapatıcı, Nipple Pad (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 270.25,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-krem-gogus-ucu-kapatici-ve-diklestirici-hayalet-sutyen-hayalet-kapatici-fiyati,682485448.html",
+      "baslik": "Krem Göğüs Ucu Kapatıcı ve Dikleştirici Hayalet Kapatıcı (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 300.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-eco-port-gogus-ucu-silikon-kapatici-fiyati,1344129456.html",
+      "baslik": "Eco Port Göğüs Ucu Silikon Kapatıcı (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 301.67,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ttt-gogus-ucu-silikonu-nipple-silicone-fiyati,1177647099.html",
+      "baslik": "TTT Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 336.69,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-forwhat-buro-ev-ofis-kadini-icin-silikon-gogus-ucu-kapatici-aparat-pad-l-xl-fiyati,1177713944.html",
+      "baslik": "ForWhat Silikon Göğüs Ucu Kapatıcı Aparat Pad L-XL (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 345.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ince-silikon-nipple-cover-gorunmez-ve-iz-yapmaz-tasarim-fiyati,1427051043.html",
+      "baslik": "İnce Silikon Nipple Cover Görünmez ve İz Yapmaz (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 345.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-yapiskanli-silikon-gogus-ucu-pedi-seamless-dogal-gorunum-fiyati,1425056166.html",
+      "baslik": "Yapışkanlı Silikon Göğüs Ucu Pedi Seamless (Akakçe en düşük teklif, 25.11)"
+     },
+     {
+      "fiyat_tl": 345.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-tekrar-kullanilabilir-silikon-nipple-pad-gun-boyu-sabit-fiyati,1637076144.html",
+      "baslik": "Tekrar Kullanılabilir Silikon Nipple Pad (Akakçe en düşük teklif, 25.11)"
+     }
+    ],
+    "not": "25.11 yeniden ölçüm: Akakçe göğüs bandı kategorisindeki tüm silikon göğüs ucu kapatıcı ilanları (bant, destek pedi, dikleştirici aparat ve StopEver markalı hariç) + TTT ürün sayfası. 'Özel Üretim 7 cm' stokta yok, çıkarıldı. İlan başına çift/adet doğrulanmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Straplez/dekolte giyimde sürekli satan, hafif ve bedensiz aksesuar.",
+   "riskler": [
+    "Ağırlık ilanda yok, çift için 0,02 kg tahmin",
+    "Silikon ürünlerde iade yok; cilt temas ürünü",
+    "GTİP emin değil (6212.90 olabilir), gümrük sınıflaması doğrulanmalı",
+    "GTİP 6212 yerine 3926.20 (plastikten giyim aksesuarı) olabilir; vergi oranı gümrük müşavirine sorulmalı",
+    "Türkiye fiyatları 43–372 TL arasında geniş dağılıyor; ucuz ilanlar tek adet ya da düşük kalite olabilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Fashion-Design-Adhesive-Cloth-Silicone-Nipple_60732202351.html",
+    "https://www.akakce.com/gogus-bandi/en-ucuz-ozel-uretim-kadin-ten-meme-ic-giyim-100-silikon-gogus-ucu-kapatan-gizleyen-ped-nipple-pad-7-cm-fiyati,1342845415.html"
+   ]
+  },
+  {
+   "urun": "Erkek otomatik tokalı PU kemer",
+   "kategori": "kemer",
+   "gtip": "4203.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Belt-Male-Factory-Custom-Selling-Men_1600459863541.html",
+    "baslik": "Belt Male Factory Custom Selling Men's Business Automatic Buckle Manufacture Belt High Quality PU Leather Belt Men",
+    "tedarikci": "ilan sayfasında tedarikçi bilgisi görünmedi",
+    "fiyat_usd": 0.6,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 0.6
+     },
+     {
+      "min_adet": 300,
+      "fiyat_usd": 0.57
+     },
+     {
+      "min_adet": 3000,
+      "fiyat_usd": 0.54
+     }
+    ],
+    "birim_agirlik_kg": 0.12,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 449.88,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-dagoster-dmk26-353-siyah-4-cm-suni-deri-siyah-fiyati,986921207.html",
+      "baslik": "Dagoster DMK26-353 Siyah 4 cm Suni Deri Erkek Kemer"
+     },
+     {
+      "fiyat_tl": 449.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-deribond-siyah-erkek-130-cm-fiyati,1738812000.html",
+      "baslik": "Deribond Otomatik Kilitli Suni Deri Kemer 130 cm Siyah Erkek"
+     },
+     {
+      "fiyat_tl": 249.97,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-3-adet-erkek-kemer-siyah-4-cm-palaska-tarzi-130-cm-fiyati,1150553583.html",
+      "baslik": "3 Adet Erkek Kemer Siyah 4 cm (749,90 TL / 3)"
+     },
+     {
+      "fiyat_tl": 249.95,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-2-adet-erkek-kemer-siyah-tactical-palaska-tarzi-4-cm-105-cm-fiyati,1154886068.html",
+      "baslik": "2 Adet Erkek Kemer Siyah Tactical 4 cm (499,90 TL / 2)"
+     }
+    ],
+    "not": "Akakçe'deki markasız/pazar yeri sahte (suni) deri erkek kemerleri; DeFacto (152 ve 296,99 TL) marka olduğu için sayılmadı, 3'lü/2'li paketler dahil edilmedi. Satıcı fiyatları 449,88-449,90 TL. Baş: aynı satıcının (Dagoster) aynı fiyatlı 3 sayfası bire indirildi; avcının dışarıda bıraktığı 2'li/3'lü paketler adet başına çevrilip eklendi (TARAMA kuralı). DeFacto 152 TL markalı, alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Klasik siyah otomatik tokalı erkek kemer sürekli satan, bedeni ayarlanabilir bir günlük ihtiyaç ürünü.",
+   "riskler": [
+    "Ağırlık ilanda yok, 0,12 kg tahmin",
+    "Tedarikçi bilgisi ilan sayfasında görünmedi",
+    "Özel logo seçeneği var; markasız sipariş verilmeli",
+    "PU kalitesi (çatlama) numuneyle denenmeli"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Belt-Male-Factory-Custom-Selling-Men_1600459863541.html",
+    "https://www.akakce.com/arama/?q=suni+deri+erkek+kemer"
+   ]
+  },
+  {
+   "urun": "Erkek pimli tokalı PU kemer",
+   "kategori": "kemer",
+   "gtip": "4203.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/2024-Pu-Leather-Belts-Men-Professional_1600321987837.html",
+    "baslik": "2024 Pu Leather Belts Men Professional Belts Best Price Cheap Customize Pin Buckle Belt for Men",
+    "tedarikci": "ilan sayfasında tedarikçi bilgisi görünmedi",
+    "fiyat_usd": 0.67,
+    "moq": 50,
+    "kademeler": [
+     {
+      "min_adet": 50,
+      "fiyat_usd": 0.67
+     },
+     {
+      "min_adet": 600,
+      "fiyat_usd": 0.64
+     },
+     {
+      "min_adet": 3000,
+      "fiyat_usd": 0.61
+     }
+    ],
+    "birim_agirlik_kg": 0.12,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 449.88,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-dagoster-dmk26-353-siyah-4-cm-suni-deri-siyah-fiyati,986921207.html",
+      "baslik": "Dagoster DMK26-353 Siyah 4 cm Suni Deri Erkek Kemer"
+     },
+     {
+      "fiyat_tl": 449.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-deribond-siyah-erkek-130-cm-fiyati,1738812000.html",
+      "baslik": "Deribond Otomatik Kilitli Suni Deri Kemer 130 cm Siyah Erkek"
+     },
+     {
+      "fiyat_tl": 249.97,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-3-adet-erkek-kemer-siyah-4-cm-palaska-tarzi-130-cm-fiyati,1150553583.html",
+      "baslik": "3 Adet Erkek Kemer Siyah 4 cm (749,90 TL / 3)"
+     },
+     {
+      "fiyat_tl": 249.95,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-2-adet-erkek-kemer-siyah-tactical-palaska-tarzi-4-cm-105-cm-fiyati,1154886068.html",
+      "baslik": "2 Adet Erkek Kemer Siyah Tactical 4 cm (499,90 TL / 2)"
+     }
+    ],
+    "not": "Akakçe'deki markasız/pazar yeri sahte (suni) deri erkek kemerleri; DeFacto (152 ve 296,99 TL) marka olduğu için sayılmadı, 3'lü/2'li paketler dahil edilmedi. Satıcı fiyatları 449,88-449,90 TL. Pimli toka ile otomatik toka aynı fiyat bandında. Baş: aynı satıcının (Dagoster) aynı fiyatlı 3 sayfası bire indirildi; avcının dışarıda bıraktığı 2'li/3'lü paketler adet başına çevrilip eklendi (TARAMA kuralı). DeFacto 152 TL markalı, alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Düşük MOQ (50) ile klasik erkek kemer testi yapılabilir.",
+   "riskler": [
+    "Ağırlık ilanda yok, 0,12 kg tahmin",
+    "Tedarikçi bilgisi görünmedi",
+    "Bir önceki adayla aynı Türkiye karşılaştırması; ikisi birlikte seçilmemeli"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/2024-Pu-Leather-Belts-Men-Professional_1600321987837.html",
+    "https://www.akakce.com/arama/?q=suni+deri+erkek+kemer"
+   ]
+  },
+  {
+   "urun": "Örgü elastik kemer (unisex)",
+   "kategori": "kemer",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Fairwin-Unisex-Gift-Elastic-Braided-Belt_1600984297184.html",
+    "baslik": "Fairwin Unisex Gift Elastic Braided Belt 1 3/8\" Width Casual Golf Shorts Jeans Belts",
+    "tedarikci": "ilan sayfasında tedarikçi bilgisi görünmedi",
+    "fiyat_usd": 1.37,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 1.37
+     },
+     {
+      "min_adet": 240,
+      "fiyat_usd": 1.27
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 1.25
+     },
+     {
+      "min_adet": 3000,
+      "fiyat_usd": 1.18
+     }
+    ],
+    "birim_agirlik_kg": 0.08,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 799.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-spor-orgu-fiyati,1214674187.html",
+      "baslik": "Spor Örgü Kemer"
+     },
+     {
+      "fiyat_tl": 899.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-hediye-kutulu-spor-likrali-elastik-orgu-fiyati,1322653147.html",
+      "baslik": "Hediye Kutulu Spor Likralı Elastik Örgü Kemer"
+     }
+    ],
+    "not": "Yalnız 2 markasız örgü elastik kemer ilanı bulundu (Mavi ve Yargıcı markalı, sayılmadı). Karşılaştırma ince."
+   },
+   "taklit_riski": false,
+   "gerekce": "Deliksiz örgü elastik kemer beden derdi olmayan, hediyelik ve günlük ürün.",
+   "riskler": [
+    "Türkiye'de yalnız 2 karşılaştırma ilanı",
+    "Ağırlık 0,08 kg tahmin",
+    "GTİP (tekstil kemer) emin olunmadı, boş bırakıldı",
+    "Tedarikçi adı 'Fairwin' ilan başlığında geçiyor, marka olup olmadığı kontrol edilmeli"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Fairwin-Unisex-Gift-Elastic-Braided-Belt_1600984297184.html",
+    "https://www.akakce.com/arama/?q=orgu+elastik+kemer"
+   ]
+  },
+  {
+   "urun": "Kadın geniş korse kemer (suni deri, elastik)",
+   "kategori": "kemer",
+   "gtip": "4203.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Fashion-Corset-Wide-Belts-Faux-Leather_1601632071559.html",
+    "baslik": "Fashion Corset Wide Belts Faux Leather Slimming Body Shaping Girdle Belt for Women Elastic Tight High Waist for Daily Wear",
+    "tedarikci": "ilan sayfasında tedarikçi bilgisi görünmedi",
+    "fiyat_usd": 0.78,
+    "moq": 10,
+    "kademeler": [
+     {
+      "min_adet": 10,
+      "fiyat_usd": 0.78
+     },
+     {
+      "min_adet": 300,
+      "fiyat_usd": 0.75
+     },
+     {
+      "min_adet": 4000,
+      "fiyat_usd": 0.7
+     },
+     {
+      "min_adet": 80000,
+      "fiyat_usd": 0.5
+     }
+    ],
+    "birim_agirlik_kg": 0.1,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 177.55,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-modam-hifa-tasli-elastik-kadin-elbise-i-gomlek-i-fiyati,1797316370.html",
+      "baslik": "MODAM HİFA Taşlı Elastik Kadın Kemer Elbise Kemeri Gömlek Kemeri"
+     }
+    ],
+    "not": "Birebir geniş korse kemer ilanı Akakçe'de bulunamadı; benzer kadın elbise kemerleri alındı. Son iki ilan deri (muhtemelen hakiki), ortancayı yukarı çekiyor; Tudors 340 TL ve MODAM 177 TL daha gerçekçi alt sınır. Baş: Tudors (marka) ve iki hakiki deri kemer (farklı ürün) çıkarıldı; birebir korse kemer ilanı yok, tek yakın ilan kaldı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Elbise ve kaban üstü geniş kemer kış kombininde kadınlar arasında popüler.",
+   "riskler": [
+    "Türkiye karşılaştırması birebir değil, oran şişkin olabilir",
+    "Ağırlık 0,10 kg tahmin",
+    "Elastik/kumaş karışımı ise GTİP 4203.30 yerine tekstil kemer olabilir",
+    "Beden aralığı (S-XL) tedarikçiyle netleşmeli"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Fashion-Corset-Wide-Belts-Faux-Leather_1601632071559.html",
+    "https://www.akakce.com/arama/?q=kadin+kemer"
+   ]
+  },
+  {
+   "urun": "Dokunmatik ekran uyumlu örgü kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Solid Magic Gloves Capacitive Mobile Phone Smartphone Texting Touchscreen Gloves Knit Hot Winter Warm Mittens",
+    "tedarikci": "ilan sayfasında tedarikçi bilgisi görünmedi",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 36,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 60,
+      "fiyat_usd": 0.44
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.06,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 248.57,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kislik-eldiven/en-ucuz-axe-sportswear-kadin-kislik-yumusak-dokulu-triko-orgu-eldiven-bas-ve-isaret-parmak-dokunmatik-ekran-uyumlu-telefon-tablet-kullanimli-soguktan-koruyucu-sicak-tutan-eldiven-fiyati,1798876458.html",
+      "baslik": "AXE Sportswear Kadın Kışlık Triko Örgü Eldiven Dokunmatik"
+     }
+    ],
+    "not": "Takip: Akakçe'de markasız dokunmatik örgü eldiven olarak yalnız AXE Sportswear bulundu (motosiklet/bisiklet dokunmatik eldivenleri farklı ürün, sayılmadı). Önceki İdefix 302,60 TL ilanı bu turda doğrulanamadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kışlık dokunmatik örgü eldiven hediyelik ve günlük ürün olarak sezonda sürekli satılır.",
+   "riskler": [
+    "Tek Türkiye karşılaştırması",
+    "Ağırlık ilanda yok, 0,06 kg tahmin",
+    "Alibaba fiyatı önceki ölçümle aynı (0,66 $ @12, 0,33 $ @120)",
+    "Tedarikçi bilgisi görünmedi"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.akakce.com/arama/?q=dokunmatik+orgu+eldiven"
+   ]
+  },
+  {
+   "urun": "Katlanabilir polyester alışveriş çantası (kılıfına katlanır)",
+   "kategori": "canta-kumas",
+   "gtip": "4202.22.90",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Custom-Eco-friendly-Carry-Packaging-Reusable_1600512383899.html",
+    "baslik": "Custom Eco-friendly Reusable Polyester Tote Bag, Foldable Portable Grocery Shopping Bag",
+    "tedarikci": "ilan sayfasında firma adı görünmedi",
+    "fiyat_usd": 0.39,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 0.39
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 0.37
+     },
+     {
+      "min_adet": 50000,
+      "fiyat_usd": 0.35
+     },
+     {
+      "min_adet": 100000,
+      "fiyat_usd": 0.19
+     }
+    ],
+    "birim_agirlik_kg": 0.08,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 151.71,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/omuz-cantasi/en-ucuz-tarzinisec-tarzini-sec-katlanabilir-cepli-bez-market-cantasi-44x48-cm-kaktus-desenli-alisveris-cantasi-fiyati,1789427052.html",
+      "baslik": "Tarzını Seç Katlanabilir Cepli Bez Market Çantası 44x48 - Kaktüs"
+     },
+     {
+      "fiyat_tl": 172.66,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/omuz-cantasi/en-ucuz-tarzinisec-tarzini-sec-katlanabilir-cepli-bez-market-cantasi-44x48-cm-avokado-desenli-alisveris-cantasi-fiyati,1792445363.html",
+      "baslik": "Tarzını Seç Katlanabilir Cepli Bez Market Çantası 44x48 - Avokado"
+     },
+     {
+      "fiyat_tl": 153.65,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/omuz-cantasi/en-ucuz-tarzinisec-tarzini-sec-katlanabilir-cepli-bez-market-cantasi-44x48-cm-kiraz-desenli-alisveris-cantasi-fiyati,1792510078.html",
+      "baslik": "Tarzını Seç Katlanabilir Cepli Bez Market Çantası 44x48 - Kiraz"
+     },
+     {
+      "fiyat_tl": 645.19,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/capraz-canta/en-ucuz-coall-charm-sik-tasarimli-katlanabilir-market-alisveris-cantasi-fiyati,1560757542.html",
+      "baslik": "Şık Tasarımlı Katlanabilir Market & Alışveriş Çantası"
+     },
+     {
+      "fiyat_tl": 650.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/omuz-cantasi/en-ucuz-zumrut-saziye-ham-bez-katlanabilir-alisveris-cantasi-hareli-baski-fiyati,1009374299.html",
+      "baslik": "Ham Bez Katlanabilir Alışveriş Çantası Hareli Baskı"
+     }
+    ],
+    "not": "Akakçe en ucuz fiyatlar (24-25.11.2026); markasız/pazar yeri katlanabilir bez ve polyester market çantaları, desenli olanlar dahil, seçici olunmadı. Türk ürünleri pamuk bez/cepli, Alibaba ürünü düz polyester; malzeme farkı var. Baş: BROCARD akordeon sırt/omuz çantası farklı ürün (ve markalı) olduğu için çıkarıldı. Türkiye ilanları pamuk bez; Alibaba ürünü polyester."
+   },
+   "taklit_riski": false,
+   "gerekce": "Katlanabilir market çantası günlük kullanımda ve hediyelik olarak sürekli satar; poşet yasağı talebi destekler.",
+   "riskler": [
+    "Ağırlık ilanda yok, 0,08 kg tahmin",
+    "Tedarikçi adı ilan sayfasında görünmedi",
+    "Ham fiyat 0,39 $ en düşük kademe; renk/boyut ve kılıf ilan başlığına bağlı, numune şart",
+    "Türkiye karşılaştırması pamuk bez ürünlere dayanıyor, polyester ürün daha ucuza satılabilir",
+    "Alibaba sayfasında fiyat kampanyası/indirim görünmedi"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Custom-Eco-friendly-Carry-Packaging-Reusable_1600512383899.html",
+    "https://www.akakce.com/arama/?q=katlanabilir+market+cantasi"
+   ]
+  },
+  {
+   "urun": "Kadın uzun kollu basic tişört (polyester, düz)",
+   "kategori": "tisort",
+   "gtip": "6109.90",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Long-Sleeve-T-shirt-for-Women_1601228719257.html",
+    "baslik": "Long Sleeve T-shirt for Women 100% Polyester Cotton Feeling USA Size High Quality OEM Wholesale Custom Sublimation Shirt",
+    "tedarikci": "ilanda görünmüyor",
+    "fiyat_usd": 1.51,
+    "moq": 5,
+    "kademeler": [
+     {
+      "min_adet": 5,
+      "fiyat_usd": 1.51
+     },
+     {
+      "min_adet": 250,
+      "fiyat_usd": 1.5
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 1.5
+     }
+    ],
+    "birim_agirlik_kg": 0.15,
+    "agirlik_kaynagi": "tahmin",
+    "indirim": {
+     "liste_fiyat_usd": 1.89,
+     "aciklama": "İlan sayfasında üstü çizili fiyat ($1.89) ve indirimli fiyat; bitiş tarihi görünmüyor"
+    }
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 521.55,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-le-touche-kadin-uzun-kollu-basic-slim-fit-bisiklet-yaka-esnek-kumas-pamuklu-fiyati,1802654909.html",
+      "baslik": "Le Touche Kadın Uzun Kollu Basic Tişört"
+     },
+     {
+      "fiyat_tl": 479.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-kadin-gloria-bisiklet-yaka-regular-fit-uzun-kollu-basic-100-pamuk-siyah-siyah-fiyati,1620533904.html",
+      "baslik": "Kadın Gloria Bisiklet Yaka Uzun Kollu Basic Tişört %100 Pamuk"
+     },
+     {
+      "fiyat_tl": 570.95,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-novalyn-shop-kadin-basic-tunik-uzun-kollu-bluz-normal-kalip-rahat-gunluk-sik-model-fiyati,1691239013.html",
+      "baslik": "Novalyn Shop Kadın Basic Uzun Kollu Tişört Bluz"
+     },
+     {
+      "fiyat_tl": 382.22,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-kadin-3-lu-basic-uzun-kollu-sporcu-body-t-shirt-ekonomik-paket-gri-fiyati,1267747351.html",
+      "baslik": "Kadın 3'lü Basic Uzun Kollu Tişört (1.146,65 TL / 3)"
+     },
+     {
+      "fiyat_tl": 764.91,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-defys-kadin-uzun-kollu-bisiklet-yaka-beyaz-fiyati,1031143735.html",
+      "baslik": "Defy's Kadın Uzun Kollu Bisiklet Yaka Tişört"
+     }
+    ],
+    "not": "Uzun kollu kadın basic tişört; markasız/az bilinen markalı 5 ilan, paketler adet başına çevrildi. Ilan polyester, Türkiye örnekleri çoğunlukla pamuklu."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kasım-Şubat'ta kat arası olarak sürekli satılan düz uzun kollu tişört.",
+   "riskler": [
+    "Kumaş polyester ('pamuk hissi'), Türkiye karşılaştırmaları pamuklu; sublimasyon baskılık beyaz/düz ürün olduğundan renk ve gramaj örnekle doğrulanmalı",
+    "Birim ağırlık ilanda yok, tahmin",
+    "Tedarikçi bilgisi sayfada görünmedi",
+    "Beden tablosu (US size)"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Long-Sleeve-T-shirt-for-Women_1601228719257.html",
+    "https://www.akakce.com/tisort/en-ucuz-le-touche-kadin-uzun-kollu-basic-slim-fit-bisiklet-yaka-esnek-kumas-pamuklu-fiyati,1802654909.html",
+    "https://www.akakce.com/tisort/en-ucuz-kadin-gloria-bisiklet-yaka-regular-fit-uzun-kollu-basic-100-pamuk-siyah-siyah-fiyati,1620533904.html",
+    "https://www.akakce.com/tisort/en-ucuz-novalyn-shop-kadin-basic-tunik-uzun-kollu-bluz-normal-kalip-rahat-gunluk-sik-model-fiyati,1691239013.html",
+    "https://www.akakce.com/tisort/en-ucuz-kadin-3-lu-basic-uzun-kollu-sporcu-body-t-shirt-ekonomik-paket-gri-fiyati,1267747351.html",
+    "https://www.akakce.com/tisort/en-ucuz-defys-kadin-uzun-kollu-bisiklet-yaka-beyaz-fiyati,1031143735.html"
+   ]
+  },
+  {
+   "urun": "Kadın dikişsiz termal uzun kollu üst içlik",
+   "kategori": "tisort",
+   "gtip": "6109.90",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Plus-Size-Women-s-Seamless-Base_1601987079761.html",
+    "baslik": "Plus Size Women's Seamless Base Layer Top Ultra Thin Women Intimates Warm Thermal Underwear Long Sleeve Winter Women Lingerie",
+    "tedarikci": "ilanda görünmüyor",
+    "fiyat_usd": 1.73,
+    "moq": 1,
+    "kademeler": [
+     {
+      "min_adet": 1,
+      "fiyat_usd": 1.73
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.61
+     },
+     {
+      "min_adet": 200,
+      "fiyat_usd": 1.51
+     }
+    ],
+    "birim_agirlik_kg": 0.1,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 365.5,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/iclik/en-ucuz-tutku-elit-2706-termal-kadin-ust-fiyati,365764795.html",
+      "baslik": "Tutku Elit 2706 Kadın Termal Üst İçlik"
+     },
+     {
+      "fiyat_tl": 443.35,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/iclik/en-ucuz-tutku-elit-uzun-kollu-kadin-termal-ust-fiyati,414834930.html",
+      "baslik": "Tutku Elit Uzun Kollu Kadın Termal Üst İçlik"
+     },
+     {
+      "fiyat_tl": 468.76,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/iclik/en-ucuz-kota-kadin-siyah-uzun-kollu-ust-termal-sicak-tutan-iclik-lingaooms-2007b-2xl-fiyati,1151674307.html",
+      "baslik": "Kota Kadın Siyah Uzun Kollu Üst Termal İçlik"
+     },
+     {
+      "fiyat_tl": 525.18,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/iclik/en-ucuz-berrak-1-li-8028-kadin-uzun-kollu-termal-ust-iclik-fiyati,948988353.html",
+      "baslik": "Berrak 1'li 8028 Kadın Uzun Kollu Termal Üst İçlik"
+     },
+     {
+      "fiyat_tl": 553.15,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/iclik/en-ucuz-kadin-siyah-uzun-kollu-ust-termal-sicak-tutan-iclik-2xl-fiyati,1197283475.html",
+      "baslik": "Kadın Siyah Uzun Kollu Üst Termal İçlik 2XL"
+     },
+     {
+      "fiyat_tl": 373.38,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/iclik/en-ucuz-bonbonetti-chocolate-baby-kids-kadin-siyah-uzun-kollu-termal-ust-iclik-2-li-fiyati,1151673707.html",
+      "baslik": "Bonbonetti Kadın Uzun Kollu Termal Üst İçlik 2'li (746,75 TL / 2)"
+     },
+     {
+      "fiyat_tl": 271.96,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/iclik/en-ucuz-tutku-elit-2706-bayan-uzun-kol-termal-body-2-adet-fiyati,946366426.html",
+      "baslik": "Tutku Elit 2706 2'li Kadın Termal Üst İçlik (543,92 TL / 2)"
+     }
+    ],
+    "not": "Kadın uzun kollu termal üst içlik; Tutku Elit, Kota, Berrak vb. az bilinen markalar ve markasız; 2'li paketler adet başına. Malabadi (viloft), Penti ve ısıtıcılı ürünler alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kasım-Şubat'ta termal üst içlik talebi yüksek; Tutku Elit 2706 Akakçe'de 49 satıcıda.",
+   "riskler": [
+    "Çok ucuz, 'ultra thin' ilan; kalınlık/ısıtma performansı ve elyaf bileşimi doğrulanmalı",
+    "Beden (plus size) ve kumaş bileşimi ilanda görünmüyor",
+    "Tedarikçi bilgisi görünmüyor",
+    "Birim ağırlık tahmin"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Plus-Size-Women-s-Seamless-Base_1601987079761.html",
+    "https://www.akakce.com/iclik/en-ucuz-tutku-elit-2706-termal-kadin-ust-fiyati,365764795.html",
+    "https://www.akakce.com/iclik/en-ucuz-tutku-elit-uzun-kollu-kadin-termal-ust-fiyati,414834930.html",
+    "https://www.akakce.com/iclik/en-ucuz-kota-kadin-siyah-uzun-kollu-ust-termal-sicak-tutan-iclik-lingaooms-2007b-2xl-fiyati,1151674307.html",
+    "https://www.akakce.com/iclik/en-ucuz-berrak-1-li-8028-kadin-uzun-kollu-termal-ust-iclik-fiyati,948988353.html",
+    "https://www.akakce.com/iclik/en-ucuz-kadin-siyah-uzun-kollu-ust-termal-sicak-tutan-iclik-2xl-fiyati,1197283475.html",
+    "https://www.akakce.com/iclik/en-ucuz-bonbonetti-chocolate-baby-kids-kadin-siyah-uzun-kollu-termal-ust-iclik-2-li-fiyati,1151673707.html",
+    "https://www.akakce.com/iclik/en-ucuz-tutku-elit-2706-bayan-uzun-kol-termal-body-2-adet-fiyati,946366426.html"
+   ]
+  },
+  {
+   "urun": "Kadın fitilli (ribana) crop atlet",
+   "kategori": "tisort",
+   "gtip": "6109.90",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Wholesale-Cropped-Women-s-Solid-T_1601426446202.html",
+    "baslik": "Wholesale Cropped Women's Solid T-Shirt Seamless Streetwear Stretch Rib Knit Sleeveless Casual Tank Top Women",
+    "tedarikci": "ilanda görünmüyor",
+    "fiyat_usd": 1.17,
+    "moq": 10,
+    "kademeler": [
+     {
+      "min_adet": 10,
+      "fiyat_usd": 1.17
+     },
+     {
+      "min_adet": 200,
+      "fiyat_usd": 1.07
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 0.97
+     }
+    ],
+    "birim_agirlik_kg": 0.05,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 172.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kadin-atlet/en-ucuz-domoda-crop-top-kalin-askili-kaskorse-fitilli-kisa-lila-l-fiyati,1222479905.html",
+      "baslik": "Domoda fitilli crop atlet"
+     },
+     {
+      "fiyat_tl": 231.76,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/bluz/en-ucuz-kadin-gri-fitilli-gorunumlu-askili-kalin-esnek-orme-basic-crop-atlet-bluz-fiyati,697267744.html",
+      "baslik": "Kadın Gri Fitilli Basic Crop Atlet Bluz"
+     },
+     {
+      "fiyat_tl": 243.35,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/bluz/en-ucuz-kadin-siyah-fitilli-gorunumlu-askili-kalin-esnek-orme-basic-crop-atlet-bluz-fiyati,714358566.html",
+      "baslik": "Kadın Siyah Fitilli Basic Crop Atlet Bluz"
+     },
+     {
+      "fiyat_tl": 296.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/bluz/en-ucuz-by-comeor-kadin-siyah-fitilli-gorunumlu-askili-kalin-esnek-orme-basic-crop-atlet-cmrb93-xl-fiyati,928027728.html",
+      "baslik": "By Comeor Kadın Fitilli Basic Crop Atlet"
+     },
+     {
+      "fiyat_tl": 363.38,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kadin-atlet/en-ucuz-afloow-kadin-lacivert-v-yaka-fitilli-crop-top-atlet-zamansiz-ve-sik-basic-parca-fiyati,1177374080.html",
+      "baslik": "Afloow Kadın V Yaka Fitilli Crop Top Atlet"
+     },
+     {
+      "fiyat_tl": 403.75,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kadin-atlet/en-ucuz-turen-kadin-askili-ribana-crop-atlet-3405-lacivert-fiyati,1471836646.html",
+      "baslik": "Türen Kadın Askılı Ribana Crop Atlet 3405"
+     },
+     {
+      "fiyat_tl": 111.6,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-5-li-kadin-pamuklu-likrali-ribana-fitilli-crop-atlet-27120-saks-mavi-fiyati,1667587912.html",
+      "baslik": "5'li Kadın Pamuklu Likralı Ribana Crop Atlet (557,99 TL / 5)"
+     }
+    ],
+    "not": "Fitilli/ribana kadın crop atlet; markasız ve az bilinen markalar, 5'li paket adet başına. İç giyim/katman olarak Kasım'da da satılır ama yaz mevsimi daha güçlü."
+   },
+   "taklit_riski": false,
+   "gerekce": "Basic fitilli crop atlet katman parçası olarak yıl boyu satılır.",
+   "riskler": [
+    "Mevsim zayıf (Kasım)",
+    "Dikişsiz tek beden esnek; beden uyumu",
+    "Tedarikçi bilgisi ve ağırlık görünmüyor (tahmin)"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Wholesale-Cropped-Women-s-Solid-T_1601426446202.html",
+    "https://www.akakce.com/kadin-atlet/en-ucuz-domoda-crop-top-kalin-askili-kaskorse-fitilli-kisa-lila-l-fiyati,1222479905.html",
+    "https://www.akakce.com/bluz/en-ucuz-kadin-gri-fitilli-gorunumlu-askili-kalin-esnek-orme-basic-crop-atlet-bluz-fiyati,697267744.html",
+    "https://www.akakce.com/bluz/en-ucuz-kadin-siyah-fitilli-gorunumlu-askili-kalin-esnek-orme-basic-crop-atlet-bluz-fiyati,714358566.html",
+    "https://www.akakce.com/bluz/en-ucuz-by-comeor-kadin-siyah-fitilli-gorunumlu-askili-kalin-esnek-orme-basic-crop-atlet-cmrb93-xl-fiyati,928027728.html",
+    "https://www.akakce.com/kadin-atlet/en-ucuz-afloow-kadin-lacivert-v-yaka-fitilli-crop-top-atlet-zamansiz-ve-sik-basic-parca-fiyati,1177374080.html",
+    "https://www.akakce.com/kadin-atlet/en-ucuz-turen-kadin-askili-ribana-crop-atlet-3405-lacivert-fiyati,1471836646.html",
+    "https://www.akakce.com/tisort/en-ucuz-5-li-kadin-pamuklu-likrali-ribana-fitilli-crop-atlet-27120-saks-mavi-fiyati,1667587912.html"
+   ]
+  },
+  {
+   "urun": "Kadın uzun kollu basic crop tişört",
+   "kategori": "tisort",
+   "gtip": "6109.90",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Women-s-Trendy-Waist-Baring-Cropped_1601807870377.html",
+    "baslik": "Women's Trendy Waist-Baring Cropped T-shirts Underscrubs Layer Slim Fit Long Sleeves Stretchy Basic Crop Tops T Shirt",
+    "tedarikci": "ilanda görünmüyor",
+    "fiyat_usd": 1.7,
+    "moq": 1,
+    "kademeler": [
+     {
+      "min_adet": 1,
+      "fiyat_usd": 1.7
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 1.2
+     }
+    ],
+    "birim_agirlik_kg": 0.12,
+    "agirlik_kaynagi": "tahmin",
+    "indirim": {
+     "liste_fiyat_usd": 2.12,
+     "aciklama": "İlan sayfasında üstü çizili fiyat ($2.12); bitiş tarihi görünmüyor"
+    }
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 393.92,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-kadin-siyah-uzun-kollu-fit-basic-crop-top-bluz-fiyati,1104356759.html",
+      "baslik": "Kadın Siyah Uzun Kollu Fit Basic Crop Top Bluz"
+     },
+     {
+      "fiyat_tl": 334.16,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-petrol-uzun-kollu-dar-kalip-o-yaka-kadin-crop-top-t-shirt-97150-petrol-fiyati,912452206.html",
+      "baslik": "Uzun Kollu Dar Kalıp O Yaka Kadın Crop Top T-shirt 97150"
+     },
+     {
+      "fiyat_tl": 361.79,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-kadin-beyaz-uzun-kollu-onden-baglama-detayli-crop-top-bluz-fiyati,1104356818.html",
+      "baslik": "Kadın Beyaz Uzun Kollu Önden Bağlama Detaylı Crop Top Bluz"
+     }
+    ],
+    "not": "Uzun kollu kadın crop top; yalnızca 3 markasız ilan bulundu (Defacto vb. markalılar alınmadı)."
+   },
+   "taklit_riski": false,
+   "gerekce": "Uzun kollu basic crop, sonbahar-kış katmanlaması için satılır.",
+   "riskler": [
+    "Karşılaştırma yalnız 3 ilan",
+    "Kumaş bileşimi ilanda görünmüyor",
+    "Tedarikçi bilgisi yok, ağırlık tahmin"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Women-s-Trendy-Waist-Baring-Cropped_1601807870377.html",
+    "https://www.akakce.com/tisort/en-ucuz-kadin-siyah-uzun-kollu-fit-basic-crop-top-bluz-fiyati,1104356759.html",
+    "https://www.akakce.com/tisort/en-ucuz-petrol-uzun-kollu-dar-kalip-o-yaka-kadin-crop-top-t-shirt-97150-petrol-fiyati,912452206.html",
+    "https://www.akakce.com/tisort/en-ucuz-kadin-beyaz-uzun-kollu-onden-baglama-detayli-crop-top-bluz-fiyati,1104356818.html"
+   ]
+  },
+  {
+   "urun": "Kadın yüksek bel crop atlet (elastik)",
+   "kategori": "tisort",
+   "gtip": "6109.90",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/New-2025-Women-s-Cropped-Tank_1601638051232.html",
+    "baslik": "New 2025 Women's Cropped Tank Top High Waist Slim Fit Elastic Short Sleeveless Formal Vest Sexy Street Style Custom Knit",
+    "tedarikci": "ilanda görünmüyor",
+    "fiyat_usd": 1.09,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 1.09
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.07
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 1.05
+     }
+    ],
+    "birim_agirlik_kg": 0.05,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 172.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kadin-atlet/en-ucuz-domoda-crop-top-kalin-askili-kaskorse-fitilli-kisa-lila-l-fiyati,1222479905.html",
+      "baslik": "Domoda fitilli crop atlet"
+     },
+     {
+      "fiyat_tl": 231.76,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/bluz/en-ucuz-kadin-gri-fitilli-gorunumlu-askili-kalin-esnek-orme-basic-crop-atlet-bluz-fiyati,697267744.html",
+      "baslik": "Kadın Gri Fitilli Basic Crop Atlet Bluz"
+     },
+     {
+      "fiyat_tl": 243.35,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/bluz/en-ucuz-kadin-siyah-fitilli-gorunumlu-askili-kalin-esnek-orme-basic-crop-atlet-bluz-fiyati,714358566.html",
+      "baslik": "Kadın Siyah Fitilli Basic Crop Atlet Bluz"
+     },
+     {
+      "fiyat_tl": 296.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/bluz/en-ucuz-by-comeor-kadin-siyah-fitilli-gorunumlu-askili-kalin-esnek-orme-basic-crop-atlet-cmrb93-xl-fiyati,928027728.html",
+      "baslik": "By Comeor Kadın Fitilli Basic Crop Atlet"
+     },
+     {
+      "fiyat_tl": 363.38,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kadin-atlet/en-ucuz-afloow-kadin-lacivert-v-yaka-fitilli-crop-top-atlet-zamansiz-ve-sik-basic-parca-fiyati,1177374080.html",
+      "baslik": "Afloow Kadın V Yaka Fitilli Crop Top Atlet"
+     },
+     {
+      "fiyat_tl": 403.75,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kadin-atlet/en-ucuz-turen-kadin-askili-ribana-crop-atlet-3405-lacivert-fiyati,1471836646.html",
+      "baslik": "Türen Kadın Askılı Ribana Crop Atlet 3405"
+     },
+     {
+      "fiyat_tl": 111.6,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-5-li-kadin-pamuklu-likrali-ribana-fitilli-crop-atlet-27120-saks-mavi-fiyati,1667587912.html",
+      "baslik": "5'li Kadın Pamuklu Likralı Ribana Crop Atlet (557,99 TL / 5)"
+     }
+    ],
+    "not": "Crop atlet karşılaştırması (fitilli crop atlet ilanları)."
+   },
+   "taklit_riski": false,
+   "gerekce": "Basic crop atlet katman parçası olarak yıl boyu satılır.",
+   "riskler": [
+    "MOQ 2 örnek düzeyi; ilk gerçekçi sipariş tutarı yaklaşık aynı fiyat",
+    "Kumaş ilanda görünmüyor",
+    "Mevsim zayıf",
+    "Aday 3 ile aynı kategori, tek sipariş olarak düşünülmeli"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/New-2025-Women-s-Cropped-Tank_1601638051232.html",
+    "https://www.akakce.com/kadin-atlet/en-ucuz-domoda-crop-top-kalin-askili-kaskorse-fitilli-kisa-lila-l-fiyati,1222479905.html",
+    "https://www.akakce.com/bluz/en-ucuz-kadin-gri-fitilli-gorunumlu-askili-kalin-esnek-orme-basic-crop-atlet-bluz-fiyati,697267744.html",
+    "https://www.akakce.com/bluz/en-ucuz-kadin-siyah-fitilli-gorunumlu-askili-kalin-esnek-orme-basic-crop-atlet-bluz-fiyati,714358566.html",
+    "https://www.akakce.com/bluz/en-ucuz-by-comeor-kadin-siyah-fitilli-gorunumlu-askili-kalin-esnek-orme-basic-crop-atlet-cmrb93-xl-fiyati,928027728.html",
+    "https://www.akakce.com/kadin-atlet/en-ucuz-afloow-kadin-lacivert-v-yaka-fitilli-crop-top-atlet-zamansiz-ve-sik-basic-parca-fiyati,1177374080.html",
+    "https://www.akakce.com/kadin-atlet/en-ucuz-turen-kadin-askili-ribana-crop-atlet-3405-lacivert-fiyati,1471836646.html",
+    "https://www.akakce.com/tisort/en-ucuz-5-li-kadin-pamuklu-likrali-ribana-fitilli-crop-atlet-27120-saks-mavi-fiyati,1667587912.html"
+   ]
+  }
+ ]
+}
