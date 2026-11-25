@@ -34,7 +34,7 @@ final class Abonelik {
     func basla() {
         guard dinleyici == nil else { return }
         dinleyici = Task { [weak self] in
-            for await sonuc in Transaction.updates {
+            for await sonuc in StoreKit.Transaction.updates {
                 guard let self else { return }
                 await self.islemGeldi(sonuc)
             }
@@ -114,7 +114,7 @@ final class Abonelik {
     func durumuGuncelle() async {
         var etkin = false
         let simdi = Date()
-        for await sonuc in Transaction.currentEntitlements {
+        for await sonuc in StoreKit.Transaction.currentEntitlements {
             guard case .verified(let islem) = sonuc, islem.productID == abonelikUrunu else { continue }
             if islem.revocationDate != nil || islem.isUpgraded { continue }
             if let bitis = islem.expirationDate, bitis <= simdi { continue }
@@ -128,7 +128,7 @@ final class Abonelik {
     }
 
     /// Uygulama dışında (başka cihaz, yenileme, iptal, geri ödeme, onaylanan bekleyen alım) gelen işlem.
-    private func islemGeldi(_ sonuc: VerificationResult<Transaction>) async {
+    private func islemGeldi(_ sonuc: VerificationResult<StoreKit.Transaction>) async {
         if case .verified(let islem) = sonuc {
             await islem.finish()
         }
