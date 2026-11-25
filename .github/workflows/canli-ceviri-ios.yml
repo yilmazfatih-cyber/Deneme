@@ -41,6 +41,8 @@ jobs:
               -target CanliCeviri \
               -sdk iphonesimulator \
               -configuration "$yapilandirma" \
+              -arch arm64 \
+              ONLY_ACTIVE_ARCH=NO \
               CODE_SIGNING_ALLOWED=NO \
               build > "$kayit" 2>&1 || true
             echo "== $yapilandirma: hata ve uyarı satırları =="
