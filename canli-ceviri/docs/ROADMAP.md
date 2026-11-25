@@ -8,6 +8,7 @@
 | 23.11.2026 | AirPods durum satırı; web deneme sürümü ve akış testi; `/canli-ceviri/` altında yayın                       |
 | 25.11.2026 | Mac derleme iş akışı: uygulama ilk kez derlendi (Xcode 26.6; derleyici hatası ve uyarısı yok); ekip ve anayasa kuruldu |
 | 25.11.2026 | S01: ses hattı ve tasarım şartnameleri, Tanılama (iPhone ve web), Anahtar Zinciri, aşama (hazırlanıyor / dinliyor / duraklatıldı), erişilebilirlik ve büyük yazı, cihaz testi belgesi; Mac derlemesi Debug ve Release, uyarıda kırılır; 13 simülatör görüntüsü |
+| 25.11.2026 | S01 tur 4 yayına alındı (PR #25); canlı web sayfası doğrulandı (sahte mikrofon ve çeviriyle)                 |
 
 ## Sprintler
 
