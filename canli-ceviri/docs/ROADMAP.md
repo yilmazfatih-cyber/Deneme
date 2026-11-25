@@ -15,7 +15,8 @@
 | Sprint | Hedef                                                                                                   | Durum   |
 | ------ | ------------------------------------------------------------------------------------------------------- | ------- |
 | S01    | Cihaz denemesine hazır sürüm: bağımsız kod incelemesi, Tanılama, anahtarın Anahtar Zinciri'nde saklanması, erişilebilirlik, simülatör ekran görüntüleri, cihaz testi belgesi | otomatik kapı ve uzman incelemesi geçti; **insan kapısını bekliyor** (`docs/sprints/S01/demo.md`) |
-| S02    | Cihaz denemesinden çıkan sorunlar (proje sahibinin `docs/cihaz-testi.md` sonuçlarına göre)               | bekliyor |
+| S02    | İkinci motor: bulut hattı (Soniox ile tanıma ve çeviri tek akışta), cihaz içi hattın yanında; proje sahibinin 25.11.2026 kararı | sürüyor |
+| S03    | Cihaz denemesinden çıkan sorunlar (proje sahibinin `docs/cihaz-testi.md` sonuçlarına göre)               | bekliyor |
 
 ## Birikim (öncelik sırasıyla)
 
