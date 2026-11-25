@@ -1,0 +1,136 @@
+name: Canlı Çeviri (deneme .ipa)
+
+# iPhone uygulamasını GitHub'ın Mac makinesinde imzasız derler, .ipa olarak paketler ve herkese açık bir ön sürüme
+# (GitHub Release) koyar. Dosya Sideloadly ya da AltStore ile kişinin kendi Apple Kimliğiyle yeniden imzalanıp kurulur;
+# Apple Developer hesabı ve Xcode gerekmez. DENEME bayrağıyla derlenir: günlük süre sınırı kapalıdır.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/canli-ceviri-ipa.yml
+
+permissions:
+  contents: write # yalnız sürüm (Release) oluşturmak için
+
+concurrency:
+  group: canli-ceviri-ipa
+  cancel-in-progress: false
+
+jobs:
+  ipa:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    env:
+      YAPI_NO: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Xcode sürümü
+        run: |
+          xcodebuild -version
+          xcodebuild -showsdks | grep -i iphone || true
+
+      - name: Derle (iPhone, Release, imzasız, DENEME)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project canli-ceviri/CanliCeviri.xcodeproj \
+            -target CanliCeviri \
+            -sdk iphoneos \
+            -configuration Release \
+            -arch arm64 \
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CURRENT_PROJECT_VERSION="$YAPI_NO" \
+            'SWIFT_ACTIVE_COMPILATION_CONDITIONS=$(inherited) DENEME' \
+            build > derleme-ipa.log 2>&1 || true
+          echo "== Hata ve uyarı satırları =="
+          grep -E -A4 "(: error:|: warning:|^warning: |^xcodebuild: error)" derleme-ipa.log || echo "(yok)"
+          if ! grep -q "BUILD SUCCEEDED" derleme-ipa.log; then
+            tail -40 derleme-ipa.log
+            echo "::error title=Derleme başarısız::Uygulama derlenemedi. Yukarıdaki 'error' satırları nedeni söyler."
+            exit 1
+          fi
+          echo "BUILD SUCCEEDED"
+
+      - name: Paketi denetle ve .ipa üret
+        run: |
+          set -euo pipefail
+          UYGULAMA=canli-ceviri/build/Release-iphoneos/CanliCeviri.app
+          if [ ! -d "$UYGULAMA" ]; then
+            echo "::error title=Uygulama bulunamadı::$UYGULAMA yok. build klasöründekiler:"
+            find canli-ceviri/build -maxdepth 2 -name "*.app" || true
+            exit 1
+          fi
+          [ -f "$UYGULAMA/Info.plist" ] || { echo "::error::Info.plist yok."; exit 1; }
+          CALISAN=$(/usr/libexec/PlistBuddy -c "Print CFBundleExecutable" "$UYGULAMA/Info.plist")
+          [ -f "$UYGULAMA/$CALISAN" ] || { echo "::error::Çalıştırılabilir dosya yok: $CALISAN"; exit 1; }
+          echo "Paket: $(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$UYGULAMA/Info.plist")"
+          echo "Sürüm: $(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$UYGULAMA/Info.plist") ($(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" "$UYGULAMA/Info.plist"))"
+          echo "Çalıştırılabilir: $CALISAN"
+          MIMARI=$(lipo -info "$UYGULAMA/$CALISAN")
+          echo "$MIMARI"
+          echo "$MIMARI" | grep -q "arm64" || { echo "::error::Mimari arm64 değil."; exit 1; }
+          if find "$UYGULAMA" -name "*.storekit" | grep -q .; then
+            echo "::error title=.storekit pakette::Yerel StoreKit yapılandırması pakete girmemeli."
+            find "$UYGULAMA" -name "*.storekit"
+            exit 1
+          fi
+          echo ".storekit dosyası pakette yok."
+          IPA="CanliCeviri-deneme-${YAPI_NO}.ipa"
+          rm -rf Payload "$IPA"
+          mkdir Payload
+          cp -R "$UYGULAMA" Payload/
+          ditto -c -k --sequesterRsrc --keepParent Payload "$IPA"
+          ls -l "$IPA"
+          echo "IPA=$IPA" >> "$GITHUB_ENV"
+
+      - name: .ipa dosyasını yapıt olarak sakla
+        uses: actions/upload-artifact@v4
+        with:
+          name: canli-ceviri-deneme-ipa
+          path: ${{ env.IPA }}
+          retention-days: 30
+
+      - name: Herkese açık ön sürüm oluştur
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ETIKET="canli-ceviri-deneme-${YAPI_NO}"
+          cat > notlar.md <<'NOTLAR'
+          İmzasız deneme yapısıdır; App Store ya da TestFlight sürümü değildir.
+
+          - Kurulum: .ipa dosyasını indirin, Sideloadly ya da AltStore ile kendi Apple Kimliğinizle kurun.
+          - Ücretsiz Apple Kimliğiyle uygulama 7 gün çalışır; sonra aynı araçla yeniden kurun.
+          - Bu yapıda abonelik (satın alma) çalışmaz; günlük süre sınırı kapalıdır.
+          - Gerçek iPhone'da henüz denenmedi.
+          NOTLAR
+          gh release create "$ETIKET" "$IPA" \
+            --target "$GITHUB_SHA" \
+            --prerelease \
+            --title "Canlı Çeviri deneme ${YAPI_NO}" \
+            --notes-file notlar.md
+          ADRES="https://github.com/${GITHUB_REPOSITORY}/releases/download/${ETIKET}/${IPA}"
+          {
+            echo "## Canlı Çeviri deneme .ipa"
+            echo ""
+            echo "- Yapı numarası: $YAPI_NO"
+            echo "- Commit: $GITHUB_SHA"
+            echo "- Sürüm sayfası: https://github.com/${GITHUB_REPOSITORY}/releases/tag/${ETIKET}"
+            echo "- İndirme adresi: $ADRES"
+            echo ""
+            echo "Sideloadly ya da AltStore ile kurun; ücretsiz Apple Kimliğiyle 7 gün çalışır."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "İndirme adresi: $ADRES"
+
+      - name: Derleme kaydını sakla
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ipa-derleme-kaydi
+          path: derleme-ipa.log
+          if-no-files-found: ignore
+          retention-days: 7

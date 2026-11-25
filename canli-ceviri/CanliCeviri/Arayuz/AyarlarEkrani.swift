@@ -135,7 +135,11 @@ struct AyarlarEkrani: View {
 
     private var abonelikSatiri: some View {
         let abone = durum.abonelik.abone
+        #if DENEME
+        let durumMetni = "Deneme yapısı: süre sınırı yok"
+        #else
         let durumMetni = abone ? "Sınırsız: etkin" : "Ücretsiz: günde 10 dakika"
+        #endif
         return Button {
             durum.abonelikAcik = true
         } label: {
