@@ -1,7 +1,8 @@
 # Cihaz testi — gerçek iPhone ve AirPods
 
-Sahibi: `kalite-sorumlusu` · Sürüm: S01 (kod `9031f22` ve son düzeltme turu) · Dayanak: `docs/ses-hatti.md` § 4
-(kesintiler K1–K16) ve § 7 (cihaz soruları D1–D35), bu belge yazılmadan hemen önce yeniden okundu.
+Sahibi: `kalite-sorumlusu` · Sürüm: **S01 tur 4** (iPhone `2266283`, web `d44b238`) · Dayanak: `docs/ses-hatti.md` § 4
+(kesintiler K1–K16) ve § 7 (cihaz soruları D1–D35), bu belge güncellenmeden hemen önce yeniden okundu. Ekrandaki
+metinler bu sürümün kodundan birebir alındı.
 
 Bu belge proje sahibinin ilk denemesi içindir. Uygulama hiçbir gerçek iPhone'da çalıştırılmadı. Amacımız iki şey:
 çalışıyor mu, çalışmıyorsa nedenini telefonun kendi kaydından okuyabilmek.
@@ -59,16 +60,17 @@ kulaklığın adı ve API anahtarı yoktur.** Gönül rahatlığıyla gönderebi
 Web sürümünde "Otomatik kopyalanamadı" yazarsa: altta açılan metin kutusuna basılı tutun, **Tümünü Seç**, sonra
 **Kopyala**.
 
-Web sürümünde Tanılama sayfası açılınca üstteki "Tanılama" başlığı ve **Bitti** görünmüyorsa (bilinen bir hata):
-**Kopyala** yine de çalışır. Önce kopyalayıp gönderin, sonra sayfayı yenileyin. Yenileyince kayıt silinir; bu yüzden
-yenilemeden önce mutlaka kopyalayın.
+Yalnız **eski web sürümünde** (kopyada `Sürüm: S01 tur 4` satırı yoksa, bkz. W-0) bilinen bir hata var: uzun bir denemeden sonra
+Tanılama sayfası açılınca üstteki başlık ve **Bitti** görünmeyebilir. O zaman **Kopyala** yine çalışır. Önce kopyalayıp
+gönderin, sonra sayfayı yenileyin (yenileyince kayıt silinir). `Sürüm: S01 tur 4` olan sürümde bu hata düzeldi; orada
+başlık ve Bitti görünmüyorsa bu bir "kaldı"dır: ekran görüntüsü gönderin.
 
 **Dikkat:**
 
 - Sorunu gördüğünüz **anda** kopyalayın. Kayıt en çok 300 satır tutar; uzun denemede ilk satırlar silinir.
 - Uygulamayı kapatırsanız (yukarı kaydırıp atarsanız) ya da web sayfasını yenilerseniz kayıt silinir.
-- Bu belgede anılan kayıt satırları (`kesinti  bitti` gibi) son düzeltme turunda biraz değişmiş olabilir. Birebir aynı
-  yazıyı aramayın; kopyanın tamamını gönderin.
+- Bu belgede anılan kayıt satırları (`kesinti  bitti` gibi) bu sürümle aynıdır. Yine de yalnız birkaç satırı değil,
+  kopyanın tamamını gönderin.
 - **Ekran görüntüsü:** yan tuş ile sesi açma tuşuna aynı anda basın.
 
 **Her "kaldı" için gönderin:** senaryo numarası + ekran görüntüsü + Tanılama kopyası + bir cümle ("çeviri ekranda vardı
@@ -104,10 +106,10 @@ Bir kez hazırlık:
 
 **Beklenen**
 
-- `Sürüm: S01 tur 3` ya da daha büyük bir tur: yeni sürüm açık. Bütün web senaryoları yapılabilir.
-- **"Sürüm:" satırı hiç yoksa** eski sürüm açık (önceki tur, yayındaki bugünkü sürüm budur). W-1, W-6, W-7, W-8, W-9
-  yine yapılabilir. W-2, W-4 ve W-5'teki "Hazırlanıyor…" ve "Duraklatıldı" beklenmez; bunları atlayın ve sonuç
-  tablosuna "eski sürüm" yazın.
+- `Sürüm: S01 tur 4`: doğru sürüm açık. Bütün web senaryoları yapılabilir.
+- **"Sürüm:" satırı hiç yoksa ya da başka bir değer yazıyorsa** (ör. `S01 tur 3`) eski sürüm açık. Sayfayı bir kez
+  daha yenileyin; yine eskiyse ekibe haber verin. Beklerken W-1, W-6, W-7, W-8 yine yapılabilir. W-2, W-4, W-5 ve
+  W-9'un beklentileri eski sürümde farklıdır; onları atlayın ve sonuç tablosuna "eski sürüm" yazın.
 - `Tarayıcı:` satırında iPhone'un iOS sürümü görünür (ör. `iPhone OS 18_…`).
 
 **Olmazsa** — Tanılama kaydı satırı ya da Kopyala yoksa: Ayarlar ekranının görüntüsünü gönderin.
@@ -127,7 +129,8 @@ Bir kez hazırlık:
 
 **Beklenen**
 
-- Başlat'tan sonra kısa süre "Hazırlanıyor…" (yeni sürümde), sonra **"Dinliyorum…"** ve sağ üstte **CANLI**.
+- Başlat'tan sonra kısa süre "Hazırlanıyor…", sonra **"Dinliyorum…"** ve sağ üstte **CANLI**.
+- Dinlerken üstteki dil şeridi tek satıra iner; "İngilizce → Türkçe" yazısı soluk değil, beyazdır.
 - Konuşurken duyulan İngilizce italik yazıyla belirir.
 - Sustuktan 1–2 saniye sonra Türkçesi büyük yazıyla çıkar ve **AirPods'tan Türkçe okunur.**
 - Önceki çeviriler "Öncekiler" kartına iner.
@@ -155,11 +158,15 @@ Bu senaryo izin isteminin **yeniden** çıkmasını ister.
 **Beklenen**
 
 - İstem açıkken: "Hazırlanıyor…", CANLI **yok**, düğme "Durdur".
-- 5 saniye geçince ekran "Dinliyorum…"a geçebilir (bugünkü kodun yedek süresi). **Geçip geçmediğini yazın.**
-- İzin verince ve konuşunca: "Dinliyorum…" ve CANLI.
-- Tanılama'da şu satırları arayın ve tabloya aynen yazın:
-  - `aşama  dinliyor olay=…` — `olay=` sonrasında ne yazıyor: `start`, `audiostart`, `sonuç` ya da `yedek`?
+- 5 saniye geçince satır şuna döner: **"Mikrofon bekleniyor. İzin istendiyse izin verin."** CANLI yine **yok**. Ekran
+  izin verilmeden **"Dinliyorum…" demez.** Derse bu bir "kaldı"dır.
+- İzin verince ve konuşunca: "Dinliyorum…" ve CANLI. (Konuşmadan da gelebilir. Hangisi olduğunu yazın.)
+- Tanılama'da şu satırları arayın ve tabloya aynen yazın (milisaniyeleriyle):
+  - `tanıma  start … ms` — var mı?
+  - `aşama  hazırlanıyor: 5 sn içinde audiostart ya da sonuç gelmedi` — uyarı olarak var mı?
+  - `aşama  dinliyor olay=…` — `olay=` sonrasında ne yazıyor: `audiostart` mı, `sonuç` mu?
   - `izin  mikrofon=verildi` — var mı? Sonunda `(ilk sonuç geldi)` eki var mı?
+- `olay=yedek` ve `dinliyor olay=start` bu sürümde **hiç çıkmaz**. Görürseniz eski sürüm açıktır (W-0).
 
 **Olmazsa** — İstem açıkken ekranın görüntüsü ve Tanılama kopyası.
 
@@ -227,11 +234,14 @@ Tanılama kopyası.
 **Yap**
 
 1. **Ayarlar**'da API anahtarını girin.
-2. **Çeviri**'ye dönün, **Başlat**.
-3. Üç cümle okuyun, her birinden sonra susun.
+2. Alanın altındaki yazıyı okuyun.
+3. **Çeviri**'ye dönün, **Başlat**.
+4. Üç cümle okuyun, her birinden sonra susun.
 
 **Beklenen**
 
+- Alanın altında: "Anahtar girerseniz çeviri metni seslendirmek için Alania'ya gönderilir; söylenen asıl cümle
+  gönderilmez."
 - Üç çeviri de Alania'nın sesiyle (cihazın sesinden farklı bir ses) okunur; **ekrana dokunmadan**.
 - Tanılama'da her cümle için `ses  alania … ms`. Milisaniyeleri yazın.
 
@@ -288,11 +298,22 @@ Tanılama kopyası.
 
 **Beklenen**
 
-- Uçak modunda: "Çeviri hizmetine ulaşılamadı…" ya da "Konuşma tanıma için internet bağlantısı gerekli." yazar.
-  Hangisi yazdı, yazın. Sayfa çökmez.
-- İnternet gelince sonraki cümle yine çevrilir (dinleme durduysa Başlat'a dokunun ve bunu yazın).
+Uçak modunda iki şeyden biri olur. Hangisi olduğunu yazın:
 
-**Olmazsa** — Ekranda hiçbir açıklama yoksa: ekran görüntüsü ve kopya.
+- **Dinleme sürer:** düğmenin üstünde **sarı** not: "Çeviri hizmetine ulaşılamadı. İnternet bağlantınızı kontrol
+  edin." Kırmızı satır **çıkmaz**, düğme "Durdur" kalır.
+- **Dinleme durur:** **kırmızı** satır: "Konuşma tanıma için internet bağlantısı gerekli." Düğme "Dinlemeyi Başlat"a
+  döner.
+
+Sonra:
+
+- İnternet gelince sonraki cümle yine çevrilir. Sarı not o çeviriyle kalkar. (Dinleme durduysa Başlat'a dokunun ve
+  bunu yazın.)
+- Başka bir çeviri hatasında sarı not "Bir cümle çevrilemedi." der. Günlük sınır dolarsa: "Günlük ücretsiz çeviri
+  sınırı doldu. Yarın yeniden deneyin."
+- Sayfa çökmez.
+
+**Olmazsa** — Ekranda hiçbir açıklama yoksa ya da dinleme sürerken kırmızı satır çıkarsa: ekran görüntüsü ve kopya.
 
 ---
 
@@ -310,7 +331,8 @@ Tanılama kopyası.
 **Beklenen**
 
 - Uygulama açılır, koyu lacivert ekran, altta üç sekme.
-- Kopyanın başında `Canlı Çeviri 1.0 (…)`, `iOS …`, `Cihaz iPhone…` satırları.
+- Kopyanın ilk satırı tam olarak: `Canlı Çeviri 1.0 (1) · S01 tur 4`. Sonra `iOS …`, `Cihaz iPhone…` satırları.
+- İlk satırda `· S01 tur 4` yoksa eski kod yüklendi: Mac'te projenin son hâlini alıp ▶︎ ile yeniden yükleyin.
 
 **Olmazsa**
 
@@ -349,6 +371,9 @@ Tanılama kopyası.
 - "Dinliyorum…" yazıyor ama hiçbir şey yazıya dökülmüyorsa: kopyayı **hemen** alın ve gönderin.
 - `ses yolu` satırında `giriş=dahili` yerine başka bir şey (`hfp`, `bluetooth`) ya da ses boğuksa: kopya (D2).
 - `tanıma açıldı  en-US sunucuda` yazıyorsa ve ekranda sarı "Apple'ın sunucusunda" notu varsa: not edin (D4).
+- Kırmızı "Çeviri durdu. Dinlemeyi yeniden başlatın." çıkarsa: kopyayı **hemen** alın. Kopyada
+  `durdur  neden=hata çeviri döngüsü bitti` satırı olmalı. Bu, çevirinin sessizce durduğu nadir bir durumdur; ekibe
+  mutlaka gönderin.
 
 ### U-2 · Hangi mikrofon dinliyor? (2 dakika)
 
@@ -508,11 +533,10 @@ Geliştiricinin 3. ve 4. maddeleri.
 **Beklenen**
 
 - Arama gelince okunan Türkçe **hemen kesilir**; ekranda **"Duraklatıldı: arama, alarm ya da Siri"**.
-- 10 saniye sonra sarı not: **"Devam etmek için Durdur'a, sonra Başlat'a dokunun."** (Son turda metin "Dinleme
-  kendiliğinden sürmezse Durdur'a, sonra Başlat'a dokunun." olarak değişmiş olabilir; ikisi de doğru.)
-- Reddedince: not kalkar, **"Dinliyorum…"**a dönülür; sarı **"Kesinti sırasında gelen çeviri okunmadı."** notu görünür.
-  (Bu not şimdilik Durdur'a dek kalır.)
-- 6. adımdaki cümle çevrilir ve okunur.
+- Aynı anda sarı not: **"Kesintide gelen çeviri sesli okunmadı."**
+- 10 saniye sonra ikinci sarı not: **"Dinleme kendiliğinden sürmezse Durdur'a, sonra Başlat'a dokunun."**
+- Reddedince: bu ikinci not kalkar, **"Dinliyorum…"**a dönülür.
+- 6. adımdaki cümle çevrilir ve okunur. Okuma **başlarken** "Kesintide gelen çeviri sesli okunmadı." notu kalkar.
 - Tanılama: `kesinti  başladı neden=telefon`, `ses  atlandı (kesinti)`, `kesinti  10 sn sürdü, bitiş bildirimi yok`,
   `kesinti  bitti shouldResume=…`, `motor  yeniden başlatıldı`.
 
@@ -536,8 +560,10 @@ Geliştiricinin 3. ve 4. maddeleri.
 
 **Beklenen** (bu davranış henüz bilinmiyor; gördüğünüzü yazın)
 
-- Görüşme sürerken: "Duraklatıldı: …" ya da kırmızı bir açıklama. **Açıklamanın tam metnini yazın.**
-- Görüşme bitince: ya dinleme kendiliğinden sürer, ya da açıklama "yeniden başlatın" der. Hangisi?
+- Görüşme sürerken: "Duraklatıldı: …" ya da kırmızı bir açıklama. **Açıklamanın tam metnini yazın.** Beklenen kırmızı
+  metin: "Görüşme sürerken dinleme sürdürülemez. Görüşme bitince Başlat'a dokunun."
+- Görüşme bitince: ya dinleme kendiliğinden sürer, ya da açıklamadaki gibi Başlat'a dokunmanız gerekir. Hangisi?
+- "Mikrofon yeniden açılamadı. Dinlemeyi yeniden başlatın." çıkarsa bunu ayrıca yazın: ileti nedeni bulamamış demektir.
 - Uygulama çökmez.
 
 **Olmazsa** — Her durumda kopyayı gönderin (D30).
@@ -553,10 +579,11 @@ Geliştiricinin 3. ve 4. maddeleri.
 
 **Beklenen**
 
-- 3. adımda: "Görüşme sürerken dinleme başlatılamaz. Görüşme bitince yeniden deneyin." (ya da benzeri). Tam metni yazın.
+- 3. adımda kırmızı: "Görüşme sürerken dinleme başlatılamaz. Görüşme bitince yeniden deneyin." Tam metni yazın.
 - 4. adımda dinleme normal başlar.
 
-**Olmazsa** — Açıklama başka bir şey söylüyorsa: görüntü ve kopya (`durdur  neden=hata …` satırı, D26).
+**Olmazsa** — Açıklama başka bir şey söylüyorsa (ör. "Dinleme durdu (…). Yeniden başlatın."): görüntü ve kopya
+(`durdur  neden=hata …` satırı, D26). Parantez içindeki kodu tabloya aynen yazın.
 
 ### U-12 · Siri (2 dakika)
 
@@ -572,7 +599,8 @@ Geliştiricinin 3. ve 4. maddeleri.
 - Siri açıkken "Duraklatıldı: arama, alarm ya da Siri".
 - Siri kapanınca "Dinliyorum…"; cümle çevrilir.
 
-**Olmazsa** — Ekran "Duraklatıldı"da kalırsa: 10 saniye bekleyin (sarı not çıkmalı), görüntü ve kopya (D8, D20).
+**Olmazsa** — Ekran "Duraklatıldı"da kalırsa: 10 saniye bekleyin (sarı "Dinleme kendiliğinden sürmezse…" notu
+çıkmalı), görüntü ve kopya (D8, D20).
 
 ### U-13 · Alarm ya da zamanlayıcı (3 dakika)
 
@@ -586,7 +614,8 @@ Geliştiricinin 3. ve 4. maddeleri.
 **Beklenen**
 
 - Çalarken "Duraklatıldı: arama, alarm ya da Siri".
-- Durdurunca "Dinliyorum…"; cümle çevrilir. Dönmezse 10 saniye sonra sarı "Devam etmek için…" notu çıkmalı.
+- Durdurunca "Dinliyorum…"; cümle çevrilir. Dönmezse 10 saniye sonra sarı "Dinleme kendiliğinden sürmezse Durdur'a,
+  sonra Başlat'a dokunun." notu çıkmalı.
 
 **Olmazsa** — Görüntü ve kopya (D8, D20).
 
@@ -603,8 +632,9 @@ Geliştiricinin 3. ve 4. maddeleri.
 **Beklenen**
 
 - Dönüşte kısa süre "Duraklatıldı: uygulama arka planda", sonra "Dinliyorum…".
-- Yarım kalan cümle de çevrilmiş olabilir (ekranda görünür); okunmadıysa sarı "Kesinti sırasında…" notu.
-- 5. adımdaki cümle çevrilir ve okunur.
+- Yarım kalan cümle de çevrilmiş olabilir (ekranda görünür); okunmadıysa sarı "Kesintide gelen çeviri sesli
+  okunmadı." notu.
+- 5. adımdaki cümle çevrilir ve okunur; okuma başlarken bu not kalkar.
 - Tanılama: `uygulama  arka planda`, `kesinti  başladı neden=arka plan`, `uygulama  etkin oldu`, `kesinti  bitti`,
   `motor  yeniden başlatıldı`. Yarım cümlenin `çeviri` satırı var mı, `hata` mı? (D21)
 
@@ -657,7 +687,9 @@ Geliştiricinin 3. ve 4. maddeleri.
 **Beklenen**
 
 - 3. adımda "Dinliyorum…"a dönülür ya da ne yapılacağını söyleyen bir açıklama çıkar. Hangisi?
-- 6. adımda: "Mikrofon başka bir uygulamada…" ya da benzeri bir açıklama. **Tam metni yazın.**
+- 6. adımda kırmızı: "Mikrofon başka bir uygulamada. O uygulamayı kapatıp yeniden başlatın." ya da "Mikrofon şu an
+  kullanılamıyor. Başka bir uygulama kullanıyorsa kapatıp yeniden başlatın." **Tam metni yazın.**
+- "Dinleme durdu (…). Yeniden başlatın." çıkarsa parantez içini aynen yazın (D26).
 - Hiçbir adımda ekran "Dinliyorum…" derken çeviri durmuş olmamalı.
 
 **Olmazsa** — Görüntü ve kopya (`motor  başlatılamadı …` satırları, D26).
@@ -698,14 +730,15 @@ Geliştiricinin 3. ve 4. maddeleri.
 **Yap**
 
 1. **Ayarlar**'da anahtar alanı **boş**ken **Başlat**, bir cümle, **Durdur**.
-2. Anahtarı girin. **Başlat**, üç cümle, **Durdur**.
+2. Anahtarı girin. Alanın altındaki yazıyı okuyun. **Başlat**, üç cümle, **Durdur**.
 3. Anahtarın sonuna bir harf ekleyin (yanlış anahtar). **Başlat**, iki cümle, **Durdur**.
 4. Anahtarı düzeltin.
 
 **Beklenen**
 
 - 1: Türkçe Apple sesi okur. Ekranda "Türkçe ses yüklü değil" notu çıkarsa yazın (D13).
-- 2: Alania sesi; Tanılama `ses  alania … ms` (sayıları yazın, D12).
+- 2: Alanın altında: "Anahtar girerseniz çeviri metni seslendirmek için Alania'ya gönderilir; söylenen asıl cümle
+  gönderilmez." Alania sesi; Tanılama `ses  alania … ms` (sayıları yazın, D12).
 - 3: sarı "Alania anahtarı geçersiz; Apple sesi kullanılıyor."; cümleler Apple sesiyle okunur.
 
 **Olmazsa** — Kopya.
@@ -751,7 +784,8 @@ alan dolu mu? Yazın (D33). Eski sürüm yoksa bu adımı atlayın.
 - 30 saniyelik sessizlikten sonra da cümle çevrilir.
 - Kopyada `tanıma bitti` satırlarının nedenleri görülür (D5, D18).
 
-**Olmazsa** — Sorunu gördüğünüz **anda** kopya.
+**Olmazsa** — Sorunu gördüğünüz **anda** kopya. Kırmızı "Çeviri durdu. Dinlemeyi yeniden başlatın." çıktıysa bunu
+ayrıca yazın.
 
 ### U-23 · Ses sistemi sıfırlanınca (yalnız Geliştirici menüsü varsa)
 
@@ -768,22 +802,40 @@ alan dolu mu? Yazın (D33). Eski sürüm yoksa bu adımı atlayın.
 
 **Olmazsa** — Görüntü ve kopya (D17).
 
-### U-24 · VoiceOver (isteğe bağlı, 5 dakika)
+### U-24 · VoiceOver ve büyük yazı (isteğe bağlı, 10 dakika)
 
-**Yap**
+**Yap — VoiceOver**
 
 1. **Ayarlar → Erişilebilirlik → VoiceOver**'ı açın.
 2. Canlı Çeviri'de ekranı sağa kaydırarak öğeleri tek tek dinleyin.
-3. Başlat'a çift dokunun; bir cümle okuyun.
-4. VoiceOver'ı kapatın.
+3. Başlat'a çift dokunun; bir cümle okurken "Şu An" kartındaki italik yazıya dokunun.
+4. AirPods'u kutuya koyun, sonra geri takın.
+5. Alania anahtarınız varsa: Ayarlar'da sonuna bir harf ekleyin, Başlat, bir cümle okuyun (sarı not çıkar). Sonra
+   anahtarı düzeltin.
+6. VoiceOver'ı kapatın.
+
+**Yap — büyük yazı**
+
+1. **Ayarlar → Erişilebilirlik → Ekran ve Metin Boyutu → Daha Büyük Metin**'i açın.
+2. Kaydırıcıyı en sağa çekin.
+3. Canlı Çeviri'de üç sekmeye de bakın; **Başlat**, bir cümle, **Durdur**.
+4. Kaydırıcıyı eski yerine getirin.
 
 **Beklenen**
 
 - Okunanlar Türkçe ve anlamlı: "Kaynak dil, İngilizce, Türkçeye çevrilir", "Dinlemeyi başlat", sekmelerde "Seçili".
 - "Dinleme başladı" duyurusu; çeviri gelince Türkçe metni okunur.
+- Duyulan İngilizce "Duyulan: …" diye okunur. "Duyulan" kelimesi hangi dilde okundu? Yazın.
+- AirPods çıkınca "Kulaklık bağlantısı koptu", takınca "Kulaklık bağlandı" duyurulur.
+- Sarı notlar çıktığı anda okunur (ör. "Alania anahtarı geçersiz; Apple sesi kullanılıyor."). Aynı not tekrar tekrar
+  okunmaz.
 - Simge adları ("waveform" gibi) okunmaz.
+- Büyük yazıda: "Canlı Çeviri" başlığı tek satır. Dil şeridi tek satır; dururken dokununca dil listesi açılır.
+  Düğme yazısı tek satır. Yalnız çeviri metni çok büyür.
+- Hata, sarı notlar ve "… bağlı" satırı her zaman düğmenin hemen üstünde görünür; kaydırmak gerekmez.
+- Kaydırılan alanın alt kenarı solarak biter; satır ortadan kesilmiş görünmez.
 
-**Olmazsa** — Yanlış okunan öğeyi yazın.
+**Olmazsa** — Yanlış okunan öğeyi yazın. Büyük yazıda kesilen ya da görünmeyen bir şey varsa ekran görüntüsü.
 
 ### U-25 · Geliştirici yapısı gerekenler (bu turda yapılmaz)
 
@@ -797,7 +849,7 @@ D6 (ses oturumu kipinin `.measurement` ile karşılaştırılması) ayrı bir ya
 | ------- | ---------------------------------- | ------------------------- | --- |
 | W-0     | Web sürümü (`Sürüm:` satırı)       |                           |     |
 | W-1     | Web ilk deneme                     |                           |     |
-| W-2     | İzin istemi, aşama (`olay=…`)      |                           |     |
+| W-2     | İzin istemi, "Mikrofon bekleniyor" |                           |     |
 | W-3     | Çeviri beklenirken Durdur → Başlat |                           |     |
 | W-4     | Okurken duraklat                   |                           |     |
 | W-5     | Arka plan, ekran kilidi (web)      |                           |     |
@@ -829,7 +881,7 @@ D6 (ses oturumu kipinin `.measurement` ile karşılaştırılması) ayrı bir ya
 | U-21    | Anahtar saklanıyor mu              |                           |     |
 | U-22    | Uzun deneme                        |                           |     |
 | U-23    | Ses sistemi sıfırlama              |                           |     |
-| U-24    | VoiceOver                          |                           |     |
+| U-24    | VoiceOver ve büyük yazı            |                           |     |
 | U-25    | Geliştirici yapısı (D6)            | Yapılmadı                 |     |
 
 **Dil tablosu (U-5):**
@@ -880,7 +932,7 @@ gözlenir. Geliştiricilerin "cihazda denenmeli" dedikleri de en altta.
 | D23 | İzin yokken / hazırlıkta Durdur'da `inputNode`                  | U-4, U-3                    |
 | D24 | `didCancel` gecikmesi; sesler üst üste binmiyor mu              | U-7                         |
 | D25 | Silip yeniden kurunca anahtar kalıyor mu                        | U-21                        |
-| D26 | Mikrofon başka uygulamada / görüşme sürerken hata alanı ve kodu | U-17 (a), U-11 (b)          |
+| D26 | Mikrofon başka uygulamada / görüşme sürerken hata alanı ve kodu | U-17 (a), U-11 (b), U-10    |
 | D27 | AirPods çıkar / takta çalan çeviri sürüyor mu                   | U-7                         |
 | D28 | Arama gelince okuma kesiliyor mu; "okunmadı" notu               | U-9                         |
 | D29 | Arama 10 sn çalınca "Durdur'a, sonra Başlat'a" notu; reddedince sürme | U-9                   |
@@ -888,7 +940,7 @@ gözlenir. Geliştiricilerin "cihazda denenmeli" dedikleri de en altta.
 | D31 | Bekçiden dönüş; "Duraklatıldı"da kalma; ikinci alarm            | U-8                         |
 | D32 | Sunucu dili internetsiz: hangi yol, hangi ileti; cihaz dilinde ileti yok | U-6                |
 | D33 | Eski sürümden güncellemede anahtar taşınıyor mu                 | U-21                        |
-| D34 | Web: start / audiostart / sonuç; "Hazırlanıyor…" → "Dinliyorum…"; `olay=yedek` | W-2          |
+| D34 | Web: start / audiostart / sonuç; "Hazırlanıyor…" → "Dinliyorum…"; 5 sn uyarısı (`olay=yedek` S01 tur 4'te kalktı) | W-2 |
 | D35 | Web: ekran kilidi ve sekme değişiminde tanıma; dönüş; izin yeniden soruluyor mu | W-5         |
 
 **Kesinti senaryoları**
@@ -918,10 +970,13 @@ gözlenir. Geliştiricilerin "cihazda denenmeli" dedikleri de en altta.
 | ----------------------------------------------------------------------------------------- | -------- |
 | iOS 1 — bekçiden sonra tampon gelene dek "Duraklatıldı", sonra dinleme ya da 2 sn'de hata  | U-8      |
 | iOS 2 — AirPods tak / çıkarda çalan çeviri sürer, sıradakiler atılmaz                     | U-7      |
-| iOS 3 — arama gelince "Kesinti sırasında gelen çeviri okunmadı." notu                      | U-9      |
-| iOS 4 — arama 10 sn sürünce "Devam etmek için Durdur'a, sonra Başlat'a dokunun." notu      | U-9      |
+| iOS 3 — arama gelince "Kesintide gelen çeviri sesli okunmadı." notu; sonraki okumada kalkar | U-9, U-14 |
+| iOS 4 — arama 10 sn sürünce "Dinleme kendiliğinden sürmezse Durdur'a, sonra Başlat'a dokunun." | U-9, U-13 |
+| iOS 5 — sürdürme iki kez olmazsa nedene göre ileti (görüşme / mikrofon başka uygulamada)   | U-10, U-17 |
+| iOS 6 — çeviri döngüsü sessizce biterse "Çeviri durdu. Dinlemeyi yeniden başlatın."        | U-1, U-22 |
+| iOS 7 — büyük yazıda hata, notlar ve kulaklık satırı altta; sarı notlar VoiceOver'a duyurulur | U-24  |
 | Web 1 — ilk Başlat'ta izin istemi açıkken "Hazırlanıyor…"; `aşama  dinliyor olay=…`        | W-2      |
-| Web 2 — izin istemi 5 sn'den uzun beklenirse yedek süre (`olay=yedek`)                    | W-2      |
+| Web 2 — izin istemi 5 sn'den uzun: aşama değişmez, "Mikrofon bekleniyor. İzin istendiyse izin verin." | W-2 |
 | Web 3 — `izin  mikrofon=verildi` ilk Başlat'ta mı, `(ilk sonuç geldi)` ekiyle mi          | W-2      |
 | Web 4 — "Duraklatıldı: okuma sürüyor" ↔ "Dinliyorum…"; arka planda "sayfa arka planda"     | W-4, W-5 |
 | Web 5 — çeviri beklenirken Durdur → Başlat; `çeviri  istek iptal edildi`                   | W-3      |
