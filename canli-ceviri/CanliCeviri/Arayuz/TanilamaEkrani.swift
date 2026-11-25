@@ -30,6 +30,7 @@ struct TanilamaEkrani: View {
                     liste
                 }
             }
+            .altSolma()
 
             altBlok
         }
@@ -76,7 +77,7 @@ struct TanilamaEkrani: View {
     private var bosDurum: some View {
         VStack(spacing: 14) {
             Image(systemName: "list.bullet.clipboard")
-                .font(.system(size: bosSimge))
+                .font(.system(size: min(bosSimge, 96)))
                 .foregroundStyle(Renk.acikMavi)
                 .accessibilityHidden(true)
             Text("Henüz olay yok")

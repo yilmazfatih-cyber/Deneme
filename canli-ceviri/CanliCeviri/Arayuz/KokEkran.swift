@@ -49,6 +49,7 @@ struct KokEkran: View {
         }
         .safeAreaInset(edge: .bottom) {
             SekmeCubugu(secili: $sekme)
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)   // C-4: @ScaledMetric sınırı yalnız çağrı yerinde görür
         }
         // Apple'ın çeviri oturumu yalnızca bu yolla alınabiliyor.
         // `ayar` dolunca çalışır; Durdur'dan sonra eski oturum Durum'daki kimlik denetimiyle durur.
@@ -68,6 +69,12 @@ struct KokEkran: View {
         }
         .onChange(of: durum.hata) { _, yeni in
             if let yeni { duyur(yeni) }
+        }
+        // C-7: yalnız yeni eklenen ya da metni değişen sarı not duyurulur.
+        .onChange(of: durum.notlar) { eski, yeni in
+            for not in yeni where !eski.contains(not) {
+                duyur(not.metin)
+            }
         }
         .onChange(of: durum.hat.kulaklik) { eski, yeni in
             guard (eski == nil) != (yeni == nil) else { return }
@@ -110,7 +117,7 @@ struct SekmeCubugu: View {
                 } label: {
                     VStack(spacing: 4) {
                         Image(systemName: s.simge)
-                            .font(.system(size: simgeBoyu, weight: .semibold))
+                            .font(.system(size: min(simgeBoyu, 28), weight: .semibold))
                             .accessibilityHidden(true)
                         Text(s.ad).font(.caption.weight(.semibold))
                     }
@@ -129,7 +136,6 @@ struct SekmeCubugu: View {
         .overlay(Capsule().stroke(Color.white.opacity(0.12), lineWidth: 1))
         .padding(.horizontal, 28)
         .padding(.bottom, 4)
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Sekmeler")
     }

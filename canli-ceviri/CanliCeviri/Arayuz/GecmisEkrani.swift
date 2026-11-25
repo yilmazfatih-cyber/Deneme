@@ -20,6 +20,7 @@ struct GecmisEkrani: View {
                         } label: {
                             Text("Temizle")
                                 .font(.subheadline.weight(.semibold))
+                                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                                 .foregroundStyle(Renk.maviMetin)
                                 .frame(minWidth: 44, minHeight: 44, alignment: .trailing)
                                 .contentShape(Rectangle())
@@ -33,7 +34,7 @@ struct GecmisEkrani: View {
                 if durum.satirlar.isEmpty {
                     VStack(spacing: 14) {
                         Image(systemName: "text.bubble")
-                            .font(.system(size: bosSimge))
+                            .font(.system(size: min(bosSimge, 96)))
                             .foregroundStyle(Renk.acikMavi)
                             .accessibilityHidden(true)
                         Text("Henüz çeviri yok")

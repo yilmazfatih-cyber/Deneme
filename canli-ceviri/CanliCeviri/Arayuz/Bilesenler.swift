@@ -15,6 +15,7 @@ struct Kart<Icerik: View>: View {
         VStack(alignment: .leading, spacing: 14) {
             Text(baslik)
                 .font(.title2.weight(.semibold))
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 .accessibilityAddTraits(.isHeader)
             icerik
         }
@@ -35,9 +36,11 @@ struct SatirGorunumu: View {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .environment(\.locale, Locale(identifier: satir.kaynakDil))
+                .dynamicTypeSize(...DynamicTypeSize.accessibility3)   // çeviri baskın kalır (tasarim § 4.1.1)
                 .accessibilitySortPriority(0)
             Text(satir.ceviri)
                 .font(buyuk ? .title2.weight(.semibold) : .body.weight(.medium))
+                .fixedSize(horizontal: false, vertical: true)   // çeviri sınırsız ölçeklenir, kesilmez
                 .accessibilitySortPriority(1)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -60,6 +63,20 @@ struct UyariSatiri: View {
         .foregroundStyle(renk)
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity)
+    }
+}
+
+extension View {
+    /// C-8: kaydırılan alanın alt 20 pt'si solar; kenarda kesilen satır yarım görünmez.
+    @MainActor
+    func altSolma() -> some View {
+        mask {
+            VStack(spacing: 0) {
+                Color.black
+                LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+                    .frame(height: 20)
+            }
+        }
     }
 }
 

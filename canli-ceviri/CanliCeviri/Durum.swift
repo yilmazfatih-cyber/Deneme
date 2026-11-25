@@ -100,6 +100,15 @@ final class Durum {
     /// önce kimlik denetlenir: Durdur'dan sonra eski oturum ne mikrofon açar ne çeviri yapar (E1).
     func calistir(_ oturum: TranslationSession) async {
         let benim = kimlik
+        await calistirIc(oturum, benim: benim)
+        // Q-4: olağan çıkışların hepsi (hataylaBitir, Durdur) kimliği artırır. Oturum hâlâ geçerli ve çalışıyorsa
+        // döngü sessizce bitmiştir (akış bitti ya da görev iptal edildi): ekran "Dinliyorum" kalmasın.
+        if benim == kimlik, calisiyor {
+            hataylaBitir("Çeviri durdu. Dinlemeyi yeniden başlatın.", neden: "hata çeviri döngüsü bitti")
+        }
+    }
+
+    private func calistirIc(_ oturum: TranslationSession, benim: Int) async {
         let kayit = Tanilama.ortak
         let konusmaDili = dil.konusma
         let kaynakKod = dil.kod
@@ -226,12 +235,11 @@ final class Durum {
         if let h = hata as? HatHatasi { return (h.mesaj, h.kod ?? "hat") }
         let n = hata as NSError
         let kod = "\(n.domain)/\(n.code)"
-        // Ön-11: ses oturumu kodları yalnız kendi alanında eşleşir.
-        let sesOturumu = n.domain == NSOSStatusErrorDomain
-        if sesOturumu && n.code == AVAudioSession.ErrorCode.insufficientPriority.rawValue {
+        // Ön-11, Z-1: ses kodları yalnız ses oturumu ve ses motoru alanlarında eşleşir.
+        if SesHatasi.eslesir(hata, .insufficientPriority) {
             return ("Görüşme sürerken dinleme başlatılamaz. Görüşme bitince yeniden deneyin.", kod)
         }
-        if sesOturumu && n.code == AVAudioSession.ErrorCode.cannotStartRecording.rawValue {
+        if SesHatasi.eslesir(hata, .cannotStartRecording) {
             return ("Mikrofon başka bir uygulamada. O uygulamayı kapatıp yeniden başlatın.", kod)
         }
         return ("Dinleme durdu (\(kod)). Yeniden başlatın.", kod)

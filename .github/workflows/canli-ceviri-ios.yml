@@ -28,25 +28,44 @@ jobs:
         run: |
           xcodebuild -version
           xcodebuild -showsdks | grep -i iphone || true
-      - name: Derle (iOS Simülatörü, imzasız)
+      - name: Derle (iOS Simülatörü, imzasız; Debug ve Release)
         run: |
           set -o pipefail
-          xcodebuild \
-            -project canli-ceviri/CanliCeviri.xcodeproj \
-            -target CanliCeviri \
-            -sdk iphonesimulator \
-            -configuration Debug \
-            CODE_SIGNING_ALLOWED=NO \
-            build > derleme.log 2>&1 || true
-          # Kayıt çok uzun; hataları, uyarıları ve sonucu öne çıkar.
-          grep -E -A4 "(: error:|: warning:|^xcodebuild: error|BUILD SUCCEEDED|BUILD FAILED)" derleme.log || tail -40 derleme.log
-          grep -q "BUILD SUCCEEDED" derleme.log
+          # Derleyici uyarısı da işi kırar (ilke 7). Desen derleyici tanılarına göredir (": warning:" ve satır
+          # başında "warning: "); araç satırları ("appintentsmetadataprocessor … warning: Metadata extraction
+          # skipped") bu desene uymaz.
+          derle() {
+            local yapilandirma=$1 kayit=$2
+            xcodebuild \
+              -project canli-ceviri/CanliCeviri.xcodeproj \
+              -target CanliCeviri \
+              -sdk iphonesimulator \
+              -configuration "$yapilandirma" \
+              CODE_SIGNING_ALLOWED=NO \
+              build > "$kayit" 2>&1 || true
+            echo "== $yapilandirma: hata ve uyarı satırları =="
+            grep -E -A4 "(: error:|: warning:|^warning: |^xcodebuild: error)" "$kayit" || echo "(yok)"
+            if ! grep -q "BUILD SUCCEEDED" "$kayit"; then
+              tail -40 "$kayit"
+              echo "$yapilandirma derlemesi başarısız, iş kırıldı."
+              return 1
+            fi
+            if grep -E -q "(: warning:|^warning: )" "$kayit"; then
+              echo "Uyarı var, iş kırıldı ($yapilandirma)."
+              return 1
+            fi
+            echo "$yapilandirma: BUILD SUCCEEDED, hata 0, uyarı 0"
+          }
+          derle Debug derleme-debug.log
+          derle Release derleme-release.log
       - name: Derleme kaydını sakla
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: derleme-kaydi
-          path: derleme.log
+          path: |
+            derleme-debug.log
+            derleme-release.log
           retention-days: 7
       - name: Simülatörü hazırla
         id: simulator
@@ -75,7 +94,14 @@ jobs:
           echo "ios=$IOS" >> "$GITHUB_OUTPUT"
           echo "ad=$AD" >> "$GITHUB_OUTPUT"
           xcrun simctl boot "$UDID" || true
-          xcrun simctl bootstatus "$UDID" -b
+          # Açılış kaydı saniyede birkaç satır basar; dosyaya yazılır, yalnız sonu gösterilir.
+          if xcrun simctl bootstatus "$UDID" -b > acilis.log 2>&1; then
+            tail -3 acilis.log
+          else
+            tail -40 acilis.log
+            echo "Simülatör açılamadı."
+            exit 1
+          fi
           xcrun simctl ui "$UDID" appearance dark
           xcrun simctl ui "$UDID" content_size large
           xcrun simctl status_bar "$UDID" override --time "9:41" --batteryState charged --batteryLevel 100 \
@@ -100,9 +126,14 @@ jobs:
           for ad in ceviri-bos ceviri dinliyor kulakliksiz gecmis gecmis-bos ayarlar tanilama; do
             cek "$ad" "$ad"
           done
-          # En büyük Dinamik Yazı boyutunda Çeviri ekranı; sonra boyut eski hâline döner.
+          # En büyük Dinamik Yazı (AX5) boyutunda dört ekran, AX3'te Çeviri; sonra boyut eski hâline döner.
           xcrun simctl ui "$UDID" content_size accessibility-extra-extra-extra-large
           cek ceviri ceviri-buyuk-yazi
+          cek gecmis gecmis-buyuk-yazi
+          cek ayarlar ayarlar-buyuk-yazi
+          cek tanilama tanilama-buyuk-yazi
+          xcrun simctl ui "$UDID" content_size accessibility-extra-large
+          cek ceviri ceviri-buyuk-yazi-ax3
           xcrun simctl ui "$UDID" content_size large
           ls -l ekran
       - name: Görüntüleri sakla
@@ -125,6 +156,7 @@ jobs:
             echo "Dal: $GITHUB_REF_NAME"
             echo "Xcode: $(xcodebuild -version | tr '\n' ' ')"
             echo "Simülatör: $AD (iOS $IOS)"
+            echo "Derleme: Debug ve Release, hata 0, uyarı 0"
             echo "Tarih (UTC): $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           } > ekran/BILGI.txt
           cd ekran

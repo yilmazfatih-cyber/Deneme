@@ -7,8 +7,6 @@ struct CeviriEkrani: View {
     @Environment(\.dynamicTypeSize) private var yaziBoyu
 
     private var dil: Dil { diller.first { $0.kod == kaynakKod } ?? diller[0] }
-    /// Erişilebilirlik boyutlarında durum satırları kaydırılan alana geçer; altta yalnız ana düğme kalır (B-8).
-    private var buyukYazi: Bool { yaziBoyu.isAccessibilitySize }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -16,7 +14,6 @@ struct CeviriEkrani: View {
                 VStack(alignment: .leading, spacing: 20) {
                     baslik
                     dilSeridi
-                    if buyukYazi { durumSatirlari }
                     canliKart
                     if durum.satirlar.count > 1 { oncekilerKarti }
                 }
@@ -24,29 +21,23 @@ struct CeviriEkrani: View {
                 .padding(.top, 12)
                 .padding(.bottom, 20)
             }
+            .altSolma()
             altBlok
         }
     }
 
     // MARK: Başlık
 
-    @ViewBuilder
+    /// Her boyutta tek satır; Dinamik Yazı en çok xxxLarge (tasarim § 4.1.1).
     private var baslik: some View {
-        if buyukYazi {
-            // Başlık iki satıra inebilir; rozet başlığın altına geçer.
-            VStack(alignment: .leading, spacing: 8) {
-                baslikMetni
-                if durum.asama.canli { canliRozeti }
-            }
-        } else {
-            HStack(spacing: 10) {
-                baslikMetni
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-                Spacer(minLength: 8)
-                if durum.asama.canli { canliRozeti }
-            }
+        HStack(spacing: 10) {
+            baslikMetni
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+            Spacer(minLength: 8)
+            if durum.asama.canli { canliRozeti }
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     private var baslikMetni: some View {
@@ -76,9 +67,10 @@ struct CeviriEkrani: View {
 
     // MARK: Dil şeridi
 
-    /// Duruyorken tam şerit; diğer aşamalarda tek satırlık, 56 yüksekliğinde kompakt şerit (KR7).
+    /// Duruyorken tam şerit; diğer aşamalarda ve büyük yazıda tek satırlık, 56 yüksekliğinde kompakt şerit (KR7).
+    /// Yalnız dinlerken devre dışıdır; büyük yazıda kompakt şerit dokunulabilir kalır (tasarim § 4.1.1).
     private var dilSeridi: some View {
-        let kompakt = durum.calisiyor
+        let kompakt = durum.calisiyor || yaziBoyu >= .xxxLarge
         return Menu {
             Picker("Kaynak dil", selection: $kaynakKod) {
                 ForEach(diller) { Text($0.ad).tag($0.kod) }
@@ -89,7 +81,7 @@ struct CeviriEkrani: View {
                     Text("\(dil.ad) → Türkçe")
                         .font(.body.weight(.semibold))
                         .lineLimit(1)
-                        .minimumScaleFactor(0.8)
+                        .minimumScaleFactor(0.7)
                 } else {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("\(dil.ad) → Türkçe")
@@ -100,7 +92,7 @@ struct CeviriEkrani: View {
                     .multilineTextAlignment(.leading)
                 }
                 Spacer(minLength: 0)
-                if !kompakt {
+                if !durum.calisiyor {
                     Image(systemName: "chevron.right")
                         .font(.title3.weight(.bold))
                         .accessibilityHidden(true)
@@ -115,11 +107,12 @@ struct CeviriEkrani: View {
                                startPoint: .topLeading, endPoint: .bottomTrailing),
                 in: RoundedRectangle(cornerRadius: 24, style: .continuous)
             )
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         }
-        .disabled(kompakt)
+        .disabled(durum.calisiyor)
         .accessibilityLabel("Kaynak dil")
         .accessibilityValue("\(dil.ad), Türkçeye çevrilir")
-        .accessibilityHint(kompakt ? "Dili değiştirmek için önce dinlemeyi durdurun" : "Dil listesini açar")
+        .accessibilityHint(durum.calisiyor ? "Dili değiştirmek için önce dinlemeyi durdurun" : "Dil listesini açar")
     }
 
     // MARK: Şu An
@@ -128,6 +121,7 @@ struct CeviriEkrani: View {
     private var canliKart: some View {
         Kart("Şu An") {
             asamaSatiri
+                .dynamicTypeSize(...DynamicTypeSize.accessibility2)
 
             if let son = durum.satirlar.last {
                 SatirGorunumu(satir: son, buyuk: true)
@@ -161,6 +155,7 @@ struct CeviriEkrani: View {
                     .italic()
                     .foregroundStyle(Renk.acikMavi)
                     .environment(\.locale, Locale(identifier: dil.kod))
+                    .accessibilityLabel("Duyulan: \(durum.hat.canliMetin)")
             }
         case .kesintide:
             Label(durum.asama.duraklatmaMetni ?? "Duraklatıldı", systemImage: "pause.circle.fill")
@@ -186,10 +181,14 @@ struct CeviriEkrani: View {
 
     private var altBlok: some View {
         VStack(spacing: 10) {
-            if !buyukYazi { durumSatirlari }
+            // C-3: durum satırları her boyutta altta sabit kalır (ilke 5: hata kaydırmayla bulunmaz).
+            Group { durumSatirlari }
+                .lineLimit(3)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
             anaDugme
         }
         .padding(.horizontal, 20)
+        .padding(.top, 8)
         .padding(.bottom, 12)
     }
 
@@ -230,6 +229,9 @@ struct CeviriEkrani: View {
             Label(calisiyor ? "Durdur" : "Dinlemeyi Başlat",
                   systemImage: calisiyor ? "stop.fill" : "mic.fill")
                 .font(.title3.weight(.semibold))
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: 62)

@@ -15,6 +15,16 @@ struct AlaniaHatasi: Error {
     let http: Int
 }
 
+/// Z-1: ses oturumu ve ses motoru hataları iki alandan gelir; kodlar (FourCC) ikisinde aynı anlamdadır (D26).
+enum SesHatasi {
+    private static let alanlar: Set<String> = [NSOSStatusErrorDomain, "com.apple.coreaudio.avfaudio"]
+
+    static func eslesir(_ hata: Error, _ kod: AVAudioSession.ErrorCode) -> Bool {
+        let n = hata as NSError
+        return alanlar.contains(n.domain) && n.code == kod.rawValue
+    }
+}
+
 /// Dinleme oturumu sürerken mikrofonun geçici olarak kapanma nedeni (şartname G11).
 enum KesintiNedeni: Equatable {
     case telefon        // ses oturumu kesintisi: arama, alarm, Siri
@@ -587,7 +597,7 @@ final class Hat {
             try? await Task.sleep(for: .seconds(kesintiNotuSuresi))
             guard let self, no == self.oturumNo, k == self.kesintiNo, self.kesinti != nil else { return }
             Tanilama.ortak.kaydet("kesinti", "\(Int(kesintiNotuSuresi)) sn sürdü, bitiş bildirimi yok", uyari: true)
-            self.bildir?(.not(.uzunKesinti, "Devam etmek için Durdur'a, sonra Başlat'a dokunun."))
+            self.bildir?(.not(.uzunKesinti, "Dinleme kendiliğinden sürmezse Durdur'a, sonra Başlat'a dokunun."))
         }
     }
 
@@ -612,7 +622,7 @@ final class Hat {
             kesinti = nil
             yoluGuncelle()
             bildir?(.not(.uzunKesinti, nil))
-            if neden == .bekci {
+            if neden == .bekci || bekciAlarmi != nil {
                 // C7, K15: bekçiden dönüşte başarı tampon gelmesidir; ekran o zamana dek "Duraklatıldı" kalır
                 // (`bekciDenetle` tampon gelince `kesintiBitti` bildirir, gelmezse G13).
                 kayit.kaydet("motor", "yeniden başlatıldı, tampon bekleniyor")
@@ -644,8 +654,16 @@ final class Hat {
                 }
             } else {
                 kayit.kaydet("motor", "başlatılamadı \(hataKodu(error))", uyari: true)
-                hataylaBitir(HatHatasi(mesaj: "Mikrofon yeniden açılamadı. Dinlemeyi yeniden başlatın.",
-                                       kod: "motor \(hataKodu(error))"))
+                // Z-2: ileti nedene göre; davranış değişmez (KR4).
+                let mesaj: String
+                if Hat.oncelikYetersiz(error) {
+                    mesaj = "Görüşme sürerken dinleme sürdürülemez. Görüşme bitince Başlat'a dokunun."
+                } else if SesHatasi.eslesir(error, .cannotStartRecording) {
+                    mesaj = "Mikrofon başka bir uygulamada. O uygulamayı kapatıp yeniden başlatın."
+                } else {
+                    mesaj = "Mikrofon yeniden açılamadı. Dinlemeyi yeniden başlatın."
+                }
+                hataylaBitir(HatHatasi(mesaj: mesaj, kod: "motor \(hataKodu(error))"))
             }
         }
     }
@@ -687,9 +705,7 @@ final class Hat {
 
     /// `setActive(true)` görüşme sürerken reddedildi mi (`insufficientPriority`).
     private nonisolated static func oncelikYetersiz(_ hata: Error) -> Bool {
-        let n = hata as NSError
-        return n.domain == NSOSStatusErrorDomain
-            && n.code == AVAudioSession.ErrorCode.insufficientPriority.rawValue
+        SesHatasi.eslesir(hata, .insufficientPriority)
     }
 
     /// Ön-2: motor hiç kullanılmadıysa giriş düğümüne dokunulmaz (G4).
@@ -891,7 +907,7 @@ final class Hat {
     /// S4: kesinti yüzünden okunmayan çeviri ekranda söylenir (not türü başına tek not).
     private func okunmadiNotu() {
         Tanilama.ortak.kaydet("ses", "atlandı (kesinti)")
-        bildir?(.not(.okunmayanCeviri, "Kesinti sırasında gelen çeviri okunmadı."))
+        bildir?(.not(.okunmayanCeviri, "Kesintide gelen çeviri sesli okunmadı."))
     }
 
     private func sesDongusunuBaslat() {
@@ -910,6 +926,7 @@ final class Hat {
     private func sesCal(_ no: Int, _ metin: String) async {
         sirada -= 1
         guard no == sesNo else { return }   // durdurulmuş oturumdan kalma
+        bildir?(.not(.okunmayanCeviri, nil))   // Z-5: kesintiden sonraki ilk okuma başlarken not kalkar
         let calma = Task { await self.oku(no, metin) }
         sesGorevi = calma
         await calma.value

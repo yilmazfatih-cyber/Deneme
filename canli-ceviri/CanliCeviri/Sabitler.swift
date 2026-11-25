@@ -21,6 +21,7 @@ let diller = [
 let duraklama   = 1.2   // bu kadar saniye sessizlik = cümle bitti
 let alaniaAdres = "https://voice.patientdesk.ai/v1/audio/speech"
 let alaniaModel = "alania-v2"
+let yapiEtiketi = "S01 tur 4"   // Tanılama kopyasının başlığı; her düzeltme turunda artar (KR16)
 
 // Ses hattı süreleri ve eşikleri (docs/ses-hatti.md; kural kimlikleri parantez içinde)
 let alaniaSuresi: TimeInterval         = 5     // Alania isteğinin toplam süresi, sn (S5, KR10)

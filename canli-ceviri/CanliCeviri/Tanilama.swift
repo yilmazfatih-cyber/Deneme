@@ -52,7 +52,7 @@ final class Tanilama {
     /// her satır `SS:DD:SS.mmm  olay  ayrıntı`.
     var metin: String {
         var satirlar = [
-            "Canlı Çeviri \(Tanilama.uygulamaSurumu)",
+            "Canlı Çeviri \(Tanilama.uygulamaSurumu) · \(yapiEtiketi)",
             "iOS \(UIDevice.current.systemVersion)",
             "Cihaz \(Tanilama.cihazModeli)",
             "Saat dilimi \(Tanilama.saatDilimi)",

@@ -6,6 +6,8 @@ struct AyarlarEkrani: View {
     /// Anahtar Anahtar Zinciri'nde durur (K5); bu alan yalnız ekrandaki kopyasıdır.
     @State private var anahtar = ""
     @State private var anahtarOkundu = false
+    /// Q-8: son okunan ya da yazılan değer; alan buna eşitse Anahtar Zinciri'ne yeniden yazılmaz.
+    @State private var sonAnahtar = ""
     @AppStorage(Kayit.alaniaSesi) private var ses = "alania2-f1"
     @ScaledMetric(relativeTo: .title3) private var simgeSutunu: CGFloat = 30
 
@@ -18,7 +20,7 @@ struct AyarlarEkrani: View {
 
                 bolumBasligi("Alania-2 API anahtarı")
                 VStack(alignment: .leading, spacing: 12) {
-                    SecureField("pd_live_…", text: $anahtar)
+                    SecureField("", text: $anahtar, prompt: Text("pd_live_…").foregroundStyle(.secondary))
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                         .padding(14)
@@ -27,7 +29,7 @@ struct AyarlarEkrani: View {
                         .accessibilityLabel("Alania-2 API anahtarı")
                         .accessibilityValue(anahtar.isEmpty ? "Boş" : "Girildi")
                         .accessibilityHint("Boş bırakırsanız çeviri Apple'ın Türkçe sesiyle okunur")
-                    Text("Boş bırakırsanız çeviri Apple'ın Türkçe sesiyle okunur. Anahtar yalnızca bu telefonda, güvenli biçimde saklanır.")
+                    Text("Boş bırakırsanız çeviri Apple'ın Türkçe sesiyle okunur. Anahtar girerseniz çeviri metni seslendirmek için Alania'ya gönderilir; söylenen asıl cümle gönderilmez. Anahtar yalnızca bu telefonda, güvenli biçimde saklanır.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
@@ -41,6 +43,7 @@ struct AyarlarEkrani: View {
                 }
                 .pickerStyle(.segmented)
                 .controlSize(.large)
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                 .accessibilityLabel("Okuma sesi")
                 .padding(18)
                 .background(Renk.kart, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
@@ -65,14 +68,18 @@ struct AyarlarEkrani: View {
             .padding(.top, 12)
             .padding(.bottom, 20)
         }
+        .altSolma()
         .onAppear {
             guard !anahtarOkundu else { return }
-            anahtar = Anahtarlik.alaniaAnahtari
+            let okunan = Anahtarlik.alaniaAnahtari
+            sonAnahtar = okunan
+            anahtar = okunan
             anahtarOkundu = true
         }
         .onChange(of: anahtar) {
-            guard anahtarOkundu else { return }
+            guard anahtarOkundu, anahtar != sonAnahtar else { return }
             Anahtarlik.alaniaAnahtari = anahtar
+            sonAnahtar = anahtar
         }
     }
 
