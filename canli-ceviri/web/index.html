@@ -28,18 +28,24 @@
         --kart: #13172e;
         --alan: #0a0d1f;
         --mavi: #2e7af5;
+        --mavi-dolgu: #2b72e5;
+        --mavi-metin: #4a8ff7;
         --koyu-mavi: #1a47b3;
         --acik-mavi: #61ccfa;
         --kirmizi: #eb3833;
+        --kirmizi-dolgu: #de3530;
         --acik-kirmizi: #ff7a73;
         --sari: #fac23d;
         --metin: #ffffff;
         --ikincil: rgba(235, 235, 245, 0.62);
         --soluk: rgba(235, 235, 245, 0.32);
+        --yer-tutucu: rgba(235, 235, 245, 0.5);
+        --girdi-cizgi: rgba(255, 255, 255, 0.18);
         --cizgi: rgba(255, 255, 255, 0.12);
         --ayrac: rgba(255, 255, 255, 0.14);
         --segment: rgba(118, 118, 128, 0.24);
-        --segment-secili: #636366;
+        --segment-secili: #8e8e93;
+        --segment-secili-metin: #000000;
         --menu: rgba(40, 41, 52, 0.94);
         --golge: rgba(0, 0, 0, 0.55);
         --sahne: #06070d;
@@ -105,6 +111,24 @@
         outline: 2px solid var(--acik-mavi);
         outline-offset: 2px;
       }
+      /* Dolgulu düğmelerde açık mavi halka seçilmez; beyaz halka */
+      .ana-dugme:focus-visible,
+      .dil-seridi:focus-visible,
+      .sil-dugme:focus-visible {
+        outline-color: var(--metin);
+      }
+      /* Yalnız ekran okuyucu için */
+      .sr {
+        position: absolute !important;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+        border: 0;
+      }
 
       /* ---------- Sahne ---------- */
       .sahne {
@@ -139,7 +163,7 @@
       }
       .ada {
         position: absolute;
-        z-index: 5;
+        z-index: 40;
         top: 11px;
         left: 50%;
         width: 124px;
@@ -211,6 +235,9 @@
       .ayar-baslik {
         flex: 1;
         min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         font-family: var(--font-buyuk);
         font-size: 34px;
         font-weight: 700;
@@ -220,20 +247,30 @@
       .baslik-simge {
         color: var(--acik-mavi);
       }
+      /* Dinlerken başlık tek satırda kalır (en çok %80'e küçülür); rozet küçülmez */
+      .ekran.dinliyor .baslik {
+        gap: 8px;
+      }
+      .ekran.dinliyor .baslik h1 {
+        font-size: clamp(27px, 8.4vw, 34px);
+        letter-spacing: 0;
+      }
+      .ekran.dinliyor .canli {
+        gap: 4px;
+        padding-inline: 10px;
+      }
       .canli {
+        flex: none;
         display: inline-flex;
         align-items: center;
         gap: 5px;
         padding: 8px 12px;
         border-radius: 999px;
-        background: var(--mavi);
+        background: var(--mavi-dolgu);
         font-size: 13px;
         font-weight: 700;
       }
 
-      .dil {
-        position: relative;
-      }
       .dil-seridi {
         width: 100%;
         display: flex;
@@ -243,12 +280,28 @@
         border-radius: 24px;
         text-align: left;
         color: var(--metin);
-        background: linear-gradient(to bottom right, var(--mavi), var(--koyu-mavi));
-        transition: opacity 0.2s;
+        background: linear-gradient(to bottom right, var(--mavi-dolgu), var(--koyu-mavi));
       }
       .dil-seridi[aria-disabled='true'] {
-        opacity: 0.45;
         cursor: default;
+      }
+      /* Devre dışıyken yalnız başlık ve ok solar; bilgi taşıyan alt yazı tam opak kalır */
+      .dil-seridi[aria-disabled='true'] .dil-ad,
+      .dil-seridi[aria-disabled='true'] .dil-ok {
+        opacity: 0.6;
+      }
+      /* Dinlerken şerit tek satırlık kompakt hale gelir: 56 px, alt yazı ve ok gizli */
+      .ekran.dinliyor .dil-seridi {
+        min-height: 56px;
+        padding-block: 0;
+      }
+      .ekran.dinliyor .dil-ad {
+        font-family: var(--font);
+        font-size: 17px;
+        letter-spacing: 0;
+      }
+      .ekran.dinliyor .dil-ok {
+        display: none;
       }
       .dil-metin {
         flex: 1;
@@ -265,14 +318,16 @@
       }
       .dil-ipucu {
         font-size: 15px;
-        opacity: 0.85;
       }
+      /* Menü .ekran'a göre konumlanır (kaydırma alanı onu kesmez); yeri ve en çok yüksekliği
+         açılırken hesaplanır, sığmayan kısım menünün içinde kaydırılır. */
       .menu {
         position: absolute;
         z-index: 20;
-        top: calc(100% + 8px);
-        right: 0;
         width: 240px;
+        max-width: calc(100% - 40px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
         padding-block: 6px;
         border-radius: 14px;
         background: var(--menu);
@@ -285,7 +340,8 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 11px 16px 11px 12px;
+        min-height: 48px;
+        padding: 13px 16px 13px 12px;
         font-size: 17px;
         text-align: left;
       }
@@ -379,6 +435,11 @@
       .hata {
         color: var(--acik-kirmizi);
       }
+      .hata svg {
+        display: inline-block;
+        vertical-align: -2px;
+        margin-right: 5px;
+      }
       .not {
         color: var(--ikincil);
       }
@@ -392,7 +453,7 @@
         justify-content: center;
         gap: 8px;
         border-radius: 22px;
-        background: var(--mavi);
+        background: var(--mavi-dolgu);
         color: var(--metin);
         font-family: var(--font-buyuk);
         font-size: 20px;
@@ -405,7 +466,7 @@
         transform: scale(0.98);
       }
       .ana-dugme.durdur {
-        background: var(--kirmizi);
+        background: var(--kirmizi-dolgu);
       }
 
       .sekme-sarici {
@@ -432,15 +493,64 @@
         font-weight: 600;
       }
       .sekme[aria-current='page'] {
-        color: var(--mavi);
+        color: var(--mavi-metin);
         background: var(--alan);
       }
 
-      .temizle {
-        padding: 8px 0 8px 12px;
-        color: var(--mavi);
+      .temizle,
+      .metin-dugme {
+        flex: none;
+        min-width: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        color: var(--mavi-metin);
         font-size: 15px;
         font-weight: 600;
+      }
+      .temizle {
+        padding: 0 0 0 12px;
+      }
+      .metin-dugme:disabled {
+        color: var(--ikincil);
+        opacity: 0.5;
+        cursor: default;
+      }
+      .onay {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 18px;
+        border-radius: 24px;
+        background: var(--kart);
+      }
+      .onay-baslik {
+        font-size: 17px;
+        font-weight: 600;
+      }
+      .onay-dugmeler {
+        display: flex;
+        gap: 10px;
+      }
+      .onay-dugmeler button {
+        flex: 1;
+        min-height: 44px;
+        padding: 0 12px;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .vazgec-dugme {
+        background: var(--alan);
+        box-shadow: inset 0 0 0 1px var(--cizgi);
+      }
+      .sil-dugme {
+        background: var(--kirmizi-dolgu);
+      }
+      .ortali {
+        text-align: center;
       }
       .gecmis-liste {
         display: flex;
@@ -483,6 +593,7 @@
 
       .bolum {
         padding-top: 10px;
+        text-transform: uppercase;
         font-size: 13px;
         font-weight: 600;
         letter-spacing: 0.02em;
@@ -499,7 +610,7 @@
       .girdi {
         width: 100%;
         padding: 14px;
-        border: 0;
+        border: 1px solid var(--girdi-cizgi);
         border-radius: 14px;
         background: var(--alan);
         color: var(--metin);
@@ -507,7 +618,7 @@
         font-size: 17px;
       }
       .girdi::placeholder {
-        color: var(--soluk);
+        color: var(--yer-tutucu);
       }
       .dipnot {
         font-size: 13px;
@@ -522,23 +633,28 @@
       }
       .bolumlu button {
         flex: 1;
-        height: 28px;
+        min-height: 44px;
         border-radius: 7px;
         font-size: 13px;
         font-weight: 500;
       }
       .bolumlu button[aria-checked='true'] {
         background: var(--segment-secili);
+        color: var(--segment-secili-metin);
         font-weight: 600;
       }
+      /* Satırın tamamı tek anahtar (dokunma alanı en az 44 px) */
       .salter-satiri {
+        width: 100%;
+        min-height: 44px;
         display: flex;
         align-items: center;
         gap: 12px;
         font-size: 15px;
         line-height: 1.3;
+        text-align: left;
       }
-      .salter-satiri span {
+      .salter-satiri > span:first-child {
         flex: 1;
       }
       .salter {
@@ -548,6 +664,7 @@
         height: 31px;
         border-radius: 999px;
         background: var(--segment);
+        box-shadow: inset 0 0 0 1.5px var(--ikincil);
         transition: background-color 0.2s;
       }
       .salter::after {
@@ -562,10 +679,11 @@
         box-shadow: 0 2px 4px var(--golge);
         transition: transform 0.2s;
       }
-      .salter[aria-checked='true'] {
-        background: var(--mavi);
+      .salter-satiri[aria-checked='true'] .salter {
+        background: var(--mavi-dolgu);
+        box-shadow: none;
       }
-      .salter[aria-checked='true']::after {
+      .salter-satiri[aria-checked='true'] .salter::after {
         transform: translateX(20px);
       }
       .bilgi {
@@ -584,6 +702,154 @@
         display: flex;
         justify-content: center;
         color: var(--acik-mavi);
+      }
+      .tani-satiri {
+        width: 100%;
+        min-height: 56px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        text-align: left;
+      }
+      .tani-satiri-metin {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .tani-satiri-ad {
+        font-size: 15px;
+      }
+      .tani-satiri-ozet {
+        font-size: 13px;
+        color: var(--ikincil);
+      }
+      .tani-satiri-ok {
+        color: var(--ikincil);
+      }
+
+      /* ---------- Tanılama sayfası (ekranın içinde tam ekran) ---------- */
+      .sayfa {
+        position: absolute;
+        inset: 0;
+        z-index: 30;
+        display: flex;
+        flex-direction: column;
+        padding-top: 54px;
+        padding-bottom: 34px;
+        background: var(--zemin);
+      }
+      .sayfa-ust {
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px var(--yan-sag) 0 var(--yan-sol);
+      }
+      .sayfa-ust h2 {
+        flex: 1;
+        min-width: 0;
+        font-family: var(--font-buyuk);
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 41px;
+        letter-spacing: 0.01em;
+      }
+      .sayfa-ust h2:focus {
+        outline: none;
+      }
+      .gizlilik {
+        flex: none;
+        padding: 8px var(--yan-sag) 0 var(--yan-sol);
+        font-size: 13px;
+        line-height: 1.4;
+        color: var(--ikincil);
+      }
+      .tani-ic {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px var(--yan-sag) 16px var(--yan-sol);
+      }
+      .tani-liste {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-radius: 24px;
+        background: var(--kart);
+      }
+      .tani-oge {
+        padding: 12px 18px;
+      }
+      .tani-oge + .tani-oge {
+        border-top: 1px solid var(--ayrac);
+      }
+      .tani-ust {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+      }
+      .tani-ad {
+        flex: 1;
+        min-width: 0;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .tani-ad svg {
+        display: inline-block;
+        vertical-align: -1px;
+        margin-right: 5px;
+        color: var(--sari);
+      }
+      .tani-saat {
+        flex: none;
+        font-size: 12px;
+        color: var(--ikincil);
+        font-variant-numeric: tabular-nums;
+      }
+      .tani-ayrinti {
+        margin-top: 4px;
+        font-size: 13px;
+        line-height: 1.35;
+        color: var(--ikincil);
+        overflow-wrap: anywhere;
+      }
+      .sayfa .bos {
+        padding-top: 48px;
+      }
+      .sayfa-alt {
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px var(--yan-sag) 12px var(--yan-sol);
+      }
+      .kopya-alani {
+        width: 100%;
+        height: 160px;
+        padding: 10px 12px;
+        border: 1px solid var(--girdi-cizgi);
+        border-radius: 14px;
+        background: var(--alan);
+        color: var(--metin);
+        font-family: var(--font-kod);
+        font-size: 13px;
+        line-height: 1.4;
+        resize: none;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .sayfa:not([hidden]) {
+          animation: sayfa-kay 0.25s ease-out;
+        }
+      }
+      @keyframes sayfa-kay {
+        from {
+          transform: translateY(100%);
+        }
+        to {
+          transform: none;
+        }
       }
 
       /* ---------- Notlar (yalnız geniş ekran) ---------- */
@@ -690,6 +956,10 @@
         .notlar {
           display: none;
         }
+        .sayfa {
+          padding-top: env(safe-area-inset-top, 0px);
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
         .sekme-sarici {
           padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
           padding-left: max(28px, env(safe-area-inset-left, 0px));
@@ -698,7 +968,6 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .dil-seridi,
         .ana-dugme,
         .salter,
         .salter::after {
@@ -723,6 +992,11 @@
             stroke-linecap="round"
             stroke-linejoin="round"
           />
+        </mask>
+        <mask id="m-uyari">
+          <rect width="24" height="24" fill="#fff" />
+          <path d="M12 9v5" stroke="#000" stroke-width="2.2" stroke-linecap="round" />
+          <circle cx="12" cy="17.3" r="1.3" fill="#000" />
         </mask>
         <mask id="m-carki">
           <rect width="24" height="24" fill="#fff" />
@@ -825,6 +1099,42 @@
           stroke-linejoin="round"
         />
       </symbol>
+      <symbol id="i-uyari" viewBox="0 0 24 24">
+        <path
+          d="M10.3 3.6a2 2 0 0 1 3.4 0l8.3 14.6a2 2 0 0 1-1.7 3H3.7a2 2 0 0 1-1.7-3z"
+          fill="currentColor"
+          mask="url(#m-uyari)"
+        />
+      </symbol>
+      <symbol id="i-kopya" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+          <rect x="8" y="8" width="12" height="13" rx="2.5" />
+          <path d="M16 8V5.5A2.5 2.5 0 0 0 13.5 3h-7A2.5 2.5 0 0 0 4 5.5v9A2.5 2.5 0 0 0 6.5 17H8" />
+        </g>
+      </symbol>
+      <symbol id="i-cop" viewBox="0 0 24 24">
+        <path
+          d="M4 6.5h16M9.5 6.5V4.8c0-.7.6-1.3 1.3-1.3h2.4c.7 0 1.3.6 1.3 1.3v1.7M6.3 6.5l.9 12.6c.1 1.3 1.1 2.2 2.3 2.2h5c1.2 0 2.2-.9 2.3-2.2l.9-12.6M10 10.5v6.5M14 10.5v6.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-nabiz" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="3" />
+          <path d="M5.5 12.5h3l1.7-3.5 2.6 7 1.9-3.5h3.8" />
+        </g>
+      </symbol>
+      <symbol id="i-pano" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8.5 4.5H6.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-13a2 2 0 0 0-2-2h-2" />
+          <rect x="8.5" y="3" width="7" height="3.2" rx="1.2" />
+          <path d="M8 11h.01M11 11h5.5M8 14.5h.01M11 14.5h5.5M8 18h.01M11 18h5.5" />
+        </g>
+      </symbol>
       <symbol id="i-ag" viewBox="0 0 24 24">
         <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
           <circle cx="12" cy="12" r="9" />
@@ -835,11 +1145,11 @@
 
     <main class="sahne">
       <div class="telefon">
-        <div class="ekran">
+        <div class="ekran" id="ekran">
           <div class="ada" aria-hidden="true"></div>
           <div class="durum-cubugu" aria-hidden="true"></div>
 
-          <div class="paneller">
+          <div class="paneller" id="paneller">
             <!-- Çeviri sekmesi -->
             <section class="panel" data-sekme="ceviri" aria-label="Çeviri">
               <div class="kaydir">
@@ -848,7 +1158,8 @@
                     <svg class="baslik-simge" width="30" height="30" aria-hidden="true"><use href="#i-dalga" /></svg>
                     <h1>Canlı Çeviri</h1>
                     <span class="canli" id="canliRozet" hidden>
-                      <svg width="15" height="15" aria-hidden="true"><use href="#i-yayin" /></svg>CANLI
+                      <svg width="15" height="15" aria-hidden="true"><use href="#i-yayin" /></svg
+                      ><span aria-hidden="true">CANLI</span><span class="sr">Dinleme açık</span>
                     </span>
                   </div>
 
@@ -858,12 +1169,12 @@
                         <span class="dil-ad" id="dilAd">İngilizce → Türkçe</span>
                         <span class="dil-ipucu" id="dilIpucu">Kaynak dili değiştirmek için dokunun</span>
                       </span>
-                      <svg width="20" height="20" aria-hidden="true"><use href="#i-ok" /></svg>
+                      <svg class="dil-ok" width="20" height="20" aria-hidden="true"><use href="#i-ok" /></svg>
                     </button>
                     <div class="menu" id="dilMenu" role="menu" aria-label="Kaynak dil" hidden></div>
                   </div>
 
-                  <div class="kart" aria-live="polite">
+                  <div class="kart">
                     <h2>Şu An</h2>
                     <div class="liste" id="suAn"></div>
                   </div>
@@ -875,7 +1186,10 @@
                 </div>
               </div>
               <div class="alt">
-                <p class="hata" id="hata" role="alert" hidden></p>
+                <p class="hata" id="hata" role="alert" hidden>
+                  <svg width="14" height="14" aria-hidden="true"><use href="#i-uyari" /></svg
+                  ><span id="hataMetin"></span>
+                </p>
                 <p class="not" id="not"></p>
                 <button class="ana-dugme" id="anaDugme" type="button"></button>
               </div>
@@ -886,10 +1200,18 @@
               <div class="kaydir">
                 <div class="yigin s16">
                   <div class="baslik">
-                    <h1>Geçmiş</h1>
-                    <button class="temizle" id="temizle" type="button">Temizle</button>
+                    <h1 id="gecmisBaslik" tabindex="-1">Geçmiş</h1>
+                    <button class="temizle" id="temizle" type="button" aria-label="Geçmişi temizle">Temizle</button>
+                  </div>
+                  <div class="onay" id="gecmisOnay" role="group" aria-labelledby="gecmisOnayBaslik" hidden>
+                    <p class="onay-baslik" id="gecmisOnayBaslik">Geçmiş silinsin mi?</p>
+                    <div class="onay-dugmeler">
+                      <button class="vazgec-dugme" id="gecmisVazgec" type="button">Vazgeç</button>
+                      <button class="sil-dugme" id="gecmisSil" type="button">Geçmişi sil</button>
+                    </div>
                   </div>
                   <div class="gecmis-liste" id="gecmisListe"></div>
+                  <p class="dipnot ortali">Geçmiş sayfa kapanınca silinir.</p>
                 </div>
               </div>
             </section>
@@ -900,7 +1222,7 @@
                 <div class="yigin s14">
                   <h1 class="ayar-baslik">Ayarlar</h1>
 
-                  <h3 class="bolum" id="anahtarBaslik">ALANIA-2 API ANAHTARI</h3>
+                  <h3 class="bolum" id="anahtarBaslik"><span lang="en">Alania-2 API</span> anahtarı</h3>
                   <div class="kutu">
                     <input
                       class="girdi"
@@ -914,33 +1236,36 @@
                       aria-labelledby="anahtarBaslik"
                     />
                     <p class="dipnot">
-                      Boş bırakırsanız çeviri cihazınızın Türkçe sesiyle okunur. Anahtar yalnızca bu telefonda saklanır.
+                      Boş bırakırsanız çeviri cihazınızın Türkçe sesiyle okunur. Anahtar yalnızca bu tarayıcıda
+                      saklanır.
                     </p>
                   </div>
 
-                  <h3 class="bolum" id="sesBaslik">SES</h3>
+                  <h3 class="bolum" id="sesBaslik">Ses</h3>
                   <div class="kutu">
                     <div class="bolumlu" role="radiogroup" aria-labelledby="sesBaslik">
                       <button type="button" role="radio" data-ses="alania2-f1">Kadın</button>
                       <button type="button" role="radio" data-ses="alania2-oncel">Erkek</button>
                     </div>
-                    <div class="salter-satiri">
+                    <button
+                      class="salter-satiri"
+                      id="duraklat"
+                      type="button"
+                      role="switch"
+                      aria-checked="false"
+                      aria-labelledby="duraklatEtiket"
+                      aria-describedby="duraklatAciklama"
+                    >
                       <span id="duraklatEtiket">Çeviri okunurken dinlemeyi duraklat</span>
-                      <button
-                        class="salter"
-                        id="duraklat"
-                        type="button"
-                        role="switch"
-                        aria-checked="false"
-                        aria-labelledby="duraklatEtiket"
-                      ></button>
-                    </div>
-                    <p class="dipnot">
-                      Kulaklıksız, hoparlörle deniyorsanız açın; yoksa uygulama kendi sesini duyup yeniden çevirebilir.
+                      <span class="salter" aria-hidden="true"></span>
+                    </button>
+                    <p class="dipnot" id="duraklatAciklama">
+                      Yalnız bu web sürümünde. Kulaklıksız, hoparlörle deniyorsanız açın; yoksa uygulama kendi sesini
+                      duyup yeniden çevirebilir.
                     </p>
                   </div>
 
-                  <h3 class="bolum">WEB DENEME SÜRÜMÜ</h3>
+                  <h3 class="bolum">Web deneme sürümü</h3>
                   <div class="kutu bilgi">
                     <div class="bilgi-satiri">
                       <span class="bilgi-simge"
@@ -966,12 +1291,32 @@
                       dinleyeceğini tarayıcı seçer (AirPods takılıyken çoğunlukla AirPods'unki).
                     </p>
                   </div>
+
+                  <h3 class="bolum">Tanılama</h3>
+                  <div class="kutu">
+                    <button
+                      class="tani-satiri"
+                      id="tanilamaSatiri"
+                      type="button"
+                      aria-haspopup="dialog"
+                      aria-describedby="tanilamaOzet"
+                    >
+                      <span class="bilgi-simge"
+                        ><svg width="22" height="22" aria-hidden="true"><use href="#i-nabiz" /></svg
+                      ></span>
+                      <span class="tani-satiri-metin">
+                        <span class="tani-satiri-ad">Tanılama kaydı</span>
+                        <span class="tani-satiri-ozet" id="tanilamaOzet">Henüz olay yok</span>
+                      </span>
+                      <svg class="tani-satiri-ok" width="14" height="14" aria-hidden="true"><use href="#i-ok" /></svg>
+                    </button>
+                  </div>
                 </div>
               </div>
             </section>
           </div>
 
-          <div class="sekme-sarici">
+          <div class="sekme-sarici" id="sekmeSarici">
             <nav class="sekmeler" aria-label="Sekmeler">
               <button class="sekme" type="button" data-sekme="ceviri">
                 <svg width="22" height="22" aria-hidden="true"><use href="#i-dalga" /></svg>Çeviri
@@ -984,6 +1329,56 @@
               </button>
             </nav>
           </div>
+          <!-- Ekran okuyucu duyuruları: yalnız son çeviri, ayrıca başlat / durdur -->
+          <p class="sr" id="ceviriDuyuru" aria-live="polite" aria-atomic="true"></p>
+          <p class="sr" id="durumDuyuru" role="status" aria-live="polite" aria-atomic="true"></p>
+
+          <!-- Tanılama sayfası -->
+          <section
+            class="sayfa"
+            id="tanilamaSayfa"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="tanilamaBaslik"
+            hidden
+          >
+            <div class="sayfa-ust">
+              <h2 id="tanilamaBaslik" tabindex="-1">Tanılama</h2>
+              <button class="metin-dugme" id="tanilamaBitti" type="button" aria-describedby="bittiIpucu">Bitti</button>
+              <span class="sr" id="bittiIpucu">Tanılama ekranını kapatır</span>
+            </div>
+            <p class="gizlilik">Kayıt yalnızca bu cihazda, sayfa açıkken tutulur; konuşma ve çeviri metni içermez.</p>
+            <div class="kaydir" id="taniKaydir">
+              <div class="tani-ic">
+                <ol class="tani-liste" id="taniListe" aria-label="Olaylar, en yeni üstte"></ol>
+                <div class="bos" id="taniBos">
+                  <svg width="54" height="54" aria-hidden="true"><use href="#i-pano" /></svg>
+                  <p class="bos-baslik">Henüz olay yok</p>
+                  <p class="bos-alt">Dinlemeyi başlattığınızda olaylar burada görünür.</p>
+                </div>
+                <p class="dipnot ortali" id="taniSinir" hidden>Son 300 olay gösteriliyor.</p>
+              </div>
+            </div>
+            <div class="sayfa-alt">
+              <p class="dipnot ortali" id="kopyaUyari" hidden>
+                Otomatik kopyalanamadı. Aşağıdaki metni seçip kopyalayın.
+              </p>
+              <button class="ana-dugme" id="kopyala" type="button" aria-describedby="kopyalaIpucu"></button>
+              <span class="sr" id="kopyalaIpucu">Olay kaydını panoya düz metin olarak kopyalar</span>
+              <textarea
+                class="kopya-alani"
+                id="kopyaMetin"
+                readonly
+                aria-label="Tanılama metni"
+                aria-describedby="kopyaUyari"
+                hidden
+              ></textarea>
+              <button class="metin-dugme" id="taniTemizle" type="button" aria-describedby="taniTemizleIpucu"></button>
+              <span class="sr" id="taniTemizleIpucu">Tanılama olaylarını siler</span>
+              <p class="sr" id="taniDuyuru" role="status" aria-live="polite" aria-atomic="true"></p>
+            </div>
+          </section>
+
           <div class="ev" aria-hidden="true"></div>
         </div>
       </div>

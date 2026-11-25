@@ -1,0 +1,49 @@
+name: Canlı Çeviri (iOS derleme)
+
+# iPhone uygulamasını (canli-ceviri/CanliCeviri.xcodeproj) GitHub'ın Mac makinelerinde derler.
+# Yalnızca "derleniyor mu?" sorusunu yanıtlar: imzasızdır ve simülatör içindir, telefona yüklenebilir dosya üretmez.
+on:
+  push:
+    paths:
+      - canli-ceviri/CanliCeviri/**
+      - canli-ceviri/CanliCeviri.xcodeproj/**
+      - .github/workflows/canli-ceviri-ios.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: canli-ceviri-ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  derle:
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Xcode sürümü
+        run: |
+          xcodebuild -version
+          xcodebuild -showsdks | grep -i iphone || true
+      - name: Derle (iOS Simülatörü, imzasız)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project canli-ceviri/CanliCeviri.xcodeproj \
+            -target CanliCeviri \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            build > derleme.log 2>&1 || true
+          # Kayıt çok uzun; hataları, uyarıları ve sonucu öne çıkar.
+          grep -E -A4 "(: error:|: warning:|^xcodebuild: error|BUILD SUCCEEDED|BUILD FAILED)" derleme.log || tail -40 derleme.log
+          grep -q "BUILD SUCCEEDED" derleme.log
+      - name: Derleme kaydını sakla
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: derleme-kaydi
+          path: derleme.log
+          retention-days: 7

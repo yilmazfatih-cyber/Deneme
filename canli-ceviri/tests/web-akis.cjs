@@ -18,7 +18,7 @@ const SAHTE = `
   class SahteTanima {
     constructor() { this.lang = ''; this.continuous = false; this.interimResults = false; this.durum = 'yeni'; window.__taniyicilar.push(this) }
     start() { if (this.durum === 'acik') throw new Error('InvalidStateError'); this.durum = 'acik' }
-    abort() { if (this.durum !== 'acik') return; this.durum = 'kapali'; this.iptal = true; setTimeout(() => this.onend && this.onend(), 10) }
+    abort() { if (this.durum !== 'acik') return; this.durum = 'kapali'; this.iptal = true; if (!window.__endYok) setTimeout(() => this.onend && this.onend(), 10) }
     stop() { this.abort() }
   }
   for (const ad of ['SpeechRecognition', 'webkitSpeechRecognition']) {
@@ -30,11 +30,22 @@ const SAHTE = `
   window.__hata = (kod) => { const t = son(); t.onerror({ error: kod }); if (t.durum === 'acik') { t.durum = 'kapali'; t.onend && t.onend() } }
   window.__okunan = []
   const sentez = {
-    speak(u) { window.__okunan.push({ metin: u.text, dil: u.lang, ses: u.volume }); setTimeout(() => u.onend && u.onend({}), u.text.trim() ? 400 : 5) },
+    // Okuma süresi ayarlanabilir; cancel() "end" vermez (Safari'nin vermeyebileceği durum)
+    speak(u) { window.__okunan.push({ metin: u.text, dil: u.lang, ses: u.volume }); setTimeout(() => u.onend && u.onend({}), u.text.trim() ? (window.__okumaSuresi || 400) : 5) },
     cancel() { window.__iptal = (window.__iptal || 0) + 1 },
     getVoices() { return [] },
   }
   Object.defineProperty(window, 'speechSynthesis', { value: sentez, configurable: true })
+  // Pano: yazılanı tutar; __panoRed iken reddeder
+  window.__pano = null
+  Object.defineProperty(navigator, 'clipboard', { configurable: true, value: {
+    writeText(m) { if (window.__panoRed) return Promise.reject(new Error('NotAllowedError')); window.__pano = m; return Promise.resolve() },
+  } })
+  // Ekran kilidi: istek __kilitGecikme ms sonra döner; alınan ve bırakılan sayılır
+  window.__kilit = { alinan: 0, birakilan: 0 }
+  Object.defineProperty(navigator, 'wakeLock', { configurable: true, value: {
+    request() { return new Promise((r) => setTimeout(() => { window.__kilit.alinan += 1; r({ released: false, release() { if (!this.released) { this.released = true; window.__kilit.birakilan += 1 } return Promise.resolve() } }) }, window.__kilitGecikme || 0)) },
+  } })
 })()
 `
 
@@ -130,8 +141,21 @@ function bekle(kosul, ad, ayrinti) {
         return
       }
       alaniaIstekleri.push({ govde: istek.postData(), yetki: istek.headers().authorization })
-      if (alaniaKipi === 'hata') {
-        await rota.fulfill({ status: 401, headers: { 'access-control-allow-origin': '*' }, body: 'no' })
+      if (alaniaKipi === 'hata' || alaniaKipi === '500') {
+        await rota.fulfill({
+          status: alaniaKipi === 'hata' ? 401 : 500,
+          headers: { 'access-control-allow-origin': '*' },
+          body: 'no',
+        })
+        return
+      }
+      if (alaniaKipi === 'yavas') {
+        await new Promise((r) => setTimeout(r, 7000))
+        try {
+          await rota.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*' }, body: 'x' })
+        } catch {
+          // sayfa isteği iptal etti
+        }
         return
       }
       // 0,2 sn'lik sessiz WAV
@@ -260,6 +284,26 @@ function bekle(kosul, ad, ayrinti) {
   bekle(/^\d{2}:\d{2}$/.test(await metin(s, '.gecmis-oge .saat')), 'Geçmiş: saat biçimi')
   await goruntu(s, '3-gecmis.png')
   await s.click('#temizle')
+  bekle(
+    (await s.locator('#gecmisOnay').isVisible()) && (await s.locator('.gecmis-oge').count()) === 2,
+    'Temizle onay istiyor, henüz silmedi (KR9)',
+  )
+  bekle((await metin(s, '#gecmisOnay')).includes('Geçmiş silinsin mi?'), 'onay metni: Geçmiş silinsin mi?')
+  await s.click('#gecmisVazgec')
+  bekle(
+    (await s.locator('#gecmisOnay').isHidden()) && (await s.locator('.gecmis-oge').count()) === 2,
+    'Vazgeç: geçmiş duruyor',
+  )
+  bekle(
+    await s.evaluate(() => document.activeElement && document.activeElement.id === 'temizle'),
+    'Vazgeç: odak Temizle düğmesine döndü',
+  )
+  bekle(
+    (await metin(s, '.panel[data-sekme="gecmis"]')).includes('Geçmiş sayfa kapanınca silinir.'),
+    'geçmişin geçici olduğu yazıyor',
+  )
+  await s.click('#temizle')
+  await s.click('#gecmisSil')
   bekle((await metin(s, '#gecmisListe')).includes('Henüz çeviri yok'), 'Temizle: boş durum')
 
   // ---------- 5. Dil değişimi ve kalıcılık ----------
@@ -373,12 +417,21 @@ function bekle(kosul, ad, ayrinti) {
   bekle(alaniaIstekleri[0] && alaniaIstekleri[0].yetki === 'Bearer pd_live_deneme', 'Alania isteği: anahtar')
   okunan = await s.evaluate(() => window.__okunan.filter((o) => o.metin.trim()))
   bekle(okunan.length === 0, 'Alania çalınca cihaz sesi kullanılmadı', okunan)
-  alaniaKipi = 'hata'
+  alaniaKipi = '500'
   await s.evaluate(() => window.__sonuc('Hello how are you'))
   await s.waitForTimeout(2000)
   okunan = await s.evaluate(() => window.__okunan.filter((o) => o.metin.trim()))
   bekle(okunan.length === 1, 'Alania hata verince cihaz sesi okudu', okunan)
   bekle((await metin(s, '#not')).includes('Alania sesine ulaşılamadı'), 'Alania notu göründü')
+  alaniaKipi = 'hata'
+  await s.evaluate(() => window.__sonuc('Where is the station'))
+  await s.waitForTimeout(2000)
+  bekle((await metin(s, '#not')).includes('Alania anahtarı geçersiz'), '401: "Alania anahtarı geçersiz" notu')
+  let alaniaOnce = alaniaIstekleri.length
+  await s.evaluate(() => window.__sonuc('Guten Tag'))
+  await s.waitForTimeout(2000)
+  bekle(alaniaIstekleri.length === alaniaOnce, '401 sonrası bu oturumda Alania denenmedi')
+  alaniaKipi = 'tamam'
   await s.click('#anaDugme')
 
   // ---------- 12. Kalıcılık ----------
@@ -422,6 +475,513 @@ function bekle(kosul, ad, ayrinti) {
         `düğme ve sekmeler ekranda (${g}×${y})`,
       )
     }
+    await s.close()
+  }
+  await ortam.close()
+
+  // ---------- Yardımcılar (yeni bölümler) ----------
+  const gorunurluk = (sayfa, deger) =>
+    sayfa.evaluate((v) => {
+      Object.defineProperty(document, 'visibilityState', { value: v, configurable: true })
+      document.dispatchEvent(new Event('visibilitychange'))
+    }, deger)
+  const acikSayisi = (sayfa) => sayfa.evaluate(() => window.__taniyicilar.filter((t) => t.durum === 'acik').length)
+  const dugmeMetni = async (sayfa) => (await metin(sayfa, '#anaDugme')).trim()
+  // Görünen her denetimin genişliği ve yüksekliği en az 44 px mi? (küçük olanları döndürür)
+  const kucukDenetimler = (sayfa) =>
+    sayfa.evaluate(() =>
+      [
+        ...document.querySelectorAll(
+          'button, input, textarea, [role="switch"], [role="radio"], [role="menuitemradio"], [tabindex]:not([tabindex="-1"])',
+        ),
+      ]
+        .map((e) => [e, e.getBoundingClientRect()])
+        .filter(([e, r]) => r.width > 0 && r.height > 0 && getComputedStyle(e).visibility !== 'hidden')
+        .filter(([, r]) => r.width < 44 || r.height < 44)
+        .map(([e, r]) => `${e.id || e.className || e.tagName} ${Math.round(r.width)}×${Math.round(r.height)}`),
+    )
+  const tasma = (sayfa) =>
+    sayfa.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)
+  // Söylenen cümleler ve çevirileri: Tanılama'da hiçbiri geçmemeli
+  const ICERIK = [
+    'Hello',
+    'how are',
+    'Where is',
+    'station',
+    'Guten',
+    'Merhaba',
+    'nasılsın',
+    'İstasyon',
+    'İyi günler',
+    'TR:',
+    'pd_live',
+  ]
+
+  // ---------- 15. Duraklama sayacı (Ön-1) ----------
+  console.log('15. Duraklama sayacı yalnız metin değişince sıfırlanır')
+  ortam = await tarayici.newContext()
+  s = await sayfaAc(ortam)
+  await s.click('#anaDugme')
+  let istekOnce = istekler.length
+  await s.evaluate(() => window.__sonuc('Where is the station'))
+  await s.waitForTimeout(700)
+  await s.evaluate(() => window.__sonuc('Where is the station')) // aynı metin yinelendi
+  await s.waitForTimeout(750)
+  bekle(istekler.length === istekOnce + 1, 'aynı metni yineleyen sonuç cümleyi uzatmadı', istekler.length - istekOnce)
+
+  // ---------- 16. Ö-12: okuma ve gizli sekme iki ayrı bekletme nedeni ----------
+  console.log('16. Okurken sekme gizlenip görünür olunca')
+  await s.click('#anaDugme')
+  await s.click('.sekme[data-sekme="ayarlar"]')
+  await s.click('#duraklat')
+  await s.click('.sekme[data-sekme="ceviri"]')
+  await s.evaluate(() => (window.__okumaSuresi = 1500))
+  await s.click('#anaDugme')
+  await s.evaluate(() => window.__sonuc('Guten Tag'))
+  await s.waitForTimeout(1450) // cümle kapandı, çeviri okunuyor
+  once = await sayi(s)
+  bekle((await acikSayisi(s)) === 0, 'okuma sürüyor, tanıma kapalı')
+  await gorunurluk(s, 'hidden')
+  await s.waitForTimeout(1800) // okuma bitti, sekme hâlâ gizli
+  bekle(
+    (await sayi(s)) === once && (await acikSayisi(s)) === 0,
+    'okuma bitince gizli sekmede tanıma açılmadı',
+    await sayi(s),
+  )
+  await s.waitForTimeout(2500)
+  bekle(
+    (await dugmeMetni(s)) === 'Durdur' && (await s.locator('#hata').isHidden()),
+    'gizli sekmede oturum hatayla durmadı',
+  )
+  await gorunurluk(s, 'visible')
+  await s.waitForTimeout(300)
+  bekle((await sayi(s)) === once + 1 && (await acikSayisi(s)) === 1, 'sekme görününce tanıma bir kez açıldı')
+  await s.evaluate(() => window.__sonuc('Hello how are you'))
+  await s.waitForTimeout(1450) // okuma sürüyor
+  once = await sayi(s)
+  await gorunurluk(s, 'hidden')
+  await s.waitForTimeout(200)
+  await gorunurluk(s, 'visible')
+  await s.waitForTimeout(300)
+  bekle(
+    (await sayi(s)) === once && (await acikSayisi(s)) === 0,
+    'okuma sürerken sekme görününce tanıma açılmadı ("okurken beklet" bozulmadı)',
+  )
+  await s.waitForTimeout(1400)
+  bekle((await sayi(s)) === once + 1 && (await acikSayisi(s)) === 1, 'okuma bitince tanıma açıldı')
+  await s.click('#anaDugme')
+  await s.click('.sekme[data-sekme="ayarlar"]')
+  await s.click('#duraklat')
+  await s.click('.sekme[data-sekme="ceviri"]')
+  await s.evaluate(() => (window.__okumaSuresi = 400))
+
+  // ---------- 17. Ön-10: abort sonrası "end" gelmezse ----------
+  console.log('17. "end" gelmeyen tanıma (sigorta)')
+  await s.click('#anaDugme')
+  await s.evaluate(() => (window.__endYok = true))
+  await s.evaluate(() => window.__sonuc('Where is the station'))
+  await s.waitForTimeout(1500)
+  once = await sayi(s)
+  bekle((await acikSayisi(s)) === 0, '"end" gelmeden yeni tanıma açılmadı')
+  await s.waitForTimeout(1500)
+  bekle(
+    (await sayi(s)) === once + 1 && (await acikSayisi(s)) === 1,
+    'sigorta yeni tanımayı açtı, aynı anda tek tanıma açık',
+    await s.evaluate(() => window.__taniyicilar.map((t) => t.durum)),
+  )
+  await s.evaluate(() => (window.__endYok = false))
+
+  // ---------- 18. Ön-11: Durdur bekleyen cihaz sesini hemen bırakır ----------
+  console.log('18. Durdur ve bekleyen cihaz sesi')
+  await s.evaluate(() => {
+    window.__okumaSuresi = 6000 // cancel() "end" vermiyor ve okuma uzun
+    window.__okunan = []
+  })
+  await s.evaluate(() => window.__sonuc('Hello how are you'))
+  await s.waitForTimeout(1450)
+  await s.click('#anaDugme')
+  await s.click('#anaDugme')
+  await s.evaluate(() => (window.__okumaSuresi = 400))
+  await s.evaluate(() => window.__sonuc('Where is the station'))
+  await s.waitForTimeout(1700)
+  okunan = await s.evaluate(() => window.__okunan.map((o) => o.metin))
+  bekle(okunan.includes('İstasyon nerede?'), 'yeni oturumun ilk sesi eski sesi beklemedi', okunan)
+  await s.click('#anaDugme')
+
+  // ---------- 19. Ön-12: ekran kilidi beklenirken Durdur ----------
+  console.log('19. Ekran kilidi')
+  await s.evaluate(() => {
+    window.__kilitGecikme = 300
+    window.__kilit.alinan = 0
+    window.__kilit.birakilan = 0
+  })
+  await s.click('#anaDugme')
+  await s.click('#anaDugme')
+  await s.waitForTimeout(600)
+  let kilit = await s.evaluate(() => window.__kilit)
+  bekle(kilit.alinan === 1 && kilit.birakilan === 1, 'geç gelen ekran kilidi bırakıldı', kilit)
+  await s.evaluate(() => (window.__kilitGecikme = 0))
+
+  // ---------- 20. Alania: 5 sn sınırı, Durdur iptali, devre kesici (KR10) ----------
+  console.log('20. Alania: zaman aşımı, iptal, devre kesici')
+  await s.click('.sekme[data-sekme="ayarlar"]')
+  await s.fill('#anahtar', 'pd_live_deneme')
+  await s.click('.sekme[data-sekme="ceviri"]')
+  alaniaKipi = 'yavas'
+  await s.click('#anaDugme')
+  await s.evaluate(() => (window.__okunan = []))
+  await s.evaluate(() => window.__sonuc('Guten Tag'))
+  await s.waitForTimeout(1500) // Alania isteği yolda
+  alaniaOnce = alaniaIstekleri.length
+  await s.click('#anaDugme') // Durdur: istek iptal
+  alaniaKipi = 'tamam'
+  await s.click('#anaDugme')
+  await s.evaluate(() => window.__sonuc('Hello how are you'))
+  await s.waitForTimeout(1700)
+  bekle(alaniaIstekleri.length === alaniaOnce + 1, 'Durdur sonrası ilk cümle eski Alania isteğini beklemedi')
+  okunan = await s.evaluate(() => window.__okunan.filter((o) => o.metin.trim()))
+  bekle(okunan.length === 0, 'iptal edilen cümle cihaz sesiyle de okunmadı', okunan)
+
+  alaniaKipi = 'yavas'
+  await s.evaluate(() => window.__sonuc('Where is the station'))
+  await s.waitForTimeout(1200 + 4300)
+  okunan = await s.evaluate(() => window.__okunan.filter((o) => o.metin.trim()))
+  bekle(okunan.length === 0, '5 sn dolmadan yedeğe düşülmedi', okunan)
+  await s.waitForTimeout(1500)
+  okunan = await s.evaluate(() => window.__okunan.filter((o) => o.metin.trim()))
+  bekle(okunan.length === 1, '5 sn sonunda istek kesildi, cihaz sesi okudu', okunan)
+  bekle((await metin(s, '#not')).includes('Alania sesine ulaşılamadı'), 'zaman aşımında yedek notu')
+  alaniaKipi = 'tamam'
+  await s.evaluate(() => window.__sonuc('Guten Tag'))
+  await s.waitForTimeout(1700)
+  bekle(
+    !(await metin(s, '#not')).includes('Alania'),
+    'başarılı Alania sesinden sonra not kalktı',
+    await metin(s, '#not'),
+  )
+
+  alaniaKipi = '500'
+  await s.evaluate(() => (window.__okunan = []))
+  alaniaOnce = alaniaIstekleri.length
+  for (const cumle of ['Hello how are you', 'Where is the station', 'Guten Tag', 'It is late']) {
+    await s.evaluate((c) => window.__sonuc(c), cumle)
+    await s.waitForTimeout(1800)
+  }
+  bekle(
+    alaniaIstekleri.length === alaniaOnce + 3,
+    '3 hatadan sonra Alania denenmedi',
+    alaniaIstekleri.length - alaniaOnce,
+  )
+  okunan = await s.evaluate(() => window.__okunan.filter((o) => o.metin.trim()))
+  bekle(okunan.length === 4, '4 cümlenin hepsi cihaz sesiyle okundu', okunan.length)
+  bekle((await metin(s, '#not')).includes('bu oturumda cihazın sesi'), 'devre kesici notu oturum boyunca')
+  await s.click('#anaDugme')
+  alaniaKipi = 'tamam'
+  await s.click('#anaDugme')
+  alaniaOnce = alaniaIstekleri.length
+  await s.evaluate(() => window.__sonuc('Hello how are you'))
+  await s.waitForTimeout(1700)
+  bekle(alaniaIstekleri.length === alaniaOnce + 1, 'yeni oturumda Alania yeniden denendi')
+  await s.click('#anaDugme')
+
+  // ---------- 21. Tanılama ----------
+  console.log('21. Tanılama')
+  await s.click('#anaDugme')
+  ceviriKipi = 'kopuk'
+  await s.evaluate(() => window.__sonuc('Hello how are you'))
+  await s.waitForTimeout(1500)
+  ceviriKipi = 'tamam'
+  await s.evaluate(() => window.__hata('not-allowed'))
+  await s.waitForTimeout(200)
+  await s.click('.sekme[data-sekme="ayarlar"]')
+  bekle(/^\d+ olay · yalnız bu cihazda$/.test(await metin(s, '#tanilamaOzet')), 'Ayarlar: Tanılama satırı olay sayısı')
+  await s.click('#tanilamaSatiri')
+  bekle(await s.locator('#tanilamaSayfa').isVisible(), 'Tanılama sayfası açıldı')
+  bekle(
+    (await s.locator('#tanilamaSayfa').getAttribute('role')) === 'dialog' &&
+      (await s.locator('#tanilamaSayfa').getAttribute('aria-modal')) === 'true',
+    'sayfa: role=dialog, aria-modal',
+  )
+  bekle(await s.evaluate(() => document.activeElement.id === 'tanilamaBaslik'), 'açılınca odak başlıkta')
+  const liste = await metin(s, '#taniListe')
+  const gerekenler = [
+    'başlat',
+    'ses yolu',
+    'tanıma açıldı',
+    'tanıma bitti',
+    'cümle',
+    'çeviri',
+    'ses',
+    'bekleme',
+    'sekme',
+    'izin',
+    'durdur',
+  ]
+  const eksik = gerekenler.filter((o) => !liste.split('\n').some((satir) => satir.startsWith(o)))
+  bekle(eksik.length === 0, 'kayıt beklenen olayları içeriyor', eksik)
+  const ayrintilar = [
+    /dil=en/,
+    /en-US/,
+    /kelime=\d+/,
+    /\d+ ms/,
+    /neden=sessizlik/,
+    /alania \d+ ms/,
+    /alania hatası http=500/,
+    /alania hatası zaman aşımı/,
+    /alania isteği iptal edildi/,
+    /alania bu oturumda kapalı/,
+    /cihaz/,
+    /gizlendi/,
+    /göründü/,
+    /mikrofon=reddedildi/,
+    /neden=izin yok/,
+    /neden=düğme/,
+    /hata ağ/,
+  ].filter((r) => !r.test(liste))
+  bekle(ayrintilar.length === 0, 'ayrıntılar: dil, kelime sayısı, süre, HTTP kodu, neden', ayrintilar.map(String))
+  bekle(
+    (await s.locator('#taniListe .tani-oge .tani-ad').first().textContent()) === 'Uyarı: durdur',
+    'liste en yeni üstte; uyarı olayı "Uyarı:" ile okunur',
+    await s.locator('#taniListe .tani-oge .tani-ad').first().textContent(),
+  )
+  const sayfaMetni = await metin(s, '#tanilamaSayfa')
+  bekle(
+    ICERIK.every((x) => !sayfaMetni.includes(x)),
+    'ekrandaki kayıtta söylenen cümle ve çevirisi yok',
+    ICERIK.filter((x) => sayfaMetni.includes(x)),
+  )
+  bekle(
+    sayfaMetni.includes('Kayıt yalnızca bu cihazda, sayfa açıkken tutulur; konuşma ve çeviri metni içermez.'),
+    'gizlilik cümlesi',
+  )
+  await s.click('#kopyala')
+  await s.waitForTimeout(150)
+  const pano = await s.evaluate(() => window.__pano)
+  const ua = await s.evaluate(() => navigator.userAgent)
+  const panoSatirlari = (pano || '').split('\n')
+  const olaySatirlari = panoSatirlari.slice(panoSatirlari.indexOf('') + 1).filter(Boolean)
+  bekle(
+    Boolean(pano) &&
+      panoSatirlari[0].includes('Tanılama kaydı') &&
+      pano.includes('Tarayıcı: ' + ua) &&
+      pano.includes('Sayfa: /') &&
+      /Tarih: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/.test(pano),
+    'Kopyala: başlıkta tarayıcı, sayfa yolu ve tarih',
+    panoSatirlari.slice(0, 6),
+  )
+  bekle(
+    olaySatirlari.length > 20 && olaySatirlari.every((x) => /^\d{2}:\d{2}:\d{2}\.\d{3} {2}\S.* {2}?/.test(x)),
+    'Kopyala: her satır "SS:DD:SS.mmm  olay  ayrıntı"',
+    olaySatirlari.filter((x) => !/^\d{2}:\d{2}:\d{2}\.\d{3} {2}\S/.test(x)).slice(0, 3),
+  )
+  bekle(
+    olaySatirlari[0].includes('  başlat  ') && olaySatirlari[olaySatirlari.length - 1].includes('  durdur  '),
+    'Kopyala: eskiden yeniye',
+  )
+  bekle(
+    ICERIK.every((x) => !pano.includes(x)),
+    'kopyalanan kayıtta söylenen cümle ve çevirisi yok',
+    ICERIK.filter((x) => pano.includes(x)),
+  )
+  bekle((await metin(s, '#kopyala')).trim() === 'Kopyalandı', 'düğme: Kopyalandı')
+  bekle((await s.locator('#taniDuyuru').textContent()) === 'Kayıt panoya kopyalandı', 'duyuru: Kayıt panoya kopyalandı')
+  await s.waitForTimeout(2100)
+  bekle((await metin(s, '#kopyala')).trim() === 'Kopyala', '2 sn sonra düğme eski hâlinde')
+  await s.evaluate(() => (window.__panoRed = true))
+  await s.click('#kopyala')
+  await s.waitForTimeout(150)
+  bekle(
+    (await s.locator('#kopyaMetin').isVisible()) &&
+      (await s.inputValue('#kopyaMetin')).includes('Tanılama kaydı') &&
+      (await s.locator('#kopyaUyari').isVisible()),
+    'pano reddedince metin seçilebilir alanda',
+  )
+  await s.evaluate(() => (window.__panoRed = false))
+  await goruntu(s, '6-tanilama.png')
+  const olaySayisi = await s.locator('#taniListe .tani-oge').count()
+  await s.click('#taniTemizle')
+  bekle(
+    (await metin(s, '#taniTemizle')).includes('Silmek için yeniden dokunun') &&
+      (await s.locator('#taniListe .tani-oge').count()) === olaySayisi,
+    'Temizle: ilk dokunuş onay istiyor, silmiyor',
+  )
+  await s.waitForTimeout(4200)
+  bekle((await metin(s, '#taniTemizle')).trim() === 'Temizle', 'onay 4 sn sonra kalktı')
+  await s.click('#taniTemizle')
+  await s.click('#taniTemizle')
+  await s.waitForTimeout(100)
+  bekle(
+    (await s.locator('#taniBos').isVisible()) && (await s.locator('#taniTemizle').isDisabled()),
+    'Temizle: ikinci dokunuşta silindi, boş durum, Temizle devre dışı',
+  )
+  bekle((await s.locator('#taniDuyuru').textContent()) === 'Kayıt temizlendi', 'duyuru: Kayıt temizlendi')
+  await s.keyboard.press('Escape')
+  bekle(
+    (await s.locator('#tanilamaSayfa').isHidden()) &&
+      (await s.evaluate(() => document.activeElement.id === 'tanilamaSatiri')),
+    'Esc kapattı, odak Tanılama satırına döndü',
+  )
+  bekle((await metin(s, '#tanilamaOzet')) === 'Henüz olay yok', 'özet: Henüz olay yok')
+  await s.evaluate(() => {
+    for (let i = 0; i < 170; i += 1) {
+      for (const v of ['hidden', 'visible']) {
+        Object.defineProperty(document, 'visibilityState', { value: v, configurable: true })
+        document.dispatchEvent(new Event('visibilitychange'))
+      }
+    }
+  })
+  await s.click('#tanilamaSatiri')
+  bekle(
+    (await s.locator('#taniListe .tani-oge').count()) === 300 && (await s.locator('#taniSinir').isVisible()),
+    'en çok 300 olay; "Son 300 olay gösteriliyor."',
+  )
+  await s.click('#kopyala')
+  await s.waitForTimeout(100)
+  bekle(
+    (await s.evaluate(() => window.__pano.split('\n').filter((x) => /^\d{2}:/.test(x)).length)) === 300,
+    'kopyada 300 olay satırı',
+  )
+  await s.click('#tanilamaBitti')
+  await ortam.close()
+
+  // ---------- 22. Erişilebilirlik ve metinler ----------
+  console.log('22. Erişilebilirlik ve metinler')
+  ortam = await tarayici.newContext()
+  s = await sayfaAc(ortam)
+  bekle((await s.locator('.kart[aria-live]').count()) === 0, '"Şu An" kartı canlı bölge değil')
+  bekle((await metin(s, '.kart h2')) === 'Şu An', '"Şu An" başlığı değişmedi')
+  bekle(
+    (await metin(s, '#not')).includes('kulaklık durumu gösterilmez'),
+    'not: kulaklık durumu gösterilmez',
+    await metin(s, '#not'),
+  )
+  const renk = (secici, ozellik) =>
+    s.evaluate(([a, b]) => getComputedStyle(document.querySelector(a))[b], [secici, ozellik])
+  bekle((await renk('#anaDugme', 'backgroundColor')) === 'rgb(43, 114, 229)', 'Başlat dolgusu --mavi-dolgu')
+  bekle((await renk('.sekme[aria-current="page"]', 'color')) === 'rgb(74, 143, 247)', 'seçili sekme --mavi-metin')
+  await s.click('#anaDugme')
+  await s.waitForTimeout(350)
+  bekle((await s.locator('#durumDuyuru').textContent()) === 'Dinleme başladı', 'duyuru: Dinleme başladı')
+  bekle((await renk('#anaDugme', 'backgroundColor')) === 'rgb(222, 53, 48)', 'Durdur dolgusu --kirmizi-dolgu')
+  bekle((await renk('#canliRozet', 'backgroundColor')) === 'rgb(43, 114, 229)', 'CANLI rozeti --mavi-dolgu')
+  bekle((await s.locator('#canliRozet .sr').textContent()) === 'Dinleme açık', 'CANLI rozeti: "Dinleme açık"')
+  await s.evaluate(() => window.__sonuc('Hello how'))
+  bekle((await s.locator('.canli-metin').getAttribute('lang')) === 'en', 'canlı metin lang=en')
+  await s.evaluate(() => window.__sonuc('Hello how are you'))
+  await s.waitForTimeout(1500)
+  bekle((await s.locator('.satir.buyuk .asil').getAttribute('lang')) === 'en', 'asıl cümle lang=en')
+  bekle((await s.locator('.satir.buyuk .ceviri').getAttribute('lang')) === null, 'çeviride ayrı lang yok (sayfa tr)')
+  bekle(
+    (await s.locator('#ceviriDuyuru').textContent()) === 'Merhaba, nasılsın?',
+    'canlı bölge yalnız son çeviriyi okur',
+  )
+  bekle((await s.locator('#ceviriDuyuru').getAttribute('aria-live')) === 'polite', 'çeviri bölgesi aria-live=polite')
+  await s.click('#anaDugme')
+  await s.waitForTimeout(150)
+  bekle((await s.locator('#durumDuyuru').textContent()) === 'Dinleme durdu', 'duyuru: Dinleme durdu')
+  await s.click('#anaDugme')
+  await s.evaluate(() => window.__hata('not-allowed'))
+  await s.waitForTimeout(100)
+  bekle((await s.locator('#hata svg').count()) === 1, 'hata satırının başında uyarı simgesi')
+  await s.click('.sekme[data-sekme="ayarlar"]')
+  const ayarMetni = await metin(s, '.panel[data-sekme="ayarlar"]')
+  bekle(ayarMetni.includes('Anahtar yalnızca bu tarayıcıda saklanır.'), 'anahtar: "bu tarayıcıda saklanır"')
+  bekle(ayarMetni.includes('Yalnız bu web sürümünde.'), 'duraklat: "yalnız bu web sürümünde"')
+  bekle(
+    (await metin(s, '#anahtarBaslik')) === 'ALANIA-2 API ANAHTARI' &&
+      (await s.locator('#anahtarBaslik').textContent()) === 'Alania-2 API anahtarı',
+    'bölüm başlığı biçemle büyük harf, metni olağan',
+    await metin(s, '#anahtarBaslik'),
+  )
+  await s.click('#duraklatEtiket')
+  bekle(
+    (await s.locator('#duraklat').getAttribute('aria-checked')) === 'true',
+    'şalter etiketine dokunmak da değiştirir',
+  )
+  await s.click('#duraklatEtiket')
+  await ortam.close()
+
+  // ---------- 23. Küçük ekran: dil menüsü, dinlerken düzen, dokunma alanları ----------
+  console.log('23. 320×568')
+  ortam = await tarayici.newContext()
+  s = await sayfaAc(ortam, 320, 568)
+  bekle((await kucukDenetimler(s)).length === 0, 'Çeviri: dokunma alanları ≥ 44 px', await kucukDenetimler(s))
+  await s.click('#dilSeridi')
+  const menuKutu = await s.locator('#dilMenu').boundingBox()
+  bekle(menuKutu.y >= 0 && menuKutu.y + menuKutu.height <= 568, 'dil menüsü ekranın içinde', menuKutu)
+  let erisilemeyen = []
+  for (const kod of ['en', 'de', 'fr', 'es', 'it', 'ru', 'ar']) {
+    const oge = s.locator(`.menu-oge[data-kod="${kod}"]`)
+    await oge.scrollIntoViewIfNeeded()
+    const ulasir = await oge.evaluate((e) => {
+      const r = e.getBoundingClientRect()
+      const ust = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)
+      return r.top >= 0 && r.bottom <= innerHeight && Boolean(ust) && e.contains(ust)
+    })
+    if (!ulasir) erisilemeyen.push(kod)
+  }
+  bekle(erisilemeyen.length === 0, '320×568: 7 dilin hepsi erişilebilir', erisilemeyen)
+  bekle((await kucukDenetimler(s)).length === 0, 'dil menüsü öğeleri ≥ 44 px', await kucukDenetimler(s))
+  await s.click('.menu-oge[data-kod="ar"]')
+  bekle((await metin(s, '#dilAd')) === 'Arapça → Türkçe', 'Arapça seçilebildi')
+  await s.click('#dilSeridi')
+  await s.click('.menu-oge[data-kod="en"]')
+  await s.click('#anaDugme')
+  await s.evaluate(() => window.__sonuc('Hello how are you'))
+  await s.waitForTimeout(1500)
+  await s.evaluate(() => window.__sonuc('Where is the'))
+  const duzen = await s.evaluate(() => {
+    const k = (x) => document.querySelector(x).getBoundingClientRect()
+    const h1 = document.querySelector('.panel[data-sekme="ceviri"] h1')
+    return {
+      baslik: k('.panel[data-sekme="ceviri"] h1').height,
+      kesik: h1.scrollWidth > h1.clientWidth + 1,
+      serit: k('#dilSeridi').height,
+      ceviriAlt: k('.satir.buyuk .ceviri').bottom,
+      ceviriUst: k('.satir.buyuk .ceviri').top,
+      altUst: k('.alt').top,
+      ipucuGorunur: k('#dilIpucu').width > 1,
+    }
+  })
+  bekle(duzen.baslik <= 42 && !duzen.kesik, 'dinlerken başlık tek satırda, kesilmeden', duzen)
+  bekle(Math.abs(duzen.serit - 56) <= 1 && !duzen.ipucuGorunur, 'dinlerken dil şeridi tek satır, 56 px', duzen)
+  bekle(duzen.ceviriUst >= 0 && duzen.ceviriAlt <= duzen.altUst, 'dinlerken son çeviri kaydırmadan görünüyor', duzen)
+  bekle((await tasma(s)) === 0, 'dinlerken yatay taşma yok (320)')
+  bekle((await kucukDenetimler(s)).length === 0, 'dinlerken dokunma alanları ≥ 44 px', await kucukDenetimler(s))
+  await goruntu(s, '7-320-dinliyor.png')
+  await s.click('#anaDugme')
+  await s.click('.sekme[data-sekme="gecmis"]')
+  bekle((await kucukDenetimler(s)).length === 0, 'Geçmiş: dokunma alanları ≥ 44 px', await kucukDenetimler(s))
+  await s.click('#temizle')
+  bekle((await kucukDenetimler(s)).length === 0, 'Geçmiş onayı: dokunma alanları ≥ 44 px', await kucukDenetimler(s))
+  await s.click('#gecmisVazgec')
+  await s.click('.sekme[data-sekme="ayarlar"]')
+  bekle((await kucukDenetimler(s)).length === 0, 'Ayarlar: dokunma alanları ≥ 44 px', await kucukDenetimler(s))
+  bekle((await s.locator('#tanilamaSatiri').boundingBox()).height >= 56, 'Tanılama satırı en az 56 px')
+  await s.click('#tanilamaSatiri')
+  bekle((await kucukDenetimler(s)).length === 0, 'Tanılama: dokunma alanları ≥ 44 px', await kucukDenetimler(s))
+  bekle((await tasma(s)) === 0, 'Tanılama açıkken yatay taşma yok (320)')
+  await ortam.close()
+
+  // ---------- 24. Genişlikler: dinlerken ve Tanılama açıkken ----------
+  console.log('24. Genişlikler (dinlerken, Tanılama)')
+  ortam = await tarayici.newContext()
+  for (const [g, y] of [
+    [320, 568],
+    [360, 800],
+    [390, 844],
+    [1280, 960],
+  ]) {
+    s = await sayfaAc(ortam, g, y)
+    await s.click('#anaDugme')
+    await s.evaluate(() => window.__sonuc('Hello how are you'))
+    await s.waitForTimeout(1500)
+    const t1 = await tasma(s)
+    await s.click('#anaDugme')
+    await s.click('.sekme[data-sekme="ayarlar"]')
+    await s.click('#tanilamaSatiri')
+    const t2 = await tasma(s)
+    bekle(t1 === 0 && t2 === 0, `yatay taşma yok, dinlerken ve Tanılama açıkken (${g})`, [t1, t2])
     await s.close()
   }
   await ortam.close()
