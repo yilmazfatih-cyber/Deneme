@@ -157,7 +157,9 @@
         height: 100%;
         display: flex;
         flex-direction: column;
+        /* clip (hidden değil): odak ya da programatik kaydırma .ekran'ı kaydıramaz (C-1) */
         overflow: hidden;
+        overflow: clip;
         border-radius: 50px;
         background: radial-gradient(circle 420px at 50% 50%, var(--parilti), transparent), var(--zemin);
       }
@@ -208,6 +210,14 @@
         overscroll-behavior: contain;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
+        /* Alt kenarda 20 px solma: kesilen satır yarım görünmez, kaydırılabilirlik anlaşılır (C-8) */
+        -webkit-mask-image: linear-gradient(#000 calc(100% - 20px), transparent);
+        mask-image: linear-gradient(#000 calc(100% - 20px), transparent);
+      }
+      /* Dil menüsü bu alanın içinde ama .ekran'a göre konumlanır; açıkken maske onu kesmesin */
+      .kaydir:has(.menu:not([hidden])) {
+        -webkit-mask-image: none;
+        mask-image: none;
       }
       .kaydir::-webkit-scrollbar {
         display: none;
@@ -284,11 +294,6 @@
       }
       .dil-seridi[aria-disabled='true'] {
         cursor: default;
-      }
-      /* Devre dışıyken yalnız başlık ve ok solar; bilgi taşıyan alt yazı tam opak kalır */
-      .dil-seridi[aria-disabled='true'] .dil-ad,
-      .dil-seridi[aria-disabled='true'] .dil-ok {
-        opacity: 0.6;
       }
       /* Dinlerken şerit tek satırlık kompakt hale gelir: 56 px, alt yazı ve ok gizli */
       .ekran.dinliyor .dil-seridi {
@@ -387,6 +392,13 @@
         font-size: 15px;
         color: var(--acik-mavi);
       }
+      /* Aşama satırı: "Hazırlanıyor…" mavi, "Duraklatıldı: …" sarı (iPhone ile aynı, KR3) */
+      .dinliyorum.duraklatildi {
+        color: var(--sari);
+      }
+      .dinliyorum svg {
+        flex: none;
+      }
       .satir {
         display: flex;
         flex-direction: column;
@@ -424,7 +436,7 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-        padding: 0 var(--yan-sag) 12px var(--yan-sol);
+        padding: 8px var(--yan-sag) 12px var(--yan-sol);
       }
       .hata,
       .not {
@@ -1071,6 +1083,21 @@
       <symbol id="i-dur" viewBox="0 0 24 24">
         <rect x="5" y="5" width="14" height="14" rx="2.6" fill="currentColor" />
       </symbol>
+      <symbol id="i-kum" viewBox="0 0 24 24">
+        <path
+          d="M6.5 3h11M6.5 21h11M7.5 3c0 4.5 4.5 6 4.5 9s-4.5 4.5-4.5 9M16.5 3c0 4.5-4.5 6-4.5 9s4.5 4.5 4.5 9"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.9"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-duraklat" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.9" />
+        <rect x="8.7" y="7.6" width="2.3" height="8.8" rx="0.8" fill="currentColor" />
+        <rect x="13" y="7.6" width="2.3" height="8.8" rx="0.8" fill="currentColor" />
+      </symbol>
       <symbol id="i-baloncuk" viewBox="0 0 24 24">
         <path
           d="M6 3.5h12A2.5 2.5 0 0 1 20.5 6v8.5A2.5 2.5 0 0 1 18 17h-6.2l-4.5 3.6c-.5.4-1.3 0-1.3-.6v-3H6a2.5 2.5 0 0 1-2.5-2.5V6A2.5 2.5 0 0 1 6 3.5z"
@@ -1237,7 +1264,8 @@
                     />
                     <p class="dipnot">
                       Boş bırakırsanız çeviri cihazınızın Türkçe sesiyle okunur. Anahtar yalnızca bu tarayıcıda
-                      saklanır.
+                      saklanır. Anahtar girerseniz çeviri metni seslendirmek için Alania'ya gönderilir; söylenen asıl
+                      cümle gönderilmez.
                     </p>
                   </div>
 

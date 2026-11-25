@@ -59,7 +59,8 @@ Engel varsa iş geri döner; Önemli olanlar aynı sprintte kapanır; Öneriler 
 - **Akış:** iPhone mikrofonu → konuşma tanıma (Speech, cihazda) → çeviri (Translation, cihazda) → Türkçe ses
   (Alania-2, anahtar yoksa ya da ulaşılamazsa Apple sesi) → AirPods.
 - **Dosyalar:** `Sabitler.swift` (diller, süreler, renkler) · `Durum.swift` (ekranların paylaştığı durum, çeviri döngüsü) ·
-  `Hat.swift` (mikrofon, cümle ayırma, seslendirme, kesintiler) · `Arayuz/` (ekranlar ve bileşenler).
+  `Hat.swift` (mikrofon, cümle ayırma, seslendirme, kesintiler) · `Tanilama.swift` (cihazda tutulan olay kaydı) ·
+  `Anahtarlik.swift` (Alania anahtarı, Anahtar Zinciri) · `Arayuz/` (ekranlar ve bileşenler; Tanılama sayfası dahil).
 - **Cümle sonu:** 1,2 saniye sessizlik bir cümleyi bitirir (`Sabitler.swift` → `duraklama`). Biten cümle çevrilir, ekrana
   yazılır ve seslendirme sırasına girer; sesler üst üste binmez.
 - **Ses yolu:** `.playAndRecord` + `.allowBluetoothA2DP`. Ses AirPods'a yüksek kalitede gider, mikrofon iPhone'unki kalır.

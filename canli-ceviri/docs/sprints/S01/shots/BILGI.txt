@@ -1,0 +1,6 @@
+Commit: 1e308eac52fc4a043079e6446015dda7910d0b3f
+Dal: claude/epic-lovelace-lp6yyh
+Xcode: Xcode 26.6 Build version 17F113 
+Simülatör: iPhone 17 (iOS 26.5)
+Derleme: Debug ve Release, hata 0, uyarı 0
+Tarih (UTC): 2026-11-25T20:48:51Z

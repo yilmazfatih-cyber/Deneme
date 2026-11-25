@@ -35,6 +35,8 @@ enum NotTuru: Hashable {
     case alania         // KR10: Alania yerine Apple sesi
     case turkceSes      // S7: Türkçe Apple sesi yüklü değil
     case ceviri         // Ö-9: bir cümle çevrilemedi
+    case okunmayanCeviri   // S4: telefon / arka plan kesintisinde gelen çeviri okunmadı
+    case uzunKesinti       // K4: kesinti 10 sn'dir sürüyor; çıkış yolu söylenir
 }
 
 /// Ekranda sarı not (uyarı rengi, hata değil).
@@ -98,6 +100,15 @@ final class Durum {
     /// önce kimlik denetlenir: Durdur'dan sonra eski oturum ne mikrofon açar ne çeviri yapar (E1).
     func calistir(_ oturum: TranslationSession) async {
         let benim = kimlik
+        await calistirIc(oturum, benim: benim)
+        // Q-4: olağan çıkışların hepsi (hataylaBitir, Durdur) kimliği artırır. Oturum hâlâ geçerli ve çalışıyorsa
+        // döngü sessizce bitmiştir (akış bitti ya da görev iptal edildi): ekran "Dinliyorum" kalmasın.
+        if benim == kimlik, calisiyor {
+            hataylaBitir("Çeviri durdu. Dinlemeyi yeniden başlatın.", neden: "hata çeviri döngüsü bitti")
+        }
+    }
+
+    private func calistirIc(_ oturum: TranslationSession, benim: Int) async {
         let kayit = Tanilama.ortak
         let konusmaDili = dil.konusma
         let kaynakKod = dil.kod
@@ -200,6 +211,11 @@ final class Durum {
             if calisiyor { asama = .dinliyor }
         case .not(let tur, let metin):
             if let metin { notEkle(tur, metin) } else { notKaldir(tur) }
+        case .durdu(let h):
+            // Ön-3: aşama hemen "duruyor" olur; kimlik artınca çeviri döngüsü akışın hatasını yeniden işlemez.
+            guard calisiyor else { return }
+            let (mesaj, kod) = Durum.turkce(h)
+            hataylaBitir(mesaj, neden: "hata \(kod)")
         }
     }
 
@@ -219,10 +235,11 @@ final class Durum {
         if let h = hata as? HatHatasi { return (h.mesaj, h.kod ?? "hat") }
         let n = hata as NSError
         let kod = "\(n.domain)/\(n.code)"
-        if n.code == AVAudioSession.ErrorCode.insufficientPriority.rawValue {
+        // Ön-11, Z-1: ses kodları yalnız ses oturumu ve ses motoru alanlarında eşleşir.
+        if SesHatasi.eslesir(hata, .insufficientPriority) {
             return ("Görüşme sürerken dinleme başlatılamaz. Görüşme bitince yeniden deneyin.", kod)
         }
-        if n.code == AVAudioSession.ErrorCode.cannotStartRecording.rawValue {
+        if SesHatasi.eslesir(hata, .cannotStartRecording) {
             return ("Mikrofon başka bir uygulamada. O uygulamayı kapatıp yeniden başlatın.", kod)
         }
         return ("Dinleme durdu (\(kod)). Yeniden başlatın.", kod)

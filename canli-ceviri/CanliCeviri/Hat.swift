@@ -15,6 +15,16 @@ struct AlaniaHatasi: Error {
     let http: Int
 }
 
+/// Z-1: ses oturumu ve ses motoru hataları iki alandan gelir; kodlar (FourCC) ikisinde aynı anlamdadır (D26).
+enum SesHatasi {
+    private static let alanlar: Set<String> = [NSOSStatusErrorDomain, "com.apple.coreaudio.avfaudio"]
+
+    static func eslesir(_ hata: Error, _ kod: AVAudioSession.ErrorCode) -> Bool {
+        let n = hata as NSError
+        return alanlar.contains(n.domain) && n.code == kod.rawValue
+    }
+}
+
 /// Dinleme oturumu sürerken mikrofonun geçici olarak kapanma nedeni (şartname G11).
 enum KesintiNedeni: Equatable {
     case telefon        // ses oturumu kesintisi: arama, alarm, Siri
@@ -49,6 +59,8 @@ enum HatBildirimi {
     case kesintiBitti
     /// Sarı not göster (metin) ya da kaldır (nil).
     case not(NotTuru, String?)
+    /// Hat dinlemeyi kendi içinden hatayla bitirdi; `Durum` aşamayı hemen günceller (Ön-3).
+    case durdu(HatHatasi)
 }
 
 /// Mikrofon tamponlarını o anki tanıma isteğine yönlendirir ve son tamponun zamanını tutar
@@ -57,6 +69,8 @@ final class MikrofonKutusu: @unchecked Sendable {
     private let kilit = NSLock()
     private var istek: SFSpeechAudioBufferRecognitionRequest?
     private var son = Date.distantPast
+    /// Yalnız gerçek tampon günceller (`sifirla` değil): bekçinin ardışık alarmı için (K15, C6).
+    private var gercekSon = Date.distantPast
 
     func yonlendir(_ yeni: SFSpeechAudioBufferRecognitionRequest?) {
         kilit.lock()
@@ -75,6 +89,7 @@ final class MikrofonKutusu: @unchecked Sendable {
     func tampon(_ tampon: AVAudioPCMBuffer) {
         kilit.lock()
         son = Date()
+        gercekSon = son
         let hedef = istek
         kilit.unlock()
         hedef?.append(tampon)
@@ -86,34 +101,68 @@ final class MikrofonKutusu: @unchecked Sendable {
         defer { kilit.unlock() }
         return Date().timeIntervalSince(son)
     }
+
+    /// Verilen andan sonra mikrofondan gerçek bir tampon geldi mi.
+    func tamponGeldi(sonra an: Date) -> Bool {
+        kilit.lock()
+        defer { kilit.unlock() }
+        return gercekSon > an
+    }
 }
 
 /// Apple sesinin ve Alania oynatıcısının bitişini bekletir (şartname S2). Temsilci geri çağrılarının
 /// hangi iş parçacığında geldiği belli olmadığı için bekleyen devam kilitle korunur.
+/// Geri çağrı yalnız beklenen öğeye (o `AVSpeechUtterance`'a, o `AVAudioPlayer`'a) aitse beklemeyi bitirir (S4a).
 final class SesBekleyici: NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate, @unchecked Sendable {
     private let kilit = NSLock()
     private var devam: CheckedContinuation<Void, Never>?
+    private var beklenen: ObjectIdentifier?
 
-    func basla(_ yeni: CheckedContinuation<Void, Never>) {
+    func basla(_ yeni: CheckedContinuation<Void, Never>, icin oge: ObjectIdentifier) {
         kilit.lock()
         let eski = devam
         devam = yeni
+        beklenen = oge
         kilit.unlock()
         eski?.resume()
     }
 
+    /// Hangi öğe beklenirse beklensin bitirir (ses kesildi, çalma başlamadı).
     func bitir() {
         kilit.lock()
         let bekleyen = devam
         devam = nil
+        beklenen = nil
         kilit.unlock()
         bekleyen?.resume()
     }
 
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) { bitir() }
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) { bitir() }
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) { bitir() }
-    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) { bitir() }
+    /// Yalnız beklenen öğe buysa bitirir; önceki öğenin geç gelen bildirimi yok sayılır.
+    func bitir(_ oge: ObjectIdentifier) {
+        kilit.lock()
+        guard oge == beklenen else {
+            kilit.unlock()
+            return
+        }
+        let bekleyen = devam
+        devam = nil
+        beklenen = nil
+        kilit.unlock()
+        bekleyen?.resume()
+    }
+
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        bitir(ObjectIdentifier(utterance))
+    }
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        bitir(ObjectIdentifier(utterance))
+    }
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        bitir(ObjectIdentifier(player))
+    }
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        bitir(ObjectIdentifier(player))
+    }
 }
 
 /// Bildirim gözlemcilerini tutar; kendisi bırakılınca (ör. `Hat` bırakılınca) hepsini kaldırır (Ön-5).
@@ -151,10 +200,10 @@ private struct BildirimOzeti {
     }
 }
 
-/// Tanıma görevinin hata ile bitişi (yalnız kod ve sistem açıklaması; konuşma metni yok).
+/// Tanıma görevinin hata ile bitişi: yalnız alan/kod. Sistem açıklaması (`localizedDescription`) içeriğini sistem
+/// belirlediği için alınmaz (ilke 3).
 private struct TanimaHatasi {
     let kod: String
-    let aciklama: String
 }
 
 /// Alania istekleri: toplam süre sınırı (bağlantı + yanıt + gövde) `alaniaSuresi` (şartname S5, KR10).
@@ -201,6 +250,14 @@ final class Hat {
     @ObservationIgnored private var donguBasladi = false
     @ObservationIgnored private var oturumEtkin = false
     @ObservationIgnored private var kesinti: KesintiNedeni?
+    /// Her yeni kesintide ve neden değişiminde +1; bekleyen yeniden deneme ve süre notu buna bakar (G11a, G12).
+    @ObservationIgnored private var kesintiNo = 0
+    /// Bekçi alarmının anı; o andan sonra gerçek tampon gelince nil olur. İkinci alarm = G13 (K15, C6).
+    @ObservationIgnored private var bekciAlarmi: Date?
+    /// Mikrofon bağlantısı kurulu (motor kullanıldı); değilse söküp durdurmaya gerek yok (Ön-2).
+    @ObservationIgnored private var baglandi = false
+    /// Ses sırasında bekleyen (henüz çalınmaya alınmamış) öğe sayısı; okunmayan çeviri notu için.
+    @ObservationIgnored private var sirada = 0
     @ObservationIgnored private var bosBitis = 0
     @ObservationIgnored private var alaniaHataSayisi = 0
     @ObservationIgnored private var alaniaKapali = false
@@ -240,15 +297,24 @@ final class Hat {
     /// Dinlemeyi başlatır; biten her cümleyi döndürdüğü akışa yazar (şartname Y1, G5).
     func baslat(konusmaDili: String) throws -> AsyncThrowingStream<String, Error> {
         let kayit = Tanilama.ortak
-        guard let t = SFSpeechRecognizer(locale: Locale(identifier: konusmaDili)), t.isAvailable else {
+        guard let t = SFSpeechRecognizer(locale: Locale(identifier: konusmaDili)) else {
             kayit.kaydet("tanıma açıldı", "\(konusmaDili) kullanılamıyor", uyari: true)
             throw HatHatasi(mesaj: "Bu dil için konuşma tanıma şu an kullanılamıyor. Biraz sonra yeniden deneyin.",
                             kod: "tanıyıcı yok \(konusmaDili)")
+        }
+        guard t.isAvailable else {
+            // YÖ-5: sunucuda tanınan dilde (KR2) en olası neden internetin olmamasıdır.
+            let sunucuda = !t.supportsOnDeviceRecognition
+            kayit.kaydet("tanıma açıldı", "\(konusmaDili) kullanılamıyor \(sunucuda ? "sunucuda" : "cihazda")", uyari: true)
+            throw HatHatasi(mesaj: sunucuda ? Hat.internetGerekli
+                                            : "Bu dil için konuşma tanıma şu an kullanılamıyor. Biraz sonra yeniden deneyin.",
+                            kod: "tanıyıcı kullanılamıyor \(konusmaDili)")
         }
         taniyici = t
         oturumNo += 1
         sesNo += 1
         kesinti = nil
+        bekciAlarmi = nil
         bosBitis = 0
         alaniaHataSayisi = 0
         alaniaKapali = false
@@ -290,8 +356,7 @@ final class Hat {
         gorev?.cancel()
         gorev = nil
         kutu.yonlendir(nil)
-        motor.inputNode.removeTap(onBus: 0)
-        motor.stop()
+        mikrofonuSok()
         cumleEkle?.finish()   // akışta bekleyen cümleleri Durum kimlik denetimiyle atar
         cumleEkle = nil
         sesiKes()
@@ -299,6 +364,7 @@ final class Hat {
         UIApplication.shared.isIdleTimerDisabled = false
         oturumuKapat()
         kesinti = nil
+        bekciAlarmi = nil
         bosBitis = 0
         canliMetin = ""
         yoluGuncelle()
@@ -478,7 +544,8 @@ final class Hat {
             let devamEt = o.secenek.map { AVAudioSession.InterruptionOptions(rawValue: $0).contains(.shouldResume) }
             let secenek = devamEt.map { $0 ? "shouldResume=evet" : "shouldResume=hayır" } ?? "seçenek yok"
             guard cumleEkle != nil, kesinti != nil else {
-                kayit.kaydet("kesinti", "bitti (dinlemiyor) \(secenek)")
+                let durumu = cumleEkle == nil ? "dinlemiyor" : "kesinti yoktu"
+                kayit.kaydet("kesinti", "bitti (\(durumu)) \(secenek)")
                 return
             }
             surdur(secenek)
@@ -488,24 +555,56 @@ final class Hat {
     }
 
     /// G11: dinleme oturumu sürer ama mikrofon geçici olarak kapanır.
+    /// Zaten kesintideyken telefon ya da arka plan gelirse neden değişir (G11a).
     private func kesintiyeGir(_ neden: KesintiNedeni) {
-        guard cumleEkle != nil, kesinti == nil else { return }
+        guard cumleEkle != nil else { return }
+        let sesKesilir = neden == .telefon || neden == .arkaPlan
+        if let simdiki = kesinti {
+            // G11a: yapılandırma/bekçi denemesi beklenirken telefon ya da arka plan; bekleyen deneme geçersiz olur.
+            guard simdiki != neden, sesKesilir else { return }
+            kesinti = neden
+            kesintiNo += 1
+            bekciAlarmi = nil   // tamponun gelmemesi bu kesintiden olabilir; dönüşte bekçi yeniden sayar
+            Tanilama.ortak.kaydet("kesinti", "neden değişti=\(neden.kayitAdi)", uyari: true)
+            sesiKes(okunmadiysaSoyle: true)
+            bildir?(.kesintiBasladi(neden))
+            uzunKesintiNotunuKur()
+            return
+        }
         kesinti = neden
+        kesintiNo += 1
         Tanilama.ortak.kaydet("kesinti", "başladı neden=\(neden.kayitAdi)", uyari: true)
         yarimCumleyiGonder()                // C4: gönderilir
         bekciGorevi?.cancel()
         bekciGorevi = nil
-        motor.inputNode.removeTap(onBus: 0)
-        motor.stop()
-        sesiKes()
+        mikrofonuSok()
+        // G11, S4: ses yalnız telefon ve arka planda kesilir; yapılandırma ve bekçide sürer, sıra korunur (YÖ-1).
+        if sesKesilir {
+            bekciAlarmi = nil
+            sesiKes(okunmadiysaSoyle: true)
+        }
         yoluGuncelle()
         bildir?(.kesintiBasladi(neden))
+        uzunKesintiNotunuKur()
+    }
+
+    /// K4, Ön-5: telefon kesintisi 10 sn sonra hâlâ sürüyorsa çıkış yolu ekranda söylenir (davranış değişmez, KR4).
+    private func uzunKesintiNotunuKur() {
+        guard kesinti == .telefon else { return }
+        let no = oturumNo
+        let k = kesintiNo
+        Task { [weak self] in
+            try? await Task.sleep(for: .seconds(kesintiNotuSuresi))
+            guard let self, no == self.oturumNo, k == self.kesintiNo, self.kesinti != nil else { return }
+            Tanilama.ortak.kaydet("kesinti", "\(Int(kesintiNotuSuresi)) sn sürdü, bitiş bildirimi yok", uyari: true)
+            self.bildir?(.not(.uzunKesinti, "Dinleme kendiliğinden sürmezse Durdur'a, sonra Başlat'a dokunun."))
+        }
     }
 
     /// G12: oturumu yeniden etkinleştirir, mikrofonu o anki biçimle bağlar (E3, Y1, Y2).
     /// İki kez denenir (ikincisi 0,5 sn sonra); ikisi de olmazsa dinleme hatayla biter (C7, G13).
     private func surdur(_ ayrinti: String = "", deneme: Int = 1) {
-        guard cumleEkle != nil, kesinti != nil else { return }
+        guard cumleEkle != nil, let neden = kesinti else { return }
         let kayit = Tanilama.ortak
         if deneme == 1 {
             kayit.kaydet("kesinti", ayrinti.isEmpty ? "bitti" : "bitti \(ayrinti)")
@@ -521,29 +620,50 @@ final class Hat {
             dahiliMikrofonuSec()
             try dinlemeyiAc()
             kesinti = nil
-            kayit.kaydet("motor", "yeniden başlatıldı")
             yoluGuncelle()
-            yoluKaydet(neden: nil)
-            bildir?(.kesintiBitti)
+            bildir?(.not(.uzunKesinti, nil))
+            if neden == .bekci || bekciAlarmi != nil {
+                // C7, K15: bekçiden dönüşte başarı tampon gelmesidir; ekran o zamana dek "Duraklatıldı" kalır
+                // (`bekciDenetle` tampon gelince `kesintiBitti` bildirir, gelmezse G13).
+                kayit.kaydet("motor", "yeniden başlatıldı, tampon bekleniyor")
+                yoluKaydet(neden: nil)
+            } else {
+                kayit.kaydet("motor", "yeniden başlatıldı")
+                yoluKaydet(neden: nil)
+                bildir?(.kesintiBitti)
+            }
         } catch {
             tur += 1
             gorev?.cancel()
             gorev = nil
             kutu.yonlendir(nil)
-            motor.inputNode.removeTap(onBus: 0)
-            motor.stop()
+            mikrofonuSok()
+            if Hat.oncelikYetersiz(error) {
+                // Ön-4, KR4: davranış değişmez; görüşme sürüyor olabileceği yalnız kayda yazılır (D8, D20).
+                kayit.kaydet("kesinti", "öncelik yetersiz, görüşme sürüyor olabilir", uyari: true)
+            }
             if deneme < 2 {
                 kayit.kaydet("motor", "başlatılamadı \(hataKodu(error)), yeniden denenecek", uyari: true)
                 let no = oturumNo
+                let k = kesintiNo
                 Task { [weak self] in
                     try? await Task.sleep(for: .seconds(yenidenDenemeArasi))
-                    guard let self, no == self.oturumNo else { return }
+                    // G12: o kesinti bitmiş ya da nedeni değişmişse hiçbir şey yapma (YÖ-2).
+                    guard let self, no == self.oturumNo, k == self.kesintiNo else { return }
                     self.surdur(deneme: 2)
                 }
             } else {
                 kayit.kaydet("motor", "başlatılamadı \(hataKodu(error))", uyari: true)
-                hataylaBitir(HatHatasi(mesaj: "Mikrofon yeniden açılamadı. Dinlemeyi yeniden başlatın.",
-                                       kod: "motor \(hataKodu(error))"))
+                // Z-2: ileti nedene göre; davranış değişmez (KR4).
+                let mesaj: String
+                if Hat.oncelikYetersiz(error) {
+                    mesaj = "Görüşme sürerken dinleme sürdürülemez. Görüşme bitince Başlat'a dokunun."
+                } else if SesHatasi.eslesir(error, .cannotStartRecording) {
+                    mesaj = "Mikrofon başka bir uygulamada. O uygulamayı kapatıp yeniden başlatın."
+                } else {
+                    mesaj = "Mikrofon yeniden açılamadı. Dinlemeyi yeniden başlatın."
+                }
+                hataylaBitir(HatHatasi(mesaj: mesaj, kod: "motor \(hataKodu(error))"))
             }
         }
     }
@@ -551,12 +671,12 @@ final class Hat {
     /// K13: ses nesneleri yeniden kurulur, dinleme kullanıcı başlatmadan sürdürülmez (Ö-2).
     private func sesSistemiSifirlandi() {
         Tanilama.ortak.kaydet("ses sistemi", "sıfırlandı", uyari: true)
-        if let ekle = cumleEkle {
-            ekle.finish(throwing: HatHatasi(mesaj: "Ses sistemi yeniden başladı. Dinlemeyi yeniden başlatın.",
-                                            kod: "medya servisleri sıfırlandı"))
-            cumleEkle = nil
+        if cumleEkle != nil {
+            hataylaBitir(HatHatasi(mesaj: "Ses sistemi yeniden başladı. Dinlemeyi yeniden başlatın.",
+                                   kod: "medya servisleri sıfırlandı"))
+        } else {
+            durdur()
         }
-        durdur()
         oturumEtkin = false
         motor = AVAudioEngine()
         yedekSes = AVSpeechSynthesizer()
@@ -580,6 +700,20 @@ final class Hat {
         cumleEkle?.finish(throwing: hata)
         cumleEkle = nil
         durdur()
+        bildir?(.durdu(hata))   // Ön-3: aşama akışın hatasını beklemeden "duruyor" olur
+    }
+
+    /// `setActive(true)` görüşme sürerken reddedildi mi (`insufficientPriority`).
+    private nonisolated static func oncelikYetersiz(_ hata: Error) -> Bool {
+        SesHatasi.eslesir(hata, .insufficientPriority)
+    }
+
+    /// Ön-2: motor hiç kullanılmadıysa giriş düğümüne dokunulmaz (G4).
+    private func mikrofonuSok() {
+        guard baglandi else { return }
+        baglandi = false
+        motor.inputNode.removeTap(onBus: 0)
+        motor.stop()
     }
 
     // MARK: Mikrofon ve bekçi
@@ -587,6 +721,7 @@ final class Hat {
     /// Y1 sırası: bağlantı → tanıma → prepare → start; bekçi sıfırlanır.
     private func dinlemeyiAc() throws {
         let bicim = try Hat.mikrofonuBagla(motor.inputNode, kutu)
+        baglandi = true
         Tanilama.ortak.kaydet("mikrofon", bicim)
         tanimayiBaslat()
         motor.prepare()
@@ -623,8 +758,23 @@ final class Hat {
         }
     }
 
+    /// K15, C6, C7: alarmdan sonra gerçek tampon gelirse sayaç sıfırlanır ve dinleme sürer; tek tampon gelmeden
+    /// ikinci alarm gelirse dinleme Türkçe hatayla durur (G13). Sınırsız sessiz yeniden açma yok (YE1).
     private func bekciDenetle() {
-        guard cumleEkle != nil, kesinti == nil, kutu.gecen > bekciSiniri else { return }
+        guard cumleEkle != nil, kesinti == nil else { return }
+        if let an = bekciAlarmi, kutu.tamponGeldi(sonra: an) {
+            bekciAlarmi = nil
+            Tanilama.ortak.kaydet("motor", "tampon geldi")
+            bildir?(.kesintiBitti)
+        }
+        guard kutu.gecen > bekciSiniri else { return }
+        if bekciAlarmi != nil {
+            Tanilama.ortak.kaydet("motor", "başlatılamadı bekçi: tampon gelmiyor", uyari: true)
+            hataylaBitir(HatHatasi(mesaj: "Mikrofondan ses gelmiyor. Dinlemeyi yeniden başlatın.",
+                                   kod: "bekçi tampon yok"))
+            return
+        }
+        bekciAlarmi = Date()
         kesintiyeGir(.bekci)
         surdur()
     }
@@ -665,14 +815,20 @@ final class Hat {
         duraklamaGorevi = Task { [weak self] in
             try? await Task.sleep(for: .seconds(duraklama))
             guard !Task.isCancelled else { return }
-            self?.cumleyiKapat()
+            self?.sessizlikleKapat()
         }
+    }
+
+    /// C1: sessizlik cümleyi bitirdi (Ön-7b).
+    private func sessizlikleKapat() {
+        Tanilama.ortak.kaydet("tanıma bitti", "neden=sessizlik", tekrarPenceresi: tanimaBitisPenceresi)
+        cumleyiKapat()
     }
 
     /// T2/T3: görev kendiliğinden bitti. Yarım cümle hemen gönderilir, yeni görev hemen açılır;
     /// art arda 5 kez 2 sn içinde sonuçsuz biterse dinleme hatayla durur (E2).
     private func tanimaBitti(acilis: Date, hata: TanimaHatasi?) {
-        let neden = hata.map { "neden=hata \($0.kod) \($0.aciklama)" } ?? "neden=son sonuç"
+        let neden = hata.map { "neden=hata \($0.kod)" } ?? "neden=son sonuç"
         Tanilama.ortak.kaydet("tanıma bitti", neden, uyari: hata != nil, tekrarPenceresi: tanimaBitisPenceresi)
 
         let bos = canliMetin.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -680,8 +836,11 @@ final class Hat {
             bosBitis += 1
             if bosBitis >= bosBitisSiniri {
                 let kod = hata?.kod ?? "sonuçsuz"
-                hataylaBitir(HatHatasi(mesaj: "Konuşma tanıma çalışmıyor (\(kod)). Dinlemeyi yeniden başlatın.",
-                                       kod: "tanıma \(kod)"))
+                // YÖ-5, T1: sunucuda tanınan dilde boş bitişlerin olası nedeni internetin olmamasıdır.
+                let sunucuda = taniyici.map { !$0.supportsOnDeviceRecognition } ?? false
+                let mesaj = sunucuda ? Hat.internetGerekli
+                                     : "Konuşma tanıma çalışmıyor (\(kod)). Dinlemeyi yeniden başlatın."
+                hataylaBitir(HatHatasi(mesaj: mesaj, kod: "tanıma \(kod)"))
                 return
             }
         } else if bos {
@@ -700,10 +859,7 @@ final class Hat {
             let metin = sonuc?.bestTranscription.formattedString
             let bitti = hata != nil || sonuc?.isFinal == true
             guard metin != nil || bitti else { return }
-            let ozet = hata.map { h -> TanimaHatasi in
-                let n = h as NSError
-                return TanimaHatasi(kod: "\(n.domain)/\(n.code)", aciklama: n.localizedDescription)
-            }
+            let ozet = hata.map { TanimaHatasi(kod: hataKodu($0)) }
             DispatchQueue.main.async {
                 MainActor.assumeIsolated { olay(metin, bitti, ozet) }
             }
@@ -734,12 +890,24 @@ final class Hat {
 
     // MARK: Seslendirme
 
+    /// S4: yapılandırma ve bekçi kesintisinde de sıraya girer; telefon ve arka planda okunmaz, bir notla söylenir.
     func seslendir(_ metin: String) {
-        guard cumleEkle != nil, kesinti == nil else {
-            Tanilama.ortak.kaydet("ses", "atlandı (dinleme duraklatıldı)")
+        guard cumleEkle != nil else {
+            Tanilama.ortak.kaydet("ses", "atlandı (dinleme durdu)")
             return
         }
+        if kesinti == .telefon || kesinti == .arkaPlan {
+            okunmadiNotu()
+            return
+        }
+        sirada += 1
         sesSirasinaEkle.yield((sesNo, metin))
+    }
+
+    /// S4: kesinti yüzünden okunmayan çeviri ekranda söylenir (not türü başına tek not).
+    private func okunmadiNotu() {
+        Tanilama.ortak.kaydet("ses", "atlandı (kesinti)")
+        bildir?(.not(.okunmayanCeviri, "Kesintide gelen çeviri sesli okunmadı."))
     }
 
     private func sesDongusunuBaslat() {
@@ -756,7 +924,9 @@ final class Hat {
 
     /// Sıradaki öğeyi iptal edilebilir bir görevde çalar (Durdur uçuştaki Alania isteğini de keser).
     private func sesCal(_ no: Int, _ metin: String) async {
+        sirada -= 1
         guard no == sesNo else { return }   // durdurulmuş oturumdan kalma
+        bildir?(.not(.okunmayanCeviri, nil))   // Z-5: kesintiden sonraki ilk okuma başlarken not kalkar
         let calma = Task { await self.oku(no, metin) }
         sesGorevi = calma
         await calma.value
@@ -796,8 +966,16 @@ final class Hat {
         o.delegate = bekleyici
         oynatici = o
         guard no == sesNo else { return }   // S3: çalmadan hemen önce
-        await bekle(sigorta: o.duration + 2) { o.play() }
+        var calindi = false
+        await bekle(ObjectIdentifier(o), sigorta: o.duration + 2) {
+            calindi = o.play()
+            return calindi
+        }
         oynatici = nil
+        // Ön-6, S5: oynatıcı çalmayı başlatamadıysa aynı cümle Apple sesiyle okunur.
+        guard !calindi, no == sesNo, !Task.isCancelled else { return }
+        alaniaBasarisiz("çalınamadı", gecersiz: false)
+        await appleIleOku(no, metin)
     }
 
     private func appleIleOku(_ no: Int, _ metin: String) async {
@@ -813,28 +991,31 @@ final class Hat {
         }
         Tanilama.ortak.kaydet("ses", "apple")
         let sentez = yedekSes
-        await bekle(sigorta: 4 + Double(metin.count) * 0.12) {
+        await bekle(ObjectIdentifier(soz), sigorta: 4 + Double(metin.count) * 0.12) {
             sentez.speak(soz)
             return true
         }
     }
 
-    /// Sesin bitişini (ya da iptalini) bekler. Temsilci hiç haber vermezse sigorta süresi sonunda geçilir.
-    private func bekle(sigorta: TimeInterval, _ baslat: () -> Bool) async {
+    /// `oge`nin (utterance ya da oynatıcı) bitişini ya da iptalini bekler (S2, S4a). Temsilci hiç haber vermezse
+    /// sigorta süresi sonunda geçilir; sigorta da yalnız kendi öğesinin beklemesini bitirir.
+    private func bekle(_ oge: ObjectIdentifier, sigorta: TimeInterval, _ baslat: () -> Bool) async {
         let b = bekleyici
         let sigortaGorevi = Task {
             try? await Task.sleep(for: .seconds(sigorta))
-            if !Task.isCancelled { b.bitir() }
+            if !Task.isCancelled { b.bitir(oge) }
         }
         await withCheckedContinuation { (devam: CheckedContinuation<Void, Never>) in
-            b.basla(devam)
+            b.basla(devam, icin: oge)
             if !baslat() { b.bitir() }
         }
         sigortaGorevi.cancel()
     }
 
     /// S4: çalan ses hemen kesilir, uçuştaki Alania isteği iptal edilir, sıra boşaltılır.
-    private func sesiKes() {
+    /// `okunmadiysaSoyle`: kesinti yüzünden kesildiyse ve çalan ya da bekleyen bir çeviri varsa not çıkar.
+    private func sesiKes(okunmadiysaSoyle: Bool = false) {
+        let okunmayanVar = sesGorevi != nil || sirada > 0
         sesNo += 1
         sesGorevi?.cancel()
         sesGorevi = nil
@@ -842,6 +1023,7 @@ final class Hat {
         oynatici = nil
         yedekSes.stopSpeaking(at: .immediate)
         bekleyici.bitir()
+        if okunmadiysaSoyle && okunmayanVar { okunmadiNotu() }
     }
 
     /// S5, S6, KR10: yedeğe düşüş notla söylenir; art arda 3 hatada (401/403'te hemen) oturum boyunca Apple sesi.
@@ -859,6 +1041,9 @@ final class Hat {
             bildir?(.not(.alania, "Alania'ya ulaşılamadı; bu cümle Apple sesiyle okundu."))
         }
     }
+
+    /// T1, K12: sunucuda tanınan dilde internet yokken gösterilen ileti (YÖ-5).
+    private static let internetGerekli = "Bu dilde konuşma tanıma için internet gerekli. Bağlanıp yeniden başlatın."
 
     private nonisolated static func alaniaAyrinti(_ hata: Error) -> (ayrinti: String, gecersiz: Bool) {
         if let a = hata as? AlaniaHatasi { return ("http=\(a.http)", a.http == 401 || a.http == 403) }

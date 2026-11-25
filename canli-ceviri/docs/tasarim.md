@@ -1,16 +1,17 @@
 # Canlı Çeviri — tasarım şartnamesi
 
-Sahibi: `arayuz-denetcisi` · Sürüm: S01 (plan kapısı) · İlgili ilkeler: 1, 3, 5, 6, 8 (`CLAUDE.md`)
+Sahibi: `arayuz-denetcisi` · Sürüm: S01 tur 2 (simülatör görüntüleriyle doğrulandı) · İlgili ilkeler: 1, 3, 5, 6, 8 (`CLAUDE.md`)
 
 Bu belge **var olan** tasarımı belgeler ve iki yeni parçayı (Tanılama ekranı, VoiceOver tablosu) tarif eder. Koyu
 lacivert tema ve ekran düzeni proje sahibinindir; burada yeniden tasarlanmaz, iki sürümü (iPhone, web) tutarlı kılmak
 için ölçü, belirteç ve metin verilir. Kaynaklar: `CanliCeviri/Sabitler.swift` (`Renk`), `CanliCeviri/Arayuz/*.swift`,
 `web/index.html` (`:root`) ve `web/app.js`.
 
-**Doğrulama düzeyi (ilke 8).** iPhone bölümleri Swift kodu okunarak yazıldı; **simülatör görüntüsüyle henüz
-doğrulanmadı** (görüntüler bu sprintte gelecek). Web bölümleri gerçek görüntülerle (320, 360, 390, 1280 px) ve
-ölçümle doğrulandı. Hiçbiri gerçek iPhone + VoiceOver ile denenmedi; VoiceOver tablosu bir **şartnamedir**, cihazda
-doğrulanması `docs/cihaz-testi.md` işidir.
+**Doğrulama düzeyi (ilke 8).** Tur 2'de iPhone ekranları **gerçek iOS simülatör görüntüleriyle**
+(`docs/sprints/S01/shots/`, iPhone 17, iOS 26.5, koyu görünüm; görüntüler yarı boyutlu, 1 pt = 1,5 piksel) ve Swift
+koduyla; web 320, 360, 390 ve 1280 px'te görüntü ve ölçümle doğrulandı. **Doğrulanmayanlar:** gerçek iPhone + VoiceOver
+(VoiceOver tablosu bir **şartnamedir**; cihazda doğrulanması `docs/cihaz-testi.md` işidir), Dinamik Yazı'nın Çeviri
+dışındaki ekranlarda en büyük boyutu (yalnız `ceviri-buyuk-yazi` görüntüsü var), Safari/WebKit (web ölçümleri Chromium'dadır).
 
 Belgede işaretler: **[var]** kodda olduğu gibi belgelendi · **[değişir]** bu sprintte değişmesi gereken · **[yeni]**
 henüz kodda yok.
@@ -123,6 +124,64 @@ Not (girdi alanı): alan, başında yer tutucu ve etiket taşıyan tek bir giri�
 bulunduğu için sınır karşıtlığı tek başına işlev taşımaz; yine de çerçeve eklemek önerilir (B-19). Anahtar açık/kapalı
 durumu rengin yanında **konum** (düğme sağda/solda) ile de verilir (renk dışında işaret).
 
+### 1.4 Gerçek görüntülerden ölçülen oranlar (tur 2)
+
+Yöntem: her metnin kutusunda, hemen arkasındaki zeminin baskın rengi ile metin renginin çekirdeği (metin piksellerinin
+en uçtaki %4'ünün medyanı) alınıp WCAG oranı hesaplandı. iOS görüntüleri yarı boyuta küçültüldüğü için ince
+harflerde kenar yumuşatma çekirdeği biraz parlatır ya da soluklaştırır; bu yüzden en uç piksel de verilir ve
+**belirteçten hesaplanan alt sınır** (§1.3) ayrıca esas alınır. Dolgu üstündeki beyaz yazıda (düz renk, kalın harf)
+ölçüm kesindir. Web görüntüleri 1× alındı, ölçüm doğrudan.
+
+**iOS (simülatör)**
+
+| Görüntü | Öğe (metin / zemin) | Ölçülen (çekirdek / en uç) | Belirteçten alt sınır | Eşik | Sonuç |
+| ------- | ------------------- | -------------------------- | --------------------- | ---- | ----- |
+| ceviri | "Please keep your ticket with you." · `ikincil` / `kart` | 7,07 / 8,12 | 6,05 | 4,5 | geçer |
+| ceviri-bos | "AirPods'u takın…" · `ikincil` / `kart` | 7,08 / 8,61 | 6,05 | 4,5 | geçer |
+| ceviri | Çeviri · beyaz / `kart` | 17,66 | 17,65 | 4,5 | geçer |
+| ceviri | Dil şeridi alt yazısı · beyaz / gradyan (sol, en açık) | 4,71 | 4,52 (`maviDolgu`) | 4,5 | geçer |
+| ceviri | Dil şeridi alt yazısı · beyaz / gradyan (sağ) | 7,04 | — | 4,5 | geçer |
+| ceviri | "AirPods Pro bağlı" · `acikMavi` / `zemin` | 12,64 / 15,54 | 9,27 (`parilti`) | 4,5 | geçer |
+| ceviri | Seçili sekme · `maviMetin` / `alan` | 7,25 / 8,11 | 6,02 | 4,5 | geçer |
+| ceviri, dinliyor, tanilama | "Dinlemeyi Başlat", CANLI, "Kopyala" · beyaz / `maviDolgu` | 4,52 | 4,52 | 4,5 | geçer (sınırda) |
+| dinliyor | "Durdur" · beyaz / `kirmiziDolgu` | 4,51 | 4,51 | 4,5 | geçer (sınırda) |
+| dinliyor | Canlı metin · `acikMavi` / `kart` | 11,24 / 13,11 | 9,69 | 4,5 | geçer |
+| dinliyor | Kompakt dil şeridi başlığı · beyaz / gradyan | 6,12 | 4,52 | 4,5 | geçer |
+| kulakliksiz | Sarı uyarı · `sari` / `zemin`-`parilti` | 13,34 / 16,21 | 10,33 | 4,5 | geçer |
+| gecmis | "Temizle" · `maviMetin` / `zemin` | 6,99 / 8,02 | 6,35 | 4,5 | geçer |
+| gecmis | Saat · `acikMavi` / `kart` | 11,43 | 9,69 | 4,5 | geçer |
+| gecmis | Asıl cümle · `ikincil` / `kart` | 6,99 / 8,42 | 6,05 | 4,5 | geçer |
+| gecmis, gecmis-bos | "Geçmiş uygulama kapanınca silinir." · `ikincil` / zemin | 6,99 / 8,99 | 5,83 (`parilti`) | 4,5 | geçer |
+| gecmis-bos | "Çevrilen cümleler burada listelenir." · `ikincil` / `parilti` | 7,32 / 8,91 | 5,83 | 4,5 | geçer |
+| ayarlar | Bölüm başlığı · `ikincil` / `zemin` | 7,45 / 9,30 | 6,33 | 4,5 | geçer |
+| ayarlar | Açıklama dipnotu · `ikincil` / `kart` | 6,66 / 8,70 | 6,05 | 4,5 | geçer |
+| ayarlar | **Yer tutucu "pd_live_…" · sistem yer tutucu / `alan`** | **2,62 / 2,96** | 2,40 (α 0,30) | 4,5 | **geçmez (C-6)** |
+| ayarlar | "Kadın" · beyaz / seçili segment | 5,65 | — | 4,5 | geçer |
+| ayarlar | Seçili segment / segment zemini (metin dışı) | 2,39 | — | 3 | sistem bileşeni; kabul |
+| ayarlar | "Henüz olay yok", chevron · `ikincil` / `kart` | 6,90 / 6,66 | 6,05 | 4,5 | geçer |
+| tanilama | Gizlilik cümlesi · `ikincil` / `zemin` | 7,20 / 8,71 | 6,33 | 4,5 | geçer |
+| tanilama | Olay ayrıntısı ve saat · `ikincil` / `kart` | 6,90 / 6,66 | 6,05 | 4,5 | geçer |
+| tanilama | "Bitti", "Temizle" · `maviMetin` / `zemin` | 7,09 | 6,35 | 4,5 | geçer |
+| tanilama | Uyarı simgesi · `sari` / `kart` | 12,06 | 10,80 | 3 | geçer |
+
+**Web (390 px, 1×)**
+
+| Durum | Öğe | Ölçülen | Eşik | Sonuç |
+| ----- | --- | ------- | ---- | ----- |
+| boş | Düğme beyaz / `maviDolgu` | 4,52 | 4,5 | geçer (sınırda) |
+| hazırlanıyor | "Hazırlanıyor…" · `acikMavi` / `kart` | 9,69 | 4,5 | geçer |
+| hazırlanıyor | Durdur · beyaz / `kirmiziDolgu` | 4,51 | 4,5 | geçer (sınırda) |
+| duraklatıldı | "Duraklatıldı: …" · `sari` / `kart` | 10,80 | 4,5 | geçer |
+| dinlerken | CANLI · beyaz / `maviDolgu` | 4,52 | 4,5 | geçer (sınırda) |
+| dinlerken | **Kompakt dil şeridi başlığı · beyaz, opaklık 0,6 / gradyan** | **3,26 (ölçülen 3,38); en açık uçta 2,62** | 4,5 | **geçmez (C-5)** |
+| dinlerken | Aynı başlık opaklık 1,0 | 6,15 (en açık uçta 4,52) | 4,5 | geçer |
+| ceviri | Asıl cümle · `ikincil` / `kart` | 6,17–6,35 | 4,5 | geçer |
+| hata | Hata metni · `acikKirmizi` / `zemin` | 7,41 | 4,5 | geçer |
+| ayarlar | Yer tutucu · `--yer-tutucu` (α 0,5) / `alan` | 4,67 | 4,5 | geçer |
+| ayarlar | Seçili segment · `#000` / `#8e8e93` | ≥ 5,4 | 4,5 | geçer |
+| ayarlar | Seçili segment / segment zemini (metin dışı) | 4,15 | 3 | geçer |
+| geçmiş, tanılama | "Temizle", "Bitti" · `maviMetin` / `zemin` | 6,32 | 4,5 | geçer |
+
 ---
 
 ## 2. Yazı ölçeği
@@ -169,7 +228,7 @@ Yükseklik içeriğe göre (≈ 110 pt, 320 px'te alt yazı iki satıra düşer,
 | --------------- | --------------------------------------------------------------------------------------------------- |
 | olağan          | Alt yazı: "Kaynak dili değiştirmek için dokunun"                                                    |
 | basılı          | iOS: sistem menü açılır; web: menü açılır, `aria-expanded=true`                                     |
-| devre dışı (dinlerken) | Tüm şerit soluk (web `opacity .45`); alt yazı "Dili değiştirmek için önce durdurun". **[değişir]** alt yazı tam opaklıkta kalır (bilgi taşıyor), yalnız başlık ve ok solar |
+| devre dışı (dinlerken, hazırlanırken, kesintide) | **Kompakt tek satır** (KR7): yükseklik 56, yalnız "İngilizce → Türkçe" (`body.semibold`, **tam opak beyaz**: iOS'ta ölçüldü 6,12:1; web'de şimdi `opacity .6` = 3,26:1 **[değişir]** `opacity: 1`, C-5), ok yok, alt yazı yok (VoiceOver ipucu: "Dili değiştirmek için önce dinlemeyi durdurun"). Devre dışı olduğu okun yokluğundan ve VoiceOver'ın "soluk" demesinden anlaşılır; solgunluk bilgi taşımaz. **Devre dışı yalnız `durum.calisiyor` iken olur; kompaktlık Dinamik Yazı yüzünden de olabilir (§4.1.1) ve o durumda şerit tıklanabilir kalır** |
 | hata            | Yok (dil seçimi hata üretmez)                                                                       |
 
 Menü (iOS `Menu` + `Picker`, sistem biçemi; web özel): 7 dil, seçili olan işaretli (tik + `aria-checked`). Web menü
@@ -253,19 +312,60 @@ Birincil eylem: **Dinlemeyi Başlat / Durdur** (altta, başparmağın erdiği ye
 Yerleşim (yukarıdan): başlık satırı (waveform + "Canlı Çeviri" + dinlerken CANLI rozeti) · dil şeridi · "Şu An" kartı
 · (≥ 2 çeviri varsa) "Öncekiler" kartı · altta sabit blok: hata satırı, kulaklık/not satırı, ana düğme · sekme çubuğu.
 
-| Durum         | Ne görünür                                                                                                                      |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| boş           | "Şu An" kartında: "AirPods'u takın ve aşağıdaki düğmeye dokunun. Çeviri kulaklığınızdan okunur." Düğme "Dinlemeyi Başlat"       |
-| dinliyor      | CANLI rozeti (`maviDolgu`, beyaz metin 13 pt bold + `dot.radiowaves.left.and.right`); kartta "Dinliyorum…" (`ear` simgesi, `acikMavi`); duyulan cümle canlı metin (italik, `acikMavi`); dil şeridi devre dışı; düğme "Durdur" |
-| çeviri var    | Kartta son çeviri `title2.semibold` ve altında asıl cümle (`subheadline`, `ikincil`) — **asıl cümle çevirinin altında, çeviri öncelikli**; önceki üç çeviri "Öncekiler"de (en yeni üstte) |
-| kulaklıksız   | Düğmenin üstünde sarı uyarı satırı (§3.5); akış çalışır (ses ahizeden gelir)                                                    |
-| hata          | Düğmenin üstünde `acikKirmizi` açıklama (örnek: "Mikrofon ve konuşma tanıma izni gerekli (Ayarlar'dan açabilirsiniz)."); düğme "Dinlemeyi Başlat"a döner, yeniden denenebilir |
+Aşama tek kaynaktır (KR3): **duruyor / hazırlanıyor / dinliyor / kesintide(neden)**. Ana düğme duruyor dışındaki her
+aşamada "Durdur" yazar. Aşama satırı "Şu An" kartının ilk satırıdır (`subheadline`, simge + metin); iki sürümde aynıdır.
 
-Sorun (ölçüldü, bkz. B-9): 320 × 568'de dinlerken "Şu An" kartındaki **çeviri ekran altına düşüyor** (dil şeridi 110 px,
-başlık iki satıra bölünüyor). **[değişir]** Dinlerken dil şeridi tek satırlık **kompakt** hale gelir (yükseklik 56:
-"İngilizce → Türkçe" `body.semibold`, alt yazı kaldırılır, devre dışı olduğu kalan `chevron`'un gizlenmesiyle ve
-VoiceOver'a "Dinlerken değiştirilemez" denmesiyle belirtilir) ve başlık satırı tek satırda kalır (rozet simge-yalnız
-küçülmez, `fixedSize` ile korunur; başlık gerekirse `minimumScaleFactor(0.8)`).
+| Aşama / durum | Ne görünür (iOS · web) |
+| ------------- | ---------------------- |
+| boş (duruyor) | "Şu An" kartında: "AirPods'u takın ve aşağıdaki düğmeye dokunun. Çeviri kulaklığınızdan okunur." Düğme "Dinlemeyi Başlat" (`maviDolgu`). Aşama satırı yok |
+| hazırlanıyor | Aşama satırı **"Hazırlanıyor…"** (`hourglass` / web `kum`, `acikMavi`, 9,69:1); **CANLI rozeti yok**; düğme "Durdur" (`kirmiziDolgu`); dil şeridi kompakt ve devre dışı. Ses duyuru: "Hazırlanıyor" |
+| dinliyor | CANLI rozeti (`maviDolgu`, beyaz 13 pt bold + `dot.radiowaves.left.and.right`) başlığın sağında; aşama satırı: canlı metin yokken **"Dinliyorum…"** (`ear`, `acikMavi`), canlı metin varken **canlı metin** (italik, `acikMavi`; "Dinliyorum…" yerine geçer: duyulan metin dinlemenin kanıtıdır); düğme "Durdur". Ses duyuru: "Dinleme başladı" |
+| kesintide | Aşama satırı **"Duraklatıldı: <neden>"** (`pause.circle.fill` / web `duraklat`, **`sari`**, 10,80:1); **CANLI rozeti yok**; düğme "Durdur". iOS nedenleri: "arama, alarm ya da Siri", "uygulama arka planda", "ses yolu değişiyor", "mikrofondan ses gelmiyor". Web nedenleri: "okuma sürüyor", "sayfa arka planda". iOS'ta VoiceOver'a duyurulur; web'de duyurulmaz (okuma her cümlede tetikler, gürültü olur; bilinçli) |
+| çeviri var | "Şu An" kartında önce **asıl cümle** (`subheadline`, `ikincil`), altında **çeviri** (`title2.semibold`, beyaz); önceki üç çeviri "Öncekiler"de (en yeni üstte), aynı sıra. (Tur 1 şartnamesi "çeviri üstte" diyordu; uygulama ve Geçmiş ekranı asıl üstte, çeviri altta; **uygulama doğru kabul edildi**: iki ekranda ve iki sürümde tutarlı.) |
+| kulaklıksız | Düğmenin üstünde sarı uyarı satırı (§3.5); akış çalışır (ses ahizeden gelir) |
+| sarı notlar (iOS) | Altta sabit blokta, **her türden en çok bir not**, `UyariSatiri`: simge `exclamationmark.triangle.fill` + metin `footnote.medium`, `sari`. Metinler: "Bu dilde konuşma tanıma Apple'ın sunucusunda yapılır." · "Alania'ya ulaşılamadı; bu cümle Apple sesiyle okundu." · "Türkçe ses yüklü değil; çeviri başka bir sesle okunabilir." · "Bir cümle çevrilemedi." · **"Kesinti sırasında gelen çeviri okunmadı."** · **"Devam etmek için Durdur'a, sonra Başlat'a dokunun."** (telefon kesintisi 10 sn sürünce). Web'de tek not satırı (`VARSAYILAN_NOT` yerine geçer) |
+| hata | Düğmenin üstünde `acikKirmizi` açıklama, başında uyarı simgesi (örnek: "Mikrofon ve konuşma tanıma izni gerekli (Ayarlar'dan açabilirsiniz)."); düğme "Dinlemeyi Başlat"a döner, yeniden denenebilir. **Hata her Dinamik Yazı boyutunda altta sabit blokta kalır** (kaydırılan alana taşınmaz, §4.1.1) |
+
+Kaydırma kenarı: "Şu An" ve "Öncekiler" kaydırılan alandadır; altındaki sabit blok (hata, notlar, kulaklık, düğme) onu keser.
+İçerik sığmayınca kenar **sert çizgiyle** kesiliyor (`kulakliksiz.png`: son satır yarım). **[değişir]** (C-8) kaydırma
+alanının alt 20 pt'si `LinearGradient` maskesiyle solar (iOS 26+ için `scrollEdgeEffectStyle(.soft, for: .bottom)`,
+iOS 18 için `.mask`) ve sabit blok 8 pt üst dolgu alır; böylece "Öncekiler" kartıyla "AirPods Pro bağlı" satırı arası
+(şimdi ≈ 10 pt) en az 18 pt olur. Web'de `.kaydir` için aynı: `mask-image: linear-gradient(#000 calc(100% - 20px), transparent)`.
+
+Dinlerken küçük ekran (B-9, kapandı): iOS'ta kompakt şerit 55 pt (`dinliyor.png`), başlık tek satır; web 320 × 568'de çeviri
+kaydırmadan görünüyor (`320-5-ceviri-canli.png`).
+
+#### 4.1.1 En büyük Dinamik Yazı (`ceviri-buyuk-yazi.png`, accessibility-extra-extra-extra-large) **[değişir]**
+
+Ölçüm (görüntüden, 1,5 piksel = 1 pt): başlık iki satır ≈ 120 pt (varsayılan 41); dil şeridi ≥ 305 pt ve alt yazısı alt
+blokta kesiliyor (90); ana düğme 139 pt (65); sekme çubuğu 137 pt, simgeler ≈ 61 pt (77 · 21); kaydırma alanında yalnızca
+başlık ve dil şeridi var; **"Şu An" kartı ve çeviri hiç görünmüyor**, hata ve kulaklık satırı da kaydırılan alana
+taşındığı için ekranda yok. Yani uygulamanın asıl içeriği bu boyutta ekranda değil. Ölçeklenecek tek şey **çeviri
+metnidir**; geri kalan her şey sınırlanır. Sınırlar `Text`/öğe düzeyinde verilir (`.dynamicTypeSize(...X)`); kökte genel
+sınır konmaz.
+
+| Öğe (dosya) | Şimdi (AX5) | Sınır | Nasıl |
+| ----------- | ----------- | ----- | ----- |
+| **Çeviri metni**, "Şu An" (`Bilesenler.swift` `SatirGorunumu`, `buyuk`) | ölçekleniyor | **sınırsız** (AX5'e kadar) | dokunma; `.fixedSize(horizontal:false, vertical:true)` ile kesilmesin |
+| Çeviri metni, "Öncekiler" ve Geçmiş | ölçekleniyor | sınırsız | dokunma |
+| Asıl cümle (`subheadline`) | ölçekleniyor | `...accessibility3` | `.dynamicTypeSize(...DynamicTypeSize.accessibility3)`: çeviri baskın kalır |
+| Aşama satırı ve canlı metin (`CeviriEkrani.asamaSatiri`) | ölçekleniyor | `...accessibility2` | aynı |
+| Kart başlığı "Şu An" / "Öncekiler" (`Bilesenler.Kart`) | `title2` ≈ 44 pt | `...accessibility1` | başlık `Text`ine `.dynamicTypeSize(...DynamicTypeSize.accessibility1)` |
+| **Başlık satırı** (`CeviriEkrani.baslik`) | 2 satır, ≈ 120 pt | `...xxxLarge` | `baslik` üstüne sınır; `buyukYazi` dalı (VStack, rozet altta) **kaldırılır**; hep `HStack`; `baslikMetni.lineLimit(1).minimumScaleFactor(0.7)`; rozet `fixedSize`, sağda (xxxLarge'da başlık ≈ 210 pt + simge 30 + rozet 87 = 340 pt < 362 pt sığar) |
+| **Dil şeridi** (`CeviriEkrani.dilSeridi`) | 2 + 2 satır, ≥ 305 pt | `...xxxLarge`; **`yaziBoyu >= .xxxLarge` iken kompakt tek satır** | `let kompakt = durum.calisiyor \|\| yaziBoyu >= .xxxLarge`; kompaktta başlık `body.semibold`, `lineLimit(1)`, `minimumScaleFactor(0.7)`, yükseklik ≥ 56; **`chevron` yalnız `!durum.calisiyor` iken** gösterilir (kompakt da olsa dokunulabilir olduğunu söyler); **`.disabled(durum.calisiyor)`** (şimdi `.disabled(kompakt)`: büyük yazıda dil değiştirilemez olurdu); alt yazı yalnız VoiceOver ipucunda kalır |
+| **Ana düğme** (`anaDugme`) | 139 pt, 2 satır | `...accessibility1` | etikete `.dynamicTypeSize(...DynamicTypeSize.accessibility1)`, `.lineLimit(1)`, `.minimumScaleFactor(0.75)`; `minHeight: 62` kalır (≈ 70 pt) |
+| **Hata, sarı notlar, kulaklık satırı** (`durumSatirlari`) | kaydırılan alana taşınıyor, **görünmüyor** | `...accessibility1`, **altta sabit blokta kalır** | `if buyukYazi { durumSatirlari }` (satır 19) ve `if !buyukYazi` (satır 189) kaldırılır; `durumSatirlari` her zaman `altBlok`ta; her satır `lineLimit(3)`; hata ve notlar için en çok 2 görünür satır grubu (C-9); ilke 5: hata kaydırmayla bulunmaz |
+| **Sekme çubuğu** (`SekmeCubugu`) | 137 pt, simge ≈ 61 pt | `...xxxLarge`, etiket kalır (ilke 1: resim + kelime) | sınırı **çağrı yerine** koy: `SekmeCubugu(secili:).dynamicTypeSize(...DynamicTypeSize.xxxLarge)` (şimdi `body` içinde; `@ScaledMetric` yapının kendi ortamını okuduğu için sınırı aşıyor); ayrıca `simgeBoyu` `min(simgeBoyu, 28)` (C-4); yalnız-simge kipi gerekmez |
+| Boş durum simgesi (`Gecmis`, `Tanilama`) | `@ScaledMetric` 54 → ≈ 170 pt | `min(bosSimge, 96)` | |
+| Geçmiş "Temizle" | `subheadline` | `...accessibility1` | `Temizle` etiketine sınır; başlıkla aynı satırda kalır |
+| Ayarlar: Kadın / Erkek seçici | sistem | `...xxxLarge` | `Picker`a sınır (segmentli seçici büyük yazıda kesilir; doğrulanmadı) |
+| Tanılama satırları | saat altta (VStack) | `isAccessibilitySize` dalı kalır | doğrulanmadı |
+
+Beklenen sonuç (tahmin, yeni görüntüyle doğrulanır): AX5'te sabit alt kısım ≈ 82 (sekme) + 70 (düğme) + 55 (iki durum
+satırı) + 12 ≈ 220 pt; kaydırılan alanın tepesi: başlık 48 + dil şeridi 56 + boşluklar ≈ 156 pt; "Şu An" kartı (başlık,
+asıl cümle iki satır, çeviri üç satır) ≈ 280 pt sığar; çeviri kaydırmadan görünür. **Kabul:** CI'de `ceviri-buyuk-yazi`
+(AX5) ve `ceviri-buyuk-yazi-ax3` (accessibility-large) görüntüleri; ikisinde çeviri ilk ekranda, hata/kulaklık satırı
+ve düğme tam, sekme etiketleri kesilmemiş olacak. `gecmis`, `ayarlar` ve `tanilama` için de AX5 görüntüsü eklenir (C-11).
 
 ### 4.2 Geçmiş
 Birincil eylem: **yok — salt okunur liste** (ikincil eylem Temizle). Bu ekranda birincil eylem gerekmez; sekme çubuğu
@@ -287,7 +387,7 @@ Sıra (yukarıdan): "ALANIA-2 API ANAHTARI" kutusu · "SES" kutusu (Kadın/Erkek
 
 | Durum        | Ne görünür                                                                                                          |
 | ------------ | ------------------------------------------------------------------------------------------------------------------- |
-| anahtar boş  | Yer tutucu "pd_live_…"; dipnot: "Boş bırakırsanız çeviri Apple'ın Türkçe sesiyle okunur. Anahtar yalnızca bu telefonda saklanır." (web: "cihazınızın Türkçe sesiyle"; web'de "bu tarayıcıda saklanır" yazmalı, B-15) |
+| anahtar boş  | Yer tutucu "pd_live_…" (**`ikincil` α ≥ 0,5; iOS'ta şimdi sistem yer tutucusu 2,6:1, C-6**: `SecureField("", text:, prompt: Text("pd_live_…").foregroundStyle(.secondary))`; prompt rengi uygulanmazsa alanın üstüne `Text("pd_live_…").foregroundStyle(.secondary).allowsHitTesting(false).accessibilityHidden(true)` bindirilir, alan boşken); dipnot iOS: "Boş bırakırsanız çeviri Apple'ın Türkçe sesiyle okunur. Anahtar yalnızca bu telefonda, güvenli biçimde saklanır." Web: "…cihazınızın Türkçe sesiyle okunur. Anahtar yalnızca bu tarayıcıda saklanır." (B-15, kapandı) |
 | anahtar dolu | Noktalı gösterim; açıklama aynı                                                                                      |
 | Tanılama satırı | Bkz. §4.4                                                                                                         |
 
@@ -401,8 +501,9 @@ alt blok sayfanın üçte birini aşarsa liste kaydırmalı kalır ve alt blok `
 3. Değişen durum (dinleme başladı/durdu, hata, kulaklık koptu/bağlandı) **duyurulur** (iOS `AccessibilityNotification.Announcement`,
    web `role="alert"`/`role="status"`); ekran "Dinliyorum" derken duymamak en ağır hatadır (ilke 5), bu yüzden sessiz
    durum değişimi yoktur.
-4. Yabancı dildeki asıl cümle kendi diliyle okunur (`accessibilityLanguage(kod)` / web `lang`); Türkçe ses İngilizce
-   cümleyi okumaz.
+4. Yabancı dildeki asıl cümle kendi diliyle okunur (iOS: SwiftUI'da `accessibilityLanguage` yoktur; uygulama
+   `Text`e `.environment(\.locale, Locale(identifier: kod))` verir, VoiceOver sesi bundan seçilir; web `lang`); Türkçe ses
+   İngilizce cümleyi okumaz. **iOS'ta bu yöntemin gerçekten İngilizce sesle okuduğu yalnız cihazda doğrulanır** (`cihaz-testi`).
 5. Dinleme sürerken her yeni kelimede VoiceOver'ı sürekli konuşturmayız: canlı metin **duyurulmaz**, yalnız biten
    cümlenin çevirisi duyurulur (web: ayrı `aria-live="polite"` bölgesi, yalnız çeviri).
 
@@ -421,12 +522,12 @@ iOS (i) ve web (w) ortak satırlar tek sıradadır; farklar sütunda belirtilir.
 | 4 | Dil menüsü öğesi (×7) | dil adı ("Almanca") | — | menü öğesi + işaretli (`isSelected` / w: `menuitemradio` `aria-checked`) |
 | 5 | "Şu An" kartı başlığı | "Şu an" | — | başlık |
 | 6 | "Dinliyorum…" durumu | "Dinliyorum" | — | metin; başladığında duyurulur: "Dinleme başladı" |
-| 7 | Canlı metin (duyulan, bitmemiş cümle) | "Duyulan: …" | — | metin; **canlı bölge değil**; dil: kaynak dil (`accessibilityLanguage`; w: `lang`) |
-| 8 | Son çeviri (büyük) | Türkçe çeviri metni | değer: "Söylenen: <asıl cümle>" | tek öğe (iki metin birleşik); çeviri önce okunur; asıl cümle kaynak dilinde. Yeni çeviri geldiğinde **duyurulur** (yalnız çeviri; w: `aria-live="polite"` ayrı bölge) |
+| 7 | Canlı metin (duyulan, bitmemiş cümle) | "Duyulan: …" (iOS'ta şimdi öneki yok, ham metin okunur, C-10) | — | metin; **canlı bölge değil**; dil: kaynak dil (i: `environment(\.locale)`; w: `lang`) |
+| 8 | Son çeviri (büyük) | Türkçe çeviri metni | değer: "Söylenen: <asıl cümle>" | iOS'ta uygulama iki ayrı öğe verir (`children: .contain`, `accessibilitySortPriority`: çeviri önce, asıl sonra, kendi dilinde); bu **kabul edilen sapmadır** (değer/etiket birleşimi şart değil). Yeni çeviri geldiğinde **duyurulur** (yalnız çeviri; w: `aria-live="polite"` ayrı bölge) |
 | 9 | "Öncekiler" başlığı | "Öncekiler" | — | başlık |
 | 10 | Önceki çeviri satırı (≤ 3) | Türkçe çeviri | değer: "Söylenen: <asıl>" | tek öğe, canlı bölge değil |
 | 11 | Boş durum ipucu | "AirPods'u takın ve aşağıdaki düğmeye dokunun. Çeviri kulaklığınızdan okunur." | — | metin |
-| 12 | Hata satırı | hata metni | — | metin; **görünür olunca duyurulur** (i: `Announcement`; w: `role="alert"`, var) |
+| 12 | Hata satırı ve sarı notlar | hata / not metni | — | metin; hata **görünür olunca duyurulur** (i: `Announcement`; w: `role="alert"`, var). **Sarı notlar da duyurulur** (i: şimdi duyurulmuyor, C-7; özellikle "Devam etmek için Durdur'a, sonra Başlat'a dokunun.") |
 | 13 | Kulaklık durumu (yalnız i) | "Kulaklık: AirPods Pro bağlı" / "Kulaklık bağlı değil. Çeviriyi duymak için AirPods'u takın" | — | metin; **değişince duyurulur** ("Kulaklık bağlandı" / "Kulaklık bağlantısı koptu") |
 | 14 | Web notu (yalnız w) | "Web deneme sürümü, çeviri internet üzerinden yapılır" | — | metin |
 | 15 | Ana düğme — dinlemiyorken | "Dinlemeyi başlat" | ipucu: "Karşınızdakini dinlemeye ve çevirmeye başlar" | düğme; i: ek `startsMediaSession` (VoiceOver konuşmasını keser) |
@@ -436,7 +537,7 @@ iOS (i) ve web (w) ortak satırlar tek sıradadır; farklar sütunda belirtilir.
 
 | # | Öğe | Etiket | Değer / ipucu | Özellik |
 | - | --- | ------ | ------------- | ------- |
-| 17 | Sekme çubuğu (kapsayıcı) | "Sekmeler" | — | i: `isTabBar`; w: `<nav aria-label="Sekmeler">` (var) |
+| 17 | Sekme çubuğu (kapsayıcı) | "Sekmeler" | — | i: `accessibilityElement(children: .contain)` + etiket "Sekmeler" (SwiftUI'da `isTabBar` özelliği yok; "3 sekmeden 1" bilgisi okunmaz, kabul edildi); w: `<nav aria-label="Sekmeler">` (var) |
 | 18 | Sekme "Çeviri" | "Çeviri" | seçiliyken "Seçili" | düğme (i: `isButton`+`isSelected`; w: `aria-current="page"`, var); simge gizli; "3 sekmeden 1." (i: sistem sıra bilgisi için `accessibilityElement` + `isTabBar`) |
 | 19 | Sekme "Geçmiş" | "Geçmiş" | seçiliyken "Seçili" | düğme + seçili |
 | 20 | Sekme "Ayarlar" | "Ayarlar" | seçiliyken "Seçili" | düğme + seçili |
@@ -500,13 +601,11 @@ Duyurular, çeviri sesinin (AirPods) üstüne binmesin diye **kısa tutulur**; V
 - **En küçük dokunma alanı 44 pt / 44 px.** Mevcut ihlaller (ölçüldü / koddan): iOS "Temizle" ≈ 20 pt; web "Kadın/Erkek" 28,
   anahtar 31, "Temizle" 35, dil menüsü öğeleri 42–43 px. Hepsi 44'e çıkar (§3.7, 3.8, 3.11, 3.2). Sekmeler (≈ 61), ana düğme (62),
   dil şeridi (≈ 110) ve girdi (48) yeterli.
-- **Dinamik Yazı:** iOS'ta bütün metin sistem biçemlerini kullanır (`.font(.body)` vb.); **sabit boyutlar** `@ScaledMetric`
-  olmalı: `.system(size: 54)` boş durum simgesi, `.system(size: 21)` sekme simgeleri, ana düğmenin `frame(height: 62)`'si
-  `minHeight: 62` olmalı. En büyük boyut (`accessibility5`) için kurallar: sekme etiketi ve başlık satırı kesilmez
-  (başlık iki satıra iner, CANLI rozeti sığmazsa başlığın **altına** geçer); sekme çubuğu `dynamicTypeSize(...accessibility1)`
-  ile sınırlanır (Apple'ın sekme çubuğu gibi); alt blok (hata + kulaklık + düğme) ekranın en çok **üçte birini** kaplar,
-  fazlası kaydırılan alana taşınır. Web'de px sabit: tarayıcının "sayfa yakınlaştırma"sı çalışır, iOS Safari "metin boyutu"
-  ayarı çalışmaz (öneri B-18: `rem` + `font: -apple-system-body`).
+- **Dinamik Yazı:** iOS'ta bütün metin sistem biçemlerini kullanır; En büyük boyutta (AX5) çevirinin ekranda
+  kalması kuralı **§4.1.1 tablosundadır** (çeviri metni sınırsız ölçeklenir, geri kalan her şey sınırlanır, hata
+  ve düğme altta sabit kalır). Sabit boyutlar `@ScaledMetric` olmalı ama **sınır `@ScaledMetric`'in okuduğu ortamda**
+  verilmeli (sınırı alt görünüme koymak `@ScaledMetric`'i etkilemez, C-4). Ana düğme `minHeight: 62`. Web'de px sabit:
+  tarayıcının "sayfa yakınlaştırma"sı çalışır, iOS Safari "metin boyutu" ayarı çalışmaz (öneri B-18, birikimde).
 - **Hareket azaltma:** iOS'ta yazılı animasyon yok (yalnız sistem geçişleri ve `sensoryFeedback`). Web'de `transition` ve
   `:active scale` var ve `@media (prefers-reduced-motion: reduce)` içinde kapanıyor (kontrol edildi); Tanılama sayfasının
   kayması da aynı koşula bağlanır.
@@ -531,6 +630,13 @@ Duyurular, çeviri sesinin (AirPods) üstüne binmesin diye **kısa tutulur**; V
 | Tanılama sayfası        | alttan sayfa                               | `.ekran` içi tam ekran sayfa                            | aynı içerik ve ölçü |
 | Segmentli seçici, anahtar, menü | yerel (sistem)                      | özel CSS                                                | web, sistemin ölçüsüne ve 44'e uyar |
 | Yazı boyutu             | Dinamik Yazı                               | sabit px                                                | öneri B-18 |
-| Hata rengi              | `kirmizi` → `acikKirmizi`'ya geçer         | `acikKirmizi`                                           | ortaklaşır |
+| Hata rengi              | `acikKirmizi` (tur 2'de uygulandı)         | `acikKirmizi`                                           | ortaklaştı |
+| Aşama satırı            | "Hazırlanıyor…" (`hourglass`, `acikMavi`) · "Dinliyorum…" (`ear`) · "Duraklatıldı: <neden>" (`pause.circle.fill`, `sari`) | aynı metin, renk ve karşılık simgeler (`kum`, `kulak`, `duraklat`); simge çizimleri yerel (iOS dolu, web çizgi) | tutarlı; simge biçimi bilinçli fark |
+| Duraklatıldı nedenleri  | "arama, alarm ya da Siri" · "uygulama arka planda" · "ses yolu değişiyor" · "mikrofondan ses gelmiyor" | "okuma sürüyor" · "sayfa arka planda" | nedenler platforma özgü ("uygulama" / "sayfa"); "okuma sürüyor" yalnız web (duraklat anahtarı) |
+| Kesinti duyurusu        | "Duraklatıldı: <neden>" VoiceOver'a duyurulur | duyurulmaz                                         | bilinçli (web'de okuma her cümlede tetikler) |
+| Sarı notlar             | altta sabit blokta, türü başına bir not, en çok 6 | tek not satırı (`VARSAYILAN_NOT` yerine)         | bilinçli; metin farkı aşağıda |
+| Yedek ses terimi        | "Apple sesi" ("Alania'ya ulaşılamadı; Apple sesi kullanılıyor.") | "cihazın sesi" ("Alania sesine ulaşılamadı; cihazın sesi kullanılıyor.") | bilinçli: web hangi motorun konuştuğunu bilemez |
+| Tanılama saati / Geçmiş saati | cihaz biçimi (`Text(.time)`; 12 saatli bölgede "ÖS 4:21"); Tanılama 24 saat | tr-TR 24 saat (`17:19`)                       | iPhone'da bölge ayarı izlenir; simülatör görüntüsündeki "ÖS 4:21" bölge ayarındandır, hata değil |
+| Kesinti sonrası notlar  | "Kesinti sırasında gelen çeviri okunmadı." · "Devam etmek için Durdur'a, sonra Başlat'a dokunun." | yok (web'de telefon kesintisi bildirimi yok) | iOS'a özgü |
 
 Bu belge değişirse `arayuz-denetcisi` günceller; kod sahipleri değişiklik ister, belgeyi düzenlemez.

@@ -21,6 +21,7 @@ let diller = [
 let duraklama   = 1.2   // bu kadar saniye sessizlik = cümle bitti
 let alaniaAdres = "https://voice.patientdesk.ai/v1/audio/speech"
 let alaniaModel = "alania-v2"
+let yapiEtiketi = "S01 tur 4"   // Tanılama kopyasının başlığı; her düzeltme turunda artar (KR16)
 
 // Ses hattı süreleri ve eşikleri (docs/ses-hatti.md; kural kimlikleri parantez içinde)
 let alaniaSuresi: TimeInterval         = 5     // Alania isteğinin toplam süresi, sn (S5, KR10)
@@ -31,6 +32,7 @@ let tanimaBitisPenceresi: TimeInterval = 5     // aynı "tanıma bitti" bu süre
 let bekciAraligi: TimeInterval         = 1     // bekçinin denetim aralığı, sn (C6)
 let bekciSiniri: TimeInterval          = 2     // bu kadar sn mikrofon tamponu gelmezse kesinti (K15)
 let yenidenDenemeArasi: TimeInterval   = 0.5   // kesintiden dönüşte ikinci deneme, sn (C7)
+let kesintiNotuSuresi: TimeInterval    = 10    // telefon kesintisi bu kadar sn sürerse çıkış yolu notu (K4)
 let ceviriHataSiniri                   = 3     // art arda bu kadar çeviri hatası = dinleme durur (Ö-9)
 let tanilamaSiniri                     = 300   // Tanılama kaydındaki en çok olay (brief K3)
 

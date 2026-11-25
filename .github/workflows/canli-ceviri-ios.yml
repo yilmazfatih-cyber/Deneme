@@ -1,7 +1,8 @@
 name: Canlı Çeviri (iOS derleme)
 
-# iPhone uygulamasını (canli-ceviri/CanliCeviri.xcodeproj) GitHub'ın Mac makinelerinde derler.
-# Yalnızca "derleniyor mu?" sorusunu yanıtlar: imzasızdır ve simülatör içindir, telefona yüklenebilir dosya üretmez.
+# iPhone uygulamasını (canli-ceviri/CanliCeviri.xcodeproj) GitHub'ın Mac makinelerinde derler, sonra simülatörde
+# her ekranın görüntüsünü alıp canli-ceviri-ekran dalına yazar. İmzasızdır ve simülatör içindir; telefona yüklenebilir
+# dosya üretmez. Derleme ve görüntü ayrı adımlardır: kayıtta hangisinin kırıldığı görünür.
 on:
   push:
     paths:
@@ -11,7 +12,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write # yalnız canli-ceviri-ekran dalına görüntü yazmak için
 
 concurrency:
   group: canli-ceviri-ios-${{ github.ref }}
@@ -20,30 +21,151 @@ concurrency:
 jobs:
   derle:
     runs-on: macos-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - name: Xcode sürümü
         run: |
           xcodebuild -version
           xcodebuild -showsdks | grep -i iphone || true
-      - name: Derle (iOS Simülatörü, imzasız)
+      - name: Derle (iOS Simülatörü, imzasız; Debug ve Release)
         run: |
           set -o pipefail
-          xcodebuild \
-            -project canli-ceviri/CanliCeviri.xcodeproj \
-            -target CanliCeviri \
-            -sdk iphonesimulator \
-            -configuration Debug \
-            CODE_SIGNING_ALLOWED=NO \
-            build > derleme.log 2>&1 || true
-          # Kayıt çok uzun; hataları, uyarıları ve sonucu öne çıkar.
-          grep -E -A4 "(: error:|: warning:|^xcodebuild: error|BUILD SUCCEEDED|BUILD FAILED)" derleme.log || tail -40 derleme.log
-          grep -q "BUILD SUCCEEDED" derleme.log
+          # Derleyici uyarısı da işi kırar (ilke 7). Desen derleyici tanılarına göredir (": warning:" ve satır
+          # başında "warning: "); araç satırları ("appintentsmetadataprocessor … warning: Metadata extraction
+          # skipped") bu desene uymaz.
+          derle() {
+            local yapilandirma=$1 kayit=$2
+            xcodebuild \
+              -project canli-ceviri/CanliCeviri.xcodeproj \
+              -target CanliCeviri \
+              -sdk iphonesimulator \
+              -configuration "$yapilandirma" \
+              -arch arm64 \
+              ONLY_ACTIVE_ARCH=NO \
+              CODE_SIGNING_ALLOWED=NO \
+              build > "$kayit" 2>&1 || true
+            echo "== $yapilandirma: hata ve uyarı satırları =="
+            grep -E -A4 "(: error:|: warning:|^warning: |^xcodebuild: error)" "$kayit" || echo "(yok)"
+            if ! grep -q "BUILD SUCCEEDED" "$kayit"; then
+              tail -40 "$kayit"
+              echo "$yapilandirma derlemesi başarısız, iş kırıldı."
+              return 1
+            fi
+            if grep -E -q "(: warning:|^warning: )" "$kayit"; then
+              echo "Uyarı var, iş kırıldı ($yapilandirma)."
+              return 1
+            fi
+            echo "$yapilandirma: BUILD SUCCEEDED, hata 0, uyarı 0"
+          }
+          derle Debug derleme-debug.log
+          derle Release derleme-release.log
       - name: Derleme kaydını sakla
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: derleme-kaydi
-          path: derleme.log
+          path: |
+            derleme-debug.log
+            derleme-release.log
           retention-days: 7
+      - name: Simülatörü hazırla
+        id: simulator
+        run: |
+          set -euo pipefail
+          # En yeni iOS çalışma ortamındaki bir iPhone (önce "iPhone NN" / "iPhone NN Pro" adlıları).
+          SECIM=$(xcrun simctl list devices available -j | python3 -c '
+          import json, re, sys
+          adaylar = []
+          for ortam, liste in json.load(sys.stdin)["devices"].items():
+              m = re.search(r"iOS-(\d+)-(\d+)", ortam)
+              if not m:
+                  continue
+              surum = (int(m.group(1)), int(m.group(2)))
+              for c in liste:
+                  if c.get("isAvailable") and c["name"].startswith("iPhone"):
+                      tercih = 0 if re.fullmatch(r"iPhone \d+( Pro)?", c["name"]) else 1
+                      adaylar.append((tercih, -surum[0], -surum[1], c["name"], c["udid"], "%d.%d" % surum))
+          adaylar.sort()
+          a = adaylar[0]
+          print("%s|%s|%s" % (a[4], a[5], a[3]))
+          ')
+          IFS='|' read -r UDID IOS AD <<< "$SECIM"
+          echo "Simülatör: $AD (iOS $IOS) $UDID"
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+          echo "ios=$IOS" >> "$GITHUB_OUTPUT"
+          echo "ad=$AD" >> "$GITHUB_OUTPUT"
+          xcrun simctl boot "$UDID" || true
+          # Açılış kaydı saniyede birkaç satır basar; dosyaya yazılır, yalnız sonu gösterilir.
+          if xcrun simctl bootstatus "$UDID" -b > acilis.log 2>&1; then
+            tail -3 acilis.log
+          else
+            tail -40 acilis.log
+            echo "Simülatör açılamadı."
+            exit 1
+          fi
+          xcrun simctl ui "$UDID" appearance dark
+          xcrun simctl ui "$UDID" content_size large
+          xcrun simctl status_bar "$UDID" override --time "9:41" --batteryState charged --batteryLevel 100 \
+            --wifiBars 3 --cellularBars 4 || echo "Durum çubuğu ayarlanamadı (görüntü yine alınır)."
+      - name: Ekran görüntüleri
+        env:
+          UDID: ${{ steps.simulator.outputs.udid }}
+        run: |
+          set -euo pipefail
+          UYGULAMA=canli-ceviri/build/Debug-iphonesimulator/CanliCeviri.app
+          PAKET=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$UYGULAMA/Info.plist")
+          echo "Paket: $PAKET"
+          xcrun simctl install "$UDID" "$UYGULAMA"
+          mkdir -p ekran
+          cek() {
+            xcrun simctl terminate "$UDID" "$PAKET" > /dev/null 2>&1 || true
+            xcrun simctl launch "$UDID" "$PAKET" -ekran "$1"
+            sleep 5
+            xcrun simctl io "$UDID" screenshot "ekran/$2.png"
+            xcrun simctl terminate "$UDID" "$PAKET" > /dev/null 2>&1 || true
+          }
+          for ad in ceviri-bos ceviri dinliyor kulakliksiz gecmis gecmis-bos ayarlar tanilama; do
+            cek "$ad" "$ad"
+          done
+          # En büyük Dinamik Yazı (AX5) boyutunda dört ekran, AX3'te Çeviri; sonra boyut eski hâline döner.
+          xcrun simctl ui "$UDID" content_size accessibility-extra-extra-extra-large
+          cek ceviri ceviri-buyuk-yazi
+          cek gecmis gecmis-buyuk-yazi
+          cek ayarlar ayarlar-buyuk-yazi
+          cek tanilama tanilama-buyuk-yazi
+          xcrun simctl ui "$UDID" content_size accessibility-extra-large
+          cek ceviri ceviri-buyuk-yazi-ax3
+          xcrun simctl ui "$UDID" content_size large
+          ls -l ekran
+      - name: Görüntüleri sakla
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ekran-goruntuleri
+          path: ekran
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Görüntüleri canli-ceviri-ekran dalına yaz
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          IOS: ${{ steps.simulator.outputs.ios }}
+          AD: ${{ steps.simulator.outputs.ad }}
+        run: |
+          set -euo pipefail
+          {
+            echo "Commit: $GITHUB_SHA"
+            echo "Dal: $GITHUB_REF_NAME"
+            echo "Xcode: $(xcodebuild -version | tr '\n' ' ')"
+            echo "Simülatör: $AD (iOS $IOS)"
+            echo "Derleme: Debug ve Release, hata 0, uyarı 0"
+            echo "Tarih (UTC): $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > ekran/BILGI.txt
+          cd ekran
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -q -b canli-ceviri-ekran
+          git add -A
+          git commit -q -m "Canlı Çeviri ekran görüntüleri (${GITHUB_SHA})"
+          git push -f -q "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:canli-ceviri-ekran
