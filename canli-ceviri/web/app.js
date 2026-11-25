@@ -23,7 +23,13 @@
   const CEVIRI_SINIRI = 450 // MyMemory istek başına en çok 500 bayt alır
   const ALANIA_ADRESI = 'https://voice.patientdesk.ai/v1/audio/speech'
   const ALANIA_MODELI = 'alania-v2'
-  const VARSAYILAN_NOT = 'Web deneme sürümü · çeviri internet üzerinden yapılır'
+  const ALANIA_SURESI = 5000 // bağlantı + yanıt + gövde, toplam (ses-hatti S5)
+  const ALANIA_KESICI = 3 // art arda bu kadar hatada oturum boyunca cihazın sesi (S6)
+  const ALANIA_NOTU = 'Alania sesine ulaşılamadı; cihazın sesi kullanılıyor.'
+  const KESICI_NOTU = 'Alania sesine ulaşılamadı; bu oturumda cihazın sesi kullanılıyor.'
+  const ANAHTAR_NOTU = 'Alania anahtarı geçersiz; bu oturumda cihazın sesi kullanılıyor.'
+  const TANI_SINIRI = 300
+  const VARSAYILAN_NOT = 'Web deneme sürümü · kulaklık durumu gösterilmez · çeviri internetten yapılır'
   const DESTEK_YOK = 'Bu tarayıcı konuşma tanımayı desteklemiyor. iPhone’da Safari ile açın.'
   const KALICI_HATALAR = {
     'not-allowed': 'Mikrofon izni verilmedi. Adres çubuğundan bu site için mikrofona izin verin.',
@@ -63,6 +69,7 @@
     calisiyor: false,
     canliMetin: '',
     menuAcik: false,
+    gecmisOnay: false,
     hata: Tanima ? '' : DESTEK_YOK,
     not: '',
     satirlar: [],
@@ -72,6 +79,61 @@
   const $ = (id) => document.getElementById(id)
   const dilBul = (kod) => DILLER.find((x) => x.kod === kod) || DILLER[0]
   const saatBicimi = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit' })
+  const iki = (n) => String(n).padStart(2, '0')
+
+  // ---------- Tanılama kaydı ----------
+  // Yalnız bellekte, en çok 300 olay; sayfa kapanınca silinir. Konuşma ya da çeviri metni ASLA yazılmaz:
+  // ayrıntılar yalnız dil kodu, kelime sayısı, süre, hata kodu gibi içeriksiz bilgilerdir.
+
+  const tani = { olaylar: [], atilan: 0 }
+  const TEKRAR_BIRLESEN = new Set(['tanıma açıldı', 'tanıma bitti'])
+
+  function kaydet(olay, ayrinti = '', uyari = false) {
+    const simdi = new Date()
+    // Kısır döngüde aynı satır art arda yinelenirse (5 sn içinde) yeni satır yerine sayaç artar.
+    if (TEKRAR_BIRLESEN.has(olay)) {
+      for (const onceki of tani.olaylar.slice(-2)) {
+        if (onceki.olay === olay && onceki.ayrinti === ayrinti && simdi - onceki.son < 5000) {
+          onceki.tekrar += 1
+          onceki.son = simdi
+          taniyiGuncelle()
+          return
+        }
+      }
+    }
+    tani.olaylar.push({ zaman: simdi, son: simdi, olay, ayrinti: String(ayrinti), uyari, tekrar: 1 })
+    if (tani.olaylar.length > TANI_SINIRI) {
+      tani.olaylar.splice(0, tani.olaylar.length - TANI_SINIRI)
+      tani.atilan += 1
+    }
+    taniyiGuncelle()
+  }
+
+  function saatMetni(z, ms) {
+    const s = `${iki(z.getHours())}:${iki(z.getMinutes())}:${iki(z.getSeconds())}`
+    return ms ? s + '.' + String(z.getMilliseconds()).padStart(3, '0') : s
+  }
+  const ayrintiMetni = (o) => o.ayrinti + (o.tekrar > 1 ? ` ×${o.tekrar}` : '')
+
+  // Panoya giden düz metin: başlık + kronolojik satırlar ("SS:DD:SS.mmm  olay  ayrıntı").
+  function taniMetni() {
+    const z = new Date()
+    const fark = -z.getTimezoneOffset()
+    const dilim = `UTC${fark >= 0 ? '+' : '-'}${iki(Math.floor(Math.abs(fark) / 60))}:${iki(Math.abs(fark) % 60)}`
+    const satirlar = [
+      'Canlı Çeviri web deneme sürümü · Tanılama kaydı',
+      'Tarayıcı: ' + navigator.userAgent,
+      'Sayfa: ' + location.pathname,
+      `Tarih: ${z.getFullYear()}-${iki(z.getMonth() + 1)}-${iki(z.getDate())} ${saatMetni(z, false)} (${dilim})`,
+      `Olay: ${tani.olaylar.length} (en çok ${TANI_SINIRI}${tani.atilan ? '; eski olaylar atıldı' : ''})`,
+      'Sıra: eskiden yeniye',
+      '',
+    ]
+    for (const o of tani.olaylar) {
+      satirlar.push(`${saatMetni(o.zaman, true)}  ${o.olay}  ${ayrintiMetni(o)}`.trimEnd())
+    }
+    return satirlar.join('\n') + '\n'
+  }
 
   // ---------- Görünüm ----------
 
@@ -94,22 +156,33 @@
     return svg
   }
 
-  // Asıl cümle + Türkçesi
+  // Ekran okuyucuya kısa duyuru (aynı metin yinelense de okunsun diye önce boşaltılır).
+  function duyur(id, metin) {
+    const e = $(id)
+    e.textContent = ''
+    setTimeout(() => {
+      e.textContent = metin
+    }, 60)
+  }
+
+  // Asıl cümle + Türkçesi. Asıl cümle kendi diliyle işaretlenir (ekran okuyucu doğru sesle okusun).
   function satirGorunumu(satir, buyuk) {
     const kutu = oge('div', buyuk ? 'satir buyuk' : 'satir')
     const asil = oge('p', 'asil', satir.asil)
     asil.dir = 'auto'
+    asil.lang = satir.dil
     kutu.append(asil, oge('p', 'ceviri', satir.ceviri))
     return kutu
   }
 
-  // O an söylenen cümle ve en son çeviri (her yeni kelimede yeniden çizilir)
+  // O an söylenen cümle ve en son çeviri (her yeni kelimede yeniden çizilir; canlı bölge değildir)
   function cizSuAn() {
     const suAn = $('suAn')
     suAn.replaceChildren()
     if (d.canliMetin) {
       const canli = oge('p', 'canli-metin', d.canliMetin)
       canli.dir = 'auto'
+      canli.lang = d.dil
       suAn.append(canli)
     } else if (d.calisiyor) {
       const dinliyorum = oge('p', 'dinliyorum')
@@ -129,6 +202,7 @@
       else dugme.removeAttribute('aria-current')
     }
     for (const panel of document.querySelectorAll('.panel')) panel.hidden = panel.dataset.sekme !== d.sekme
+    $('ekran').classList.toggle('dinliyor', d.calisiyor)
 
     // Çeviri
     $('canliRozet').hidden = !d.calisiyor
@@ -136,10 +210,12 @@
     $('dilIpucu').textContent = d.calisiyor
       ? 'Dili değiştirmek için önce durdurun'
       : 'Kaynak dili değiştirmek için dokunun'
+    $('dilIpucu').classList.toggle('sr', d.calisiyor) // dinlerken görünmez, ekran okuyucu okur
     const serit = $('dilSeridi')
     serit.setAttribute('aria-disabled', String(d.calisiyor))
     serit.setAttribute('aria-expanded', String(d.menuAcik))
     $('dilMenu').hidden = !d.menuAcik
+    if (d.menuAcik) menuyuKonumla()
     for (const secenek of document.querySelectorAll('.menu-oge')) {
       secenek.setAttribute('aria-checked', String(secenek.dataset.kod === d.dil))
     }
@@ -159,7 +235,7 @@
       })
 
     $('hata').hidden = !d.hata
-    $('hata').textContent = d.hata
+    $('hataMetin').textContent = d.hata
     $('not').textContent = d.not || VARSAYILAN_NOT
     $('not').classList.toggle('uyari', Boolean(d.not))
 
@@ -168,7 +244,9 @@
     dugme.replaceChildren(simge(d.calisiyor ? 'dur' : 'mikrofon', 22), d.calisiyor ? 'Durdur' : 'Dinlemeyi Başlat')
 
     // Geçmiş
-    $('temizle').hidden = d.satirlar.length === 0
+    if (d.satirlar.length === 0) d.gecmisOnay = false
+    $('temizle').hidden = d.satirlar.length === 0 || d.gecmisOnay
+    $('gecmisOnay').hidden = !d.gecmisOnay
     const gecmis = $('gecmisListe')
     gecmis.replaceChildren()
     if (d.satirlar.length === 0) {
@@ -192,6 +270,159 @@
       secenek.setAttribute('aria-checked', String(secenek.dataset.ses === d.ses))
     }
     $('duraklat').setAttribute('aria-checked', String(d.duraklat))
+    taniyiGuncelle()
+  }
+
+  // Dil menüsü .ekran'a göre konumlanır: kaydırma alanı onu kesmez; ekrana sığmayan kısım menünün
+  // içinde kaydırılır. Altta yer azsa (kısa ekran, şerit aşağı kaymış) şeridin üstüne açılır.
+  function menuyuKonumla() {
+    const menu = $('dilMenu')
+    const e = $('ekran').getBoundingClientRect()
+    const s = $('dilSeridi').getBoundingClientRect()
+    const alt = e.bottom - s.bottom - 16
+    const ust = s.top - e.top - 16
+    menu.style.right = Math.max(0, e.right - s.right) + 'px'
+    if (alt >= 230 || alt >= ust) {
+      menu.style.top = s.bottom - e.top + 8 + 'px'
+      menu.style.bottom = 'auto'
+      menu.style.maxHeight = Math.max(120, alt) + 'px'
+    } else {
+      menu.style.top = 'auto'
+      menu.style.bottom = e.bottom - s.top + 8 + 'px'
+      menu.style.maxHeight = Math.max(120, ust) + 'px'
+    }
+  }
+
+  // ---------- Tanılama görünümü ----------
+
+  let taniAcik = false
+  let kopyalandiSayaci = 0
+  let silOnayi = false
+  let silOnaySayaci = 0
+
+  // Ayarlar'daki özet satırı her olayda; açıksa sayfanın listesi de güncellenir.
+  function taniyiGuncelle() {
+    const n = tani.olaylar.length
+    $('tanilamaOzet').textContent = n ? `${n} olay · yalnız bu cihazda` : 'Henüz olay yok'
+    if (taniAcik) cizTanilama()
+  }
+
+  function cizTanilama() {
+    const kap = $('taniKaydir')
+    const onceKonum = kap.scrollTop
+    const onceYukseklik = kap.scrollHeight
+    const liste = $('taniListe')
+    liste.replaceChildren()
+    for (let i = tani.olaylar.length - 1; i >= 0; i -= 1) {
+      const o = tani.olaylar[i]
+      const li = oge('li', 'tani-oge')
+      const ust = oge('div', 'tani-ust')
+      const ad = oge('span', 'tani-ad')
+      if (o.uyari) ad.append(simge('uyari', 13), oge('span', 'sr', 'Uyarı: '))
+      ad.append(o.olay)
+      const saat = oge('span', 'tani-saat', saatMetni(o.zaman, false))
+      saat.prepend(oge('span', 'sr', ', saat '))
+      ust.append(ad, saat)
+      li.append(ust)
+      const ayrinti = ayrintiMetni(o)
+      if (ayrinti) li.append(oge('p', 'tani-ayrinti', ayrinti))
+      liste.append(li)
+    }
+    const bos = tani.olaylar.length === 0
+    liste.hidden = bos
+    $('taniBos').hidden = !bos
+    $('taniSinir').hidden = tani.olaylar.length < TANI_SINIRI
+    // Kullanıcı aşağı kaydırmışsa üste eklenen satırlar konumu sıçratmasın.
+    if (onceKonum > 0) kap.scrollTop = onceKonum + (kap.scrollHeight - onceYukseklik)
+
+    const kopyala = $('kopyala')
+    kopyala.replaceChildren(simge(kopyalandiSayaci ? 'tik' : 'kopya', 22), kopyalandiSayaci ? 'Kopyalandı' : 'Kopyala')
+    const temizle = $('taniTemizle')
+    if (bos) silOnayi = false
+    temizle.disabled = bos
+    temizle.replaceChildren(simge('cop', 18), silOnayi ? 'Silmek için yeniden dokunun' : 'Temizle')
+    temizle.setAttribute('aria-label', silOnayi ? 'Silmek için yeniden dokunun' : 'Kaydı temizle')
+  }
+
+  function tanilamayiAc() {
+    taniAcik = true
+    d.menuAcik = false
+    $('tanilamaSayfa').hidden = false
+    $('kopyaUyari').hidden = true
+    $('kopyaMetin').hidden = true
+    for (const id of ['paneller', 'sekmeSarici']) $(id).setAttribute('inert', '')
+    $('taniKaydir').scrollTop = 0
+    cizTanilama()
+    $('tanilamaBaslik').focus()
+  }
+
+  function tanilamayiKapat() {
+    taniAcik = false
+    silOnayi = false
+    clearTimeout(silOnaySayaci)
+    $('tanilamaSayfa').hidden = true
+    for (const id of ['paneller', 'sekmeSarici']) $(id).removeAttribute('inert')
+    $('tanilamaSatiri').focus()
+  }
+
+  function kopyala() {
+    const metin = taniMetni()
+    const basarili = () => {
+      $('kopyaUyari').hidden = true
+      $('kopyaMetin').hidden = true
+      clearTimeout(kopyalandiSayaci)
+      kopyalandiSayaci = setTimeout(() => {
+        kopyalandiSayaci = 0
+        if (taniAcik) cizTanilama()
+      }, 2000)
+      cizTanilama()
+      duyur('taniDuyuru', 'Kayıt panoya kopyalandı')
+    }
+    // Pano reddederse metni seçilebilir bir alanda göster (Safari'nin davranışı varsayılmaz).
+    const yedek = () => {
+      const alan = $('kopyaMetin')
+      alan.value = metin
+      alan.hidden = false
+      $('kopyaUyari').hidden = false
+      try {
+        alan.focus()
+        alan.select()
+      } catch {
+        // seçilemezse kullanıcı elle seçer
+      }
+      duyur('taniDuyuru', 'Otomatik kopyalanamadı. Metni seçip kopyalayın.')
+    }
+    let soz
+    try {
+      // Dokunuşun içinde, beklemeden çağrılır (Safari kullanıcı hareketini ister)
+      soz = navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(metin) : null
+    } catch {
+      soz = null
+    }
+    if (!soz) yedek()
+    else Promise.resolve(soz).then(basarili, yedek)
+  }
+
+  function taniyiTemizle() {
+    if (!tani.olaylar.length) return
+    if (!silOnayi) {
+      silOnayi = true
+      clearTimeout(silOnaySayaci)
+      silOnaySayaci = setTimeout(() => {
+        silOnayi = false
+        if (taniAcik) cizTanilama()
+      }, 4000)
+      cizTanilama()
+      duyur('taniDuyuru', 'Silmek için yeniden dokunun')
+      return
+    }
+    silOnayi = false
+    clearTimeout(silOnaySayaci)
+    tani.olaylar = []
+    tani.atilan = 0
+    taniyiGuncelle()
+    $('tanilamaBaslik').focus()
+    duyur('taniDuyuru', 'Kayıt temizlendi')
   }
 
   // ---------- Dinleme ----------
@@ -201,57 +432,85 @@
   let oturumNo = 0 // durdurulunca bekleyen çeviri ve sesleri atlamak için
   let bosBitis = 0 // art arda hemen ve sonuçsuz biten tanıma sayısı
   let sonTanimaHatasi = ''
-  let askida = false // çeviri okunurken ya da sekme arka plandayken dinleme bekliyor
+  // Dinlemeyi bekleten iki ayrı neden (ses-hatti § 6): tanıma ancak ikisi de kalkınca yeniden açılır.
+  const askiNedeni = { okuma: false, gizli: false }
+  const askida = () => askiNedeni.okuma || askiNedeni.gizli
+  const ASKI_ADI = { okuma: 'okuma', gizli: 'gizli sekme' }
   let cevirKuyrugu = Promise.resolve() // çeviriler söylenme sırasıyla
   let sesKuyrugu = Promise.resolve() // sesler üst üste binmesin
   let ekranKilidi = null
   let sonSoz = null
+  let bekleyenSesBitti = null // cihaz sesinin bekleyen sözü; Durdur hemen çözer
+  let alaniaKesici = null // uçuştaki Alania isteği; Durdur iptal eder
+  let alaniaHataSayisi = 0
+  let alaniaKapali = false // bu oturumda Alania denenmez (devre kesici)
 
   function baslat() {
     if (!Tanima) {
       d.hata = DESTEK_YOK
+      kaydet('başlat', 'reddedildi neden=tarayıcı konuşma tanımayı desteklemiyor', true)
       ciz()
       return
     }
     oturumNo += 1
     bosBitis = 0
     sonTanimaHatasi = ''
-    askida = false
+    askiNedeni.okuma = false
+    askiNedeni.gizli = false
+    alaniaHataSayisi = 0
+    alaniaKapali = false
     d.calisiyor = true
     d.menuAcik = false
     d.canliMetin = ''
     d.hata = ''
     d.not = ''
+    kaydet('başlat', 'dil=' + d.dil)
+    kaydet('ses yolu', 'bilinmiyor (tarayıcı seçer)')
     sesiAc() // dokunuş anında: tarayıcı sonraki seslendirmelere izin versin
     tanimayiBaslat()
     ekraniAcikTut()
     ciz()
+    duyur('durumDuyuru', 'Dinleme başladı')
   }
 
-  function durdur(mesaj) {
+  // neden: 'düğme' ya da 'izin yok' / 'hata …' (Tanılama'ya yazılır)
+  function durdur(mesaj, neden = 'düğme') {
+    const calisiyordu = d.calisiyor
     oturumNo += 1
-    askida = false
+    askiNedeni.okuma = false
+    askiNedeni.gizli = false
     d.calisiyor = false
-    d.canliMetin = ''
+    d.canliMetin = '' // Durdur'da yarım cümle atılır (C4)
     if (mesaj) d.hata = mesaj
     clearTimeout(duraklamaSayaci)
-    tanimayiKapat()
+    tanimayiKapat(neden === 'düğme' ? 'durdur' : neden)
+    if (alaniaKesici) {
+      alaniaKesici.abort()
+      alaniaKesici = null
+      kaydet('ses', 'alania isteği iptal edildi')
+    }
     try {
       if (window.speechSynthesis) window.speechSynthesis.cancel()
     } catch {
       // seslendirme yoksa yapılacak bir şey yok
     }
+    // Tarayıcı iptalde "end" vermezse bekleyen okuma sigortayı beklemesin; yeni oturum hemen okuyabilsin.
+    if (bekleyenSesBitti) bekleyenSesBitti()
     calar.pause()
     ekraniBirak()
+    if (calisiyordu) kaydet('durdur', 'neden=' + neden, neden !== 'düğme')
     ciz()
+    if (calisiyordu && neden === 'düğme') duyur('durumDuyuru', 'Dinleme durdu')
   }
 
   // Yeni bir tanıma açar. Her cümleden sonra ve tanıma kendiliğinden bitince yeniden çağrılır.
   function tanimayiBaslat() {
+    if (!d.calisiyor || askida()) return // gizli sekmede ya da okurken tanıma açılmaz
     const t = new Tanima()
     const no = oturumNo
     const acilis = Date.now()
     let sonucVar = false
+    let hataKodu = ''
     t.lang = dilBul(d.dil).konusma
     t.continuous = true
     t.interimResults = true
@@ -264,25 +523,43 @@
       metin = metin.replace(/\s+/g, ' ').trim()
       if (!metin) return
       sonucVar = true
+      // Sayaç yalnız metin gerçekten değişince sıfırlanır (C1); aynı metni yineleyen sonuç cümleyi uzatmaz.
+      if (metin === d.canliMetin) return
       d.canliMetin = metin
       cizSuAn()
-      // Her yeni kelimede sayacı sıfırla; sessizlik olunca cümleyi kapat.
       clearTimeout(duraklamaSayaci)
       duraklamaSayaci = setTimeout(cumleyiKapat, DURAKLAMA)
     }
 
     t.onerror = (olay) => {
-      if (t !== taniyici) return
-      sonTanimaHatasi = olay.error || ''
-      if (KALICI_HATALAR[sonTanimaHatasi]) durdur(KALICI_HATALAR[sonTanimaHatasi])
+      if (t !== taniyici || t.kapali) return
+      hataKodu = olay.error || 'bilinmiyor'
+      sonTanimaHatasi = hataKodu
+      if (hataKodu === 'not-allowed') kaydet('izin', 'mikrofon=reddedildi (not-allowed)', true)
+      if (hataKodu === 'service-not-allowed') kaydet('izin', 'konuşma tanıma=reddedildi (service-not-allowed)', true)
+      if (KALICI_HATALAR[hataKodu]) {
+        const izin = hataKodu === 'not-allowed' || hataKodu === 'service-not-allowed'
+        durdur(KALICI_HATALAR[hataKodu], izin ? 'izin yok' : 'hata tanıma ' + hataKodu)
+      }
     }
 
     t.onend = () => {
       if (t !== taniyici) return // biz kapattık ya da durdurulduk
       taniyici = null
       clearTimeout(duraklamaSayaci)
+      kaydet(
+        'tanıma bitti',
+        t.kapanisNedeni
+          ? 'neden=' + t.kapanisNedeni
+          : hataKodu
+            ? 'neden=hata ' + hataKodu
+            : sonucVar
+              ? 'neden=son sonuç'
+              : 'neden=sonuçsuz',
+        Boolean(hataKodu) && !t.kapanisNedeni,
+      )
       cumleyiGonder() // tanıma kendiliğinden bittiyse yarım cümle kaybolmasın
-      if (!d.calisiyor || askida || no !== oturumNo) return
+      if (!d.calisiyor || askida() || no !== oturumNo) return
       // Art arda hemen ve sonuçsuz biten tanımalar: kısır döngüye girme, nedenini söyle.
       const bos = !sonucVar && Date.now() - acilis < 2000
       bosBitis = bos ? bosBitis + 1 : 0
@@ -291,12 +568,13 @@
           sonTanimaHatasi === 'network'
             ? 'Konuşma tanıma için internet bağlantısı gerekli.'
             : 'Konuşma tanıma başlatılamadı. Sayfayı yenileyip yeniden deneyin.',
+          'hata tanıma ' + (sonTanimaHatasi || 'sonuçsuz'),
         )
         return
       }
       setTimeout(
         () => {
-          if (d.calisiyor && !askida && !taniyici && no === oturumNo) tanimayiBaslat()
+          if (d.calisiyor && !askida() && !taniyici && no === oturumNo) tanimayiBaslat()
         },
         bos ? 500 : 150,
       )
@@ -305,14 +583,18 @@
     taniyici = t
     try {
       t.start()
-    } catch {
+      kaydet('tanıma açıldı', t.lang)
+    } catch (hata) {
       // start() hata verirse "end" gelmez; aynı yoldan yeniden denensin
-      setTimeout(() => t.onend(), 300)
+      hataKodu = 'başlatılamadı ' + ((hata && hata.name) || '')
+      setTimeout(() => {
+        if (t === taniyici && t.onend) t.onend()
+      }, 300)
     }
   }
 
   // Tanımayı sessizce kapatır; yenisi açılmaz.
-  function tanimayiKapat() {
+  function tanimayiKapat(neden) {
     const t = taniyici
     taniyici = null
     if (!t) return
@@ -322,6 +604,7 @@
     } catch {
       // zaten kapanmış
     }
+    kaydet('tanıma bitti', 'neden=' + neden, neden.startsWith('hata'))
   }
 
   // Sessizlik oldu: cümleyi çeviriye gönder, tanımayı yenile (dinlemeye kesintisiz devam).
@@ -329,15 +612,27 @@
     cumleyiGonder()
     const t = taniyici
     if (!t) return
-    t.kapali = true // kapanırken gelebilecek son sonuçları yoksay
+    t.kapali = true // kapanırken gelebilecek son sonuçları ve "aborted" hatasını yoksay
+    t.kapanisNedeni = 'sessizlik'
     try {
       t.abort()
     } catch {
       // zaten kapanmış
     }
-    // abort() sonrası "end" gelmezse sigorta olarak elle çağır; yenisini o açar.
+    // abort() sonrası "end" gelmezse (sigorta): abort'u bir kez daha dene, geç gelecek "end"i sustur ve
+    // yenisini aynı yoldan aç. Böylece eski tanıma canlıyken ikinci bir tanıma açılmaz (Ön-10).
     setTimeout(() => {
-      if (t === taniyici) t.onend()
+      if (t !== taniyici) return
+      try {
+        t.abort()
+      } catch {
+        // zaten kapanmış
+      }
+      const son = t.onend
+      t.onend = null
+      kaydet('tanıma', 'sigorta: end olayı gelmedi')
+      if (son) son()
+      else taniyici = null
     }, 1500)
   }
 
@@ -349,21 +644,25 @@
     cizSuAn()
     const no = oturumNo
     const dil = d.dil
+    kaydet('cümle', 'kelime=' + metin.split(/\s+/).filter(Boolean).length)
     cevirKuyrugu = cevirKuyrugu.then(() => cevirVeOku(metin, dil, no)).catch(() => {})
   }
 
-  // Dinlemeyi geçici olarak bekletir (çeviri okunurken ya da sekme arka plana gidince).
-  function dinlemeyiBeklet() {
-    askida = true
+  // Dinlemeyi geçici olarak bekletir (neden: 'okuma' ya da 'gizli').
+  function dinlemeyiBeklet(neden) {
+    if (!askiNedeni[neden]) kaydet('bekleme', 'başladı neden=' + ASKI_ADI[neden])
+    askiNedeni[neden] = true
     clearTimeout(duraklamaSayaci)
     cumleyiGonder()
-    tanimayiKapat()
+    tanimayiKapat('bekleme ' + ASKI_ADI[neden])
   }
 
-  function dinlemeyiSurdur(no) {
-    if (!askida) return
-    askida = false
-    if (d.calisiyor && no === oturumNo && !taniyici) tanimayiBaslat()
+  // Bir bekletme nedenini kaldırır; tanıma ancak hiçbir neden kalmayınca açılır.
+  function dinlemeyiSurdur(neden, no) {
+    if (!askiNedeni[neden]) return
+    askiNedeni[neden] = false
+    kaydet('bekleme', 'bitti neden=' + ASKI_ADI[neden])
+    if (!askida() && d.calisiyor && no === oturumNo && !taniyici) tanimayiBaslat()
   }
 
   // ---------- Çeviri ----------
@@ -371,20 +670,30 @@
   async function cevirVeOku(asil, dil, no) {
     if (no !== oturumNo) return
     let ceviri
+    const bas = performance.now()
     try {
       ceviri = await cevir(asil, dil)
     } catch (hata) {
       if (no === oturumNo) {
+        kaydet('çeviri', 'hata ' + (hata.kod || 'bilinmiyor'), true)
         d.hata = hata.message
         ciz()
       }
       return
     }
     if (no !== oturumNo) return // bu arada durduruldu
+    kaydet('çeviri', Math.round(performance.now() - bas) + ' ms')
     d.hata = ''
-    d.satirlar.push({ asil, ceviri, saat: new Date() })
+    d.satirlar.push({ asil, ceviri, dil, saat: new Date() })
     ciz()
+    duyur('ceviriDuyuru', ceviri)
     sesKuyrugu = sesKuyrugu.then(() => oku(ceviri, no)).catch(() => {})
+  }
+
+  function ceviriHatasi(mesaj, kod) {
+    const hata = new Error(mesaj)
+    hata.kod = kod
+    return hata
   }
 
   // MyMemory çağrısı: kaynak dildeki metin gider, Türkçesi döner.
@@ -397,15 +706,21 @@
       try {
         yanit = await getir(adres, {}, 10000)
         veri = await yanit.json()
-      } catch {
-        throw new Error('Çeviri hizmetine ulaşılamadı. İnternet bağlantınızı kontrol edin.')
+      } catch (hata) {
+        const kod = hata && hata.name === 'AbortError' ? 'zaman aşımı' : yanit ? 'yanıt okunamadı' : 'ağ'
+        throw ceviriHatasi('Çeviri hizmetine ulaşılamadı. İnternet bağlantınızı kontrol edin.', kod)
       }
       const sonuc = veri && veri.responseData ? String(veri.responseData.translatedText || '') : ''
       const kod = Number(veri && veri.responseStatus)
       if (yanit.status === 429 || kod === 429 || /MYMEMORY WARNING/i.test(sonuc)) {
-        throw new Error('Günlük ücretsiz çeviri sınırı doldu. Yarın yeniden deneyin.')
+        throw ceviriHatasi('Günlük ücretsiz çeviri sınırı doldu. Yarın yeniden deneyin.', 'sınır http=429')
       }
-      if (!yanit.ok || kod !== 200 || !sonuc) throw new Error('Çeviri yapılamadı. Biraz sonra yeniden deneyin.')
+      if (!yanit.ok || kod !== 200 || !sonuc) {
+        throw ceviriHatasi(
+          'Çeviri yapılamadı. Biraz sonra yeniden deneyin.',
+          `http=${yanit.status} durum=${Number.isNaN(kod) ? '?' : kod}`,
+        )
+      }
       ceviriler.push(varliklariCoz(sonuc))
     }
     return ceviriler.join(' ')
@@ -451,75 +766,153 @@
   async function oku(metin, no) {
     if (no !== oturumNo) return // durdurulmuş oturumdan kalma
     const duraklat = d.duraklat
-    if (duraklat) dinlemeyiBeklet()
+    if (duraklat) dinlemeyiBeklet('okuma')
     try {
       const anahtar = depo.oku('alaniaAnahtar', '')
-      if (anahtar) {
-        try {
-          await alaniaIleOku(metin, anahtar, no)
-          return
-        } catch {
-          // Alania'ya ulaşılamadıysa sessiz kalma; nedenini de göster
-          if (no === oturumNo) {
-            d.not = 'Alania sesine ulaşılamadı; cihazın sesi kullanılıyor.'
-            ciz()
-          }
-        }
-      }
-      if (no === oturumNo) await cihazSesiyleOku(metin)
+      let neden = ''
+      if (anahtar && !alaniaKapali) {
+        if (await alaniaDene(metin, anahtar, no)) return
+      } else if (anahtar) neden = 'alania kapalı (bu oturum)'
+      if (no === oturumNo) await cihazSesiyleOku(metin, neden)
     } finally {
-      if (duraklat) dinlemeyiSurdur(no)
+      if (duraklat) dinlemeyiSurdur('okuma', no)
     }
   }
 
-  function cihazSesiyleOku(metin) {
+  // Alania ile okumayı dener. true: okundu ya da oturum bitti (yedeğe gerek yok); false: cihaz sesiyle okunmalı.
+  async function alaniaDene(metin, anahtar, no) {
+    try {
+      await alaniaIleOku(metin, anahtar, no)
+      if (no === oturumNo) {
+        alaniaHataSayisi = 0
+        if (d.not === ALANIA_NOTU) {
+          d.not = '' // başarılı Alania sesinden sonra yedek notu kalkar
+          ciz()
+        }
+      }
+      return true
+    } catch (hata) {
+      if (no !== oturumNo) return true // Durdur iptal etti: okunmaz, hata sayılmaz
+      const http = hata && hata.http
+      alaniaHataSayisi += 1
+      kaydet('ses', 'alania hatası ' + ((hata && hata.ayrinti) || 'bilinmiyor'), true)
+      const anahtarGecersiz = http === 401 || http === 403
+      if (anahtarGecersiz || alaniaHataSayisi >= ALANIA_KESICI) {
+        alaniaKapali = true
+        kaydet(
+          'ses',
+          'alania bu oturumda kapalı neden=' + (anahtarGecersiz ? 'anahtar' : alaniaHataSayisi + ' hata'),
+          true,
+        )
+        d.not = anahtarGecersiz ? ANAHTAR_NOTU : KESICI_NOTU
+      } else {
+        d.not = ALANIA_NOTU
+      }
+      ciz()
+      return false
+    }
+  }
+
+  function cihazSesiyleOku(metin, neden) {
     return new Promise((bitti) => {
       const sentez = window.speechSynthesis
       if (!sentez || typeof SpeechSynthesisUtterance === 'undefined') {
+        kaydet('ses', 'yok (tarayıcıda seslendirme yok)', true)
         bitti()
         return
       }
       const soz = new SpeechSynthesisUtterance(metin)
       soz.lang = 'tr-TR'
-      const ses = sentez.getVoices().find((s) => /^tr\b/i.test(String(s.lang).replace('_', '-')))
+      let ses = null
       try {
+        ses = sentez.getVoices().find((s) => /^tr\b/i.test(String(s.lang).replace('_', '-'))) || null
         if (ses) soz.voice = ses
       } catch {
         // ses atanamazsa tarayıcı dile göre kendi sesini seçer
       }
+      // Safari ses listesini geç doldurabilir; "bulunamadı" yalnız bilgi, okuma yine denenir.
+      kaydet('ses', 'cihaz' + (neden ? ' neden=' + neden : '') + (ses ? '' : ' tr-ses=listede yok'))
       sonSoz = soz // başvuru tutulmazsa bazı tarayıcılarda "end" olayı gelmiyor
-      const sigorta = setTimeout(bitti, 4000 + metin.length * 120)
-      soz.onend = soz.onerror = () => {
+      let sigorta = 0
+      const bitir = () => {
         clearTimeout(sigorta)
+        if (bekleyenSesBitti === bitir) bekleyenSesBitti = null
         bitti()
       }
-      if (sentez.resume) sentez.resume() // bazı tarayıcılarda seslendirme "duraklamış" kalabiliyor
-      sentez.speak(soz)
+      bekleyenSesBitti = bitir
+      sigorta = setTimeout(bitir, 4000 + metin.length * 120)
+      soz.onend = soz.onerror = bitir
+      try {
+        if (sentez.resume) sentez.resume() // bazı tarayıcılarda seslendirme "duraklamış" kalabiliyor
+        sentez.speak(soz)
+      } catch {
+        bitir()
+      }
     })
   }
 
+  function alaniaHatasi(ayrinti, http) {
+    const hata = new Error('Alania: ' + ayrinti)
+    hata.ayrinti = ayrinti
+    hata.http = http
+    return hata
+  }
+
   // Alania-2 API çağrısı: Türkçe metin gider, ses verisi döner ve çalınır.
+  // Toplam bekleme (bağlantı + yanıt + gövde) 5 sn; Durdur isteği iptal eder.
   async function alaniaIleOku(metin, anahtar, no) {
-    const yanit = await getir(
-      ALANIA_ADRESI,
-      {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${anahtar}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: ALANIA_MODELI, input: metin, voice: d.ses }),
-      },
-      15000,
-    )
-    if (!yanit.ok) throw new Error('Alania yanıtı: ' + yanit.status)
-    const veri = await yanit.blob()
+    const kesici = new AbortController()
+    alaniaKesici = kesici
+    let zamanAsimi = false
+    const sayac = setTimeout(() => {
+      zamanAsimi = true
+      kesici.abort()
+    }, ALANIA_SURESI)
+    const bas = performance.now()
+    let veri
+    try {
+      let yanit
+      try {
+        yanit = await fetch(ALANIA_ADRESI, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${anahtar}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ model: ALANIA_MODELI, input: metin, voice: d.ses }),
+          signal: kesici.signal,
+        })
+      } catch {
+        throw alaniaHatasi(zamanAsimi ? 'zaman aşımı' : 'ağ')
+      }
+      if (!yanit.ok) throw alaniaHatasi('http=' + yanit.status, yanit.status)
+      const ms = Math.round(performance.now() - bas)
+      try {
+        veri = await yanit.blob()
+      } catch {
+        throw alaniaHatasi(zamanAsimi ? 'zaman aşımı' : 'gövde okunamadı')
+      }
+      if (!veri.size) throw alaniaHatasi('boş yanıt')
+      if (no === oturumNo) kaydet('ses', `alania ${ms} ms`)
+    } finally {
+      clearTimeout(sayac)
+      if (alaniaKesici === kesici) alaniaKesici = null
+    }
     if (no !== oturumNo) return
     const adres = URL.createObjectURL(veri)
+    let sigorta = 0
     try {
       calar.src = adres
-      await calar.play()
+      try {
+        await calar.play()
+      } catch {
+        throw alaniaHatasi('çalınamadı') // ör. tarayıcı dokunuşsuz çalmaya izin vermedi
+      }
       await new Promise((bitti) => {
         calar.onended = calar.onerror = calar.onpause = bitti
+        // "ended" gelmezse sıra tıkanmasın
+        const sure = Number.isFinite(calar.duration) ? calar.duration * 1000 : 30000
+        sigorta = setTimeout(bitti, sure + 3000)
       })
     } finally {
+      clearTimeout(sigorta)
       calar.onended = calar.onerror = calar.onpause = null
       URL.revokeObjectURL(adres)
     }
@@ -575,8 +968,21 @@
   // ---------- Ekran kilidi ve arka plan ----------
 
   async function ekraniAcikTut() {
+    if (!navigator.wakeLock || (ekranKilidi && !ekranKilidi.released)) return
+    const no = oturumNo
     try {
-      if (navigator.wakeLock) ekranKilidi = await navigator.wakeLock.request('screen')
+      const kilit = await navigator.wakeLock.request('screen')
+      // İstek beklenirken Durdur'a basıldıysa kilidi hemen bırak (yoksa serbest kalmaz).
+      if (!d.calisiyor || no !== oturumNo || (ekranKilidi && !ekranKilidi.released)) {
+        kilit.release()
+        return
+      }
+      ekranKilidi = kilit
+      if (kilit.addEventListener) {
+        kilit.addEventListener('release', () => {
+          if (ekranKilidi === kilit) ekranKilidi = null
+        })
+      }
     } catch {
       // desteklenmiyorsa ekran kendi süresinde kararır
     }
@@ -591,14 +997,16 @@
     ekranKilidi = null
   }
 
-  // Sekme arka plana gidince dinleme bekler, dönünce kaldığı yerden sürer.
+  // Sekme arka plana gidince dinleme bekler, dönünce (başka bekletme nedeni yoksa) sürer.
   document.addEventListener('visibilitychange', () => {
+    const gorunur = document.visibilityState === 'visible'
+    kaydet('sekme', gorunur ? 'göründü' : 'gizlendi')
     if (!d.calisiyor) return
-    if (document.visibilityState === 'visible') {
+    if (gorunur) {
       ekraniAcikTut()
-      dinlemeyiSurdur(oturumNo)
+      dinlemeyiSurdur('gizli', oturumNo)
     } else {
-      dinlemeyiBeklet()
+      dinlemeyiBeklet('gizli')
     }
   })
 
@@ -629,9 +1037,9 @@
   })
 
   menu.addEventListener('click', (olay) => {
+    olay.stopPropagation()
     const secenek = olay.target.closest('.menu-oge')
     if (!secenek) return
-    olay.stopPropagation()
     d.dil = secenek.dataset.kod
     depo.yaz('kaynakDil', d.dil)
     d.menuAcik = false
@@ -645,7 +1053,38 @@
     ciz()
   })
 
+  // Menü açıkken ekran kayar ya da boyut değişirse menü şeridin yanında kalsın.
+  const yenidenKonumla = () => {
+    if (d.menuAcik) menuyuKonumla()
+  }
+  for (const kap of document.querySelectorAll('.kaydir')) kap.addEventListener('scroll', yenidenKonumla)
+  window.addEventListener('resize', yenidenKonumla)
+
   document.addEventListener('keydown', (olay) => {
+    if (taniAcik) {
+      if (olay.key === 'Escape') {
+        olay.preventDefault()
+        tanilamayiKapat()
+      } else if (olay.key === 'Tab') {
+        // Odak sayfanın içinde döner
+        const odaklar = [...$('tanilamaSayfa').querySelectorAll('button, textarea, [tabindex="-1"]')].filter(
+          (e) => !e.disabled && !e.hidden && e.offsetParent !== null,
+        )
+        const ilk = odaklar[0]
+        const son = odaklar[odaklar.length - 1]
+        if (olay.shiftKey && document.activeElement === ilk) {
+          olay.preventDefault()
+          son.focus()
+        } else if (!olay.shiftKey && document.activeElement === son) {
+          olay.preventDefault()
+          ilk.focus()
+        } else if (!$('tanilamaSayfa').contains(document.activeElement)) {
+          olay.preventDefault()
+          ilk.focus()
+        }
+      }
+      return
+    }
     if (olay.key !== 'Escape' || !d.menuAcik) return
     d.menuAcik = false
     ciz()
@@ -656,14 +1095,34 @@
     dugme.addEventListener('click', () => {
       d.sekme = dugme.dataset.sekme
       d.menuAcik = false
+      d.gecmisOnay = false
       ciz()
     })
   }
 
+  // Geçmişi temizle: onay ister (KR9)
   $('temizle').addEventListener('click', () => {
-    d.satirlar = []
+    d.gecmisOnay = true
     ciz()
+    $('gecmisVazgec').focus()
   })
+  $('gecmisVazgec').addEventListener('click', () => {
+    d.gecmisOnay = false
+    ciz()
+    $('temizle').focus()
+  })
+  $('gecmisSil').addEventListener('click', () => {
+    d.satirlar = []
+    d.gecmisOnay = false
+    ciz()
+    $('gecmisBaslik').focus()
+    duyur('durumDuyuru', 'Geçmiş silindi')
+  })
+
+  $('tanilamaSatiri').addEventListener('click', tanilamayiAc)
+  $('tanilamaBitti').addEventListener('click', tanilamayiKapat)
+  $('kopyala').addEventListener('click', kopyala)
+  $('taniTemizle').addEventListener('click', taniyiTemizle)
 
   $('anahtar').value = depo.oku('alaniaAnahtar', '')
   $('anahtar').addEventListener('input', (olay) => depo.yaz('alaniaAnahtar', olay.target.value.trim()))
