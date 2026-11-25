@@ -10,6 +10,7 @@
 | `ses-uzmani`       | Opus             | Ses yolu, tanıma, seslendirme, kesintiler: şartname ve inceleme (kod yazmaz)   | `docs/ses-hatti.md`, inceleme dosyası                  |
 | `arayuz-denetcisi` | Sonnet           | Tasarım şartnamesi, ekran ve erişilebilirlik incelemesi (kod yazmaz)           | `docs/tasarim.md`, inceleme dosyası                    |
 | `kalite-sorumlusu` | Opus             | Bağımsız kod incelemesi, kabul kriterleri, cihaz testi belgesi (kod yazmaz)    | `docs/cihaz-testi.md`, inceleme dosyası                |
+| `buyume-sorumlusu` | Sonnet           | Huni, mağaza sayfası, fiyat ve elde tutma incelemesi; öncelikli öneriler (kod yazmaz)  | `docs/buyume/`                                         |
 
 Tanımlar `.claude/agents/` altındadır. Oturumu bu klasörde `claude --agent ceviri-lideri` ile ya da depo kökünden
 `/ceviri` ile başlatın.

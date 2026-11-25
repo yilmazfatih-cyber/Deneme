@@ -52,6 +52,8 @@ Sonucu ve kaydı GitHub Actions'tan okunur; simülatör ekran görüntüleri `ca
 | `docs/tasarim.md`                                                                                   | arayuz-denetcisi |
 | `docs/cihaz-testi.md`                                                                               | kalite-sorumlusu |
 | `README.md`                                                                                         | ceviri-lideri    |
+| `docs/yayin.md`                                                                                     | ceviri-lideri    |
+| `docs/buyume/`                                                                                      | buyume-sorumlusu |
 
 Ajanlar birbirinin dosyasını değiştirmez; geri bildirim `docs/sprints/SNN/reviews/<ajan>-<tur>.md` dosyasına yazılır.
 Her bulgu: **önem** (Engel / Önemli / Öneri) + **yer** (dosya:satır ya da ekran) + **somut düzeltme önerisi**.
