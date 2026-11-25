@@ -43,7 +43,8 @@ Durum "Etkin" (Active) olana dek birkaç gün sürebilir.
 ## 3. Uygulamayı App Store Connect'te oluşturun
 
 1. App Store Connect → **Uygulamalar** → **+** → **Yeni Uygulama**.
-2. Platform: **iOS**. Ad: `docs/buyume/magaza.md` içindeki ad (ad alınmışsa oradaki yedeklerden biri).
+2. Platform: **iOS**. Ad: `docs/buyume/magaza.md` içindeki ad (ad alınmışsa oradaki yedeklerden biri). Adda ve anahtar
+   kelimelerde "AirPods" kullanmayın; Apple başkasının marka adını bu alanlarda kabul etmez.
 3. Birincil dil: **Türkçe**.
 4. Paket kimliği (Bundle ID): `com.yilmazfatih.canliceviri`. Listede yoksa önce Xcode'da 5. adımın ilk üç maddesini
    yapın; Xcode kimliği kendisi kaydeder.
@@ -93,7 +94,10 @@ Uygulama sayfasında doldurulacaklar (metinler `docs/buyume/magaza.md` içinde h
   `canli-ceviri-ekran` dalındadır.
 - **Gizlilik Politikası adresi:** https://yilmazfatih-cyber.github.io/Deneme/canli-ceviri/gizlilik.html
 - **Destek adresi:** https://yilmazfatih-cyber.github.io/Deneme/canli-ceviri/destek.html
-- **Uygulama Gizliliği** soruları: uygulama veri toplamaz ("Veri Toplanmıyor").
+- **Uygulama Gizliliği** soruları: biz hiçbir veri toplamıyoruz; ilk seçenek "Veri Toplanmıyor"dur. Bilmeniz gereken iki
+  istisna var: cihazda tanınmayan dillerde ses Apple'ın sunucusunda tanınır; kullanıcı kendi Alania anahtarını girerse
+  çeviri metni seslendirmek için Alania'ya gider. İkisi de gizlilik sayfasında yazılı. Apple bu soruda farklı bir beyan
+  isterse iletisini gönderin; bu hukuki görüş değildir.
 - Yaş sınırı anketi; kategori: Yardımcı Programlar ya da Seyahat.
 - **Uygulama İçi Satın Alımlar** bölümünde haftalık aboneliği bu sürüme ekleyin.
 - **İnceleme notu:** uygulamanın mikrofonla karşıdaki kişiyi dinleyip Türkçeye çevirdiğini, AirPods gerektiğini ve
