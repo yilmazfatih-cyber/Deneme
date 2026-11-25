@@ -248,6 +248,14 @@ async def _download_step(
             sub.progress(100)
             continue
         if not art.hf_repo:
+            if art.prefetch:
+                sub.step(f"{model.name}: çalışma anı modelleri önceden indiriliyor", 10)
+                path = await hf.prefetch(art, sub.log) or ""
+                size = await asyncio.to_thread(hf.artifact_size_on_disk, Path(path)) if path else 0.0
+                _record_model(model, art, path, size)
+                results.append({"model": model.id, "artifact": art.id, "path": path, "size_gb": size})
+                sub.progress(100, f"{model.name}: modeller hazır ({size} GB)")
+                continue
             sub.step(f"{model.name}: indirilecek ağırlık yok (kütüphane/sistem bileşeni)", 100)
             _record_model(model, art, "", 0.0)
             results.append({"model": model.id, "artifact": art.id, "path": "", "size_gb": 0.0})
@@ -266,6 +274,7 @@ async def _download_step(
                     _sub.log(f"{_name}: %{int(pct)} ({done / 1024**3:.2f}/{total / 1024**3:.2f} GB)")
 
         await hf.download_artifact(model, art, dest, cb)
+        await hf.download_aux(art, sub.log)  # çalışma anında okunan yardımcı dosyalar (çevrimdışı çalışma)
         size = await asyncio.to_thread(hf.artifact_size_on_disk, dest)
         _record_model(model, art, str(dest), size)
         results.append({"model": model.id, "artifact": art.id, "path": str(dest), "size_gb": size})

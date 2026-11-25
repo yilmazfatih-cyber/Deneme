@@ -51,10 +51,33 @@ def pdfplumber_parse(data: bytes) -> dict:
     }
 
 
-_DOCLING = LazyModel(
-    lambda: __import__("docling.document_converter", fromlist=["DocumentConverter"]).DocumentConverter(),
-    "docling",
-)
+def _build_docling():  # pragma: no cover - docling yok
+    """Kurulumda indirilen modellerle (artifacts_path) çevrimdışı çalışan Docling dönüştürücüsü.
+
+    OCR kapalı: dijital PDF'lerin metin katmanı zaten var; taranmış sayfalar 'ocr-belge-okuma' modülüne gider.
+    """
+    from docling.datamodel.base_models import InputFormat
+    from docling.datamodel.pipeline_options import PdfPipelineOptions
+    from docling.document_converter import DocumentConverter, PdfFormatOption
+
+    from ...installer.hf import docling_artifacts_dir
+
+    opts = PdfPipelineOptions(artifacts_path=str(docling_artifacts_dir()))
+    opts.do_ocr = False
+    opts.do_table_structure = True
+    return DocumentConverter(format_options={InputFormat.PDF: PdfFormatOption(pipeline_options=opts)})
+
+
+_DOCLING = LazyModel(_build_docling, "docling")
+
+
+def docling_usable() -> bool:
+    """Docling kurulu VE modelleri önceden indirilmiş mi? Değilse çalışma anında indirmeye kalkmayız."""
+    if not has_package("docling"):
+        return False
+    from ...installer.hf import docling_ready
+
+    return docling_ready()
 
 
 def docling_parse(data: bytes, suffix: str) -> dict:  # pragma: no cover - docling yok
@@ -99,7 +122,9 @@ class PdfAyristirma(BaseRuntime):
     async def do_parse(self, payload: dict, ctx: RunContext) -> dict:
         data = get_file(payload, ctx, "file")
         suffix = _suffix(data, payload.get("filename"))
-        if has_package("docling") and payload.get("engine") != "pdfplumber":
+        if has_package("docling") and not docling_usable():
+            note(ctx, docling="modeller kurulu değil; modülü mağazadan yeniden kurun (pdfplumber kullanıldı)")
+        if docling_usable() and payload.get("engine") != "pdfplumber":
             try:  # pragma: no cover
                 res = await asyncio.to_thread(docling_parse, data, suffix)
                 note(ctx, engine="docling")
@@ -121,5 +146,5 @@ class PdfAyristirma(BaseRuntime):
         return res
 
     async def health(self) -> dict:
-        eng = "docling" if has_package("docling") else ("pdfplumber" if has_package("pdfplumber") else None)
+        eng = "docling" if docling_usable() else ("pdfplumber" if has_package("pdfplumber") else None)
         return {"module": self.module_id, "ready": eng is not None, "engine": eng}

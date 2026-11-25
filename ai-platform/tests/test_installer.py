@@ -399,3 +399,17 @@ def test_process_start_stop():
     assert not process.is_running(name)
     assert process.read_info(name) is None
     assert any("başlatılıyor" in line for line in process.tail_log(name))
+
+
+async def test_runtime_assets_are_fetched_at_install(monkeypatch):
+    """KVKK Kalkanı: GLiNER'ın tokenizer/ayar deposu; PDF ayrıştırma: Docling modelleri — kurulumda iner."""
+    calls = install_fakes(monkeypatch, t2())
+    job = await _install("kvkk-kalkani")
+    assert job["status"] == "done", job
+    assert "microsoft/mdeberta-v3-base" in calls.aux
+    job = await _install("pdf-ayristirma")
+    assert job["status"] == "done", job
+    assert calls.prefetch == ["docling"]
+    from aiplatform.installer import hf
+
+    assert hf.docling_ready()

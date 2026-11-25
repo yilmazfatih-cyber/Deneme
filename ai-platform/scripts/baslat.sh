@@ -38,7 +38,7 @@ URL="http://127.0.0.1:${PORT}"
 if [ "$BROWSER" = 1 ]; then
   # sunucu hazır olunca Demo ERP sayfasını aç (arka planda bekler)
   (
-    for _ in $(seq 1 60); do
+    for _ in $(seq 1 180); do  # kurulumdan sonraki ilk açılış (soğuk önbellek) ~70 sn sürebilir
       if curl -sf "$URL/api/system/health" >/dev/null 2>&1; then
         if command -v open >/dev/null 2>&1; then
           open "$URL/#/demo"

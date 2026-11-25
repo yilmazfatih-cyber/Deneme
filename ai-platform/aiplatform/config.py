@@ -60,6 +60,10 @@ class Settings(BaseSettings):
 
     hf_token: str | None = Field(default=None, description="Gated depolar için (Prompt Guard gibi); genelde gerekmez")
     hf_endpoint: str | None = Field(default=None, description="Şirket içi Hugging Face aynası varsa")
+    hf_disable_xet: bool = Field(
+        default=False,
+        description="Hugging Face Xet depolamasını hiç kullanma (güvenlik duvarı yalnız huggingface.co'ya izin veriyorsa)",
+    )
 
     @property
     def auth_enabled(self) -> bool:

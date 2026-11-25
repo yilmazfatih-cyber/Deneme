@@ -32,7 +32,7 @@ dependencies = [
 llamacpp = ["llama-cpp-python[server]>=0.3.0"]          # CPU veya tek GPU, GGUF
 # vLLM ve Ollama ayrı kurulur (docker/ veya sistem paketi); pip bağımlılığı yok.
 # ---- Modül grupları (katalogdaki `pip_extras` alanıyla eşleşir)
-kvkk = ["presidio-analyzer>=2.2", "presidio-anonymizer>=2.2", "gliner>=0.2.13"]
+kvkk = ["presidio-analyzer>=2.2", "presidio-anonymizer>=2.2", "gliner>=0.2.13", "sentencepiece>=0.2", "protobuf>=4.25"]  # protobuf: mDeBERTa tokenizer dönüşümü (yoksa NER sessizce kapanır)
 belge = ["docling>=2.0", "pdfplumber>=0.11", "pypdfium2>=4.30", "pillow>=10"]
 ocr-tesseract = ["pytesseract>=0.3.10"]
 ocr-paddle = ["paddleocr>=3.0"]

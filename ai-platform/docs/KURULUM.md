@@ -118,6 +118,18 @@ yazma-asistani` (Qwen3.5-4B, 3,5 GB).
 Toplu dağıtım: aynı komutlar Intune/GPO/Ansible betiğine konur; modeller bir kez indirilip paylaşılan
 klasörden kopyalanabilir (`AIP_DATA_DIR` altındaki `models/`).
 
+### Güvenlik duvarı ve model indirme
+
+Model ağırlıkları `huggingface.co` üzerinden iner. Hugging Face büyük dosyaları ayrıca Xet depolamasından
+(`cas-server.xethub.hf.co`, `cas-bridge.xethub.hf.co`) verir; şirket ağı bu adreslere izin vermiyorsa kurulum motoru
+bunu algılar, klasik HTTP indirmesiyle yeniden dener ve sonraki kurulumlar için hatırlar (`~/.aiplatform/hf_xet_devre_disi`).
+Baştan kapatmak için `AIP_HF_DISABLE_XET=true`. İzin verilmesi gereken adresler: `huggingface.co`, `*.hf.co` (CDN) ve
+PyPI (yalnız kurulumda).
+
+Kurulum, modellerin çalışma anında okuduğu yardımcı dosyaları da indirir: GLiNER için `microsoft/mdeberta-v3-base`
+tokenizer ve ayarı (`models/_hf_cache`), Docling için düzen ve tablo modelleri (`models/docling/default`). Böylece
+kurulumdan sonra platform internetsiz çalışır.
+
 ## 3. İnternetsiz (hava boşluklu) kurulum
 
 1. İnternetli bir makinede `aiplatform install <modüller>` çalıştırın.
@@ -146,6 +158,7 @@ klasörden kopyalanabilir (`AIP_DATA_DIR` altındaki `models/`).
 | `AIP_SERVER_TOKEN` | — | client rolünde sunucuya giderken istemci düğümü anahtarı |
 | `AIP_APPROVAL_FOUR_EYES` | true | kimlik açıkken kişi kendi isteğini onaylayamaz |
 | `AIP_HF_TOKEN`, `AIP_HF_ENDPOINT` | — | gated depo / şirket içi ayna |
+| `AIP_HF_DISABLE_XET` | false | Hugging Face Xet depolamasını hiç deneme (güvenlik duvarı yalnız huggingface.co'ya izin veriyorsa) |
 
 ## 5. Doğrulama
 
