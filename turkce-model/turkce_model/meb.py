@@ -28,7 +28,7 @@ import time
 import zlib
 from collections import Counter, defaultdict
 from collections.abc import Callable, Iterable
-from dataclasses import asdict, dataclass, field, fields
+from dataclasses import MISSING, asdict, dataclass, field, fields
 from itertools import pairwise
 from pathlib import Path, PurePosixPath
 from typing import NamedTuple
@@ -78,6 +78,7 @@ class Soru:
 
 
 _ALANLAR = frozenset(f.name for f in fields(Soru))
+_ZORUNLU_ALANLAR = tuple(f.name for f in fields(Soru) if f.default is MISSING and f.default_factory is MISSING)
 
 
 # --------------------------------------------------------------------------------------------
@@ -100,7 +101,8 @@ def soru_yaz(sorular: Iterable[Soru], yol: Path) -> int:
 
 
 def soru_oku(yol: Path) -> list[Soru]:
-    """``soru_yaz`` ile yazılmış JSONL dosyasını okur (bilinmeyen alanlar yok sayılır)."""
+    """``soru_yaz`` ile yazılmış JSONL dosyasını okur (bilinmeyen alanlar yok sayılır). Okunamayan satır (geçersiz JSON,
+    JSON nesnesi olmayan değer, alanı eksik kayıt) dosyayı ve satırı anan ``ValueError`` verir."""
     yol = Path(yol)
     sorular: list[Soru] = []
     with yol.open(encoding="utf-8") as f:
@@ -111,6 +113,11 @@ def soru_oku(yol: Path) -> list[Soru]:
                 kayit = json.loads(satir)
             except json.JSONDecodeError as e:
                 raise ValueError(f"{yol}:{no}: geçersiz JSON satırı ({e})") from e
+            if not isinstance(kayit, dict):
+                raise ValueError(f"{yol}:{no}: soru kaydı değil (JSON nesnesi bekleniyordu)")
+            eksik = [ad for ad in _ZORUNLU_ALANLAR if ad not in kayit]
+            if eksik:
+                raise ValueError(f"{yol}:{no}: soru kaydında eksik alan: {', '.join(eksik)}")
             sorular.append(Soru(**{k: v for k, v in kayit.items() if k in _ALANLAR}))
     return sorular
 
@@ -840,8 +847,9 @@ def _ders_basligi(satirlar: list[_Satir], i: int) -> tuple[str, str, int] | None
     ("(532) SEÇMELİ" + "PEYGAMBERİMİZİN HAYATI - 2"). Düzeye (sayı ya da Roma rakamı: "- 2", "- II") ulaşana kadar en
     çok iki satır eklenir; yalnız düzeyden oluşan satır ("- 3") da eklenir. Büyük harfli grup yönergesi ("1 - 2.
     SORULARI … CEVAPLAYINIZ.") eklenmez: düzeyi okunamamış başlık onu yutunca ders adı bozuluyor, sorular parçasız
-    kalıyordu. Seçenek ("C) 10 - 12", "B) I VE II"), öncül ("II. AYDIN") ve tek başına madde işareti ("III.") da
-    eklenmez: düzeyleri ders düzeyi sanılır, başlık içeriği yutardı.
+    kalıyordu. Seçenek ("C) 10 - 12", "B) I VE II"), öncül ("II. AYDIN", "III. 10 - 12") ve tek başına madde işareti
+    ("III.") da eklenmez: düzeyleri ders düzeyi sanılır, başlık içeriği yutardı. Roma rakamıyla başlayıp sözcükle süren
+    ve düzeyle biten satır ("(183) SEÇMELİ" + "II. YABANCI DİL ALMANCA - 1") adın devamıdır, eklenir.
     """
     s = satirlar[i]
     m = _DERS_BASLIGI.match(s.metin)
@@ -857,7 +865,10 @@ def _ders_basligi(satirlar: list[_Satir], i: int) -> tuple[str, str, int] | None
             break
         if _SORU_BASI.match(t.metin) or _DERS_BASLIGI.match(t.metin) or _CEVAP_SATIRI.match(t.metin):
             break
-        if _GRUP_YONERGESI.match(kucuk(t.metin)) or _SECENEK.match(t.metin) or _ONCUL.match(t.metin):
+        if _GRUP_YONERGESI.match(kucuk(t.metin)) or _SECENEK.match(t.metin):
+            break
+        oncul = _ONCUL.match(t.metin)
+        if oncul and not (_SEVIYE.search(t.metin) and re.match(r"\s*[^\W\d_]{2,}", t.metin[oncul.end() :])):
             break
         if _ISARET.match(t.metin):
             break

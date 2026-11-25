@@ -93,6 +93,17 @@ def _devam_anahtari(satir: str) -> str:
     return re.sub(r"\W+", "", kucuk(satir).translate(meb._ASCII))
 
 
+def _ust_bilgi_anahtari(satir: str) -> str:
+    """Başlığın altındaki üst bilgiyi sayfalar arasında eşlemek için: I/İ farkı, boşluk ve noktalama sayılmaz, rakamlar
+    aynı sayılır ("A KİTAPÇIĞI 2" = "A KITAPÇIĞI 3")."""
+    return re.sub(r"\d+", "#", _devam_anahtari(satir))
+
+
+def _ilk_harf(satir: str) -> str:
+    """Satırın ilk harfi (yoksa boş): "1. Oturum bitti." → "O"."""
+    return next((c for c in satir if c.isalpha()), "")
+
+
 def _uzaklik(a: str, b: str) -> int:
     """İki dizginin harf düzeyinde düzeltme uzaklığı (Levenshtein): eklenen, silinen ya da değişen harf sayısı."""
     onceki = list(range(len(b) + 1))
@@ -309,10 +320,10 @@ def _sahte_soru_baslarini_birlestir(satirlar: list) -> list:
     return sonuc
 
 
-def _sonra_soru_var_mi(ham_sayfalar: list[list[str]], no: int, i: int, kod: str | None, kenarlar: set[str]) -> bool:
-    """``no``. sayfanın ``i``. satırından sonra aynı dersin bir sorusu geliyor mu? Başka bir dersin başlığına ya da
-    cevap anahtarına kadar bakılır; sayfa kenarları ve dersin sayfa başında yinelenen başlığı atlanır. "1." ile
-    başlayan soru yeni bir dersindir (kodu aynı olsa da)."""
+def _sonraki_soru_no(ham_sayfalar: list[list[str]], no: int, i: int, kod: str | None, kenarlar: set[str]) -> int | None:
+    """``no``. sayfanın ``i``. satırından sonra (sonraki sayfalarda da) gelen ilk sorunun numarası; yoksa ``None``.
+    Başka bir dersin başlığına ya da cevap anahtarına kadar bakılır (anahtardaki "1. a" soru sayılmaz); sayfa kenarları
+    ve dersin sayfa başında yinelenen başlığı atlanır."""
     for p in range(no - 1, len(ham_sayfalar)):
         for t in ham_sayfalar[p][i + 1 if p == no - 1 else 0 :]:
             t = t.strip()
@@ -320,11 +331,17 @@ def _sonra_soru_var_mi(ham_sayfalar: list[list[str]], no: int, i: int, kod: str 
                 continue
             baslik = meb._DERS_BASLIGI.match(t)
             if (baslik and baslik.group(1) != kod) or _anahtar_basligi_mi(t):
-                return False
+                return None
             m = meb._SORU_BASI.match(t)
             if m and _icerik_satiri_mi(t):
-                return int(m.group(1)) != 1
-    return False
+                return int(m.group(1))
+    return None
+
+
+def _sonra_soru_var_mi(ham_sayfalar: list[list[str]], no: int, i: int, kod: str | None, kenarlar: set[str]) -> bool:
+    """``no``. sayfanın ``i``. satırından sonra aynı dersin bir sorusu geliyor mu (``_sonraki_soru_no``)? "1." ile
+    başlayan soru yeni bir dersindir (kodu aynı olsa da)."""
+    return _sonraki_soru_no(ham_sayfalar, no, i, kod, kenarlar) not in (None, 1)
 
 
 def metinden_ayrik(sayfalar: Iterable[str]) -> tuple[list, list, meb._Belge, dict]:
@@ -332,11 +349,18 @@ def metinden_ayrik(sayfalar: Iterable[str]) -> tuple[list, list, meb._Belge, dic
     ham_sayfalar = [[normallestir(s) for s in metin.split("\n")] for metin in sayfalar]
     kenarlar = _tekrarlayan_kenarlar(ham_sayfalar)
     devamlar = [_baslik_devamlari(satirlar) for satirlar in ham_sayfalar]
-    # Ders başlığının altında (devam satırı yerinde) birden çok sayfada okunan satır sayfa üst bilgisidir ("A KİTAPÇIĞI");
-    # sayfaya taşan içerik sayfadan sayfaya değişir, yinelenmez.
-    basliga_bitisik = Counter(
-        k for satirlar, devam in zip(ham_sayfalar, devamlar) for k in {_kenar_anahtari(satirlar[j]) for j in devam}
-    )
+    # Ders başlığının altında (devam satırı yerinde) okunan satır, dersin başlıklı sayfalarının yaklaşık yarısında
+    # (en az iki sayfada) yineleniyorsa sayfa üst bilgisidir ("A KİTAPÇIĞI"; I/İ farkı ve rakamlar sayılmaz). Sayfaya
+    # taşan içerik ancak rastlantıyla iki sayfada aynı okunur ("MS 1071" / "MS 1453"). Sayaçlar ders kodu başınadır:
+    # (kod, satır) → başlığın altında okunduğu sayfa sayısı; kod → başlığının okunduğu sayfa sayısı.
+    basliga_bitisik: Counter[tuple[str, str]] = Counter()
+    baslikli_sayfa: Counter[str] = Counter()
+    for satirlar, devam in zip(ham_sayfalar, devamlar):
+        baslikli_sayfa.update({m.group(1) for s in satirlar if (m := meb._DERS_BASLIGI.match(s.strip()))})
+        basliga_bitisik.update(
+            {(meb._DERS_BASLIGI.match(satirlar[b].strip()).group(1), _ust_bilgi_anahtari(satirlar[j]))
+             for j, b in devam.items()}
+        )
     bosluklu = any(
         b - a > 1 for satirlar in ham_sayfalar for a, b in pairwise([i for i, s in enumerate(satirlar) if s.strip()])
     )
@@ -399,23 +423,28 @@ def metinden_ayrik(sayfalar: Iterable[str]) -> tuple[list, list, meb._Belge, dic
                 # o dersin seçenekleri okunmaya başlandıysa (son sorunun devamı, ardından yeni ders) atılır. Aynı ders:
                 # ilk satırı dersin ilk başlığındakiyle aynı, ya da kodu aynı, adı devam satırlarıyla birlikte ona
                 # yakın (_baslik_onegi: OCR'ın harf farkı, başka satır bölmesi, tek satırda okunmuş sarılı başlık) ve
-                # numaralar yeniden başlamıyor. Başlığın devam satırları da atılır: adı tamamlayan önek ve ardından
-                # başlığın altında birden çok sayfada okunan üst bilgi ("A KİTAPÇIĞI"). Düzeysiz başlıktan ("(111)
-                # TARİH") sonra sayfaya taşan büyük harfli içerik kalır: atılsaydı soru eksik tutulurdu. Kapaktaki ders
-                # dizininden sonra gelen gerçek başlık (sıradaki soru "1.") kalır.
+                # numaralar yeniden başlamıyor (başlık sayfanın sonundaysa sıradaki soru sonraki sayfalarda aranır).
+                # Başlığın devam satırları da atılır: adı tamamlayan önek ve ardından başlığın altında yinelenen üst
+                # bilgi ("A KİTAPÇIĞI"). Düzeysiz başlıktan ("(111) TARİH") sonra sayfaya taşan büyük harfli içerik
+                # kalır: atılsaydı soru eksik tutulurdu. Kapaktaki ders dizininden sonra gelen gerçek başlık (sıradaki
+                # soru "1.") kalır.
                 anahtar = re.sub(r"\s+", " ", buyuk(metin))
                 devami = [j for j, b in devam.items() if b == i]
                 ad = _devam_anahtari(baslik.group(2))
                 onek = _baslik_onegi(ad, [satirlar[j] for j in devami], son_ad) if baslik.group(1) == son_kod else None
                 sonraki = _siradaki_soru_no(satirlar[i + 1 :])
+                ileri = sonraki
+                if sonraki is None:  # başlık sayfanın sonunda: sıradaki soru sonraki sayfalarda ("1." ise yeni ders)
+                    ileri = _sonraki_soru_no(ham_sayfalar, no, i, baslik.group(1), kenarlar)
                 if (anahtar == son_baslik and (secenek_goruldu or sonraki not in (None, 1))) or (
-                    onek is not None and sonraki != 1 and (secenek_goruldu or sonraki is not None)
+                    onek is not None and ileri != 1 and (secenek_goruldu or sonraki is not None)
                 ):
                     atla = devami[: onek or 0]
                     for j in devami[onek or 0 :]:  # başlığın altındaki üst bilgi; içerik başlayınca durulur
                         t = satirlar[j].strip()
                         # Ders adına benzeyen içerik ("TARİH KONULARI") başlığın yinelenen devamıyla sayılıp atılmaz.
-                        ust_bilgi = basliga_bitisik[_kenar_anahtari(t)] >= 2 and _devam_anahtari(t) not in son_ad
+                        n = basliga_bitisik[(son_kod, _ust_bilgi_anahtari(t))]
+                        ust_bilgi = n >= 2 and 2 * n >= baslikli_sayfa[son_kod] - 1 and _devam_anahtari(t) not in son_ad
                         if not (ust_bilgi and _kenar_adayi_mi(t)):
                             break
                         atla.append(j)
@@ -431,12 +460,17 @@ def metinden_ayrik(sayfalar: Iterable[str]) -> tuple[list, list, meb._Belge, dic
                     and not ortak_metinde  # parçadaki "Sınav bitti." değil
                     and secenekli_soru  # kökteki ("… şöyle dedi:" + "Başarılar dileriz.") değil
                     # Seçeneğin "başarılar" diye süren satırı değil: büyük harfli, sayfa içinde boş satırdan sonra ya da
-                    # ardından dersin başka sorusu gelmiyor (ders ya da kitapçık sonu, son seçeneğin hemen altında da).
-                    # Sayfa başındaki ve boş satırsız metindeki satır da ileriye bakılarak ayrılır.
+                    # ardından dersin başka sorusu gelmiyor (ders ya da kitapçık sonu). Son seçeneğin hemen altındaki
+                    # (boş satırlı metinde aynı sayfada, boş satırsız) satır kapanışsa büyük harfle başlar ("Test
+                    # bitti."); küçük harfle başlayan ("başarılar") seçeneğin devamıdır. Sayfa başındaki ve boş
+                    # satırsız metindeki satır ileriye bakılarak ayrılır.
                     and (
                         meb._buyuk_harfli(metin)
                         or (bosluk and bool(sayfa_satirlari))
-                        or not _sonra_soru_var_mi(ham_sayfalar, no, i, son_kod, kenarlar)
+                        or (
+                            (not sayfa_satirlari or not bosluklu or _ilk_harf(metin).isupper())
+                            and not _sonra_soru_var_mi(ham_sayfalar, no, i, son_kod, kenarlar)
+                        )
                     )
                 ):
                     metin = "TEST BİTTİ."  # meb._sorulari_topla soruyu burada kapatır
@@ -650,7 +684,8 @@ def _ilk_soru_basi(satirlar: list[str]) -> int:
     (büyük harfli satır, sayfa numarası) ya da önceki sorunun seçenekleri varsa o satırlar atlanır; önceki satır kökün
     başıysa ("…hangisi" + "2. Dünya Savaşı'ndan…") hiçbir satır atlanmaz (0). Önceki sorunun seçeneklerinden sonra
     numarasız kök ve "1) …", "2) …" öncülleri geliyorsa soru, aradaki sayfa başlığı ve numarası atlanarak kökün ilk
-    satırında başlar."""
+    satırında başlar; kök küçük harfle sürüyorsa hemen önündeki büyük harfli satır da köktür ("ATATÜRK İLKELERİ" + "ile
+    ilgili …")."""
     onceki: list[str] = []
     son_kalinti = -1  # önceki sorunun son seçenek satırı
     for i, satir in enumerate(satirlar):
@@ -665,7 +700,15 @@ def _ilk_soru_basi(satirlar: list[str]) -> int:
                 # Seçeneklerle numara arasındaki sayfa başlığı, sayfa numarası ve şekil işareti atlanır; arada kök
                 # yoksa numara sorunun numarasıdır ("18. Aşağıdakilerden hangisi" + "19. yüzyılda …"), atılır.
                 kok = [j for j in range(son_kalinti + 1, i) if _kok_satiri_mi(satirlar[j].strip())]
-                return kok[0] if kok else i
+                if not kok:
+                    return i
+                j = kok[0]
+                # Büyük harfli satırdan sonra kök küçük harfle sürüyorsa o satır da köktür ("ATATÜRK İLKELERİ" + "ile
+                # ilgili …"), başlık değil.
+                onceki = [k for k in range(son_kalinti + 1, j) if satirlar[k].strip() not in ("", GORSEL_ISARETI)]
+                if onceki and satirlar[j].strip()[:1].islower() and meb._buyuk_harfli(satirlar[onceki[-1]].strip()):
+                    j = onceki[-1]
+                return j
             return i if kalinti or baslik else 0
         if meb._SECENEK.match(t):
             son_kalinti = i
