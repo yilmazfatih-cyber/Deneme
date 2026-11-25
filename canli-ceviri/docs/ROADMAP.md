@@ -58,7 +58,8 @@
 
 - Çift yönlü konuşma: kişinin Türkçe söylediğini karşı tarafın diline çevirip telefonun hoparlöründen okumak.
 - Arka planda ve ekran kilitliyken dinleme (ses arka plan kipi; gizlilik göstergesi ve pil etkisiyle birlikte düşünülmeli).
-- Mac'siz kurulum: derlemeden imzasız `.ipa` üretmek ya da TestFlight (ücretli geliştirici hesabı gerekir).
+- Mac'siz kurulum: imzasız `.ipa` üretiliyor (25.11.2026, `canli-ceviri-deneme-1`; bir iPhone'a kurulduğu denenmedi).
+  Bilgisayarsız kurulum için TestFlight (ücretli geliştirici hesabı gerekir; iş akışı hazır, hiç çalıştırılmadı).
 - Geçmişi isteğe bağlı saklama ve dışa aktarma.
 - Kaynak dili kendiliğinden tanıma.
 - Web sürümünde çeviriyi cihazda yapma (tarayıcı desteklediğinde) ve mikrofon seçimi.
