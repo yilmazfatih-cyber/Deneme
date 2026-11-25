@@ -20,6 +20,7 @@ struct TanilamaEkrani: View {
             Text("Kayıt yalnızca bu telefonda, uygulama açıkken tutulur; konuşma ve çeviri metni içermez.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)   // en büyük yazıda da kesilmez
                 .padding(.horizontal, 20)
                 .padding(.top, 8)
 
@@ -64,6 +65,7 @@ struct TanilamaEkrani: View {
             } label: {
                 Text("Bitti")
                     .font(.subheadline.weight(.semibold))
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                     .foregroundStyle(Renk.maviMetin)
                     .frame(minWidth: 44, minHeight: 44, alignment: .trailing)
                     .contentShape(Rectangle())
@@ -181,6 +183,9 @@ struct TanilamaEkrani: View {
                 Label(kopyalandi ? "Kopyalandı" : "Kopyala",
                       systemImage: kopyalandi ? "checkmark" : "doc.on.doc")
                     .font(.title3.weight(.semibold))
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: 62)
@@ -196,6 +201,9 @@ struct TanilamaEkrani: View {
             } label: {
                 Label("Temizle", systemImage: "trash")
                     .font(.subheadline.weight(.semibold))
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
                     .foregroundStyle(kayit.olaylar.isEmpty ? AnyShapeStyle(.secondary) : AnyShapeStyle(Renk.maviMetin))
                     .frame(maxWidth: .infinity, minHeight: 44)
                     .contentShape(Rectangle())

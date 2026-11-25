@@ -73,6 +73,7 @@ struct GecmisEkrani: View {
             .padding(.top, 12)
             .padding(.bottom, 20)
         }
+        .altSolma()
         .confirmationDialog("Geçmiş silinsin mi?", isPresented: $silmeSor, titleVisibility: .visible) {
             Button("Geçmişi sil", role: .destructive) { durum.satirlar.removeAll() }
             Button("Vazgeç", role: .cancel) {}

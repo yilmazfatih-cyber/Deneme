@@ -20,15 +20,26 @@ struct AyarlarEkrani: View {
 
                 bolumBasligi("Alania-2 API anahtarı")
                 VStack(alignment: .leading, spacing: 12) {
-                    SecureField("", text: $anahtar, prompt: Text("pd_live_…").foregroundStyle(.secondary))
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .padding(14)
-                        .background(Renk.alan, in: RoundedRectangle(cornerRadius: 14))
-                        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.white.opacity(0.18), lineWidth: 1))
-                        .accessibilityLabel("Alania-2 API anahtarı")
-                        .accessibilityValue(anahtar.isEmpty ? "Boş" : "Girildi")
-                        .accessibilityHint("Boş bırakırsanız çeviri Apple'ın Türkçe sesiyle okunur")
+                    // C-6: sistem yer tutucusu soluk kalıyor; boşken üstüne .secondary metin bindirilir.
+                    ZStack(alignment: .leading) {
+                        SecureField("", text: $anahtar)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled()
+                            .padding(14)
+                            .background(Renk.alan, in: RoundedRectangle(cornerRadius: 14))
+                            .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.white.opacity(0.18), lineWidth: 1))
+                            .accessibilityLabel("Alania-2 API anahtarı")
+                            .accessibilityValue(anahtar.isEmpty ? "Boş" : "Girildi")
+                            .accessibilityHint("Boş bırakırsanız çeviri Apple'ın Türkçe sesiyle okunur")
+                        if anahtar.isEmpty {
+                            Text("pd_live_…")
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                                .padding(14)
+                                .allowsHitTesting(false)
+                                .accessibilityHidden(true)
+                        }
+                    }
                     Text("Boş bırakırsanız çeviri Apple'ın Türkçe sesiyle okunur. Anahtar girerseniz çeviri metni seslendirmek için Alania'ya gönderilir; söylenen asıl cümle gönderilmez. Anahtar yalnızca bu telefonda, güvenli biçimde saklanır.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
