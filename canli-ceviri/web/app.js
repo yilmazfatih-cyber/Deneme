@@ -29,10 +29,12 @@
   const KESICI_NOTU = 'Alania sesine ulaşılamadı; bu oturumda cihazın sesi kullanılıyor.'
   const ANAHTAR_NOTU = 'Alania anahtarı geçersiz; bu oturumda cihazın sesi kullanılıyor.'
   const TANI_SINIRI = 300
-  const SURUM = 'S01 tur 3' // Tanılama kopyasının başlığına yazılır
-  // Başlat'tan sonra tarayıcı dinlemenin başladığını (start / audiostart / ilk sonuç) bu sürede bildirmezse
-  // ekran "Hazırlanıyor…"da kalmasın diye "dinliyor"a geçilir ve Tanılama'ya olay=yedek yazılır.
+  const SURUM = 'S01 tur 4' // Tanılama kopyasının başlığına yazılır
+  // Başlat'tan sonra bu sürede ne audiostart ne de sonuç gelirse aşama DEĞİŞMEZ (KR15): aşama satırı
+  // HAZIRLIK_GECIKTI metnine döner ve Tanılama'ya uyarı yazılır. "Dinliyorum" doğrulanmadan görünmez.
   const HAZIRLIK_YEDEK = 5000
+  const HAZIRLIK_GECIKTI = 'Mikrofon bekleniyor. İzin istendiyse izin verin.'
+  const CEVIRI_NOTU = 'Bir cümle çevrilemedi.' // tek çeviri hatası dinlemeyi durdurmaz: sarı not (Q-15)
   const KESINTI_METNI = { okuma: 'okuma sürüyor', gizli: 'sayfa arka planda' }
   const VARSAYILAN_NOT = 'Web deneme sürümü · kulaklık durumu gösterilmez · çeviri internetten yapılır'
   const DESTEK_YOK = 'Bu tarayıcı konuşma tanımayı desteklemiyor. iPhone’da Safari ile açın.'
@@ -201,7 +203,7 @@
       suAn.append(dinliyorum)
     } else if (d.asama === 'hazirlaniyor') {
       const hazir = oge('p', 'dinliyorum')
-      hazir.append(simge('kum', 17), 'Hazırlanıyor…')
+      hazir.append(simge('kum', 17), hazirlikGecikti ? HAZIRLIK_GECIKTI : 'Hazırlanıyor…')
       suAn.append(hazir)
     } else if (d.asama === 'kesintide') {
       const durgun = oge('p', 'dinliyorum duraklatildi')
@@ -371,7 +373,7 @@
     for (const id of ['paneller', 'sekmeSarici']) $(id).setAttribute('inert', '')
     $('taniKaydir').scrollTop = 0
     cizTanilama()
-    $('tanilamaBaslik').focus()
+    $('tanilamaBaslik').focus({ preventScroll: true })
   }
 
   function tanilamayiKapat() {
@@ -380,7 +382,7 @@
     clearTimeout(silOnaySayaci)
     $('tanilamaSayfa').hidden = true
     for (const id of ['paneller', 'sekmeSarici']) $(id).removeAttribute('inert')
-    $('tanilamaSatiri').focus()
+    $('tanilamaSatiri').focus({ preventScroll: true })
   }
 
   function kopyala() {
@@ -403,7 +405,7 @@
       alan.hidden = false
       $('kopyaUyari').hidden = false
       try {
-        alan.focus()
+        alan.focus({ preventScroll: true })
         alan.select()
       } catch {
         // seçilemezse kullanıcı elle seçer
@@ -439,7 +441,7 @@
     tani.olaylar = []
     tani.atilan = 0
     taniyiGuncelle()
-    $('tanilamaBaslik').focus()
+    $('tanilamaBaslik').focus({ preventScroll: true })
     duyur('taniDuyuru', 'Kayıt temizlendi')
   }
 
@@ -462,7 +464,9 @@
   let alaniaKesici = null // uçuştaki Alania isteği; Durdur iptal eder
   let alaniaHataSayisi = 0
   let alaniaKapali = false // bu oturumda Alania denenmez (devre kesici)
-  let dinlemeDogrulandi = false // bu oturumda dinlemenin başladığı bir tarayıcı olayıyla görüldü mü
+  let dinlemeDogrulandi = false // bu oturumda dinlemenin başladığı audiostart ya da sonuçla görüldü mü
+  let ceviriNotu = '' // çeviri hatasının yazdığı sarı not; sonraki başarılı çeviride kalkar
+  let hazirlikGecikti = false // 5 sn içinde doğrulanmadı: aşama satırı "Mikrofon bekleniyor…"
   let izinYazildi = false
   let baslatZamani = 0
   let ceviriKesici = null // oturumun çeviri isteklerini keser; Durdur iptal eder (ses-hatti § 6)
@@ -479,8 +483,8 @@
     }
   }
 
-  // Dinlemenin gerçekten başladığını gösteren ilk olay: start, audiostart, ilk sonuç ya da yedek süre.
-  // Safari'de hangisinin (ve izin isteminden önce mi sonra mı) geldiği belli değil; hangisi önce gelirse
+  // Dinlemenin gerçekten başladığını gösteren ilk olay: audiostart ya da ilk sonuç (KR15). "start" geçiş
+  // yapmaz (Safari'de izin isteminden önce gelebilir), yalnız Tanılama'ya yazılır. Hangisi önce gelirse
   // geçişi o yapar ve adı Tanılama'ya yazılır (cihazda okunabilsin).
   function dinlemeBasladi(t, no, olay) {
     if (t !== taniyici || t.kapali || no !== oturumNo) return
@@ -490,11 +494,8 @@
     }
     if (dinlemeDogrulandi) return
     dinlemeDogrulandi = true
-    kaydet(
-      'aşama',
-      `dinliyor olay=${olay} ${Math.round(performance.now() - baslatZamani)} ms`,
-      olay === 'yedek', // olay gelmediyse uyarı: ekran "Dinliyorum" der ama tarayıcı bunu doğrulamadı
-    )
+    hazirlikGecikti = false
+    kaydet('aşama', `dinliyor olay=${olay} ${Math.round(performance.now() - baslatZamani)} ms`)
     asamaGuncelle()
     ciz()
     if (d.asama === 'dinliyor') duyur('durumDuyuru', 'Dinleme başladı')
@@ -515,6 +516,7 @@
     alaniaHataSayisi = 0
     alaniaKapali = false
     dinlemeDogrulandi = false
+    hazirlikGecikti = false
     izinYazildi = false
     baslatZamani = performance.now()
     ceviriKesici = new AbortController()
@@ -530,6 +532,13 @@
     sesiAc() // dokunuş anında: tarayıcı sonraki seslendirmelere izin versin
     tanimayiBaslat()
     ekraniAcikTut()
+    const no = oturumNo
+    setTimeout(() => {
+      if (dinlemeDogrulandi || !oturumAcik() || no !== oturumNo) return
+      hazirlikGecikti = true // aşama değişmez; yalnız satırın metni ve Tanılama uyarısı
+      kaydet('aşama', 'hazırlanıyor: 5 sn içinde audiostart ya da sonuç gelmedi', true)
+      ciz()
+    }, HAZIRLIK_YEDEK)
     ciz()
     // Başlangıç olayı bu adımda geldiyse "Dinleme başladı" zaten duyuruldu.
     if (d.asama === 'hazirlaniyor') duyur('durumDuyuru', 'Hazırlanıyor')
@@ -584,7 +593,12 @@
     t.interimResults = true
     t.maxAlternatives = 1
 
-    t.onstart = () => dinlemeBasladi(t, no, 'start')
+    // start yalnız kayıttır (KR15); oturumun dinlemesi doğrulanana dek yazılır (her cümlede yinelenmesin).
+    t.onstart = () => {
+      if (t === taniyici && !t.kapali && no === oturumNo && !dinlemeDogrulandi) {
+        kaydet('tanıma', `start ${Math.round(performance.now() - baslatZamani)} ms`)
+      }
+    }
     t.onaudiostart = () => dinlemeBasladi(t, no, 'audiostart')
 
     t.onresult = (olay) => {
@@ -657,11 +671,6 @@
       t.start()
       // Tarayıcı tanımanın cihazda mı sunucuda mı yapıldığını söylemez (ses-hatti § 6).
       kaydet('tanıma açıldı', t.lang + ' konum=bilinmiyor')
-      if (!dinlemeDogrulandi) {
-        setTimeout(() => {
-          if (!dinlemeDogrulandi) dinlemeBasladi(t, no, 'yedek')
-        }, HAZIRLIK_YEDEK)
-      }
     } catch (hata) {
       // start() hata verirse "end" gelmez; aynı yoldan yeniden denensin
       hataKodu = 'başlatılamadı ' + ((hata && hata.name) || '')
@@ -763,23 +772,28 @@
     } catch (hata) {
       if (no === oturumNo && hata.kod !== 'iptal') {
         kaydet('çeviri', 'hata ' + (hata.kod || 'bilinmiyor'), true)
-        d.hata = hata.message
+        // Dinleme sürüyor: kırmızı hata satırı değil, sarı not (Q-15). Kırmızı satır yalnız dinleme durunca.
+        // Not nedeni söyler (sınır, ağ); özgül neden yoksa genel not.
+        d.not = hata.ozgul ? hata.message : CEVIRI_NOTU
+        ceviriNotu = d.not
         ciz()
       }
       return
     }
     if (no !== oturumNo) return // bu arada durduruldu
     kaydet('çeviri', Math.round(performance.now() - bas) + ' ms')
-    d.hata = ''
+    if (ceviriNotu && d.not === ceviriNotu) d.not = '' // sonraki başarılı çeviride not kalkar
+    ceviriNotu = ''
     d.satirlar.push({ asil, ceviri, dil, saat: new Date() })
     ciz()
     duyur('ceviriDuyuru', ceviri)
     sesKuyrugu = sesKuyrugu.then(() => oku(ceviri, no)).catch(() => {})
   }
 
-  function ceviriHatasi(mesaj, kod) {
+  function ceviriHatasi(mesaj, kod, ozgul = false) {
     const hata = new Error(mesaj)
     hata.kod = kod
+    hata.ozgul = ozgul // ileti nedeni söylüyor: sarı notta aynen gösterilir
     return hata
   }
 
@@ -804,14 +818,14 @@
               : yanit
                 ? 'yanıt okunamadı'
                 : 'ağ'
-        throw ceviriHatasi('Çeviri hizmetine ulaşılamadı. İnternet bağlantınızı kontrol edin.', kod)
+        throw ceviriHatasi('Çeviri hizmetine ulaşılamadı. İnternet bağlantınızı kontrol edin.', kod, true)
       } finally {
         if (kesici) kesici.ucusta -= 1
       }
       const sonuc = veri && veri.responseData ? String(veri.responseData.translatedText || '') : ''
       const kod = Number(veri && veri.responseStatus)
       if (yanit.status === 429 || kod === 429 || /MYMEMORY WARNING/i.test(sonuc)) {
-        throw ceviriHatasi('Günlük ücretsiz çeviri sınırı doldu. Yarın yeniden deneyin.', 'sınır http=429')
+        throw ceviriHatasi('Günlük ücretsiz çeviri sınırı doldu. Yarın yeniden deneyin.', 'sınır http=429', true)
       }
       if (!yanit.ok || kod !== 200 || !sonuc) {
         throw ceviriHatasi(
@@ -1151,7 +1165,7 @@
     depo.yaz('kaynakDil', d.dil)
     d.menuAcik = false
     ciz()
-    $('dilSeridi').focus()
+    $('dilSeridi').focus({ preventScroll: true })
   })
 
   document.addEventListener('click', () => {
@@ -1181,13 +1195,13 @@
         const son = odaklar[odaklar.length - 1]
         if (olay.shiftKey && document.activeElement === ilk) {
           olay.preventDefault()
-          son.focus()
+          son.focus({ preventScroll: true })
         } else if (!olay.shiftKey && document.activeElement === son) {
           olay.preventDefault()
-          ilk.focus()
+          ilk.focus({ preventScroll: true })
         } else if (!$('tanilamaSayfa').contains(document.activeElement)) {
           olay.preventDefault()
-          ilk.focus()
+          ilk.focus({ preventScroll: true })
         }
       }
       return
@@ -1195,7 +1209,7 @@
     if (olay.key !== 'Escape' || !d.menuAcik) return
     d.menuAcik = false
     ciz()
-    $('dilSeridi').focus()
+    $('dilSeridi').focus({ preventScroll: true })
   })
 
   for (const dugme of document.querySelectorAll('.sekme')) {
@@ -1211,18 +1225,18 @@
   $('temizle').addEventListener('click', () => {
     d.gecmisOnay = true
     ciz()
-    $('gecmisVazgec').focus()
+    $('gecmisVazgec').focus({ preventScroll: true })
   })
   $('gecmisVazgec').addEventListener('click', () => {
     d.gecmisOnay = false
     ciz()
-    $('temizle').focus()
+    $('temizle').focus({ preventScroll: true })
   })
   $('gecmisSil').addEventListener('click', () => {
     d.satirlar = []
     d.gecmisOnay = false
     ciz()
-    $('gecmisBaslik').focus()
+    $('gecmisBaslik').focus({ preventScroll: true })
     duyur('durumDuyuru', 'Geçmiş silindi')
   })
 

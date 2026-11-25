@@ -157,7 +157,9 @@
         height: 100%;
         display: flex;
         flex-direction: column;
+        /* clip (hidden değil): odak ya da programatik kaydırma .ekran'ı kaydıramaz (C-1) */
         overflow: hidden;
+        overflow: clip;
         border-radius: 50px;
         background: radial-gradient(circle 420px at 50% 50%, var(--parilti), transparent), var(--zemin);
       }
@@ -208,6 +210,14 @@
         overscroll-behavior: contain;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
+        /* Alt kenarda 20 px solma: kesilen satır yarım görünmez, kaydırılabilirlik anlaşılır (C-8) */
+        -webkit-mask-image: linear-gradient(#000 calc(100% - 20px), transparent);
+        mask-image: linear-gradient(#000 calc(100% - 20px), transparent);
+      }
+      /* Dil menüsü bu alanın içinde ama .ekran'a göre konumlanır; açıkken maske onu kesmesin */
+      .kaydir:has(.menu:not([hidden])) {
+        -webkit-mask-image: none;
+        mask-image: none;
       }
       .kaydir::-webkit-scrollbar {
         display: none;
@@ -284,11 +294,6 @@
       }
       .dil-seridi[aria-disabled='true'] {
         cursor: default;
-      }
-      /* Devre dışıyken yalnız başlık ve ok solar; bilgi taşıyan alt yazı tam opak kalır */
-      .dil-seridi[aria-disabled='true'] .dil-ad,
-      .dil-seridi[aria-disabled='true'] .dil-ok {
-        opacity: 0.6;
       }
       /* Dinlerken şerit tek satırlık kompakt hale gelir: 56 px, alt yazı ve ok gizli */
       .ekran.dinliyor .dil-seridi {
@@ -431,7 +436,7 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-        padding: 0 var(--yan-sag) 12px var(--yan-sol);
+        padding: 8px var(--yan-sag) 12px var(--yan-sol);
       }
       .hata,
       .not {
@@ -1259,7 +1264,8 @@
                     />
                     <p class="dipnot">
                       Boş bırakırsanız çeviri cihazınızın Türkçe sesiyle okunur. Anahtar yalnızca bu tarayıcıda
-                      saklanır.
+                      saklanır. Anahtar girerseniz çeviri metni seslendirmek için Alania'ya gönderilir; söylenen asıl
+                      cümle gönderilmez.
                     </p>
                   </div>
 
