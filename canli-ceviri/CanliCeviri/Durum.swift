@@ -1,3 +1,4 @@
+import AVFoundation
 import SwiftUI
 import Translation
 
@@ -6,61 +7,224 @@ struct Satir: Identifiable {
     let id = UUID()
     let asil: String
     let ceviri: String
+    /// Asıl cümlenin dil kodu (VoiceOver'ın doğru dille okuması için).
+    var kaynakDil = "en"
     let saat = Date()
 }
 
-/// Ekranların paylaştığı durum: çeviri oturumu, satırlar, hata.
+/// Dinleme aşaması — ekranın tek kaynağı (KR3, şartname D-0).
+enum Asama: Equatable {
+    case duruyor
+    case hazirlaniyor
+    case dinliyor
+    case kesintide(KesintiNedeni)
+
+    /// CANLI rozeti ve "Dinliyorum…" yalnız bunda `true`.
+    var canli: Bool { self == .dinliyor }
+
+    /// "Duraklatıldı: <neden>"; kesintide değilse nil.
+    var duraklatmaMetni: String? {
+        if case .kesintide(let neden) = self { return "Duraklatıldı: \(neden.ekranMetni)" }
+        return nil
+    }
+}
+
+/// Ekrandaki sarı notların türü; her türden en çok bir not görünür.
+enum NotTuru: Hashable {
+    case sunucuTanima   // KR2: bu dilde tanıma Apple sunucusunda
+    case alania         // KR10: Alania yerine Apple sesi
+    case turkceSes      // S7: Türkçe Apple sesi yüklü değil
+    case ceviri         // Ö-9: bir cümle çevrilemedi
+}
+
+/// Ekranda sarı not (uyarı rengi, hata değil).
+struct EkranNotu: Identifiable, Equatable {
+    let tur: NotTuru
+    let metin: String
+    var id: NotTuru { tur }
+}
+
+/// Ekranların paylaştığı durum: aşama, çeviri oturumu, satırlar, hata ve notlar.
 @MainActor
 @Observable
 final class Durum {
     var ayar: TranslationSession.Configuration?
+    var asama: Asama = .duruyor
     var satirlar: [Satir] = []
     var hata: String?
+    var notlar: [EkranNotu] = []
     let hat = Hat()
 
     @ObservationIgnored private var dil = diller[0]
-    var calisiyor: Bool { ayar != nil }
+    /// Oturum kimliği (şartname D-1): her Başlat ve Durdur artırır; eski işler yan etki yapmadan çıkar.
+    @ObservationIgnored private var kimlik = 0
+    @ObservationIgnored private var ceviriHatasi = 0
+
+    /// Duruyor dışındaki her aşama (ana düğme "Durdur" yazar).
+    var calisiyor: Bool { asama != .duruyor }
+
+    init() {
+        hat.bildir = { [weak self] bildirim in self?.hatBildirdi(bildirim) }
+    }
 
     func dugmeyeBasildi(dil: Dil) {
+        kimlik += 1   // hem Başlat hem Durdur eski işi geçersiz kılar (E1)
+        #if DEBUG
+        if hat.onizlemede {
+            asama = calisiyor ? .duruyor : .dinliyor
+            return
+        }
+        #endif
         if calisiyor {
+            Tanilama.ortak.kaydet("durdur", "neden=düğme")
             hat.durdur()
             ayar = nil
+            asama = .duruyor
+            notlar = []
         } else {
             hata = nil
+            notlar = []
+            ceviriHatasi = 0
             self.dil = dil
+            asama = .hazirlaniyor
+            Tanilama.ortak.kaydet("başlat", "dil=\(dil.kod)")
             // Bu atama KokEkran'daki translationTask'i tetikler.
             ayar = .init(source: Locale.Language(identifier: dil.kod),
                          target: Locale.Language(identifier: "tr"))
         }
     }
 
-    /// Çeviri oturumu açıkken çalışan ana döngü.
+    /// Çeviri oturumu açıkken çalışan ana döngü. Her `await`'ten sonra ve her `translate`'ten
+    /// önce kimlik denetlenir: Durdur'dan sonra eski oturum ne mikrofon açar ne çeviri yapar (E1).
     func calistir(_ oturum: TranslationSession) async {
-        do {
-            try await oturum.prepareTranslation()   // dil paketi yoksa indirir
-            guard await Hat.izinAl() else {
-                hata = "Mikrofon ve konuşma tanıma izni gerekli (Ayarlar'dan açabilirsiniz)."
-                ayar = nil
-                return
-            }
-            // İndirme ya da izin beklenirken Durdur'a basıldıysa mikrofonu hiç açma.
-            try Task.checkCancellation()
-            let cumleler = try hat.baslat(konusmaDili: dil.konusma)
+        let benim = kimlik
+        let kayit = Tanilama.ortak
+        let konusmaDili = dil.konusma
+        let kaynakKod = dil.kod
 
-            // Her biten cümle buraya düşer: çevir, ekrana yaz, seslendir.
-            // Mikrofon geri açılamazsa akış hatayla biter ve hata ekranda görünür.
+        // G2: dil paketi (yoksa indirir ya da onay ister).
+        let paketBasi = Date()
+        do {
+            try await oturum.prepareTranslation()
+        } catch {
+            guard gecerli(benim) else { return }
+            kayit.kaydet("dil paketi", "hata \(hataKodu(error))", uyari: true)
+            hataylaBitir("Dil paketi hazırlanamadı. İnternete bağlanıp yeniden deneyin.", neden: "hata dil paketi")
+            return
+        }
+        guard gecerli(benim) else { return }
+        kayit.kaydet("dil paketi", "hazır (\(gecenMs(paketBasi)) ms)")
+
+        // G3: izinler.
+        let izin = await Hat.izinler()
+        guard gecerli(benim) else { return }
+        kayit.kaydet("izin", "mikrofon=\(izin.mikrofon ? "verildi" : "reddedildi") "
+                         + "konuşma=\(izin.konusma ? "verildi" : "reddedildi")",
+                     uyari: !(izin.mikrofon && izin.konusma))
+        guard izin.mikrofon && izin.konusma else {
+            hataylaBitir("Mikrofon ve konuşma tanıma izni gerekli (Ayarlar'dan açabilirsiniz).", neden: "izin yok")
+            return
+        }
+
+        // G5: mikrofon ve tanıma.
+        let cumleler: AsyncThrowingStream<String, Error>
+        do {
+            cumleler = try hat.baslat(konusmaDili: konusmaDili)
+        } catch {
+            let (mesaj, kod) = Durum.turkce(error)
+            hataylaBitir(mesaj, neden: "hata \(kod)")
+            return
+        }
+        asama = .dinliyor
+
+        // Her biten cümle buraya düşer: çevir, ekrana yaz, seslendir.
+        // Mikrofon geri açılamazsa akış hatayla biter ve hata ekranda görünür.
+        do {
             for try await cumle in cumleler {
-                let sonuc = try await oturum.translate(cumle)
-                try Task.checkCancellation()        // bu arada durdurulduysa okuma
-                satirlar.append(Satir(asil: cumle, ceviri: sonuc.targetText))
-                hat.seslendir(sonuc.targetText)
+                guard gecerli(benim) else { return }   // translate'ten ÖNCE
+                let ceviriBasi = Date()
+                do {
+                    let sonuc = try await oturum.translate(cumle)
+                    guard gecerli(benim) else { return }
+                    kayit.kaydet("çeviri", "\(gecenMs(ceviriBasi)) ms")
+                    ceviriHatasi = 0
+                    notKaldir(.ceviri)
+                    satirlar.append(Satir(asil: cumle, ceviri: sonuc.targetText, kaynakDil: kaynakKod))
+                    hat.seslendir(sonuc.targetText)
+                } catch {
+                    // Ö-9: tek bir çeviri hatası dinlemeyi durdurmaz; art arda 3 hata durdurur.
+                    guard gecerli(benim) else { return }
+                    ceviriHatasi += 1
+                    kayit.kaydet("çeviri", "hata \(hataKodu(error))", uyari: true)
+                    notEkle(.ceviri, "Bir cümle çevrilemedi.")
+                    if ceviriHatasi >= ceviriHataSiniri {
+                        hataylaBitir("Çeviri art arda yapılamadı. Dinlemeyi yeniden başlatın.", neden: "hata çeviri")
+                        return
+                    }
+                }
             }
         } catch {
-            // Durdur'a basıldıysa görev iptal edilmiştir; gösterilecek bir hata yok.
-            guard !(error is CancellationError), !Task.isCancelled else { return }
-            hata = error.localizedDescription
-            hat.durdur()
-            ayar = nil
+            guard gecerli(benim) else { return }
+            let (mesaj, kod) = Durum.turkce(error)
+            hataylaBitir(mesaj, neden: "hata \(kod)")
         }
+    }
+
+    // MARK: Notlar
+
+    func notEkle(_ tur: NotTuru, _ metin: String) {
+        let yeni = EkranNotu(tur: tur, metin: metin)
+        if let i = notlar.firstIndex(where: { $0.tur == tur }) {
+            if notlar[i] != yeni { notlar[i] = yeni }
+        } else {
+            notlar.append(yeni)
+        }
+    }
+
+    func notKaldir(_ tur: NotTuru) {
+        guard notlar.contains(where: { $0.tur == tur }) else { return }
+        notlar.removeAll { $0.tur == tur }
+    }
+
+    // MARK: İç işler
+
+    private func gecerli(_ benim: Int) -> Bool {
+        benim == kimlik && !Task.isCancelled
+    }
+
+    private func hatBildirdi(_ bildirim: HatBildirimi) {
+        switch bildirim {
+        case .kesintiBasladi(let neden):
+            if calisiyor { asama = .kesintide(neden) }
+        case .kesintiBitti:
+            if calisiyor { asama = .dinliyor }
+        case .not(let tur, let metin):
+            if let metin { notEkle(tur, metin) } else { notKaldir(tur) }
+        }
+    }
+
+    /// Kapatma sırası + ekranda Türkçe hata (G4, G13, G14).
+    private func hataylaBitir(_ mesaj: String, neden: String) {
+        kimlik += 1
+        Tanilama.ortak.kaydet("durdur", "neden=\(neden)", uyari: true)
+        hat.durdur()
+        ayar = nil
+        asama = .duruyor
+        notlar = []
+        hata = mesaj
+    }
+
+    /// Ö-11: sistem hatasını Türkçe, ne yapılacağını söyleyen metne çevirir; kod Tanılama içindir.
+    private static func turkce(_ hata: Error) -> (mesaj: String, kod: String) {
+        if let h = hata as? HatHatasi { return (h.mesaj, h.kod ?? "hat") }
+        let n = hata as NSError
+        let kod = "\(n.domain)/\(n.code)"
+        if n.code == AVAudioSession.ErrorCode.insufficientPriority.rawValue {
+            return ("Görüşme sürerken dinleme başlatılamaz. Görüşme bitince yeniden deneyin.", kod)
+        }
+        if n.code == AVAudioSession.ErrorCode.cannotStartRecording.rawValue {
+            return ("Mikrofon başka bir uygulamada. O uygulamayı kapatıp yeniden başlatın.", kod)
+        }
+        return ("Dinleme durdu (\(kod)). Yeniden başlatın.", kod)
     }
 }
