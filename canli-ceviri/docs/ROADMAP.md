@@ -16,7 +16,7 @@
 | ------ | ------------------------------------------------------------------------------------------------------- | ------- |
 | S01    | Cihaz denemesine hazır sürüm: bağımsız kod incelemesi, Tanılama, anahtarın Anahtar Zinciri'nde saklanması, erişilebilirlik, simülatör ekran görüntüleri, cihaz testi belgesi | otomatik kapı ve uzman incelemesi geçti; **insan kapısını bekliyor** (`docs/sprints/S01/demo.md`) |
 | S02    | İkinci motor: bulut hattı (Soniox). Görev tanımı yazıldı; proje sahibinin isteğiyle **beklemede** (25.11.2026) | beklemede |
-| S03    | Ödeme ve App Store hazırlığı: haftalık abonelik, günlük ücretsiz süre, gizlilik sayfası, yayın kılavuzu, büyüme ajanı | sürüyor |
+| S03    | Ödeme ve App Store hazırlığı: haftalık abonelik, günlük ücretsiz süre, gizlilik sayfası, yayın kılavuzu, büyüme ajanı, indirilebilir `.ipa` | kod ve derleme bitti; **insan kapısını bekliyor** (`docs/sprints/S03/demo.md`) |
 | S04    | Cihaz denemesinden çıkan sorunlar (proje sahibinin `docs/cihaz-testi.md` sonuçlarına göre)               | bekliyor |
 
 ## Birikim (öncelik sırasıyla)
