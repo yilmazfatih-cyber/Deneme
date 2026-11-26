@@ -1,0 +1,1205 @@
+{
+ "tarama": {
+  "an": "2026-11-26T10:55:00+03:00",
+  "kategoriler": [
+   "gomlek-bluz-tunik",
+   "sweatshirt-kazak",
+   "pantolon-tayt-sort"
+  ],
+  "not": "Günlük tarama; Alibaba ilanları ve Akakçe doğrudan okundu. Yeni kategorilerde eşiği geçen yok (saten gömlek 2,59; kazak/yelek ~2; tayt 1,7). Takip: silikon kapatıcılar için 15 Akakçe ilanı ölçüldü — en ucuz ilanlarda 28–41 satıcı teklifi var, medyan 270'ten 155 TL'ye indi. Erkek kemerlerde Dagoster varyant sayfaları tek sayıldı, paketler adet başına eklendi, ağırlık 0,12 kg. Örgü kemer 3 Türkiye ilanına çıktı. Sırt çantası için markasız TR ilanı yine yok; saat bakılmadı; kolye ve cüzdan ilanları yok."
+ },
+ "adaylar": [
+  {
+   "urun": "Silikon göğüs ucu kapatıcı (yapışkanlı, tekrar kullanılabilir)",
+   "kategori": "sutyen-korse",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Custom-Packaging-Box-Invisible-Adhesive-Breast_1601222520853.html",
+    "baslik": "JOGOGO Invisible Adhesive Breast Nipple Pasties Reusable Opaque Thin Silicone Nipple Cover",
+    "tedarikci": "ilan sayfasında görünmedi",
+    "fiyat_usd": 0.62,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 0.62
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 5000,
+      "fiyat_usd": 0.49
+     },
+     {
+      "min_adet": 10000,
+      "fiyat_usd": 0.42
+     }
+    ],
+    "birim_agirlik_kg": 0.02,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 43.47,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatici-fiyati,1450703058.html",
+      "baslik": "Göğüs Ucu Kapatıcı (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 70.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatan-silikon-fiyati,1178001220.html",
+      "baslik": "Göğüs Ucu Kapatan Silikon (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 70.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-fiyati,1178000131.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 130.2,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-silikonu-nipple-silicone-fiyati,1178001211.html",
+      "baslik": "Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 145.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-gizleyici-bant-aparat-nipple-pad-fiyati,1178004509.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı Gizleyici Bant Aparat Nipple Pad (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 155.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatici-silikon-gogus-ucu-kapatici-nipple-pad-gogus-kapama-bandi-fiyati,1098256356.html",
+      "baslik": "Göğüs Ucu Kapatıcı, Silikon Göğüs Ucu Kapatıcı, Nipple Pad (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 270.25,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-krem-gogus-ucu-kapatici-ve-diklestirici-hayalet-sutyen-hayalet-kapatici-fiyati,682485448.html",
+      "baslik": "Krem Göğüs Ucu Kapatıcı ve Dikleştirici Hayalet Kapatıcı (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 300.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-eco-port-gogus-ucu-silikon-kapatici-fiyati,1344129456.html",
+      "baslik": "Eco Port Göğüs Ucu Silikon Kapatıcı (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 301.67,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ttt-gogus-ucu-silikonu-nipple-silicone-fiyati,1177647099.html",
+      "baslik": "TTT Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 336.69,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-forwhat-buro-ev-ofis-kadini-icin-silikon-gogus-ucu-kapatici-aparat-pad-l-xl-fiyati,1177713944.html",
+      "baslik": "ForWhat Silikon Göğüs Ucu Kapatıcı Aparat Pad L-XL (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 345.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ince-silikon-nipple-cover-gorunmez-ve-iz-yapmaz-tasarim-fiyati,1427051043.html",
+      "baslik": "İnce Silikon Nipple Cover Görünmez ve İz Yapmaz (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 345.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-yapiskanli-silikon-gogus-ucu-pedi-seamless-dogal-gorunum-fiyati,1425056166.html",
+      "baslik": "Yapışkanlı Silikon Göğüs Ucu Pedi Seamless (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 345.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-tekrar-kullanilabilir-silikon-nipple-pad-gun-boyu-sabit-fiyati,1637076144.html",
+      "baslik": "Tekrar Kullanılabilir Silikon Nipple Pad (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 134.91,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-gizleyen-seffaf-silikon-ped-nipple-silicone-fiyati,1177648120.html",
+      "baslik": "Göğüs Ucu Gizleyen Şeffaf Silikon Ped (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 134.91,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-figiza-gogus-ucu-kapatan-silikon-tekrar-kullanilabilir-kendinden-yapiskanli-nipple-pad-ten-rengi-100-silikon-2-adet-fiyati,1099446614.html",
+      "baslik": "FIGIZA Göğüs Ucu Kapatan Silikon 2 adet (Akakçe en düşük teklif, 26.11)"
+     }
+    ],
+    "not": "26.11: 15 Akakçe ürün sayfası lowPrice ile ölçüldü. En ucuz ilanlarda (43–130 TL) 28–41 satıcı teklifi var, 270 TL üstündekilerde 1–3; pazar fiyatı düşük ve rekabet yoğun."
+   },
+   "taklit_riski": false,
+   "gerekce": "Straplez/dekolte giyimde sürekli satan, hafif ve bedensiz aksesuar.",
+   "riskler": [
+    "Ağırlık ilanda yok, çift için 0,02 kg tahmin",
+    "Silikon ürünlerde iade yok; cilt temas ürünü",
+    "GTİP emin değil (6212.90 olabilir), gümrük sınıflaması doğrulanmalı",
+    "GTİP 6212 yerine 3926.20 (plastikten giyim aksesuarı) olabilir; vergi oranı gümrük müşavirine sorulmalı",
+    "Türkiye fiyatları 43–372 TL arasında geniş dağılıyor; ucuz ilanlar tek adet ya da düşük kalite olabilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Custom-Packaging-Box-Invisible-Adhesive-Breast_1601222520853.html",
+    "https://www.akakce.com/gogus-bandi/en-ucuz-ozel-uretim-kadin-ten-meme-ic-giyim-100-silikon-gogus-ucu-kapatan-gizleyen-ped-nipple-pad-7-cm-fiyati,1342845415.html"
+   ]
+  },
+  {
+   "urun": "Silikon göğüs ucu kapatıcı (yapışkanlı, tekrar kullanılabilir)",
+   "kategori": "sutyen-korse",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Fashion-Design-Adhesive-Cloth-Silicone-Nipple_60732202351.html",
+    "baslik": "Fashion Design Adhesive Cloth Silicone Nipple Cover",
+    "tedarikci": "ilan sayfasında görünmedi",
+    "fiyat_usd": 0.68,
+    "moq": 200,
+    "kademeler": [
+     {
+      "min_adet": 200,
+      "fiyat_usd": 0.68
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 2000,
+      "fiyat_usd": 0.49
+     }
+    ],
+    "birim_agirlik_kg": 0.02,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 43.47,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatici-fiyati,1450703058.html",
+      "baslik": "Göğüs Ucu Kapatıcı (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 70.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatan-silikon-fiyati,1178001220.html",
+      "baslik": "Göğüs Ucu Kapatan Silikon (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 70.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-fiyati,1178000131.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 130.2,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-silikonu-nipple-silicone-fiyati,1178001211.html",
+      "baslik": "Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 145.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-silikon-gogus-ucu-kapatici-gizleyici-bant-aparat-nipple-pad-fiyati,1178004509.html",
+      "baslik": "Silikon Göğüs Ucu Kapatıcı Gizleyici Bant Aparat Nipple Pad (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 155.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-kapatici-silikon-gogus-ucu-kapatici-nipple-pad-gogus-kapama-bandi-fiyati,1098256356.html",
+      "baslik": "Göğüs Ucu Kapatıcı, Silikon Göğüs Ucu Kapatıcı, Nipple Pad (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 270.25,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-krem-gogus-ucu-kapatici-ve-diklestirici-hayalet-sutyen-hayalet-kapatici-fiyati,682485448.html",
+      "baslik": "Krem Göğüs Ucu Kapatıcı ve Dikleştirici Hayalet Kapatıcı (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 300.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-eco-port-gogus-ucu-silikon-kapatici-fiyati,1344129456.html",
+      "baslik": "Eco Port Göğüs Ucu Silikon Kapatıcı (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 301.67,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ttt-gogus-ucu-silikonu-nipple-silicone-fiyati,1177647099.html",
+      "baslik": "TTT Göğüs Ucu Silikonu Nipple Silicone (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 336.69,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-forwhat-buro-ev-ofis-kadini-icin-silikon-gogus-ucu-kapatici-aparat-pad-l-xl-fiyati,1177713944.html",
+      "baslik": "ForWhat Silikon Göğüs Ucu Kapatıcı Aparat Pad L-XL (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 345.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-ince-silikon-nipple-cover-gorunmez-ve-iz-yapmaz-tasarim-fiyati,1427051043.html",
+      "baslik": "İnce Silikon Nipple Cover Görünmez ve İz Yapmaz (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 345.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-yapiskanli-silikon-gogus-ucu-pedi-seamless-dogal-gorunum-fiyati,1425056166.html",
+      "baslik": "Yapışkanlı Silikon Göğüs Ucu Pedi Seamless (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 345.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-tekrar-kullanilabilir-silikon-nipple-pad-gun-boyu-sabit-fiyati,1637076144.html",
+      "baslik": "Tekrar Kullanılabilir Silikon Nipple Pad (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 134.91,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-gogus-ucu-gizleyen-seffaf-silikon-ped-nipple-silicone-fiyati,1177648120.html",
+      "baslik": "Göğüs Ucu Gizleyen Şeffaf Silikon Ped (Akakçe en düşük teklif, 26.11)"
+     },
+     {
+      "fiyat_tl": 134.91,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gogus-bandi/en-ucuz-figiza-gogus-ucu-kapatan-silikon-tekrar-kullanilabilir-kendinden-yapiskanli-nipple-pad-ten-rengi-100-silikon-2-adet-fiyati,1099446614.html",
+      "baslik": "FIGIZA Göğüs Ucu Kapatan Silikon 2 adet (Akakçe en düşük teklif, 26.11)"
+     }
+    ],
+    "not": "26.11: 15 Akakçe ürün sayfası lowPrice ile ölçüldü. En ucuz ilanlarda (43–130 TL) 28–41 satıcı teklifi var, 270 TL üstündekilerde 1–3; pazar fiyatı düşük ve rekabet yoğun."
+   },
+   "taklit_riski": false,
+   "gerekce": "Straplez/dekolte giyimde sürekli satan, hafif ve bedensiz aksesuar.",
+   "riskler": [
+    "Ağırlık ilanda yok, çift için 0,02 kg tahmin",
+    "Silikon ürünlerde iade yok; cilt temas ürünü",
+    "GTİP emin değil (6212.90 olabilir), gümrük sınıflaması doğrulanmalı",
+    "GTİP 6212 yerine 3926.20 (plastikten giyim aksesuarı) olabilir; vergi oranı gümrük müşavirine sorulmalı",
+    "Türkiye fiyatları 43–372 TL arasında geniş dağılıyor; ucuz ilanlar tek adet ya da düşük kalite olabilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Fashion-Design-Adhesive-Cloth-Silicone-Nipple_60732202351.html",
+    "https://www.akakce.com/gogus-bandi/en-ucuz-ozel-uretim-kadin-ten-meme-ic-giyim-100-silikon-gogus-ucu-kapatan-gizleyen-ped-nipple-pad-7-cm-fiyati,1342845415.html"
+   ]
+  },
+  {
+   "urun": "Kadın saten gömlek (uzun kollu, düğmeli)",
+   "kategori": "gomlek-bluz-tunik",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Women-Button-up-Satin-Shirt-Tops_1601484471566.html",
+    "baslik": "Women Button up Satin Shirt Tops Lady Niche Design Long Sleeve Office V Neck Satin Blouse",
+    "tedarikci": "ilan sayfasında görünmedi",
+    "fiyat_usd": 2.95,
+    "moq": 10,
+    "kademeler": [
+     {
+      "min_adet": 10,
+      "fiyat_usd": 2.95
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 2.8
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 2.7
+     }
+    ],
+    "birim_agirlik_kg": 0.22,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 424.15,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-kadin-saten-baskikili-desen-uzun-kol-bgl-st04214-fiyati,975932981.html",
+      "baslik": "Kadın Saten Baskılı Desen Uzun Kol Gömlek BGL-ST04214"
+     },
+     {
+      "fiyat_tl": 649,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-sweetness-kadin-pudra-pembe-likrali-saten-uzun-kol-abiye-pudra-fiyati,1178029355.html",
+      "baslik": "Sweetness Kadın Pudra Pembe Likralı Saten Uzun Kol Gömlek"
+     },
+     {
+      "fiyat_tl": 880,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-exve-exclusive-lacivert-hafif-dokumlu-sirti-koruklu-saten-dokuma-kadin-fiyati,1175848916.html",
+      "baslik": "Exve Exclusive Lacivert Hafif Dökümlü Saten Dokuma Kadın Gömlek"
+     },
+     {
+      "fiyat_tl": 959,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-kadin-yakali-dusuk-omuzlu-kisa-kol-saten-likrasiz-sik-kumas-bej-fiyati,1220149246.html",
+      "baslik": "Kadın Yakalı Düşük Omuzlu Kısa Kol Saten Gömlek Bej"
+     },
+     {
+      "fiyat_tl": 1020,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-kadin-hafif-dokumlu-siyah-saten-fiyati,1239284567.html",
+      "baslik": "Kadın Hafif Dökümlü Siyah Saten Gömlek"
+     },
+     {
+      "fiyat_tl": 1147,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-disentis-modest-yaprak-desenli-yaka-mansetli-baskili-saten-indigo-kadin-indigo-40-fiyati,1132097993.html",
+      "baslik": "Disentis Modest Baskılı Saten Kadın Gömlek"
+     },
+     {
+      "fiyat_tl": 1179.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-pastelastore-manseti-kurdeleli-desenli-yarasa-kol-uzun-saten-kadin-1161-beyaz-36-fiyati,1177693779.html",
+      "baslik": "Pastelastore Manşeti Kurdeleli Yarasa Kol Saten Kadın Gömlek"
+     }
+    ],
+    "not": "Akakçe; markasız/az bilinen saten kadın gömlek ürün sayfaları, Disentis varyantları tek sayıldı; Madmext, Dagi, Ekol markalı sayılmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Saten gömlek ofis ve günlük giyimde sürekli satar, Türkiye raf fiyatı ilan fiyatının çok üstünde.",
+   "riskler": [
+    "Beden tablosu ve renk çeşidi var, iade riski",
+    "Ağırlık ilanda yok, tahmin",
+    "Saten kumaş kalitesi örnekle doğrulanmalı",
+    "Hazır giyim: tekstil etiketi/menşe zorunlulukları"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Women-Button-up-Satin-Shirt-Tops_1601484471566.html",
+    "https://www.akakce.com/arama/?q=saten%20g%C3%B6mlek%20kad%C4%B1n"
+   ]
+  },
+  {
+   "urun": "Kadın şifon bluz (uzun, bol kesim)",
+   "kategori": "gomlek-bluz-tunik",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Hot-Selling-Fashion-Casual-Chiffon-Blouse_1601299963635.html",
+    "baslik": "Hot Selling Fashion Casual Chiffon Blouse Long Style Plus Size Tops for Women White Loose Shirts",
+    "tedarikci": "ilan sayfasında görünmedi",
+    "fiyat_usd": 2.85,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 2.85
+     },
+     {
+      "min_adet": 19,
+      "fiyat_usd": 2.84
+     },
+     {
+      "min_adet": 99,
+      "fiyat_usd": 2.79
+     },
+     {
+      "min_adet": 1999,
+      "fiyat_usd": 2.55
+     }
+    ],
+    "birim_agirlik_kg": 0.2,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 387.55,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/bluz/en-ucuz-trend-alacati-stili-kadin-bej-madonna-yaka-gipeli-sifon-alc-x15479-fiyati,1615570284.html",
+      "baslik": "Trend Alaçatı Stili Kadın Bej Madonna Yaka Şifon Bluz"
+     },
+     {
+      "fiyat_tl": 474.05,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-rich-kadin-mavi-sifon-bluz-fular-detayli-desenli-model-fiyati,1254583148.html",
+      "baslik": "Rich Kadın Mavi Şifon Bluz Gömlek"
+     },
+     {
+      "fiyat_tl": 577.56,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/bluz/en-ucuz-thesunfyre-kadin-onu-astarli-kolsuz-dar-kesim-gunluk-sik-sifon-fiyati,1625051933.html",
+      "baslik": "thesunfyre Kadın Kolsuz Şifon Bluz"
+     },
+     {
+      "fiyat_tl": 694.17,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/bluz/en-ucuz-rb-club-kadin-dugme-detayli-kollari-sifon-fiyati,1175537256.html",
+      "baslik": "RB CLUB Kadın Düğme Detaylı Şifon Bluz"
+     },
+     {
+      "fiyat_tl": 799,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/bluz/en-ucuz-kadin-sifon-crop-1734-24-fiyati,710547591.html",
+      "baslik": "Kadın Şifon Crop Bluz 1734-24"
+     },
+     {
+      "fiyat_tl": 1274.18,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/bluz/en-ucuz-kadin-kisa-yirtmac-kollu-yuvarlak-yaka-sifon-fiyati,1140666514.html",
+      "baslik": "Kadın Kısa Yırtmaç Kollu Yuvarlak Yaka Şifon Bluz"
+     },
+     {
+      "fiyat_tl": 1402.07,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/bluz/en-ucuz-butik-kadin-astarli-firfirli-beyaz-sifon-fiyati,1036263573.html",
+      "baslik": "Butik Kadın Astarlı Fırfırlı Beyaz Şifon Bluz"
+     }
+    ],
+    "not": "Akakçe; markasız/az bilinen şifon bluz ürün sayfaları; Ekol, On gibi markalılar ve takımlar sayılmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Şifon bluz kombin ve tesettür/ofis giyiminde yıl boyu satılır.",
+   "riskler": [
+    "Beden/boy sorunu",
+    "İlan MOQ 2 ama numune kalitesi doğrulanmalı",
+    "Ağırlık tahmin",
+    "Şeffaflık, astar gerekebilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Hot-Selling-Fashion-Casual-Chiffon-Blouse_1601299963635.html",
+    "https://www.akakce.com/arama/?q=%C5%9Fifon%20bluz%20kad%C4%B1n"
+   ]
+  },
+  {
+   "urun": "Kadın saten gömlek (yakalı, ofis)",
+   "kategori": "gomlek-bluz-tunik",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Women-Button-up-Satin-Shirt-Tops_1601543155521.html",
+    "baslik": "Women Button up Satin Shirt Tops Lady Design Long Sleeve Office V Neck Satin Blouse",
+    "tedarikci": "ilan sayfasında görünmedi",
+    "fiyat_usd": 4.08,
+    "moq": 1,
+    "kademeler": [
+     {
+      "min_adet": 1,
+      "fiyat_usd": 4.08
+     },
+     {
+      "min_adet": 20,
+      "fiyat_usd": 3.44
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 3.2
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 2.4
+     }
+    ],
+    "birim_agirlik_kg": 0.22,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 424.15,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-kadin-saten-baskikili-desen-uzun-kol-bgl-st04214-fiyati,975932981.html",
+      "baslik": "Kadın Saten Baskılı Desen Uzun Kol Gömlek BGL-ST04214"
+     },
+     {
+      "fiyat_tl": 649,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-sweetness-kadin-pudra-pembe-likrali-saten-uzun-kol-abiye-pudra-fiyati,1178029355.html",
+      "baslik": "Sweetness Kadın Pudra Pembe Likralı Saten Uzun Kol Gömlek"
+     },
+     {
+      "fiyat_tl": 880,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-exve-exclusive-lacivert-hafif-dokumlu-sirti-koruklu-saten-dokuma-kadin-fiyati,1175848916.html",
+      "baslik": "Exve Exclusive Lacivert Hafif Dökümlü Saten Dokuma Kadın Gömlek"
+     },
+     {
+      "fiyat_tl": 959,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-kadin-yakali-dusuk-omuzlu-kisa-kol-saten-likrasiz-sik-kumas-bej-fiyati,1220149246.html",
+      "baslik": "Kadın Yakalı Düşük Omuzlu Kısa Kol Saten Gömlek Bej"
+     },
+     {
+      "fiyat_tl": 1020,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-kadin-hafif-dokumlu-siyah-saten-fiyati,1239284567.html",
+      "baslik": "Kadın Hafif Dökümlü Siyah Saten Gömlek"
+     },
+     {
+      "fiyat_tl": 1147,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-disentis-modest-yaprak-desenli-yaka-mansetli-baskili-saten-indigo-kadin-indigo-40-fiyati,1132097993.html",
+      "baslik": "Disentis Modest Baskılı Saten Kadın Gömlek"
+     },
+     {
+      "fiyat_tl": 1179.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-pastelastore-manseti-kurdeleli-desenli-yarasa-kol-uzun-saten-kadin-1161-beyaz-36-fiyati,1177693779.html",
+      "baslik": "Pastelastore Manşeti Kurdeleli Yarasa Kol Saten Kadın Gömlek"
+     }
+    ],
+    "not": "Akakçe; aynı saten gömlek listesi."
+   },
+   "taklit_riski": false,
+   "gerekce": "Saten gömlek ofis ve günlük giyimde sürekli satar.",
+   "riskler": [
+    "MOQ 1 fiyatı; 20+ adette 3,44 $",
+    "Beden riski",
+    "Ağırlık tahmin"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Women-Button-up-Satin-Shirt-Tops_1601543155521.html"
+   ]
+  },
+  {
+   "urun": "Erkek otomatik tokalı PU kemer",
+   "kategori": "kemer",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Belt-Male-Factory-Custom-Selling-Men_1600459863541.html",
+    "baslik": "Belt Male Factory Custom Selling Men PU Leather Automatic Buckle Belt",
+    "tedarikci": "ilan sayfasında görünmedi",
+    "fiyat_usd": 0.6,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 0.6
+     },
+     {
+      "min_adet": 300,
+      "fiyat_usd": 0.57
+     },
+     {
+      "min_adet": 3000,
+      "fiyat_usd": 0.54
+     }
+    ],
+    "birim_agirlik_kg": 0.12,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 495.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-dagoster-dmk26-353-siyah-4-cm-suni-deri-siyah-fiyati,986921207.html",
+      "baslik": "Dagoster DMK26 suni deri erkek kemer (3 varyant sayfası 449,88/495/585 → tek sayıldı, ortası)"
+     },
+     {
+      "fiyat_tl": 438.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-deribond-siyah-erkek-130-cm-fiyati,1738812000.html",
+      "baslik": "Deribond/Bosskan otomatik tokalı erkek kemer"
+     },
+     {
+      "fiyat_tl": 249.97,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-3-adet-erkek-kemer-siyah-4-cm-palaska-tarzi-130-cm-fiyati,1150553583.html",
+      "baslik": "3 Adet Erkek Kemer Siyah 4 cm (749,90 TL / 3, 26.11 lowPrice)"
+     },
+     {
+      "fiyat_tl": 249.95,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-2-adet-erkek-kemer-siyah-tactical-palaska-tarzi-4-cm-105-cm-fiyati,1154886068.html",
+      "baslik": "2 Adet Erkek Kemer Siyah Tactical 4 cm (499,90 TL / 2, 26.11 lowPrice)"
+     }
+    ],
+    "not": "Baş (26.11): Dagoster'in üç varyant sayfası tek sayıldı; paketler adet başına eklendi (sayfalar bugün lowPrice ile doğrulandı); ağırlık dünkü 0,12 kg tahminiyle tutarlı tutuldu (avcı 0,09 yazmıştı). DeFacto markalı, alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Erkek kemer sürekli satan düşük hacimli aksesuar.",
+   "riskler": [
+    "Ağırlık ilanda yok, tahmin",
+    "Toka kalitesi/numune",
+    "Bosskan karşılaştırması malzeme belirsiz"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Belt-Male-Factory-Custom-Selling-Men_1600459863541.html",
+    "https://www.akakce.com/arama/?q=suni%20deri%20kemer"
+   ]
+  },
+  {
+   "urun": "Erkek pimli tokalı PU kemer",
+   "kategori": "kemer",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/2024-Pu-Leather-Belts-Men-Professional_1600321987837.html",
+    "baslik": "2024 PU Leather Belts Men Professional pin buckle belt",
+    "tedarikci": "ilan sayfasında görünmedi",
+    "fiyat_usd": 0.67,
+    "moq": 50,
+    "kademeler": [
+     {
+      "min_adet": 50,
+      "fiyat_usd": 0.67
+     },
+     {
+      "min_adet": 600,
+      "fiyat_usd": 0.64
+     },
+     {
+      "min_adet": 3000,
+      "fiyat_usd": 0.61
+     }
+    ],
+    "birim_agirlik_kg": 0.12,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 495.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-dagoster-dmk26-353-siyah-4-cm-suni-deri-siyah-fiyati,986921207.html",
+      "baslik": "Dagoster DMK26 suni deri erkek kemer (3 varyant sayfası 449,88/495/585 → tek sayıldı, ortası)"
+     },
+     {
+      "fiyat_tl": 438.42,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-deribond-siyah-erkek-130-cm-fiyati,1738812000.html",
+      "baslik": "Deribond/Bosskan otomatik tokalı erkek kemer"
+     },
+     {
+      "fiyat_tl": 249.97,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-3-adet-erkek-kemer-siyah-4-cm-palaska-tarzi-130-cm-fiyati,1150553583.html",
+      "baslik": "3 Adet Erkek Kemer Siyah 4 cm (749,90 TL / 3, 26.11 lowPrice)"
+     },
+     {
+      "fiyat_tl": 249.95,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-2-adet-erkek-kemer-siyah-tactical-palaska-tarzi-4-cm-105-cm-fiyati,1154886068.html",
+      "baslik": "2 Adet Erkek Kemer Siyah Tactical 4 cm (499,90 TL / 2, 26.11 lowPrice)"
+     }
+    ],
+    "not": "Baş (26.11): Dagoster'in üç varyant sayfası tek sayıldı; paketler adet başına eklendi (sayfalar bugün lowPrice ile doğrulandı); ağırlık dünkü 0,12 kg tahminiyle tutarlı tutuldu (avcı 0,09 yazmıştı). DeFacto markalı, alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Erkek klasik kemer sürekli satar.",
+   "riskler": [
+    "Ağırlık tahmin",
+    "Pimli toka beden/uzunluk ayarı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/2024-Pu-Leather-Belts-Men-Professional_1600321987837.html"
+   ]
+  },
+  {
+   "urun": "İnce boğazlı triko kazak (kadın, basic)",
+   "kategori": "sweatshirt-kazak",
+   "gtip": "6110.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Autumn-Slim-Jumpers-Casual-Korean-Harajuku_1601486916893.html",
+    "baslik": "Autumn Slim Jumpers Casual Korean Harajuku Print Turtleneck Pullover Knitting Tops Bow Collar Thin Sleeves Turtleneck Sweater",
+    "tedarikci": "Yiwu Guanshen Import And Export Co., Ltd. (yıl/doğrulama ilanda görünmedi)",
+    "fiyat_usd": 1.76,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 1.76
+     },
+     {
+      "min_adet": 50,
+      "fiyat_usd": 1.66
+     },
+     {
+      "min_adet": 2000,
+      "fiyat_usd": 1.56
+     },
+     {
+      "min_adet": 30000,
+      "fiyat_usd": 1.19
+     }
+    ],
+    "birim_agirlik_kg": 0.25,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 149.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-oz-pamuk-kadin-100-pamuklu-tam-bogazli-yaka-orme-triko-crop-gri-fiyati,1646889705.html",
+      "baslik": "Öz Pamuk Kadın %100 Pamuklu Tam Boğazlı Örme Triko Crop Kazak"
+     },
+     {
+      "fiyat_tl": 145.44,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-zs-zaos-fashion-5li-avantajli-set-kadin-bogazli-ince-badi-esnek-pamuklu-rahat-basic-new-model-fiyati,1797624942.html",
+      "baslik": "zs zaos 5'li set kadın boğazlı ince body kazak (727,22 TL / 5 adet)"
+     },
+     {
+      "fiyat_tl": 350.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-kadin-beyaz-crop-bogazli-orgu-triko-acik-beyaz-m-fiyati,1226007428.html",
+      "baslik": "Kadın Beyaz Crop Boğazlı Örgü Triko Kazak"
+     },
+     {
+      "fiyat_tl": 426.55,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-panashe-kadin-yarim-bogazli-siyah-beyaz-cizgili-uzun-kollu-triko-fiyati,1158902319.html",
+      "baslik": "Panashe Kadın Yarım Boğazlı Çizgili Uzun Kollu Triko Kazak"
+     },
+     {
+      "fiyat_tl": 634.48,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-gulcin-coskun-balikci-yaka-fitil-desenli-basic-kadin-triko-bogazli-fiyati,1186104128.html",
+      "baslik": "Gülçin Coşkun Balıkçı Yaka Fitil Basic Kadın Triko Boğazlı Kazak"
+     },
+     {
+      "fiyat_tl": 699.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-kadin-dik-yaka-fermuarli-bogazli-cizgili-triko-fiyati,1459650661.html",
+      "baslik": "Kadın Dik Yaka Fermuarlı Boğazlı Çizgili Triko Kazak"
+     },
+     {
+      "fiyat_tl": 878.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-kadin-balikci-yaka-genis-kesim-oversize-bogazli-triko-5078-fiyati,1350426932.html",
+      "baslik": "Kadın Balıkçı Yaka Geniş Kesim Oversize Boğazlı Triko Kazak 5078"
+     },
+     {
+      "fiyat_tl": 948.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-kadin-bogazli-yarim-balikci-yaka-uzun-kislik-turuncu-triko-fiyati,1802967388.html",
+      "baslik": "Kadın Boğazlı Yarım Balıkçı Yaka Uzun Kışlık Triko Kazak"
+     }
+    ],
+    "not": "Markasız/az bilinen boğazlı ince kadın triko kazak; ucuz crop ve 5'li set (adet başı) dahil, geniş fiyat aralığı (145-948 TL), medyan ~427 TL. Aynı satıcı varyantları tek sayıldı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kış aylarında basic boğazlı ince kazak katman giyim olarak sürekli satar.",
+   "riskler": [
+    "Ağırlık ilanda yok, tahmin 0,25 kg",
+    "Başlıkta 'Print' ve 'Bow Collar' geçiyor, ilandaki gerçek model baskılı/fiyonklu olabilir; Türkiye karşılaştırması düz basic ürünlerle",
+    "Türkiye fiyat dağılımı çok geniş; ucuz ilanlar medyanı düşürüyor",
+    "MOQ 2 düşük, ancak numune kalitesi doğrulanmalı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/wholesale/women-thin-knit-turtleneck-sweater.html",
+    "https://www.akakce.com/arama/?q=kadin+bogazli+ince+kazak"
+   ]
+  },
+  {
+   "urun": "İnce boğazlı triko kazak, tek beden (kadın)",
+   "kategori": "sweatshirt-kazak",
+   "gtip": "6110.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Free-Size-Women-s-Sweaters-Autumn_1600994994329.html",
+    "baslik": "Free Size Women's Sweaters Autumn Long Sleeve Thin Turtleneck Stretch Matte Blue Knitted Pullover Sweater Tops",
+    "tedarikci": "Henan Hanke Shengshi Import And Export Trade Co., Ltd. (yıl/doğrulama ilanda görünmedi)",
+    "fiyat_usd": 2.0,
+    "moq": 10,
+    "kademeler": [
+     {
+      "min_adet": 10,
+      "fiyat_usd": 2.0
+     }
+    ],
+    "birim_agirlik_kg": 0.25,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 149.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-oz-pamuk-kadin-100-pamuklu-tam-bogazli-yaka-orme-triko-crop-gri-fiyati,1646889705.html",
+      "baslik": "Öz Pamuk Kadın %100 Pamuklu Tam Boğazlı Örme Triko Crop Kazak"
+     },
+     {
+      "fiyat_tl": 145.44,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-zs-zaos-fashion-5li-avantajli-set-kadin-bogazli-ince-badi-esnek-pamuklu-rahat-basic-new-model-fiyati,1797624942.html",
+      "baslik": "zs zaos 5'li set kadın boğazlı ince body kazak (727,22 TL / 5 adet)"
+     },
+     {
+      "fiyat_tl": 350.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-kadin-beyaz-crop-bogazli-orgu-triko-acik-beyaz-m-fiyati,1226007428.html",
+      "baslik": "Kadın Beyaz Crop Boğazlı Örgü Triko Kazak"
+     },
+     {
+      "fiyat_tl": 426.55,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-panashe-kadin-yarim-bogazli-siyah-beyaz-cizgili-uzun-kollu-triko-fiyati,1158902319.html",
+      "baslik": "Panashe Kadın Yarım Boğazlı Çizgili Uzun Kollu Triko Kazak"
+     },
+     {
+      "fiyat_tl": 634.48,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-gulcin-coskun-balikci-yaka-fitil-desenli-basic-kadin-triko-bogazli-fiyati,1186104128.html",
+      "baslik": "Gülçin Coşkun Balıkçı Yaka Fitil Basic Kadın Triko Boğazlı Kazak"
+     },
+     {
+      "fiyat_tl": 699.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-kadin-dik-yaka-fermuarli-bogazli-cizgili-triko-fiyati,1459650661.html",
+      "baslik": "Kadın Dik Yaka Fermuarlı Boğazlı Çizgili Triko Kazak"
+     },
+     {
+      "fiyat_tl": 878.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-kadin-balikci-yaka-genis-kesim-oversize-bogazli-triko-5078-fiyati,1350426932.html",
+      "baslik": "Kadın Balıkçı Yaka Geniş Kesim Oversize Boğazlı Triko Kazak 5078"
+     },
+     {
+      "fiyat_tl": 948.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kazak/en-ucuz-kadin-bogazli-yarim-balikci-yaka-uzun-kislik-turuncu-triko-fiyati,1802967388.html",
+      "baslik": "Kadın Boğazlı Yarım Balıkçı Yaka Uzun Kışlık Triko Kazak"
+     }
+    ],
+    "not": "Aynı boğazlı ince kazak karşılaştırma seti (145-948 TL, medyan ~427 TL)."
+   },
+   "taklit_riski": false,
+   "gerekce": "Tek beden esnek ince boğazlı kazak, beden derdini azaltır ve kışın hızlı satar.",
+   "riskler": [
+    "Ağırlık ilanda yok, tahmin 0,25 kg",
+    "Tek kademe (>=10 adet), toplu fiyat düşüşü yok",
+    "Türkiye fiyat dağılımı geniş"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/wholesale/women-thin-knit-turtleneck-sweater.html",
+    "https://www.akakce.com/arama/?q=kadin+bogazli+ince+kazak"
+   ]
+  },
+  {
+   "urun": "Triko yelek (kadın, merino karışımlı, 3/4 kol)",
+   "kategori": "sweatshirt-kazak",
+   "gtip": "6110.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Custom-Service-High-Quality-Crew-Neck_11000025902353.html",
+    "baslik": "Custom Service High Quality Crew Neck Three Quarter Sleeve Knitted Merino Wool Blend Autumn Casual Sweater Vest for Women",
+    "tedarikci": "HUZAIFA PRODUCTS (yıl/doğrulama ilanda görünmedi)",
+    "fiyat_usd": 2.24,
+    "moq": 1,
+    "kademeler": [
+     {
+      "min_adet": 1,
+      "fiyat_usd": 2.24
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 2.0
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 1.8
+     }
+    ],
+    "birim_agirlik_kg": 0.25,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 599.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/yelek/en-ucuz-mutlu-city-kadin-orta-yas-ve-uzeri-triko-orgu-sade-desen-dugmesiz-anne-338-fiyati,1057564976.html",
+      "baslik": "Mutlu City Kadın Triko Örgü Sade Desen Düğmesiz Yelek 338"
+     },
+     {
+      "fiyat_tl": 617.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/yelek/en-ucuz-kadin-orta-yas-ve-uzeri-siki-dokuma-ince-anne-triko-1140-fiyati,1240788094.html",
+      "baslik": "Kadın Sıkı Dokuma İnce Triko Yelek 1140"
+     },
+     {
+      "fiyat_tl": 649.35,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/yelek/en-ucuz-tek-desenli-triko-cift-renk-genc-anne-yelegi-siyah-fume-fiyati,1788941103.html",
+      "baslik": "TEK Desenli Triko Çift Renk Genç Anne Yeleği"
+     },
+     {
+      "fiyat_tl": 723.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/yelek/en-ucuz-kadin-v-yaka-cizgili-dugmeli-triko-kadin-24y1010-fiyati,1019626879.html",
+      "baslik": "Kadın V Yaka Çizgili Düğmeli Triko Yelek 24Y1010"
+     }
+    ],
+    "not": "Markasız kadın triko yelekler (600-723 TL), medyan ~633 TL; 'Desen Triko', Fresh&Moda gibi pahalı yün markalar ve markalı ilanlar sayılmadı. Başlıkta 3/4 kol var, Türkiye ilanları kolsuz."
+   },
+   "taklit_riski": false,
+   "gerekce": "Triko yelek kış katmanında ve yetişkin/orta yaş kadın kullanımında sürekli satar.",
+   "riskler": [
+    "Ağırlık ilanda yok, tahmin 0,25 kg",
+    "2,24 $ ile 'merino karışımı' iddiası kuşkulu, kumaş içeriği örnekle doğrulanmalı",
+    "Başlıkta yelek ama 3/4 kollu; Türkiye karşılaştırması kolsuz yelekler",
+    "Ürün beden gerektirir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/wholesale/knit-sweater-vest.html",
+    "https://www.akakce.com/triko-yelek.html"
+   ]
+  },
+  {
+   "urun": "Örgü elastik kemer (unisex)",
+   "kategori": "kemer",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Fairwin-Unisex-Gift-Elastic-Braided-Belt_1600984297184.html",
+    "baslik": "Fairwin Unisex Gift Elastic Braided Belt 1 3/8\" Width Casual",
+    "tedarikci": "Fairwin ilanı (firma adı/yıl ilan sayfasında okunamadı)",
+    "fiyat_usd": 1.37,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 1.37
+     },
+     {
+      "min_adet": 240,
+      "fiyat_usd": 1.27
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 1.25
+     },
+     {
+      "min_adet": 3000,
+      "fiyat_usd": 1.18
+     }
+    ],
+    "birim_agirlik_kg": 0.1,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 799,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-spor-orgu-fiyati,1214674187.html",
+      "baslik": "Spor Örgü Kemer"
+     },
+     {
+      "fiyat_tl": 899,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-hediye-kutulu-spor-likrali-elastik-orgu-fiyati,1322653147.html",
+      "baslik": "Hediye Kutulu Spor Likralı Elastik Örgü Kemer"
+     },
+     {
+      "fiyat_tl": 999.96,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-renk-gecis-detayli-elastik-orgu-fiyati,1432775204.html",
+      "baslik": "Renk Geçiş Detaylı Elastik Örgü Kemer"
+     }
+    ],
+    "not": "Markasız elastik/örgü kemer, akakce'de yalnız 3 ilan var (799-999,96 TL); Evolite stretch kemer farklı tip sayıldı. Mavi markalı örgü kemer sayılmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Elastik örgü kemer hediyelik ve günlük aksesuar olarak beden derdi olmadan satılır.",
+   "riskler": [
+    "'Fairwin' ilan başlığında geçiyor, ürün üzerinde logo/marka basılı olup olmadığı ilandan doğrulanamadı",
+    "Ağırlık ilanda yok, tahmin 0,1 kg",
+    "Türkiye'de yalnız 3 ilan, bu ilanlar muhtemelen aynı üründür",
+    "Fiyat dünden değişmedi (1,37 $), indirim yok"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Fairwin-Unisex-Gift-Elastic-Braided-Belt_1600984297184.html",
+    "https://www.akakce.com/arama/?q=elastik+kemer"
+   ]
+  },
+  {
+   "urun": "Dokunmatik ekran uyumlu örgü kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "gtip": "6116.10",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Danleiyuan P7 Solid Magic Gloves, warm knit mittens (capacitive touchscreen)",
+    "tedarikci": "Yiwu Bangwai E-Commerce Co., Ltd. (yıl/doğrulama okunamadı)",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 36,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 60,
+      "fiyat_usd": 0.44
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.06,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 248.57,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kislik-eldiven/en-ucuz-axe-sportswear-kadin-kislik-yumusak-dokulu-triko-orgu-eldiven-bas-ve-isaret-parmak-dokunmatik-ekran-uyumlu-telefon-tablet-kullanimli-soguktan-koruyucu-sicak-tutan-eldiven-fiyati,1798876458.html",
+      "baslik": "AXE SPORTSWEAR Kadın Kışlık Yumuşak Dokulu Triko Örgü Eldiven Dokunmatik Ekran Uyumlu"
+     }
+    ],
+    "not": "Akakçe'de markasız dokunmatik örgü eldivenden yalnız bu tek ilan bulundu (diğerleri motosiklet/taktik/marka); karşılaştırma tek ilana dayanıyor."
+   },
+   "taklit_riski": false,
+   "gerekce": "Dokunmatik uçlu örgü eldiven kışın telefon kullanan herkes için günlük ihtiyaçtır.",
+   "riskler": [
+    "Türkiye karşılaştırması tek ilan (3 şartı sağlanmadı)",
+    "Ağırlık ilanda yok, tahmin 0,06 kg",
+    "İlan başlığında 'Danleiyuan P7' model/marka adı geçiyor",
+    "Fiyat dünden değişmedi (0,66 $)"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.akakce.com/arama/?q=dokunmatik+kislik+eldiven"
+   ]
+  },
+  {
+   "urun": "Kadın uzun kollu basic tişört (polyester, düz)",
+   "kategori": "tisort",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Long-Sleeve-T-shirt-for-Women_1601228719257.html",
+    "baslik": "Long Sleeve T-shirt for Women (polyester, USA size)",
+    "tedarikci": "Guangzhou Fenqi Leather Co., Ltd. (JSON-LD'de görünen firma; yıl/doğrulama görünmüyor)",
+    "fiyat_usd": 1.51,
+    "moq": 5,
+    "kademeler": [
+     {
+      "min_adet": 5,
+      "fiyat_usd": 1.51
+     },
+     {
+      "min_adet": 250,
+      "fiyat_usd": 1.5
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 1.5
+     }
+    ],
+    "birim_agirlik_kg": 0.2,
+    "agirlik_kaynagi": "tahmin",
+    "indirim": {
+     "liste_fiyat_usd": 1.89,
+     "aciklama": "İlanda üstü çizili 1,89 $ ve promosyon fiyatı 1,51 $ görünüyor (yaklaşık %20); bitiş tarihi görünmüyor"
+    }
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 521.55,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-le-touche-kadin-uzun-kollu-basic-slim-fit-bisiklet-yaka-esnek-kumas-pamuklu-fiyati,1802654909.html",
+      "baslik": "Le Touche Kadın Uzun Kollu Basic Tişört Slim Fit Bisiklet Yaka"
+     },
+     {
+      "fiyat_tl": 328.84,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-hdm-kadin-beyaz-uzun-kollu-fitilli-bisiklet-yaka-basic-h6161-fiyati,1725715923.html",
+      "baslik": "HDM Kadın Beyaz Uzun Kollu Fitilli Bisiklet Yaka Basic Tişört H6161"
+     },
+     {
+      "fiyat_tl": 479,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-kadin-gloria-bisiklet-yaka-regular-fit-uzun-kollu-basic-100-pamuk-siyah-siyah-fiyati,1620533904.html",
+      "baslik": "Kadın Gloria Bisiklet Yaka Uzun Kollu Basic Tişört %100 Pamuk"
+     },
+     {
+      "fiyat_tl": 342.83,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-guaraz-kadin-relax-fit-rahat-kesim-100-pamuk-uzun-kollu-bisiklet-yaka-basic-fiyati,1464867460.html",
+      "baslik": "GUARAZ Kadın Relax Fit Uzun Kollu Bisiklet Yaka Basic Tişört"
+     },
+     {
+      "fiyat_tl": 570.95,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tisort/en-ucuz-novalyn-shop-kadin-basic-tunik-uzun-kollu-bluz-normal-kalip-rahat-gunluk-sik-model-fiyati,1691239013.html",
+      "baslik": "NOVALYN SHOP Kadın Basic Tunik Uzun Kollu Tişört Bluz"
+     }
+    ],
+    "not": "Akakçe en ucuz fiyatları, 26.11.2026; çoğu pamuklu (Alibaba ilanı polyester); Defy's ve LC Waikiki gibi marka/mağaza ilanları dışarıda bırakıldı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Düz uzun kollu basic tişört kış aylarında alt katman ve günlük giyim olarak sürekli satar.",
+   "riskler": [
+    "Ağırlık tahmin (0,2 kg)",
+    "Beden tablosu ABD ölçülü",
+    "İndirim bitiş tarihi görünmüyor",
+    "Türkiye ilanları pamuklu, ilan polyester"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Long-Sleeve-T-shirt-for-Women_1601228719257.html",
+    "https://www.akakce.com/arama/?q=kadin+uzun+kollu+basic+tisort"
+   ]
+  },
+  {
+   "urun": "Kadın ince leopar desenli dikişsiz tayt",
+   "kategori": "pantolon-tayt-sort",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/High-Waist-Full-Length-Thin-Leopard_10000043339532.html",
+    "baslik": "High Waist Full Length Thin Leopard Print Seamless Breathable Knitted Leggings Women's Casual Stretch Yoga Pants All Seasons",
+    "tedarikci": "firma adı görünmüyor",
+    "fiyat_usd": 1.82,
+    "moq": 1,
+    "kademeler": [
+     {
+      "min_adet": 1,
+      "fiyat_usd": 1.82
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.8
+     },
+     {
+      "min_adet": 300,
+      "fiyat_usd": 1.76
+     }
+    ],
+    "birim_agirlik_kg": 0.25,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 316.1,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tayt/en-ucuz-kota-4059-bayan-leopar-desenli-uzun-2-adet-fiyati,1175542168.html",
+      "baslik": "KOTA 4059 Bayan Leopar Desenli Uzun Tayt 2 Adet (632,19 TL / 2)"
+     },
+     {
+      "fiyat_tl": 474.75,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tayt/en-ucuz-kadin-ince-serit-detay-fiyati,1161353509.html",
+      "baslik": "Kadın İnce Şerit Detay Tayt"
+     },
+     {
+      "fiyat_tl": 502.63,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/tayt/en-ucuz-vynor-atelier-kadin-yuksek-bel-deri-pantolon-ici-ince-polar-gunluk-fiyati,1797980622.html",
+      "baslik": "vynor atelier Kadın Yüksek Bel Tayt Pantolon İçi İnce Polar"
+     }
+    ],
+    "not": "3 ilan; Akakçe en ucuz fiyatları; Kota ilanı 2'li paketin adet başı fiyatı; vynor polarlı, şerit detay düz ince tayt (desen farkı var); dizüstü kısa taytlar ve markalılar dışarıda."
+   },
+   "taklit_riski": false,
+   "gerekce": "İnce tayt her mevsim elbise ve tunik altı olarak, leopar desen de moda olarak satar.",
+   "riskler": [
+    "Ağırlık tahmin",
+    "Tedarikçi bilgisi görünmüyor",
+    "Beden (bedensiz/tek ebat) belirsiz",
+    "Oran düşük, sınır adayı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/High-Waist-Full-Length-Thin-Leopard_10000043339532.html",
+    "https://www.akakce.com/arama/?q=leopar+desenli+tayt",
+    "https://www.akakce.com/arama/?q=ince+tayt+kadin"
+   ]
+  }
+ ]
+}
