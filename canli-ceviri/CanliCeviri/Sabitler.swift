@@ -37,7 +37,12 @@ let ceviriHataSiniri                   = 3     // art arda bu kadar çeviri hata
 let tanilamaSiniri                     = 300   // Tanılama kaydındaki en çok olay (brief K3)
 
 // Abonelik (S03)
+#if DENEME
+// Yandan yüklenen deneme yapısı (canli-ceviri-ipa.yml): uygulama içi satın alma çalışmaz, süre sınırı fiilen kapalı.
+let gunlukUcretsizSure: TimeInterval   = 86_400   // 24 saat; bir günde dolmaz
+#else
 let gunlukUcretsizSure: TimeInterval   = 600   // abone olmayana günde bu kadar sn dinleme (yalnız "dinliyor" sayılır)
+#endif
 let sonDakikaEsigi: TimeInterval       = 60    // kalan süre bunun altına inince sarı not (KR3)
 let abonelikUrunu = "canliceviri.sinirsiz.haftalik"   // App Store Connect'teki ürün kimliği
 

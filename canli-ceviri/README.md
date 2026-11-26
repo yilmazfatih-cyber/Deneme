@@ -80,6 +80,29 @@ söylenen asıl cümle gönderilmez.
 
 > Ücretsiz Apple hesabıyla yüklenen uygulama 7 gün sonra açılmaz olur; Xcode'dan yeniden ▶︎ yapmak yeter.
 
+### Xcode'suz kurulum: hazır `.ipa`
+
+GitHub uygulamayı derleyip indirilebilir bir dosya olarak yayımlar:
+https://github.com/yilmazfatih-cyber/Deneme/releases (adı `canli-ceviri-deneme-…` ile başlayan en yeni sürüm).
+
+Dosya **imzasızdır**; iPhone imzasız uygulamayı doğrudan kurmaz. Kurarken sizin Apple Kimliğinizle imzalayan bir araç
+gerekir ve bu bir kez bilgisayar ister:
+
+1. Mac'e ya da Windows'a **Sideloadly** kurun (https://sideloadly.io).
+2. `.ipa` dosyasını indirin, iPhone'u kabloyla bağlayın, dosyayı Sideloadly'ye sürükleyin.
+3. Apple Kimliğinizi yazıp **Start**'a basın. Araç parolanızı Apple'da imza almak için kullanır; istemezseniz bu iş için
+   ayrı bir Apple Kimliği açın.
+4. iPhone'da **Ayarlar → Genel → VPN ve Aygıt Yönetimi**'nden kendi hesabınıza güvenin; istenirse **Ayarlar → Gizlilik
+   ve Güvenlik → Geliştirici Modu**'nu açın.
+
+Bilmeniz gerekenler: ücretsiz Apple Kimliğiyle uygulama 7 gün sonra açılmaz olur (yeniden kurulur); bu yapıda abonelik
+satın alınamaz, bu yüzden günlük süre sınırı kapalıdır (Ayarlar'da "Deneme yapısı" yazar); bilgisayarsız, doğrudan
+telefona kurulum yalnız TestFlight ile olur ve ücretli geliştirici hesabı ister (`docs/yayin.md` → 5b). **Bu dosyanın
+bir iPhone'a kurulduğu henüz denenmedi**; yalnız derlendiği ve içeriği doğrulandı.
+
+Yeni bir `.ipa` üretmek: GitHub → **Actions** → **Canlı Çeviri (deneme .ipa)** → **Run workflow** (iş akışı varsayılan
+dala alındıktan sonra görünür).
+
 **Telefon olmadan arayüzü görmek:** simülatör görüntüleri `docs/sprints/S01/shots/` altındadır. Xcode'da
 `CanliCeviri/Arayuz/Onizleme.swift` dosyasını açıp Canvas'ı (Editor → Canvas) açarsanız aynı ekranlar örnek
 çevirilerle görünür.
