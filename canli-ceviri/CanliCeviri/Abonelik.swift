@@ -3,8 +3,10 @@ import Observation
 import StoreKit
 import SwiftUI
 
-/// Haftalık abonelik (StoreKit 2, KR1): ürün, abonelik durumu, satın alma ve geri yükleme.
-/// Durum cihazdaki doğrulamayla belirlenir; sunucu yok. Tanılama'ya fiyat, işlem kimliği ya da Apple Kimliği yazılmaz.
+/// Haftalık üyelik (StoreKit 2, KR1): ürün, abonelik durumu, satın alma ve geri yükleme.
+/// Durum cihazdaki doğrulamayla belirlenir. Mağaza yapısında geçici anahtar sunucusu aynı aboneliği App Store'un
+/// imzaladığı işlemle ayrıca doğrular (`imzaliIslem`, S03). Tanılama'ya fiyat, işlem kimliği, imzalı işlem ya da
+/// Apple Kimliği yazılmaz.
 @MainActor
 @Observable
 final class Abonelik {
@@ -130,6 +132,25 @@ final class Abonelik {
         }
     }
 
+    /// Geçerli aboneliğin App Store imzalı işlemi (JWS); geçerli abonelik yoksa nil (S03). Yalnız geçici anahtar
+    /// sunucusuna, istek gövdesinde gönderilir (`SonioxAnahtarKaynagi`); Tanılama'ya, ekrana ve panoya yazılmaz,
+    /// saklanmaz. Kurallar `durumuGuncelle` ile aynıdır; birden çok işlem varsa bitişi en geç olan seçilir
+    /// (abonelik yenilendikçe en güncel işlem gider).
+    static func imzaliIslem() async -> String? {
+        var secilen: String?
+        var secilenBitis = Date.distantPast
+        let simdi = Date()
+        for await sonuc in StoreKit.Transaction.currentEntitlements {
+            guard case .verified(let islem) = sonuc, islem.productID == abonelikUrunu else { continue }
+            if islem.revocationDate != nil || islem.isUpgraded { continue }
+            let bitis = islem.expirationDate ?? Date.distantFuture
+            if bitis <= simdi || bitis <= secilenBitis { continue }
+            secilen = sonuc.jwsRepresentation
+            secilenBitis = bitis
+        }
+        return secilen
+    }
+
     /// Uygulama dışında (başka cihaz, yenileme, iptal, geri ödeme, onaylanan bekleyen alım) gelen işlem.
     private func islemGeldi(_ sonuc: VerificationResult<StoreKit.Transaction>) async {
         if case .verified(let islem) = sonuc {
@@ -138,3 +159,13 @@ final class Abonelik {
         await durumuGuncelle()
     }
 }
+
+#if DEBUG
+extension Abonelik {
+    /// Simülatör ekran görüntüleri ve önizlemeler için: abone görünür (StoreKit'e gidilmez).
+    func ornekAbone() {
+        abone = true
+        durumOkundu = true
+    }
+}
+#endif

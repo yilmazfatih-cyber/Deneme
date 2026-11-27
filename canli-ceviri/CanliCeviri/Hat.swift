@@ -7,6 +7,8 @@ import UIKit
 struct HatHatasi: LocalizedError {
     let mesaj: String
     var kod: String?
+    /// Sunucu geçerli üyelik bulamadı (S03): dinleme durunca fiyat ekranı da açılır.
+    var fiyatEkrani = false
     var errorDescription: String? { mesaj }
 }
 
@@ -474,6 +476,10 @@ final class Hat {
             if akiyordu {
                 bildir?(.not(.bulutKopma, "Bulut bağlantısı koptu; o sırada söylenenler çevrilmedi."))
             }
+        case .bekliyor:
+            // S03: dilim bitti, yeni akış henüz başlamadı. Ekran "Duraklatıldı: buluta bağlanıyor" der (ilke 5);
+            // arama ve arka plan nedeni ezilmez. Yeni akış başlayınca `.akista` gelir.
+            if kesinti != .telefon && kesinti != .arkaPlan { bildir?(.kesintiBasladi(.bulutBaglaniyor)) }
         case .durdu(let hata):
             hataylaBitir(hata)
         }
@@ -887,7 +893,7 @@ final class Hat {
     }
 
     /// K15, C6, C7: alarmdan sonra gerçek tampon gelirse sayaç sıfırlanır ve dinleme sürer; tek tampon gelmeden
-    /// ikinci alarm gelirse dinleme Türkçe hatayla durur (G13). Sınırsız sessiz yeniden açma yok (YE1).
+    /// ikinci alarm gelirse dinleme Türkçe hatayla durur (G13). Sessiz yeniden açma sonsuza dek sürmez (YE1).
     private func bekciDenetle() {
         guard cumleEkle != nil, kesinti == nil else { return }
         if let an = bekciAlarmi, kutu.tamponGeldi(sonra: an) {

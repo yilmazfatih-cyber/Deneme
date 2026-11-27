@@ -63,7 +63,10 @@ enum Anahtarlik {
             }
             sonioxBellekte = temiz
             if temiz.isEmpty {
-                if gomulu.isEmpty { UserDefaults.standard.set(Motor.cihaz.rawValue, forKey: Kayit.motor) }
+                // Anahtar sunucudan gelebiliyorsa (S03) bulut seçili kalır.
+                if gomulu.isEmpty && !sunucudanAnahtar {
+                    UserDefaults.standard.set(Motor.cihaz.rawValue, forKey: Kayit.motor)
+                }
             } else if onceki.isEmpty {
                 UserDefaults.standard.set(Motor.bulut.rawValue, forKey: Kayit.motor)
             }
@@ -83,10 +86,21 @@ enum Anahtarlik {
         return kullanici.isEmpty ? gomulu : kullanici
     }
 
-    /// Seçili motor (K3, KR8, KR14). Geçerli anahtar yoksa cihaz. Kullanıcı hiç seçim yapmadıysa: anahtar varsa
-    /// bulut, yoksa cihaz.
+    /// Anahtar geçici anahtar sunucusundan mı gelir (S03): mağaza yapısında (`DENEME` yok) yerel anahtar (kullanıcının
+    /// girdiği ya da gömülü) yoksa ve sunucu adresi doluysa. Deneme yapısında sunucu kullanılmaz (iç test: gömülü
+    /// anahtar). Mağaza yapısına uzun ömürlü anahtar gömülmez; anahtar yalnız sunucudan, geçici olarak gelir.
+    static var sunucudanAnahtar: Bool {
+        #if DENEME
+        return false
+        #else
+        return gecerliSonioxAnahtari.isEmpty && !kirp(sunucuAdresi).isEmpty
+        #endif
+    }
+
+    /// Seçili motor (K3, KR8, KR14; S03). Ne yerel anahtar ne sunucu varsa cihaz. Geliştirici bölümünde hiç seçim
+    /// yapılmadıysa: anahtar varsa ya da sunucudan geliyorsa bulut, yoksa cihaz.
     static var motor: Motor {
-        guard !gecerliSonioxAnahtari.isEmpty else { return .cihaz }
+        guard !gecerliSonioxAnahtari.isEmpty || sunucudanAnahtar else { return .cihaz }
         guard let secim = UserDefaults.standard.string(forKey: Kayit.motor) else { return .bulut }
         return Motor(rawValue: secim) ?? .cihaz
     }

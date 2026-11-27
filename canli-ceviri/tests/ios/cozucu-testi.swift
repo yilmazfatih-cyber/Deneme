@@ -2,7 +2,11 @@ import Foundation
 
 // Bulut motorunun saf mantık testi (S02 K2). XCTest ve simülatör gerektirmez; Mac koşucusunda şöyle çalışır:
 //   swiftc -swift-version 5 -parse-as-library canli-ceviri/CanliCeviri/Bulut/SonioxCozucu.swift \
-//     canli-ceviri/tests/ios/cozucu-testi.swift -o cozucu-testi && ./cozucu-testi
+//     canli-ceviri/CanliCeviri/Bulut/DilimPlani.swift canli-ceviri/CanliCeviri/Bulut/AnahtarSunucusu.swift \
+//     canli-ceviri/tests/ios/cozucu-testi.swift canli-ceviri/tests/ios/dilim-testi.swift \
+//     -o cozucu-testi && ./cozucu-testi
+// Dilim devri ve geçici anahtar sunucusu sözleşmesinin testleri (S03) `dilim-testi.swift` dosyasındadır; aynı
+// programa derlenir ve aşağıdaki `main` çağırır.
 // Örnek yanıtlar Soniox belgelerindeki biçimdedir; gerçek akış bu sprintte gözlenmedi (ilke 8).
 
 final class Sayac {
@@ -90,6 +94,7 @@ struct CozucuTesti {
         kopus()
         baslangic()
         noktalama()
+        DilimTesti.hepsi()   // S03: dilim zamanlaması ve anahtar sunucusu sözleşmesi (dilim-testi.swift)
 
         print("")
         print("Çözücü testi: \(sayac.gecen) geçti, \(sayac.kalan) kaldı")
@@ -224,6 +229,7 @@ struct CozucuTesti {
             ("limit_exceeded", 429, .kota),
             ("max_concurrent_connections_reached", 429, .kota),
             ("max_duration_reached", 413, .sureSiniri),
+            ("temp_api_key_session_expired", 403, .dilimBitti),
             ("invalid_request", 400, .gecersizIstek),
             ("model_not_available", 400, .gecersizIstek),
             ("request_timeout", 408, .gecici),
@@ -241,8 +247,8 @@ struct CozucuTesti {
         denetle(SonioxHataSinifi.gecici.yenidenDenenir && !SonioxHataSinifi.gecersizAnahtar.yenidenDenenir
                     && !SonioxHataSinifi.bakiye.yenidenDenenir && !SonioxHataSinifi.sureSiniri.yenidenDenenir,
                 "yalnız geçici hatalar yeniden denenir")
-        let siniflar: [SonioxHataSinifi] = [.gecersizAnahtar, .izinYok, .bakiye, .kota, .sureSiniri, .gecersizIstek,
-                                            .gecici, .diger]
+        let siniflar: [SonioxHataSinifi] = [.gecersizAnahtar, .izinYok, .bakiye, .kota, .sureSiniri, .dilimBitti,
+                                            .gecersizIstek, .gecici, .diger]
         denetle(siniflar.allSatisfy { !$0.ekranMetni.isEmpty }, "her hata sınıfının ekran metni var")
     }
 

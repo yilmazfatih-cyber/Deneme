@@ -57,7 +57,7 @@ struct SatirGorunumu: View {
                 }
                 Text(satir.ceviri)
                     .font(buyuk ? .title2.weight(.semibold) : .body.weight(.medium))
-                    .fixedSize(horizontal: false, vertical: true)   // çeviri sınırsız ölçeklenir, kesilmez
+                    .fixedSize(horizontal: false, vertical: true)   // çeviri her boyutta ölçeklenir, kesilmez
                     .environment(\.locale, Locale(identifier: satir.hedefDil))
                     .accessibilitySortPriority(1)
             }

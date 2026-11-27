@@ -33,11 +33,15 @@ jobs:
       - name: Çözücü testi (bulut motorunun saf mantığı)
         run: |
           set -euo pipefail
-          # Soniox yanıtlarını cümlelere ayıran çözücü yalnız Foundation kullanır; XCTest ve simülatör gerekmez.
+          # Soniox yanıtlarını cümlelere ayıran çözücü, dilim devrinin zamanlaması (DilimPlani) ve geçici anahtar
+          # sunucusu sözleşmesi (AnahtarSunucusu) yalnız Foundation kullanır; XCTest ve simülatör gerekmez.
           # Derlenemezse ya da bir denetim kalırsa iş burada, uygulama derlenmeden kırılır (S02 K2).
           swiftc -swift-version 5 -parse-as-library \
             canli-ceviri/CanliCeviri/Bulut/SonioxCozucu.swift \
+            canli-ceviri/CanliCeviri/Bulut/DilimPlani.swift \
+            canli-ceviri/CanliCeviri/Bulut/AnahtarSunucusu.swift \
             canli-ceviri/tests/ios/cozucu-testi.swift \
+            canli-ceviri/tests/ios/dilim-testi.swift \
             -o "$RUNNER_TEMP/cozucu-testi"
           "$RUNNER_TEMP/cozucu-testi"
       - name: Derle (iOS Simülatörü, imzasız; Debug ve Release)
@@ -138,7 +142,7 @@ jobs:
             xcrun simctl terminate "$UDID" "$PAKET" > /dev/null 2>&1 || true
           }
           for ad in ceviri-bos ceviri dinliyor kulakliksiz gecmis gecmis-bos ayarlar tanilama abonelik abonelik-bitti \
-            ayarlar-bulut ceviri-bulut dil-secimi tanilama-gelistirici; do
+            ayarlar-bulut ceviri-bulut dil-secimi tanilama-gelistirici ayarlar-kota ceviri-kota-az; do
             cek "$ad" "$ad"
           done
           # En büyük Dinamik Yazı (AX5) boyutunda altı ekran, AX3'te Çeviri; sonra boyut eski hâline döner.
