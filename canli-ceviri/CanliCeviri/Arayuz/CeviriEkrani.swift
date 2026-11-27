@@ -1,6 +1,7 @@
 import SwiftUI
 
-/// Çeviri sekmesi: kaynak dil, o an söylenen cümle, son çeviriler ve Başlat/Durdur düğmesi.
+/// Çeviri sekmesi: konuşulan dil ve çeviri dili düğmeleri, o an söylenen cümle, son çeviriler ve Başlat/Durdur
+/// düğmesi.
 struct CeviriEkrani: View {
     let durum: Durum
     @AppStorage(Kayit.kaynakDil) private var kaynakKod = "en"
@@ -8,20 +9,34 @@ struct CeviriEkrani: View {
     @AppStorage(Kayit.bulutKaynak) private var bulutKaynak = otomatikDil
     @AppStorage(Kayit.hedefDil) private var hedefKod = "tr"
     @AppStorage(Kayit.motor) private var motorKaydi = ""
+    @AppStorage(Kayit.cihazSecildi) private var cihazSecildi = false
     @AppStorage(Kayit.sesliOku) private var sesliOku = false
     /// Bulut motorunda son seçilen kaynak diller (virgülle ayrılmış kodlar); dil şeridinin kısa listesi için.
     @AppStorage(Kayit.sonKaynaklar) private var sonKaynaklar = ""
     /// Bulut motorunun tüm dillerini gösteren aranabilir sayfa açık mı.
     @State private var tumDillerAcik = false
-    @Environment(\.dynamicTypeSize) private var yaziBoyu
+    /// Çeviri dili sayfası (aranabilir liste) açık mı; Ayarlar'daki "Çeviri dili" satırıyla aynı ayar.
+    @State private var hedefAcik = false
 
     private var dil: Dil { diller.first { $0.kod == kaynakKod } ?? diller[0] }
 
     /// Dinlerken o dinlemenin motoru; duruyorken seçili motor (ne anahtar ne sunucu varsa cihaz; karar
-    /// `Anahtarlik`'tadır).
+    /// `Anahtarlik`'tadır). `motorKaydi` ve `cihazSecildi` seçim değişince ekran yenilensin diye okunur.
     private var bulutMotoru: Bool {
         if durum.calisiyor { return durum.bulutCalisiyor }
-        return motorKaydi == Motor.cihaz.rawValue ? false : Anahtarlik.motor == .bulut
+        if CeviriEkrani.ornekBulut() { return true }
+        if motorKaydi == Motor.cihaz.rawValue && cihazSecildi { return false }
+        return Anahtarlik.motor == .bulut
+    }
+
+    /// `-ekran ceviri-diller-buyuk-yazi`: simülatörde anahtar yokken de bulut motorunun dil düğmeleri görünür
+    /// (yalnız DEBUG).
+    @MainActor
+    private static func ornekBulut() -> Bool {
+        #if DEBUG
+        if OrnekEkran.gosterilen == .ceviriDiller { return true }
+        #endif
+        return false
     }
 
     /// Kaynak dilin ekrandaki adı: bulut motorunda "Otomatik" olabilir; cihaz motorunda tek bir dildir.
@@ -30,12 +45,22 @@ struct CeviriEkrani: View {
         return bulutDilleri.first { $0.kod == bulutKaynak }?.ad ?? "Otomatik"
     }
 
-    /// Çeviri dili: cihaz motorunda Türkçe, bulut motorunda Ayarlar'da seçilen dil (KR13).
+    /// Çeviri dili: cihaz motorunda Türkçe, bulut motorunda seçilen dil (KR13).
     private var hedefAd: String {
-        bulutMotoru ? dilAdi(hedefKod) : "Türkçe"
+        bulutMotoru ? dilAdi(hedefKod) : turkceDil.ad
     }
 
-    /// Dil şeridinin kısa listesi (bulut motoru): seçili dil, son kullanılanlar, sonra sık kullanılan birkaç dil;
+    /// Çeviri dili yalnız bulut motorunda ve dinleme dururken değiştirilebilir.
+    private var hedefSecilebilir: Bool {
+        bulutMotoru && !durum.calisiyor
+    }
+
+    private var hedefIpucu: String {
+        if !bulutMotoru { return "Çeviri yalnız Türkçeye yapılır" }
+        return durum.calisiyor ? "Değiştirmek için dinlemeyi durdurun" : "Dil listesini açar"
+    }
+
+    /// Kaynak dil menüsünün kısa listesi (bulut motoru): seçili dil, son kullanılanlar, sonra sık kullanılan birkaç dil;
     /// en çok beş tane. Öteki diller "Tüm diller…" sayfasındadır (60 dil bir menüye sığmaz).
     private var kisaListe: [BulutDili] {
         var adaylar = [bulutKaynak]
@@ -92,8 +117,15 @@ struct CeviriEkrani: View {
             #endif
         }
         .sheet(isPresented: $tumDillerAcik) {
-            DilSecimEkrani(baslik: "Kaynak dil", diller: bulutDilleri, otomatik: true, secili: $bulutKaynak,
+            DilSecimEkrani(baslik: "Konuşulan dil", diller: bulutDilleri, otomatik: true, secili: $bulutKaynak,
                            secildi: { kod in kaynagiSec(kod) })
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+                .presentationBackground(Renk.zemin)
+                .preferredColorScheme(.dark)
+        }
+        .sheet(isPresented: $hedefAcik) {
+            DilSecimEkrani(baslik: "Çeviri dili", diller: hedefDilleri, secili: $hedefKod)
                 .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
                 .presentationBackground(Renk.zemin)
@@ -140,12 +172,33 @@ struct CeviriEkrani: View {
             .accessibilityLabel("Dinleme açık")
     }
 
-    // MARK: Dil şeridi
+    // MARK: Dil düğmeleri
 
-    /// Duruyorken tam şerit; diğer aşamalarda ve büyük yazıda tek satırlık, 56 yüksekliğinde kompakt şerit (KR7).
-    /// Yalnız dinlerken devre dışıdır; büyük yazıda kompakt şerit dokunulabilir kalır (tasarim § 4.1.1).
+    /// İki ayrı düğme (S03 tur 2): solda konuşulan dil, ortada ok, sağda çeviri dili. Yan yana sığmıyorsa (büyük
+    /// yazı, uzun dil adı) alt alta geçer; metin kesilmez. Dinamik Yazı en çok xxxLarge (tasarim § 4.1.1: sınırsız
+    /// ölçeklenen yalnız çeviri metnidir). İkincil görünümlüdür; ekranın tek birincil eylemi Başlat/Durdur kalır.
+    /// Dinlerken ikisi de devre dışıdır: süren akışın dili değişmez (KR7).
     private var dilSeridi: some View {
-        let kompakt = durum.calisiyor || yaziBoyu >= .xxxLarge
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 8) {
+                kaynakDugmesi(yanYana: true)
+                Image(systemName: "arrow.right")
+                    .font(.footnote.weight(.bold))
+                    .foregroundStyle(.secondary)
+                    .accessibilityHidden(true)
+                hedefDugmesi(yanYana: true)
+            }
+            VStack(spacing: 8) {
+                kaynakDugmesi(yanYana: false)
+                hedefDugmesi(yanYana: false)
+            }
+        }
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+    }
+
+    /// Konuşulan dil. Bulut motoru: "Otomatik", kısa liste ve tüm dilleri açan aranabilir sayfa; cihaz motoru: 7 dil.
+    private func kaynakDugmesi(yanYana: Bool) -> some View {
+        let secilebilir = !durum.calisiyor
         return Menu {
             if bulutMotoru {
                 // KR12: bulut motoru dili kendiliğinden tanıyabilir; cihaz motorunda "Otomatik" yoktur.
@@ -169,48 +222,76 @@ struct CeviriEkrani: View {
                     Label("Tüm diller…", systemImage: "list.bullet")
                 }
             } else {
-                Picker("Kaynak dil", selection: $kaynakKod) {
+                Picker("Konuşulan dil", selection: $kaynakKod) {
                     ForEach(diller) { Text($0.ad).tag($0.kod) }
                 }
             }
         } label: {
-            HStack(spacing: 12) {
-                if kompakt {
-                    Text("\(kaynakAd) → \(hedefAd)")
-                        .font(.body.weight(.semibold))
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.7)
-                } else {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("\(kaynakAd) → \(hedefAd)")
-                            .font(.title2.weight(.semibold))
-                        Text("Kaynak dili değiştirmek için dokunun")
-                            .font(.subheadline)
-                    }
-                    .multilineTextAlignment(.leading)
-                }
-                Spacer(minLength: 0)
-                if !durum.calisiyor {
-                    Image(systemName: "chevron.right")
-                        .font(.title3.weight(.bold))
-                        .accessibilityHidden(true)
-                }
-            }
-            .foregroundStyle(.white)
-            .padding(.horizontal, 20)
-            .padding(.vertical, kompakt ? 8 : 20)
-            .frame(minHeight: kompakt ? 56 : nil)
-            .background(
-                LinearGradient(colors: [Renk.maviDolgu, Renk.koyuMavi],
-                               startPoint: .topLeading, endPoint: .bottomTrailing),
-                in: RoundedRectangle(cornerRadius: 24, style: .continuous)
-            )
-            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+            dilDugmesi(kaynak: true, yanYana: yanYana, secilebilir: secilebilir)
         }
-        .disabled(durum.calisiyor)
-        .accessibilityLabel("Kaynak dil")
-        .accessibilityValue("\(kaynakAd), \(yonelme(hedefAd)) çevrilir")
-        .accessibilityHint(durum.calisiyor ? "Dili değiştirmek için önce dinlemeyi durdurun" : "Dil listesini açar")
+        .disabled(!secilebilir)
+        .accessibilityLabel("Konuşulan dil")
+        .accessibilityValue(kaynakAd)
+        .accessibilityHint(secilebilir ? "Dil listesini açar" : "Değiştirmek için dinlemeyi durdurun")
+    }
+
+    /// Çeviri dili: bulut motorunda aranabilir dil sayfasını açar (Ayarlar'daki satırla aynı ayar). Cihaz motoru
+    /// yalnız Türkçeye çevirir; orada düğme "Türkçe" yazar ve devre dışıdır.
+    private func hedefDugmesi(yanYana: Bool) -> some View {
+        Button {
+            hedefAcik = true
+        } label: {
+            dilDugmesi(kaynak: false, yanYana: yanYana, secilebilir: hedefSecilebilir)
+        }
+        .buttonStyle(DilDugmesiBicemi())
+        .disabled(!hedefSecilebilir)
+        .accessibilityLabel("Çeviri dili")
+        .accessibilityValue(hedefAd)
+        .accessibilityHint(hedefIpucu)
+    }
+
+    /// Düğmenin görünümü: küçük üst etiket, dilin adı ve (seçilebiliyorsa) aşağı ok; en az 56 pt yüksek.
+    /// Yan yana düzende iki düğmenin yazı alanı eşit genişliktedir (ötekinin yazısı görünmez kopya olarak
+    /// ölçüye girer): `ViewThatFits` yan yana düzeni yalnız iki yazı da kesilmeden sığıyorsa seçer.
+    private func dilDugmesi(kaynak: Bool, yanYana: Bool, secilebilir: Bool) -> some View {
+        HStack(spacing: 8) {
+            ZStack(alignment: .leading) {
+                if yanYana {
+                    dilYazilari(kaynak: !kaynak, tekSatir: true)
+                        .hidden()
+                }
+                dilYazilari(kaynak: kaynak, tekSatir: yanYana)
+            }
+            Spacer(minLength: 0)
+            if secilebilir {
+                Image(systemName: "chevron.down")
+                    .font(.footnote.weight(.bold))
+                    .foregroundStyle(Renk.acikMavi)
+                    .accessibilityHidden(true)
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
+        .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
+        .background(Renk.kart, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(Renk.ayrac, lineWidth: 1))
+        .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    /// Düğmenin yazıları: "Konuşulan dil" / "Çeviri dili" etiketi ve altında dilin adı. Tek satırda kesilmez
+    /// (sığmazsa düzen alt alta geçer); alt alta düzende gerekirse alt satıra iner.
+    private func dilYazilari(kaynak: Bool, tekSatir: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(kaynak ? "Konuşulan dil" : "Çeviri dili")
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.secondary)
+            Text(kaynak ? kaynakAd : hedefAd)
+                .font(.body.weight(.semibold))
+                .foregroundStyle(.white)
+        }
+        .lineLimit(tekSatir ? 1 : nil)
+        .multilineTextAlignment(.leading)
+        .fixedSize(horizontal: tekSatir, vertical: true)
     }
 
     // MARK: Şu An
@@ -400,5 +481,14 @@ struct CeviriEkrani: View {
         .accessibilityHint(anaDugmeIpucu)
         .accessibilityAddTraits(calisiyor ? [] : .startsMediaSession)
         .sensoryFeedback(.impact, trigger: calisiyor)
+    }
+}
+
+/// Dil düğmesinin biçemi: basılıyken hafifçe solar; devre dışıyken solmaz (tasarim C-5: devre dışı olduğu okun
+/// yokluğundan ve VoiceOver'ın "soluk" demesinden anlaşılır, solgunluk bilgi taşımaz).
+private struct DilDugmesiBicemi: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? 0.6 : 1)
     }
 }

@@ -145,7 +145,7 @@ jobs:
             ayarlar-bulut ceviri-bulut dil-secimi tanilama-gelistirici ayarlar-kota ceviri-kota-az; do
             cek "$ad" "$ad"
           done
-          # En büyük Dinamik Yazı (AX5) boyutunda altı ekran, AX3'te Çeviri; sonra boyut eski hâline döner.
+          # En büyük Dinamik Yazı (AX5) boyutunda yedi ekran, AX3'te Çeviri; sonra boyut eski hâline döner.
           xcrun simctl ui "$UDID" content_size accessibility-extra-extra-extra-large
           cek ceviri ceviri-buyuk-yazi
           cek gecmis gecmis-buyuk-yazi
@@ -153,6 +153,7 @@ jobs:
           cek tanilama tanilama-buyuk-yazi
           cek dil-secimi dil-secimi-buyuk-yazi
           cek abonelik abonelik-buyuk-yazi
+          cek ceviri-diller-buyuk-yazi ceviri-diller-buyuk-yazi
           xcrun simctl ui "$UDID" content_size accessibility-extra-large
           cek ceviri ceviri-buyuk-yazi-ax3
           xcrun simctl ui "$UDID" content_size large

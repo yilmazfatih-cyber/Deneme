@@ -113,7 +113,7 @@ func yonelme(_ ad: String) -> String {
 let duraklama   = 1.2   // bu kadar saniye sessizlik = cümle bitti
 let alaniaAdres = "https://voice.patientdesk.ai/v1/audio/speech"
 let alaniaModel = "alania-v2"
-let yapiEtiketi = "S03 tur 1"   // Tanılama kopyasının başlığı; her düzeltme turunda artar (KR16)
+let yapiEtiketi = "S03 tur 2"   // Tanılama kopyasının başlığı; her düzeltme turunda artar (KR16)
 
 // Ses hattı süreleri ve eşikleri (docs/ses-hatti.md; kural kimlikleri parantez içinde)
 let alaniaSuresi: TimeInterval         = 5     // Alania isteğinin toplam süresi, sn (S5, KR10)
@@ -165,7 +165,8 @@ enum Kayit {
     static let alaniaAnahtari = "alaniaAnahtar"
     static let alaniaSesi     = "alaniaSes"
     static let fiyatEkraniGosterildi = "fiyatEkraniGosterildi"   // fiyat ekranı ilk açılışta bir kez gösterildi
-    static let motor          = "motor"            // "cihaz" | "bulut"; yoksa "cihaz" (S02)
+    static let motor          = "motor"            // "cihaz" | "bulut" (S02); "cihaz" yalnız `cihazSecildi` ile geçerlidir
+    static let cihazSecildi   = "motorCihazSecildi"   // Geliştirici bölümünde cihaz motoru AÇIKÇA seçildi (S03 tur 2)
     static let bulutKaynak    = "bulutKaynakDil"   // bulut motorunda kaynak dil; yoksa "otomatik" (KR12)
     static let hedefDil       = "hedefDil"         // bulut motorunda hedef dil; yoksa "tr" (KR13)
     static let sonKaynaklar   = "sonKaynakDiller"  // bulut motorunda son seçilen kaynak diller (virgülle ayrılmış kodlar)

@@ -11,6 +11,7 @@
 | 25.11.2026 | S01 tur 4 yayına alındı (PR #25); canlı web sayfası doğrulandı (sahte mikrofon ve çeviriyle)                 |
 | 27.11.2026 | Apple Developer hesabı açıldı; uygulama GitHub iş akışıyla imzalanıp App Store Connect'e yüklendi (yapı 1). Telefonda TestFlight'tan kurulup denenmesi bekleniyor |
 | 27.11.2026 | S02: bulut motoru (Soniox) yazıldı, derlendi ve TestFlight'a yüklendi (yapı 5): otomatik kaynak dil, 60 hedef dil, sesli okuma isteğe bağlı ve kapalı, anahtar yalnız TestFlight yapısına gömülü. Gerçek Soniox akışı ve telefonda deneme bekleniyor; uzman incelemesi yapılmadı |
+| 27.11.2026 | Yalnız ücretli, haftalık kotalı üyelik: sade Ayarlar ve fiyat ekranı; anahtar sunucusu Cloudflare'e yayımlandı (Apple imzalı abonelik doğrulaması, abone başına haftada 160 dakika); abonelik ürünü `canliceviri.haftalik` App Store Connect'te oluşturuldu (175 bölge, ABD 4,99 dolar; durum READY_TO_SUBMIT); mağaza tipi yapı 7 TestFlight'a yüklendi. Satın alma, sunucunun gerçek abonelikle çalışması ve gerçek Soniox akışı henüz hiçbir cihazda denenmedi; uzman ve güvenlik incelemesi yapılmadı; `docs/yayin.md`, mağaza metinleri ve gizlilik sayfası eski düzeni (günde 10 dakika ücretsiz) anlatıyor |
 
 ## Sprintler
 

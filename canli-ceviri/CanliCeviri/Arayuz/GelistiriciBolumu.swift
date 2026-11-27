@@ -16,6 +16,8 @@ struct GelistiriciBolumu: View {
     @AppStorage(Kayit.alaniaSesi) private var ses = "alania2-f1"
     /// Motor seçimi; boşsa henüz seçim yapılmamıştır (anahtar varsa bulut, yoksa cihaz; KR8, KR14).
     @AppStorage(Kayit.motor) private var motorKaydi = ""
+    /// Cihaz motoru buradaki seçiciden açıkça seçildi mi; "cihaz" kaydı yalnız bununla geçerlidir (S03 tur 2).
+    @AppStorage(Kayit.cihazSecildi) private var cihazSecildi = false
 
     init(onizleme: Bool) {
         self.onizleme = onizleme
@@ -39,12 +41,15 @@ struct GelistiriciBolumu: View {
     /// `Anahtarlik.motor` ile aynı kural; ekrandaki alan ve seçim değişince yenilenir.
     private var motor: Motor {
         guard bulutKullanilabilir else { return .cihaz }
-        if motorKaydi.isEmpty { return .bulut }
-        return Motor(rawValue: motorKaydi) ?? .cihaz
+        return motorKaydi == Motor.cihaz.rawValue && cihazSecildi ? .cihaz : .bulut
     }
 
+    /// Seçiciye dokunmak açık seçimdir: cihaz seçilince `Kayit.cihazSecildi` de yazılır.
     private var motorSecimi: Binding<Motor> {
-        Binding(get: { motor }, set: { motorKaydi = $0.rawValue })
+        Binding(get: { motor }, set: { secim in
+            cihazSecildi = secim == .cihaz
+            motorKaydi = secim.rawValue
+        })
     }
 
     var body: some View {
