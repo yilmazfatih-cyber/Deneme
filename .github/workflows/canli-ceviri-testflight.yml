@@ -102,9 +102,14 @@ jobs:
           fi
           # Biçim: yalnız harf, rakam, alt çizgi ve tire; 16–200 karakter; tek satır. Böylece değer Swift dizgesine
           # ve aşağıdaki temizleme adımına güvenle girer.
+          # Yapıştırırken giren boşluk ve satır sonları atılır (anahtarda boşluk olmaz).
+          anahtar="$(printf '%s' "$SONIOX_API_KEY" | LC_ALL=C tr -d '[:space:]')"
           desen='^[A-Za-z0-9_-]{16,200}$'
-          if ! [[ "$SONIOX_API_KEY" =~ $desen ]]; then
-            echo "::error title=SONIOX_API_KEY biçimi::SONIOX_API_KEY beklenen biçimde değil: yalnız harf, rakam, alt çizgi ve tire içermeli, 16–200 karakter olmalı, boşluk ya da satır sonu olmamalı. Gizli değeri yeniden girip işi yeniden başlatın. Hiçbir şey yüklenmedi."
+          if ! [[ "$anahtar" =~ $desen ]]; then
+            # Değerin kendisi yazdırılmaz; yalnız uzunluğu ve izin verilmeyen karakter sayısı.
+            uzunluk=${#anahtar}
+            yabanci="$(printf '%s' "$anahtar" | LC_ALL=C tr -d 'A-Za-z0-9_-' | wc -c | tr -d ' ')"
+            echo "::error title=SONIOX_API_KEY biçimi::SONIOX_API_KEY beklenen biçimde değil (uzunluk $uzunluk, izin verilmeyen karakter $yabanci). Yalnız harf, rakam, alt çizgi ve tire içermeli, 16–200 karakter olmalı. Gizli değeri yeniden girip işi yeniden başlatın. Hiçbir şey yüklenmedi."
             exit 1
           fi
           dosya=canli-ceviri/CanliCeviri/Bulut/GomuluAnahtar.swift
@@ -112,7 +117,7 @@ jobs:
             echo "::error title=Dosya yok::$dosya bulunamadı; anahtar gömülemedi. Hiçbir şey yüklenmedi."
             exit 1
           fi
-          printf 'let gomuluSonioxAnahtari = "%s"\n' "$SONIOX_API_KEY" > "$dosya"
+          printf 'let gomuluSonioxAnahtari = "%s"\n' "$anahtar" > "$dosya"
           echo "SONIOX_GOMULU=gömülü" >> "$GITHUB_ENV"
           echo "Soniox anahtarı bu yapıya gömüldü (değer kayda yazılmaz)."
 
@@ -217,9 +222,10 @@ jobs:
         run: |
           # xcodebuild komut satırını kayda yazar; saklanan kopyada kimlikler gizlenir. Gömülü Soniox anahtarı kayda
           # yazılmaz; yine de saklanan kopyada aranıp gizlenir.
+          soniox="$(printf '%s' "${SONIOX_API_KEY:-}" | LC_ALL=C tr -d '[:space:]' | LC_ALL=C tr -cd 'A-Za-z0-9_-')"
           for dosya in arsiv.log yukleme.log; do
             [ -f "$dosya" ] || continue
-            for deger in "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$APPLE_TEAM_ID" "$SONIOX_API_KEY"; do
+            for deger in "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$APPLE_TEAM_ID" "$soniox"; do
               [ -n "$deger" ] || continue
               LC_ALL=C sed -i '' "s|$deger|***|g" "$dosya"
             done
