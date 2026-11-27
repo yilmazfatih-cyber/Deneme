@@ -14,6 +14,9 @@ enum SonioxHataSinifi: Equatable {
     case bakiye
     case kota
     case sureSiniri
+    /// Geçici anahtarla açılan akışın süresi doldu (`temp_api_key_session_expired`; S03). Sunucudan anahtar alan
+    /// yapıda hata değil, "dilim bitti" durumudur: `BulutAkisi` yeni akışa devreder.
+    case dilimBitti
     case gecersizIstek
     /// Zaman aşımı ya da hizmet kullanılamıyor: yeni akış denenir (KR5).
     case gecici
@@ -36,6 +39,8 @@ enum SonioxHataSinifi: Equatable {
             return "Çeviri hizmeti şu an çok yoğun. Biraz sonra yeniden deneyin."
         case .sureSiniri:
             return "Dinleme 300 dakikalık sınıra ulaştı. Dinlemeyi yeniden başlatın."
+        case .dilimBitti:
+            return "Çeviri oturumunun süresi doldu. Dinlemeyi yeniden başlatın."
         case .gecersizIstek:
             return "Çeviri hizmeti isteği kabul etmedi. Dil seçimini değiştirip yeniden deneyin."
         case .gecici:
@@ -225,6 +230,12 @@ struct SonioxCozucu {
         return olaylar
     }
 
+    /// Açık cümle yok: son `<end>`'den beri asıl metin gelmedi (konuşmacı cümle arasında). Dilim devri bu anı
+    /// yeğler (S03). Çevirisi bekleyen kapanmış cümle buna engel değildir: çevirisi eski akıştan gelmeyi sürdürür.
+    var cumleArasinda: Bool {
+        SonioxCozucu.kirp(asilKesin).isEmpty && SonioxCozucu.kirp(asilGecici).isEmpty
+    }
+
     /// Bağlantı kapandı ya da koptu: bekleyen cümle olduğu gibi çıkar, yarım cümle atılır (KR5).
     mutating func kapat(simdi: TimeInterval) -> [SonioxOlayi] {
         var olaylar: [SonioxOlayi] = []
@@ -351,8 +362,10 @@ struct SonioxCozucu {
     /// `error_type` → sınıf; tür tanınmıyorsa HTTP koduna göre (belge: api-reference/errors).
     static func sinif(tur: String, kod: Int) -> SonioxHataSinifi {
         switch tur {
-        case "unauthenticated", "temp_api_key_session_expired":
+        case "unauthenticated":
             return .gecersizAnahtar
+        case "temp_api_key_session_expired":
+            return .dilimBitti
         case "permission_denied":
             return .izinYok
         case "organization_balance_exhausted", "organization_monthly_budget_exhausted",

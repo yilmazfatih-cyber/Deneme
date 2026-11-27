@@ -113,7 +113,7 @@ func yonelme(_ ad: String) -> String {
 let duraklama   = 1.2   // bu kadar saniye sessizlik = cümle bitti
 let alaniaAdres = "https://voice.patientdesk.ai/v1/audio/speech"
 let alaniaModel = "alania-v2"
-let yapiEtiketi = "S02 tur 3"   // Tanılama kopyasının başlığı; her düzeltme turunda artar (KR16)
+let yapiEtiketi = "S03 tur 1"   // Tanılama kopyasının başlığı; her düzeltme turunda artar (KR16)
 
 // Ses hattı süreleri ve eşikleri (docs/ses-hatti.md; kural kimlikleri parantez içinde)
 let alaniaSuresi: TimeInterval         = 5     // Alania isteğinin toplam süresi, sn (S5, KR10)
@@ -138,11 +138,18 @@ let bulutBitisSuresi: TimeInterval     = 1     // boş çerçeveden sonra bağla
 let bulutSaatAraligi                   = 100   // bulut saatinin adımı, ms (bekleyen cümle, ping, pong denetimi)
 let bulutCerceveBayt                   = 3200  // 100 ms ses: 16 kHz × 2 bayt × 0,1 sn (KR3)
 let bulutOnBellekBayt                  = 32_000   // bağlantı kurulurken tutulan en çok ses (1 sn)
+let bulutDevirBitisSuresi: TimeInterval = 3    // dilim devrinde eski akışın son yanıtları için en çok bekleme, sn (S03)
 
-// Abonelik (S03; S02 tur 3: yalnız ücretli, ücretsiz süre yok). `DENEME` bayrağıyla derlenen iç test yapısında
-// abonelik denetimi atlanır; bayraksız yapıda atlama yolu yoktur (bkz. `Durum.abonelikGerekli`).
+// Geçici anahtar sunucusu ve kota (S03; adres `Bulut/SunucuAdresi.swift`, sözleşme `Bulut/AnahtarSunucusu.swift`).
+// Kotanın büyüklüğü ve dilim süresi sunucudan gelir; koda yazılmaz.
+let sunucuSuresi: TimeInterval         = 10    // anahtar isteğinin toplam süresi, sn
+let kotaUyariEsigi                     = 600   // kalan kota bunun altına inince Çeviri ekranında sarı not, sn
+
+// Abonelik (S03; S02 tur 3: yalnız ücretli, ücretsiz süre yok). Tek paket: haftalık üyelik, kullanım kotalı.
+// `DENEME` bayrağıyla derlenen iç test yapısında abonelik denetimi atlanır; bayraksız yapıda atlama yolu yoktur
+// (bkz. `Durum.abonelikGerekli`).
 let abonelikNobetAraligi: TimeInterval = 30    // dinlerken abonelik bu aralıkla yeniden okunur, sn
-let abonelikUrunu = "canliceviri.sinirsiz.haftalik"   // App Store Connect'teki ürün kimliği
+let abonelikUrunu = "canliceviri.haftalik"     // App Store Connect'teki ürün kimliği (sunucudaki URUN_KIMLIGI ile aynı)
 
 /// Abonelik ekranı ve Ayarlar'daki bağlantılar.
 enum Adres {
@@ -163,9 +170,12 @@ enum Kayit {
     static let hedefDil       = "hedefDil"         // bulut motorunda hedef dil; yoksa "tr" (KR13)
     static let sonKaynaklar   = "sonKaynakDiller"  // bulut motorunda son seçilen kaynak diller (virgülle ayrılmış kodlar)
     static let sesliOku       = "sesliOku"         // çeviri sesli okunsun mu; yoksa hayır (KR11)
+    static let kotaKalan      = "kotaKalanSn"      // sunucunun son bildirdiği kalan kota, sn (S03)
+    static let kotaDonemBitis = "kotaDonemBitisMs" // o kotanın yenileneceği an, epoch ms (S03)
 }
 
-/// Çeviri motoru (S02). Bulut yalnız geçerli bir Soniox anahtarı varken seçilidir (K3).
+/// Çeviri motoru (S02). Bulut yalnız geçerli bir Soniox anahtarı varken ya da anahtar sunucudan gelirken
+/// seçilidir (K3; S03: `Anahtarlik.sunucudanAnahtar`).
 enum Motor: String {
     case cihaz, bulut
 }

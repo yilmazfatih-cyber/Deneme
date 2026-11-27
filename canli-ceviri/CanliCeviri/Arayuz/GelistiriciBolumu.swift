@@ -21,9 +21,19 @@ struct GelistiriciBolumu: View {
         self.onizleme = onizleme
     }
 
-    /// Bulut motoru yalnız Soniox anahtarı varken seçilebilir (K3).
+    /// Alana anahtar girilmiş mi (boşluklar sayılmaz).
+    private var anahtarGirildi: Bool {
+        !sonioxAnahtar.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    /// Anahtar geçici anahtar sunucusundan mı gelecek (S03): mağaza yapısı, sunucu adresi dolu, alana anahtar girilmemiş.
+    private var sunucudan: Bool {
+        !anahtarGirildi && Anahtarlik.sunucudanAnahtar
+    }
+
+    /// Bulut motoru yalnız Soniox anahtarı varken ya da anahtar sunucudan gelirken seçilebilir (K3; S03).
     private var bulutKullanilabilir: Bool {
-        !sonioxAnahtar.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || Anahtarlik.sonioxGomulu
+        anahtarGirildi || Anahtarlik.sonioxGomulu || sunucudan
     }
 
     /// `Anahtarlik.motor` ile aynı kural; ekrandaki alan ve seçim değişince yenilenir.
@@ -127,6 +137,11 @@ struct GelistiriciBolumu: View {
             if Anahtarlik.sonioxGomulu {
                 // KR14: anahtarın kendisi ekranda gösterilmez.
                 Label("Soniox anahtarı bu yapıya gömülü", systemImage: "checkmark.seal.fill")
+                    .font(.footnote.weight(.medium))
+                    .foregroundStyle(Renk.acikMavi)
+            } else if sunucudan {
+                // S03: mağaza yapısında anahtar telefonda durmaz; her akış için sunucudan geçici anahtar alınır.
+                Label("Anahtar üyelikle sunucudan alınır", systemImage: "checkmark.seal.fill")
                     .font(.footnote.weight(.medium))
                     .foregroundStyle(Renk.acikMavi)
             }

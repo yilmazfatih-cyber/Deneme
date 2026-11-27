@@ -1,8 +1,9 @@
 import SwiftUI
 
-/// Ayarlar sekmesi (S02 tur 3: müşteriye sade): abonelik, çeviri dili, sesli okuma, satın alımları geri yükleme,
-/// bağlantılar, gizlilik bildirimi ve sürüm satırı. Anahtarlar, motor seçimi ve Tanılama kaydı burada değildir:
-/// sürüm satırına uzun basınca açılan Tanılama sayfasının "Geliştirici" bölümündedir (`GelistiriciBolumu`).
+/// Ayarlar sekmesi (S02 tur 3: müşteriye sade): üyelik ve kalan haftalık kota (S03), çeviri dili, sesli okuma,
+/// satın alımları geri yükleme, bağlantılar, gizlilik bildirimi ve sürüm satırı. Anahtarlar, motor seçimi ve
+/// Tanılama kaydı burada değildir: sürüm satırına uzun basınca açılan Tanılama sayfasının "Geliştirici"
+/// bölümündedir (`GelistiriciBolumu`).
 struct AyarlarEkrani: View {
     let durum: Durum
     @Binding var tanilamaAcik: Bool
@@ -14,7 +15,8 @@ struct AyarlarEkrani: View {
     @State private var hedefAcik = false
     @ScaledMetric(relativeTo: .title3) private var simgeSutunu: CGFloat = 30
 
-    /// Bulut motoru etkin mi (geçerli Soniox anahtarı var ve geliştirici bölümünde cihaz seçilmemiş).
+    /// Bulut motoru etkin mi (geçerli Soniox anahtarı var ya da anahtar sunucudan geliyor, ve geliştirici bölümünde
+    /// cihaz seçilmemiş).
     private var bulutEtkin: Bool {
         if AyarlarEkrani.ornekBulut() { return true }
         return motorKaydi == Motor.cihaz.rawValue ? false : Anahtarlik.motor == .bulut
@@ -30,6 +32,10 @@ struct AyarlarEkrani: View {
                 // 1. Abonelik
                 VStack(alignment: .leading, spacing: 0) {
                     abonelikSatiri
+                    if let kalan = gorunenKota {
+                        Divider().overlay(Renk.ayrac)
+                        kotaSatiri(kalan)
+                    }
                     if durum.abonelik.abone {
                         Divider().overlay(Renk.ayrac)
                         baglantiSatiri("creditcard.fill", "Aboneliği yönet", Adres.abonelikleriYonet,
@@ -95,13 +101,20 @@ struct AyarlarEkrani: View {
         }
     }
 
-    /// `-ekran ayarlar-bulut`: simülatörde anahtar yokken de bulut etkin görünür (yalnız DEBUG).
+    /// `-ekran ayarlar-bulut` ve `-ekran ayarlar-kota`: simülatörde anahtar yokken de bulut etkin görünür (yalnız DEBUG).
     @MainActor
     private static func ornekBulut() -> Bool {
         #if DEBUG
-        if OrnekEkran.gosterilen == .ayarlarBulut { return true }
+        if OrnekEkran.gosterilen == .ayarlarBulut || OrnekEkran.gosterilen == .ayarlarKota { return true }
         #endif
         return false
+    }
+
+    /// "Bu hafta kalan" satırında gösterilecek süre, sn (S03). Yalnız abonede ve sunucu bildirdiyse; bilinmiyorsa nil
+    /// (satır görünmez).
+    private var gorunenKota: Int? {
+        guard durum.abonelik.abone else { return nil }
+        return Kota.ortak.kalanSn
     }
 
     // MARK: Satırlar
@@ -113,14 +126,14 @@ struct AyarlarEkrani: View {
         let baslik = "Abonelik"
         let durumMetni = "Deneme yapısı: abonelik gerekmez"
         #else
-        let baslik = abone ? "Sınırsız etkin" : "Sınırsız'a geç"
-        let durumMetni = abone ? "Haftalık abonelik" : "Çeviri için abonelik gerekir"
+        let baslik = abone ? "Üyelik etkin" : "Üye ol"
+        let durumMetni = abone ? "Haftalık üyelik" : "Çeviri için üyelik gerekir"
         #endif
         return Button {
             durum.abonelikAcik = true
         } label: {
             HStack(spacing: 14) {
-                Image(systemName: abone ? "checkmark.seal.fill" : "infinity")
+                Image(systemName: abone ? "checkmark.seal.fill" : "person.badge.plus")
                     .font(.title3)
                     .foregroundStyle(Renk.acikMavi)
                     .frame(width: simgeSutunu)
@@ -147,6 +160,30 @@ struct AyarlarEkrani: View {
         .accessibilityValue(durumMetni)
         .accessibilityHint("Abonelik sayfasını açar")
         .accessibilityAddTraits(.isButton)
+    }
+
+    /// Sunucunun bildirdiği kalan haftalık kota (S03): "Bu hafta kalan" ve süre ("2 sa 14 dk"). Yalnız bilgi verir;
+    /// 10 dakikanın altında süre sarı yazılır (renk tek başına bilgi taşımaz: süre yazıyla da okunur).
+    private func kotaSatiri(_ kalan: Int) -> some View {
+        HStack(spacing: 14) {
+            Image(systemName: "hourglass")
+                .font(.title3)
+                .foregroundStyle(Renk.acikMavi)
+                .frame(width: simgeSutunu)
+            Text("Bu hafta kalan")
+                .font(.subheadline)
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.leading)
+            Spacer(minLength: 8)
+            Text(KotaMetni.kalan(kalan))
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(kalan < kotaUyariEsigi ? Renk.sari : Color.secondary)
+                .multilineTextAlignment(.trailing)
+        }
+        .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Bu hafta kalan çeviri süresi")
+        .accessibilityValue(KotaMetni.kalanSesli(kalan))
     }
 
     /// Çeviri dili: bulut motorunda aranabilir dil sayfasını açar (Türkçe en üstte); cihaz motoru yalnız Türkçeye

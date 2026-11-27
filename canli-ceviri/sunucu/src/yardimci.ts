@@ -1,4 +1,4 @@
-// Küçük yardımcılar: base64, onaltılık, tuzlu özet, bayt karşılaştırma.
+// Küçük yardımcılar: base64, onaltılık, tuzlu özet, bayt karşılaştırma, UTC günü.
 
 const BASE64_DESENI = /^[A-Za-z0-9+/]*={0,2}$/
 const BASE64URL_DESENI = /^[A-Za-z0-9_-]+$/
@@ -57,15 +57,10 @@ export async function tuzluOzet(tuz: string, deger: string): Promise<string> {
   return onaltilik(await crypto.subtle.sign('HMAC', anahtar, kodlayici.encode(deger)))
 }
 
-/** UTC günü, `YYYY-AA-GG`. */
-export function utcGun(ms: number): string {
-  return new Date(ms).toISOString().slice(0, 10)
-}
-
-/** Bir sonraki UTC gece yarısına kalan saniye (en az 1). */
-export function geceYarisinaSaniye(ms: number): number {
+/** Verilen andan SONRAKİ ilk UTC gece yarısı (ms). Tam gece yarısında bir sonraki günün gece yarısını verir. */
+export function sonrakiUtcGeceYarisi(ms: number): number {
   const GUN_MS = 86_400_000
-  return Math.max(1, Math.ceil((GUN_MS - (ms % GUN_MS)) / 1000))
+  return (Math.floor(ms / GUN_MS) + 1) * GUN_MS
 }
 
 /** Baytları JSON olarak çözer; UTF-8 ya da JSON bozuksa hata fırlatır. */

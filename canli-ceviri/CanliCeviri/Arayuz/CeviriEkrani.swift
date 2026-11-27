@@ -17,7 +17,8 @@ struct CeviriEkrani: View {
 
     private var dil: Dil { diller.first { $0.kod == kaynakKod } ?? diller[0] }
 
-    /// Dinlerken o dinlemenin motoru; duruyorken seçili motor (anahtar yoksa cihaz; karar `Anahtarlik`'tadır).
+    /// Dinlerken o dinlemenin motoru; duruyorken seçili motor (ne anahtar ne sunucu varsa cihaz; karar
+    /// `Anahtarlik`'tadır).
     private var bulutMotoru: Bool {
         if durum.calisiyor { return durum.bulutCalisiyor }
         return motorKaydi == Motor.cihaz.rawValue ? false : Anahtarlik.motor == .bulut
@@ -319,6 +320,12 @@ struct CeviriEkrani: View {
         .padding(.bottom, 12)
     }
 
+    /// Haftalık kotada 10 dakikadan az kaldı (S03): tek sarı not. Kalan süre yalnız sunucu bildirdiyse bilinir.
+    /// Ekranda hata varken (ör. "kotanız doldu") ve abonelik yokken gösterilmez.
+    private var kotaAz: Bool {
+        durum.hata == nil && !durum.abonelikGerekli && Kota.ortak.azKaldi
+    }
+
     /// Hata (açık kırmızı), sarı notlar, ses yolu uyarısı ve kulaklık durumu.
     @ViewBuilder
     private var durumSatirlari: some View {
@@ -330,6 +337,9 @@ struct CeviriEkrani: View {
         }
         ForEach(durum.notlar) { not in
             UyariSatiri(metin: not.metin, renk: Renk.sari)
+        }
+        if kotaAz {
+            UyariSatiri(metin: Kota.azMetni, renk: Renk.sari)
         }
         if let uyari = durum.hat.yolUyarisi {
             UyariSatiri(metin: uyari, renk: Renk.sari)

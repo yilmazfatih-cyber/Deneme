@@ -177,6 +177,7 @@ final class Durum {
             return
         }
         // Anahtarı `BulutAkisi` her yeni akışta `SonioxAnahtarKaynagi`'ndan kendisi ister; burada okunmaz (K5).
+        // Mağaza yapısında anahtar sunucudan gelir (S03); alınamazsa `Hat` dinlemeyi Türkçe açıklamayla bitirir.
         let bitis: AsyncThrowingStream<String, Error>
         do {
             bitis = try hat.baslatBulut(kaynak: kaynak, hedef: hedef)
@@ -394,6 +395,17 @@ final class Durum {
 
     static let abonelikBittiMetni = "Aboneliğiniz sona erdi."
 
+    /// Geçici anahtar sunucusu geçerli üyelik bulamadı (S03): dinleme açıklamayla durdu; fiyat ekranı açılır ve
+    /// telefondaki abonelik durumu yeniden okunur (süresi dolduysa ekran bunu gösterir).
+    private func uyelikBulunamadi() {
+        Tanilama.ortak.kaydet("abonelik", "sunucu üyelik bulamadı, fiyat ekranı açıldı", uyari: true)
+        abonelikAcik = true
+        Task { [weak self] in
+            guard let self else { return }
+            await self.abonelik.durumuGuncelle()
+        }
+    }
+
     /// Bekleyen kapanış varsa hattı hemen kapatır (yeni Başlat'tan önce).
     private func kapanisiBitir() {
         guard let gorev = kapanisGorevi else { return }
@@ -437,6 +449,7 @@ final class Durum {
             guard calisiyor else { return }
             let (mesaj, kod) = Durum.turkce(h)
             hataylaBitir(mesaj, neden: "hata \(kod)")
+            if h.fiyatEkrani { uyelikBulunamadi() }
         case .bulutCumlesi(let cumle):
             guard calisiyor, bulutCalisiyor else { return }
             bulutCumlesiGeldi(cumle)

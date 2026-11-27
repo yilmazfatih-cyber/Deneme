@@ -1,9 +1,10 @@
 import StoreKit
 import SwiftUI
 
-/// Fiyat ekranı (alttan açılır; S02 tur 3): uygulamanın yaptıkları, tek paket (haftalık; fiyat App Store'dan okunur),
-/// satın alma, yenileme ve iptal bilgisi, geri yükleme, koşullar ve gizlilik bağlantıları, sağ üstte Kapat.
+/// Fiyat ekranı (alttan açılır; S02 tur 3): uygulamanın yaptıkları, tek paket (haftalık üyelik; fiyat App Store'dan
+/// okunur), satın alma, yenileme ve iptal bilgisi, geri yükleme, koşullar ve gizlilik bağlantıları, sağ üstte Kapat.
 /// Bunlar App Review'un abonelik ekranı şartlarıdır; hiçbiri kaldırılmaz. Fiyat koda yazılmaz.
+/// Üyelik kullanım kotalıdır (S03): ekran bunu açıkça söyler; kotanın büyüklüğü sunucudan gelir, koda yazılmaz.
 /// Abone ise durum ve "Aboneliği yönet" gösterilir.
 struct AbonelikEkrani: View {
     let abonelik: Abonelik
@@ -23,7 +24,7 @@ struct AbonelikEkrani: View {
             // Kaydırılabilir: en büyük Dinamik Yazı'da da hiçbir metin kesilmez.
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    Text("Sınırsız çeviri")
+                    Text("Haftalık üyelik")
                         .font(.largeTitle.weight(.bold))
                         .fixedSize(horizontal: false, vertical: true)
                         .accessibilityAddTraits(.isHeader)
@@ -89,11 +90,25 @@ struct AbonelikEkrani: View {
         return Anahtarlik.motor == .bulut
     }
 
-    /// Uygulamanın yaptıkları: kısa, abartısız. Dil sayıları listelerden gelir.
+    /// Üyelik kullanım kotalı mı: anahtar geçici anahtar sunucusundan geliyorsa evet (kota orada tutulur; S03).
+    @MainActor
+    private static func kotali() -> Bool {
+        #if DEBUG
+        // `-ekran abonelik`: simülatörde sunucu adresi yokken de müşteri yapısındaki kota satırı görünür.
+        if OrnekEkran.gosterilen == .abonelik { return true }
+        #endif
+        return Anahtarlik.sunucudanAnahtar && Anahtarlik.motor == .bulut
+    }
+
+    /// Uygulamanın yaptıkları: kısa, abartısız. Dil sayıları listelerden gelir; kota dakikası yazılmaz (sunucudan
+    /// gelir ve değişebilir), ama kotanın varlığı alt satırda açıkça söylenir.
     private var maddeler: some View {
         let bulut = AbonelikEkrani.bulutEtkin()
         return VStack(alignment: .leading, spacing: 14) {
-            madde("infinity", "Sınırsız çeviri süresi")
+            if AbonelikEkrani.kotali() {
+                madde("clock.arrow.circlepath", "Her hafta yenilenen çeviri kotası",
+                      alt: "Haftalık kullanım kotası vardır.")
+            }
             if bulut {
                 madde("globe", "\(bulutDilleri.count) dilden istediğiniz dile")
                 madde("ear", "Dili kendiliğinden tanır")
@@ -107,17 +122,27 @@ struct AbonelikEkrani: View {
         .background(Renk.kart, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 
-    private func madde(_ simge: String, _ metin: String) -> some View {
+    /// `alt`: maddenin altında küçük, ikincil açıklama satırı.
+    private func madde(_ simge: String, _ metin: String, alt: String? = nil) -> some View {
         HStack(spacing: 14) {
             Image(systemName: simge)
                 .font(.title3)
                 .foregroundStyle(Renk.acikMavi)
                 .frame(width: simgeSutunu)
                 .accessibilityHidden(true)
-            Text(metin)
-                .font(.body)
-                .fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(metin)
+                    .font(.body)
+                    .fixedSize(horizontal: false, vertical: true)
+                if let alt {
+                    Text(alt)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
         }
+        .accessibilityElement(children: .combine)
     }
 
     /// Tek paket: haftalık. Fiyat yalnız App Store'dan gelir.

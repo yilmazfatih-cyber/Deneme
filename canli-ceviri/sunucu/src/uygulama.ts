@@ -5,6 +5,9 @@
 //   3. Kullanım sınırını uygula               → cok_sik / sinir_doldu
 //   4. Soniox'tan geçici anahtar al           → sunucu_hatasi (bütçe geri alınır)
 //
+// Bütçe abonelik DÖNEMİ başınadır (Production: işlemin `expiresDate` değerine dek; her yenileme yeni bütçe).
+// Sandbox'ta abonelik birkaç dakikada bir yenilendiği için bütçe UTC gününe göredir.
+//
 // Yanıtlar ve kayıtlar doğrulamanın hangi adımda düştüğünü söylemez. Kayda yalnız sonuç kodu, ortam ve aboneliğin
 // kısaltılmış tuzlu özeti yazılır; Soniox anahtarı, işlemin kendisi, abonelik kimliği ve IP hiçbir yere yazılmaz.
 
@@ -12,7 +15,7 @@ import { type Abonelik, type Ortam, yukuDenetle } from './abonelik'
 import { type Ayarlar, type Env, ayarlariOku } from './ayarlar'
 import { DogrulamaHatasi, type GuvenKoku, jwsDogrula } from './jws'
 import { type GetirIslevi, geciciAnahtarAl } from './soniox'
-import { jsonCoz, tuzluOzet } from './yardimci'
+import { jsonCoz, sonrakiUtcGeceYarisi, tuzluOzet } from './yardimci'
 
 export const YOL = '/v1/oturum'
 /** İstek gövdesinin en büyük boyutu (bayt). */
@@ -26,7 +29,7 @@ const ILETILER: Record<HataKodu, string> = {
   gecersiz_istek: 'İstek geçersiz.',
   imza_gecersiz: 'İşlem doğrulanamadı.',
   abonelik_yok: 'Geçerli abonelik bulunamadı.',
-  sinir_doldu: 'Günlük kullanım süresi doldu.',
+  sinir_doldu: 'Kullanım kotası doldu.',
   cok_sik: 'Çok sık istek. Biraz sonra yeniden deneyin.',
   sunucu_hatasi: 'Sunucu hatası. Biraz sonra yeniden deneyin.',
 }
@@ -173,14 +176,28 @@ async function oturumAc(istek: Request, env: Env, ayarlar: Ayarlar, bagimlilikla
   const ozet = tamOzet.slice(0, KISA_OZET_UZUNLUGU)
   const sayac = env.SAYAC.get(env.SAYAC.idFromName(`abone:${ortam}:${tamOzet}`))
 
+  // Bütçe dönemi: Production'da işlemin kapsadığı abonelik dönemi (her yenileme yeni bütçe). Sandbox'ta haftalık
+  // abonelik birkaç dakikada bir yenilenir; dönem anahtarı bütçeyi fiilen sınırsız yapardı, bu yüzden UTC günü.
+  const sandbox = ortam === 'Sandbox'
   const ayirma = await sayac.ayir({
     simdi,
-    gunlukSaniye: ortam === 'Sandbox' ? ayarlar.sandboxGunlukSaniye : ayarlar.gunlukSaniye,
+    donemBitisMs: sandbox ? sonrakiUtcGeceYarisi(simdi) : abonelik.bitisMs,
+    butceSaniye: sandbox ? ayarlar.sandboxGunlukSaniye : ayarlar.donemSaniye,
     oturumSaniye: ayarlar.oturumSaniye,
   })
-  if (ayirma.tur !== 'verildi') {
-    kaydet({ sonuc: ayirma.tur, ortam, ozet })
-    return hataYaniti(429, ayirma.tur, { 'Retry-After': String(ayirma.beklemeSn) })
+  if (ayirma.tur === 'cok_sik') {
+    kaydet({ sonuc: 'cok_sik', ortam, ozet })
+    return hataYaniti(429, 'cok_sik', { 'Retry-After': String(ayirma.beklemeSn) })
+  }
+  if (ayirma.tur === 'sinir_doldu') {
+    kaydet({ sonuc: 'sinir_doldu', ortam, ozet })
+    // Ek alan taşıyan tek hata yanıtı: bütçenin sıfırlanacağı an (uygulama "kotanız şu tarihte yenilenir" diyebilsin).
+    const beklemeSn = Math.max(1, Math.ceil((ayirma.donemBitisMs - simdi) / 1000))
+    return jsonYanit(
+      429,
+      { hata: 'sinir_doldu', ileti: ILETILER.sinir_doldu, donem_bitis_ms: ayirma.donemBitisMs },
+      { 'Retry-After': String(beklemeSn) },
+    )
   }
 
   const anahtar = await geciciAnahtarAl(bagimliliklar.getir, ayarlar.sonioxAnahtari, ayirma.sureSn, ozet)
@@ -192,5 +209,10 @@ async function oturumAc(istek: Request, env: Env, ayarlar: Ayarlar, bagimlilikla
   }
 
   kaydet({ sonuc: 'verildi', ortam, ozet })
-  return jsonYanit(200, { anahtar: anahtar.anahtar, sure_sn: ayirma.sureSn, kalan_sn: ayirma.kalanSn })
+  return jsonYanit(200, {
+    anahtar: anahtar.anahtar,
+    sure_sn: ayirma.sureSn,
+    kalan_sn: ayirma.kalanSn,
+    donem_bitis_ms: ayirma.donemBitisMs,
+  })
 }

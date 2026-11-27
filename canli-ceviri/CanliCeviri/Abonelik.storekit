@@ -30,11 +30,11 @@
       "localizations" : [
         {
           "description" : "",
-          "displayName" : "Canlı Çeviri Sınırsız",
+          "displayName" : "Canlı Çeviri Üyelik",
           "locale" : "tr"
         }
       ],
-      "name" : "Canlı Çeviri Sınırsız",
+      "name" : "Canlı Çeviri Üyelik",
       "subscriptions" : [
         {
           "adHocOffers" : [
@@ -50,14 +50,14 @@
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Sınırsız dinleme süresi",
-              "displayName" : "Sınırsız çeviri (haftalık)",
+              "description" : "Haftalık çeviri kotası",
+              "displayName" : "Haftalık üyelik",
               "locale" : "tr"
             }
           ],
-          "productID" : "canliceviri.sinirsiz.haftalik",
+          "productID" : "canliceviri.haftalik",
           "recurringSubscriptionPeriod" : "P1W",
-          "referenceName" : "Sınırsız haftalık",
+          "referenceName" : "Haftalık üyelik",
           "subscriptionGroupID" : "21000001",
           "type" : "RecurringSubscription"
         }

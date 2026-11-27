@@ -85,6 +85,10 @@ struct KokEkran: View {
         .onChange(of: durum.abonelikNotu) { _, yeni in
             if let yeni { duyur(yeni) }
         }
+        // S03: haftalık kotada 10 dakikadan az kalınca bir kez duyurulur.
+        .onChange(of: Kota.ortak.azKaldi) { _, az in
+            if az { duyur(Kota.azMetni) }
+        }
         // C-7: yalnız yeni eklenen ya da metni değişen sarı not duyurulur.
         .onChange(of: durum.notlar) { eski, yeni in
             for not in yeni where !eski.contains(not) {

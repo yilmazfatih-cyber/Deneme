@@ -7,6 +7,8 @@ export type Ortam = 'Production' | 'Sandbox'
 export interface Abonelik {
   /** `originalTransactionId`: aboneliğin yenilemeler boyunca değişmeyen kimliği. Hiçbir kayda ya da yanıta yazılmaz. */
   asilIslemKimligi: string
+  /** `expiresDate` (ms): bu işlemin kapsadığı abonelik döneminin bittiği an. Production'da bütçe dönemini belirler. */
+  bitisMs: number
   ortam: Ortam
 }
 
@@ -36,5 +38,5 @@ export function yukuDenetle(yuk: Record<string, unknown>, ayarlar: Ayarlar, simd
   const kimlik = yuk.originalTransactionId
   if (typeof kimlik !== 'string' || kimlik.length === 0 || kimlik.length > KIMLIK_EN_UZUN) return null
 
-  return { asilIslemKimligi: kimlik, ortam }
+  return { asilIslemKimligi: kimlik, bitisMs: bitis, ortam }
 }

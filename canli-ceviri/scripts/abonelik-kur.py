@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Canlı Çeviri: App Store Connect'te haftalık "Sınırsız" aboneliğini kurar.
+"""Canlı Çeviri: App Store Connect'te haftalık üyelik aboneliğini (kullanım kotalı) kurar.
 
 Ne yapar (sırayla; her adımda önce var mı diye bakar, varsa DEĞİŞTİRMEZ):
   1. Abonelik grubu ve grubun tr / en-US adları
@@ -47,19 +47,19 @@ API_KOKU = "https://api.appstoreconnect.apple.com"
 
 # --- Kurulacak ürün (uygulama StoreKit 2 ile tam bu kimliği arar: Sabitler.swift → abonelikUrunu) ---
 PAKET_KIMLIGI = "com.yilmazfatih.canliceviri"
-GRUP_ADI = "Canlı Çeviri Sınırsız"
+GRUP_ADI = "Canlı Çeviri Üyelik"
 GRUP_YERELLESTIRMELERI = {
-    "tr": {"name": "Canlı Çeviri Sınırsız"},
-    "en-US": {"name": "Live Translate Unlimited"},
+    "tr": {"name": "Canlı Çeviri Üyelik"},
+    "en-US": {"name": "Live Translate Membership"},
 }
-URUN_KIMLIGI = "canliceviri.sinirsiz.haftalik"
-ABONELIK_ADI = "Sınırsız haftalık"
+URUN_KIMLIGI = "canliceviri.haftalik"
+ABONELIK_ADI = "Haftalık üyelik"
 ABONELIK_SURESI = "ONE_WEEK"
 GRUP_DUZEYI = 1
 AILE_PAYLASIMI = False
 ABONELIK_YERELLESTIRMELERI = {
-    "tr": {"name": "Sınırsız haftalık", "description": "Sınırsız çeviri süresi"},
-    "en-US": {"name": "Unlimited weekly", "description": "Unlimited translation time"},
+    "tr": {"name": "Haftalık üyelik", "description": "Haftalık çeviri kotası"},
+    "en-US": {"name": "Weekly membership", "description": "Weekly translation quota"},
 }
 TABAN_BOLGE = "USA"
 TABAN_FIYAT = Decimal("4.99")

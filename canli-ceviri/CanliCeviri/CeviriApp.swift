@@ -11,11 +11,15 @@
 //   Tanilama.swift              cihazda tutulan olay kaydı (içerik ve cihaz adı yazılmaz)
 //   Anahtarlik.swift            Alania ve Soniox anahtarları (Anahtar Zinciri), seçili motor
 //   Bulut/SonioxCozucu.swift    Soniox yanıtlarını cümlelere ayıran saf mantık (yalnız Foundation; testi tests/ios)
-//   Bulut/BulutAkisi.swift      Soniox WebSocket akışı ve ses dönüşümü (16 kHz, tek kanal, 16 bit)
+//   Bulut/BulutAkisi.swift      Soniox WebSocket akışı, dilim devri ve ses dönüşümü (16 kHz, tek kanal, 16 bit)
 //   Bulut/GomuluAnahtar.swift   yapıya gömülü Soniox anahtarı (depoda hep boş; yalnız TestFlight iş akışı doldurur)
-//   Bulut/SonioxAnahtarKaynagi.swift  bulut anahtarının geldiği tek yer (bugün yerel; ileride sunucu)
+//   Bulut/SonioxAnahtarKaynagi.swift  bulut anahtarının geldiği tek yer: yerel anahtar ya da geçici anahtar sunucusu
+//   Bulut/SunucuAdresi.swift    geçici anahtar sunucusunun kök adresi (depoda boş; sunucu yayımlanınca dolar)
+//   Bulut/AnahtarSunucusu.swift sunucu sözleşmesinin saf kısmı: yanıt çözme, hata ve kota metinleri (yalnız Foundation)
+//   Bulut/DilimPlani.swift      dilim devrinin zamanlama kararı (yalnız Foundation; testi tests/ios)
+//   Kota.swift                  sunucunun bildirdiği kalan haftalık kota (Ayarlar satırı, Çeviri ekranı notu)
 //   Arayuz/GelistiriciBolumu.swift    motor, anahtarlar, okuma sesi: Tanılama sayfasının altında (müşteri görmez)
-//   Abonelik.swift              haftalık abonelik (StoreKit 2); dinleme yalnız aboneyle başlar
+//   Abonelik.swift              haftalık üyelik (StoreKit 2); dinleme yalnız aboneyle başlar
 //   Arayuz/KokEkran.swift       arka plan, sekme çubuğu, çeviri oturumu, duyurular
 //   Arayuz/*Ekrani.swift        Çeviri, Geçmiş, Ayarlar ve Tanılama ekranları
 //   Arayuz/Bilesenler.swift     kart, satır ve uyarı satırı

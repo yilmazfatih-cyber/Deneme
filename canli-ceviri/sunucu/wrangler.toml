@@ -11,13 +11,16 @@ preview_urls = false
 [vars]
 # Uygulamanın paket kimliği ve abonelik ürünü; imzalı işlemde bunlar aranır.
 PAKET_KIMLIGI = "com.yilmazfatih.canliceviri"
-URUN_KIMLIGI = "canliceviri.sinirsiz.haftalik"
-# Abone başına günlük kullanım bütçesi (saniye; gün UTC'ye göre döner).
-GUNLUK_SANIYE = "7200"
-# Sandbox (TestFlight, App Review) işlemleri için ayrı, düşük bütçe.
+URUN_KIMLIGI = "canliceviri.haftalik"
+# Abonelik DÖNEMİ başına kullanım bütçesi (saniye). Dönem, işlemin expiresDate değerine dek sürer; her yenilemede
+# bütçe sıfırlanır. 9600 sn = 160 dakika: haftalık fiyat / 10 / saatlik Soniox maliyeti (4,99 $ / 10 / 0,18 $ ≈ 2,8
+# saat, aşağı yuvarlandı). Fiyat ya da maliyet değişirse yeniden hesaplanır (bkz. README, "Sınırlar").
+DONEM_SANIYE = "9600"
+# Sandbox (TestFlight, App Review) işlemleri için ayrı, düşük bütçe. Sandbox'ta abonelik birkaç dakikada bir
+# yenilendiği için dönem değil UTC GÜNÜ başınadır.
 SANDBOX_GUNLUK_SANIYE = "1800"
-# Tek oturumun en uzun süresi (saniye). Verildiği anda tamamı bütçeden düşülür.
-OTURUM_SANIYE = "600"
+# Tek anahtarın (dilimin) en uzun süresi (saniye). Verildiği anda tamamı bütçeden düşülür.
+OTURUM_SANIYE = "120"
 # "true" değilse Sandbox işlemleri reddedilir. TestFlight ve App Review Sandbox kullanır.
 SANDBOX_IZINLI = "true"
 

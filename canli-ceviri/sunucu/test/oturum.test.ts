@@ -1,14 +1,16 @@
 // POST /v1/oturum uçtan uca testleri. Workers çalışma zamanında koşar; Durable Object'ler gerçektir, Soniox sahtedir.
 // Güven kökü olarak burada üretilen test kökü verilir (yalnız testte mümkündür).
 
+import { runInDurableObject } from 'cloudflare:test'
 import { env as calismaOrtami } from 'cloudflare:workers'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import type { Env } from '../src/ayarlar'
 import worker from '../src/index'
 import { kokuHazirla } from '../src/jws'
-import { DEVIR_PAYI_MS, IP_GECERSIZ_SINIRI } from '../src/sayac'
+import { DAKIKADA_ISTEK, IP_GECERSIZ_SINIRI } from '../src/sayac'
 import type { GetirIslevi } from '../src/soniox'
 import { GOVDE_SINIRI, type Isleyici, isleyiciOlustur } from '../src/uygulama'
+import { tuzluOzet } from '../src/yardimci'
 import {
   type Sertifika,
   type Zincir,
@@ -25,8 +27,12 @@ import {
 const env = calismaOrtami as unknown as Env
 const SONIOX_ANAHTARI = env.SONIOX_API_KEY ?? ''
 const PAKET = 'com.yilmazfatih.canliceviri'
-const URUN = 'canliceviri.sinirsiz.haftalik'
+const URUN = 'canliceviri.haftalik'
 const GUN_MS = 86_400_000
+/** wrangler.toml'daki değerler: dönem bütçesi, Sandbox günlük bütçesi ve tek anahtarın (dilimin) süresi (sn). */
+const DONEM_SN = 9600
+const SANDBOX_GUNLUK_SN = 1800
+const DILIM_SN = 120
 /** Testlerin başlangıç anı: 2026-11-27 12:00:00 UTC. */
 const T0 = Date.UTC(2026, 10, 27, 12, 0, 0)
 const GECERLILIK = { baslangic: T0 - GUN_MS, bitis: T0 + 365 * GUN_MS }
@@ -171,7 +177,39 @@ function hataBekle(yanit: Yanit, durum: number, kod: string): void {
   expect(yanit.durum).toBe(durum)
   expect(yanit.govde.hata).toBe(kod)
   expect(typeof yanit.govde.ileti).toBe('string')
-  expect(Object.keys(yanit.govde).sort()).toEqual(['hata', 'ileti'])
+  // Ek alan taşıyan tek hata `sinir_doldu` (`donem_bitis_ms`); başka hiçbir hata yanıtında ek bilgi yoktur.
+  if (kod === 'sinir_doldu') {
+    expect(Object.keys(yanit.govde).sort()).toEqual(['donem_bitis_ms', 'hata', 'ileti'])
+    expect(Number.isSafeInteger(yanit.govde.donem_bitis_ms)).toBe(true)
+  } else {
+    expect(Object.keys(yanit.govde).sort()).toEqual(['hata', 'ileti'])
+  }
+}
+
+/** Bütçe dolunca dönen yanıt: `sinir_doldu` + bütçenin sıfırlanacağı an + o ana kalan saniye (`Retry-After`). */
+function sinirDolduBekle(yanit: Yanit, donemBitisMs: number): void {
+  hataBekle(yanit, 429, 'sinir_doldu')
+  expect(yanit.govde.donem_bitis_ms).toBe(donemBitisMs)
+  expect(yanit.basliklar.get('Retry-After')).toBe(String(Math.max(1, Math.ceil((donemBitisMs - saat) / 1000))))
+}
+
+/** Başarı yanıtı: tam olarak dört alan. */
+function verildiBekle(yanit: Yanit, sureSn: number, kalanSn: number, donemBitisMs: number): void {
+  expect(yanit.durum).toBe(200)
+  expect(yanit.govde).toEqual({
+    anahtar: verilenGeciciAnahtarlar.at(-1),
+    sure_sn: sureSn,
+    kalan_sn: kalanSn,
+    donem_bitis_ms: donemBitisMs,
+  })
+  expect(yanit.basliklar.get('Retry-After')).toBeNull()
+}
+
+/** Bir aboneliğin sayaç nesnesinin depolamasındaki bütün kayıtlar (ad, sunucudaki gibi tuzlu özetten türetilir). */
+async function sayacKayitlari(ortam: 'Production' | 'Sandbox', kimlik: string): Promise<[string, unknown][]> {
+  const tamOzet = await tuzluOzet(env.OZET_TUZU ?? '', `abone:${ortam}:${kimlik}`)
+  const sayac = env.SAYAC.get(env.SAYAC.idFromName(`abone:${ortam}:${tamOzet}`))
+  return runInDurableObject(sayac, (_nesne, durum) => [...durum.storage.kv.list()])
 }
 
 beforeAll(async () => {
@@ -207,9 +245,10 @@ afterEach(() => {
 
 describe('geçerli işlem', () => {
   it('200 döner ve Soniox isteği doğrudur', async () => {
-    const yanit = await gonder(await gecerliIslem())
-    expect(yanit.durum).toBe(200)
-    expect(yanit.govde).toEqual({ anahtar: verilenGeciciAnahtarlar.at(-1), sure_sn: 600, kalan_sn: 6600 })
+    const bitis = saat + 6 * GUN_MS
+    const yanit = await gonder(await gecerliIslem({ expiresDate: bitis }))
+    // `donem_bitis_ms`: Production'da işlemin `expiresDate` değeri.
+    verildiBekle(yanit, DILIM_SN, DONEM_SN - DILIM_SN, bitis)
     expect(yanit.basliklar.get('Cache-Control')).toBe('no-store')
 
     expect(sonioxCagrilari).toHaveLength(1)
@@ -229,7 +268,7 @@ describe('geçerli işlem', () => {
       usage_type: 'transcribe_websocket',
       expires_in_seconds: 60,
       single_use: true,
-      max_session_duration_seconds: 600,
+      max_session_duration_seconds: DILIM_SN,
     })
     // Abonelik kimliğinin kendisi değil, kısaltılmış tuzlu özeti gider.
     expect(cagri.govde.client_reference_id).toMatch(/^[0-9a-f]{24}$/)
@@ -238,8 +277,8 @@ describe('geçerli işlem', () => {
   it('aynı abonelik hep aynı özetle, farklı abonelik farklı özetle gider', async () => {
     const kimlik = yeniKimlik()
     await gonder(await gecerliIslem({ originalTransactionId: kimlik }))
-    saat += 600_000
-    await gonder(await gecerliIslem({ originalTransactionId: kimlik }))
+    // Yenilenen dönemin işlemi de aynı aboneliktir: özet dönemden bağımsızdır.
+    await gonder(await gecerliIslem({ originalTransactionId: kimlik, expiresDate: saat + 13 * GUN_MS }))
     await gonder(await gecerliIslem())
     const ozetler = sonioxCagrilari.map((cagri) => cagri.govde.client_reference_id)
     expect(ozetler).toHaveLength(3)
@@ -249,8 +288,19 @@ describe('geçerli işlem', () => {
 
   it('sandbox işlemi (izinliyken) ayrı ve düşük bütçe kullanır', async () => {
     const yanit = await gonder(await gecerliIslem({ environment: 'Sandbox' }))
-    expect(yanit.durum).toBe(200)
-    expect(yanit.govde).toMatchObject({ sure_sn: 600, kalan_sn: 1200 })
+    // `donem_bitis_ms`: Sandbox'ta işlemin bitişi değil, bir sonraki UTC gece yarısı.
+    verildiBekle(yanit, DILIM_SN, SANDBOX_GUNLUK_SN - DILIM_SN, Date.UTC(2026, 10, 28))
+  })
+
+  it('aynı abonelik kimliği Production ve Sandbox için ayrı sayılır', async () => {
+    const kimlik = yeniKimlik()
+    const bitis = saat + 6 * GUN_MS
+    const uretim = await gonder(await gecerliIslem({ originalTransactionId: kimlik, expiresDate: bitis }))
+    verildiBekle(uretim, DILIM_SN, DONEM_SN - DILIM_SN, bitis)
+    const sandbox = await gonder(
+      await gecerliIslem({ originalTransactionId: kimlik, expiresDate: bitis, environment: 'Sandbox' }),
+    )
+    verildiBekle(sandbox, DILIM_SN, SANDBOX_GUNLUK_SN - DILIM_SN, Date.UTC(2026, 10, 28))
   })
 })
 
@@ -451,7 +501,9 @@ describe('güvenlik: yük denetimi', () => {
   })
 
   it('yanlış productId', async () => {
-    await abonelikYok({ productId: 'canliceviri.sinirsiz.aylik' })
+    await abonelikYok({ productId: 'canliceviri.aylik' })
+    await abonelikYok({ productId: `${URUN}.eski` })
+    await abonelikYok({ productId: undefined })
   })
 
   it('otomatik yenilenen abonelik olmayan tür', async () => {
@@ -484,91 +536,202 @@ describe('güvenlik: yük denetimi', () => {
   })
 })
 
-describe('kullanım sınırları', () => {
-  it('pencere bitmeden ikinci istek 429 alır; son 30 saniyede devir izinlidir', async () => {
-    const kimlik = yeniKimlik()
-    const islem = (): Promise<string> => gecerliIslem({ originalTransactionId: kimlik })
+describe('dönem bütçesi (Production)', () => {
+  /** Aynı aboneliğin, verilen dönem bitişini (`expiresDate`) taşıyan işlemiyle istek. */
+  function istekci(kimlik: string, ozelEnv: Env = env): (bitis: number) => Promise<Yanit> {
+    return async (bitis) =>
+      gonder(await gecerliIslem({ originalTransactionId: kimlik, expiresDate: bitis }), { env: ozelEnv })
+  }
 
-    expect((await gonder(await islem())).durum).toBe(200)
+  it('art arda istekler pencere beklemeden anahtar alır; her biri bir dilim düşer', async () => {
+    const bitis = saat + 6 * GUN_MS
+    const istek = istekci(yeniKimlik())
 
-    saat = T0 + 100_000
-    const erken = await gonder(await islem())
-    hataBekle(erken, 429, 'cok_sik')
-    expect(erken.basliklar.get('Retry-After')).toBe('470')
+    // Saat hiç ilerlemez: önceki anahtarın süresi dolmadan (aynı anda bile) yenisi verilir.
+    for (let i = 1; i <= 4; i++) {
+      verildiBekle(await istek(bitis), DILIM_SN, DONEM_SN - i * DILIM_SN, bitis)
+      expect(sonioxCagrilari.at(-1)!.govde.max_session_duration_seconds).toBe(DILIM_SN)
+    }
+    expect(sonioxCagrilari).toHaveLength(4)
+  })
 
-    saat = T0 + 600_000 - DEVIR_PAYI_MS - 1000
-    const birSaniyeKala = await gonder(await islem())
-    hataBekle(birSaniyeKala, 429, 'cok_sik')
-    expect(birSaniyeKala.basliklar.get('Retry-After')).toBe('1')
+  it('bütçe güne değil döneme bağlıdır: gün dönse de yenilenmez', async () => {
+    const bitis = T0 + 6 * GUN_MS
+    const istek = istekci(yeniKimlik(), ayarli({ DONEM_SANIYE: '240', OTURUM_SANIYE: '120' }))
 
-    saat = T0 + 600_000 - DEVIR_PAYI_MS
-    const devir = await gonder(await islem())
-    expect(devir.durum).toBe(200)
-    // Süre verildiği anda tam düşülür: iki oturum = 1200 sn.
-    expect(devir.govde).toMatchObject({ sure_sn: 600, kalan_sn: 6000 })
+    verildiBekle(await istek(bitis), 120, 120, bitis)
+    saat = T0 + GUN_MS + 3_600_000
+    verildiBekle(await istek(bitis), 120, 0, bitis)
+
+    saat = T0 + 3 * GUN_MS
+    const dolu = await istek(bitis)
+    sinirDolduBekle(dolu, bitis)
+    // Dönemin bitişine üç gün var.
+    expect(dolu.basliklar.get('Retry-After')).toBe(String(3 * 86_400))
     expect(sonioxCagrilari).toHaveLength(2)
   })
 
-  it('bütçe tükenince sinir_doldu; son oturum kalan bütçe kadar olur', async () => {
-    const kimlik = yeniKimlik()
-    const kucuk = ayarli({ GUNLUK_SANIYE: '100', OTURUM_SANIYE: '60' })
-    const istek = async (): Promise<Yanit> =>
-      gonder(await gecerliIslem({ originalTransactionId: kimlik }), { env: kucuk })
+  it('aynı abonelik yeni expiresDate ile (yenileme) yeni bütçe alır', async () => {
+    const ilk = T0 + GUN_MS
+    const sonraki = ilk + 7 * GUN_MS
+    const istek = istekci(yeniKimlik(), ayarli({ DONEM_SANIYE: '240', OTURUM_SANIYE: '120' }))
 
-    expect((await istek()).govde).toMatchObject({ sure_sn: 60, kalan_sn: 40 })
-    saat += 60_000
-    expect((await istek()).govde).toMatchObject({ sure_sn: 40, kalan_sn: 0 })
-    expect(sonioxCagrilari.at(-1)!.govde.max_session_duration_seconds).toBe(40)
+    verildiBekle(await istek(ilk), 120, 120, ilk)
+    verildiBekle(await istek(ilk), 120, 0, ilk)
+    sinirDolduBekle(await istek(ilk), ilk)
 
-    saat += 60_000
-    const dolu = await istek()
-    hataBekle(dolu, 429, 'sinir_doldu')
-    // Gece yarısına (UTC) kalan süre: 12:02:00 → 11 saat 58 dakika.
-    expect(dolu.basliklar.get('Retry-After')).toBe(String(12 * 3600 - 120))
+    // Yenilenen dönemin işlemi gelir gelmez bütçe yenilenir.
+    verildiBekle(await istek(sonraki), 120, 120, sonraki)
+
+    // Yeni dönemin bütçesi de dönem boyunca tektir.
+    saat = ilk + 3_600_000
+    verildiBekle(await istek(sonraki), 120, 0, sonraki)
+    sinirDolduBekle(await istek(sonraki), sonraki)
+    expect(sonioxCagrilari).toHaveLength(4)
+  })
+
+  it('eski (daha küçük ama süresi dolmamış) expiresDate bütçeyi sıfırlayamaz; geçerli dönemden düşer', async () => {
+    const eski = T0 + GUN_MS
+    const yeni = eski + 7 * GUN_MS
+    const istek = istekci(yeniKimlik(), ayarli({ DONEM_SANIYE: '360', OTURUM_SANIYE: '120' }))
+
+    verildiBekle(await istek(eski), 120, 240, eski)
+    // Daha yeni dönem görüldü: sayaç bir kez sıfırlanır.
+    verildiBekle(await istek(yeni), 120, 240, yeni)
+    // Eski işlem hâlâ geçerli (süresi dolmadı) ama bütçeyi geri getiremez: en büyük dönemin sayacından düşer ve
+    // yanıt o dönemin bitişini bildirir.
+    verildiBekle(await istek(eski), 120, 120, yeni)
+    verildiBekle(await istek(yeni), 120, 0, yeni)
+    sinirDolduBekle(await istek(eski), yeni)
+    sinirDolduBekle(await istek(yeni), yeni)
+
+    // İkisi arasında gidip gelmek de (hız sınırı penceresi geçtikten sonra) bütçeyi yenilemez.
+    saat = T0 + 61_000
+    sinirDolduBekle(await istek(eski), yeni)
+    sinirDolduBekle(await istek(yeni), yeni)
+    sinirDolduBekle(await istek(eski), yeni)
+    expect(sonioxCagrilari).toHaveLength(4)
+  })
+
+  it('bütçe bitince sinir_doldu + donem_bitis_ms; son dilim kalan bütçe kadar olur', async () => {
+    const bitis = T0 + 6 * GUN_MS
+    const istek = istekci(yeniKimlik(), ayarli({ DONEM_SANIYE: '200', OTURUM_SANIYE: '120' }))
+
+    verildiBekle(await istek(bitis), 120, 80, bitis)
+    verildiBekle(await istek(bitis), 80, 0, bitis)
+    expect(sonioxCagrilari.at(-1)!.govde.max_session_duration_seconds).toBe(80)
+
+    saat += 120_000
+    const dolu = await istek(bitis)
+    sinirDolduBekle(dolu, bitis)
+    expect(dolu.basliklar.get('Retry-After')).toBe(String(6 * 86_400 - 120))
     expect(sonioxCagrilari).toHaveLength(2)
   })
 
-  it('kalan bütçe 30 saniyeden azsa anahtar verilmez', async () => {
-    const kimlik = yeniKimlik()
-    const kucuk = ayarli({ GUNLUK_SANIYE: '80', OTURUM_SANIYE: '60' })
-    const istek = async (): Promise<Yanit> =>
-      gonder(await gecerliIslem({ originalTransactionId: kimlik }), { env: kucuk })
-
-    expect((await istek()).govde).toMatchObject({ sure_sn: 60, kalan_sn: 20 })
-    saat += 60_000
-    hataBekle(await istek(), 429, 'sinir_doldu')
+  it('kalan bütçe 30 saniyeden azsa anahtar verilmez; tam 30 saniyeyse verilir', async () => {
+    const bitis = T0 + 6 * GUN_MS
+    const azKalan = istekci(yeniKimlik(), ayarli({ DONEM_SANIYE: '149', OTURUM_SANIYE: '120' }))
+    verildiBekle(await azKalan(bitis), 120, 29, bitis)
+    sinirDolduBekle(await azKalan(bitis), bitis)
     expect(sonioxCagrilari).toHaveLength(1)
+
+    const tamKalan = istekci(yeniKimlik(), ayarli({ DONEM_SANIYE: '150', OTURUM_SANIYE: '120' }))
+    verildiBekle(await tamKalan(bitis), 120, 30, bitis)
+    verildiBekle(await tamKalan(bitis), 30, 0, bitis)
+    sinirDolduBekle(await tamKalan(bitis), bitis)
+    expect(sonioxCagrilari).toHaveLength(3)
   })
 
-  it('gün dönünce (UTC) bütçe sıfırlanır', async () => {
+  it('bitişi saat kayması payı içinde geçmiş dönemde Retry-After en az 1 saniyedir', async () => {
+    const bitis = T0 - 5000
+    const istek = istekci(yeniKimlik(), ayarli({ DONEM_SANIYE: '120', OTURUM_SANIYE: '120' }))
+    verildiBekle(await istek(bitis), 120, 0, bitis)
+    const dolu = await istek(bitis)
+    sinirDolduBekle(dolu, bitis)
+    expect(dolu.basliklar.get('Retry-After')).toBe('1')
+  })
+
+  it('depolamada abonelik başına tek kayıt durur; yeni dönem eskisinin üzerine yazar', async () => {
     const kimlik = yeniKimlik()
-    const kucuk = ayarli({ GUNLUK_SANIYE: '60', OTURUM_SANIYE: '60' })
-    const istek = async (): Promise<Yanit> =>
-      gonder(await gecerliIslem({ originalTransactionId: kimlik }), { env: kucuk })
+    const ilk = T0 + GUN_MS
+    const sonraki = ilk + 7 * GUN_MS
+    const istek = istekci(kimlik)
+
+    await istek(ilk)
+    await istek(ilk)
+    let depo = await sayacKayitlari('Production', kimlik)
+    expect(depo).toHaveLength(1)
+    expect(depo[0]![1]).toMatchObject({ donemBitisMs: ilk, kullanilanSn: 2 * DILIM_SN })
+
+    // Yeni dönem: eski dönemin sayacı silinir (üzerine yazılır), ayrı bir kayıt açılmaz.
+    await istek(sonraki)
+    depo = await sayacKayitlari('Production', kimlik)
+    expect(depo).toHaveLength(1)
+    expect(depo[0]![1]).toMatchObject({ donemBitisMs: sonraki, kullanilanSn: DILIM_SN })
+    expect(JSON.stringify(depo)).not.toContain(String(ilk))
+
+    // Eski dönemle gelen istek de kayıt açmaz; geçerli dönemin sayacını artırır.
+    await istek(ilk)
+    depo = await sayacKayitlari('Production', kimlik)
+    expect(depo).toHaveLength(1)
+    expect(depo[0]![1]).toMatchObject({ donemBitisMs: sonraki, kullanilanSn: 2 * DILIM_SN })
+    // Kayıtta abonelik kimliği bulunmaz.
+    expect(JSON.stringify(depo)).not.toContain(kimlik)
+  })
+})
+
+describe('günlük bütçe (Sandbox)', () => {
+  it('bütçe UTC gününe göredir: expiresDate değişse de yenilenmez, gün dönünce yenilenir', async () => {
+    const kimlik = yeniKimlik()
+    const kucuk = ayarli({ SANDBOX_GUNLUK_SANIYE: '240', OTURUM_SANIYE: '120' })
+    const istek = async (bitis: number): Promise<Yanit> =>
+      gonder(await gecerliIslem({ originalTransactionId: kimlik, environment: 'Sandbox', expiresDate: bitis }), {
+        env: kucuk,
+      })
+    const geceYarisi = Date.UTC(2026, 10, 28)
 
     saat = Date.UTC(2026, 10, 27, 23, 50, 0)
-    expect((await istek()).govde).toMatchObject({ sure_sn: 60, kalan_sn: 0 })
+    verildiBekle(await istek(saat + 3 * 60_000), 120, 120, geceYarisi)
 
-    saat = Date.UTC(2026, 10, 27, 23, 59, 30)
-    const dolu = await istek()
-    hataBekle(dolu, 429, 'sinir_doldu')
-    expect(dolu.basliklar.get('Retry-After')).toBe('30')
+    // Sandbox'ta haftalık abonelik birkaç dakikada bir yenilenir: yeni expiresDate bütçeyi yenilemez.
+    saat = Date.UTC(2026, 10, 27, 23, 54, 0)
+    verildiBekle(await istek(saat + 3 * 60_000), 120, 0, geceYarisi)
 
-    saat = Date.UTC(2026, 10, 28, 0, 0, 5)
-    expect((await istek()).govde).toMatchObject({ sure_sn: 60, kalan_sn: 0 })
+    saat = Date.UTC(2026, 10, 27, 23, 58, 0)
+    const dolu = await istek(saat + 3 * 60_000)
+    sinirDolduBekle(dolu, geceYarisi)
+    expect(dolu.basliklar.get('Retry-After')).toBe('120')
+    // Bitişi çok ileride olan bir işlem de dönemi belirlemez.
+    sinirDolduBekle(await istek(saat + 30 * GUN_MS), geceYarisi)
+    expect(sonioxCagrilari).toHaveLength(2)
+
+    // Gün döndü (tam gece yarısı yeni güne aittir): bütçe yenilenir, sıfırlanma anı bir sonraki gece yarısıdır.
+    saat = geceYarisi
+    verildiBekle(await istek(saat + 3 * 60_000), 120, 120, geceYarisi + GUN_MS)
+    verildiBekle(await istek(saat + 3 * 60_000), 120, 0, geceYarisi + GUN_MS)
+    sinirDolduBekle(await istek(saat + 3 * 60_000), geceYarisi + GUN_MS)
   })
 
-  it('abonelik başına dakikada 6 istekten fazlası 429 alır', async () => {
+  it('art arda istekler pencere beklemeden anahtar alır', async () => {
     const kimlik = yeniKimlik()
-    const istek = async (): Promise<Yanit> => gonder(await gecerliIslem({ originalTransactionId: kimlik }))
+    const istek = async (): Promise<Yanit> =>
+      gonder(await gecerliIslem({ originalTransactionId: kimlik, environment: 'Sandbox' }))
+    for (let i = 1; i <= 3; i++) {
+      verildiBekle(await istek(), DILIM_SN, SANDBOX_GUNLUK_SN - i * DILIM_SN, Date.UTC(2026, 10, 28))
+    }
+  })
+})
 
-    expect((await istek()).durum).toBe(200)
-    for (let i = 1; i <= 5; i++) {
+describe('istek hızı ve IP sınırı', () => {
+  it('abonelik başına dakikada 6 istekten fazlası 429 alır; reddedilen istek bütçeden düşmez', async () => {
+    const kimlik = yeniKimlik()
+    const bitis = T0 + 6 * GUN_MS
+    const istek = async (donemBitis = bitis): Promise<Yanit> =>
+      gonder(await gecerliIslem({ originalTransactionId: kimlik, expiresDate: donemBitis }))
+
+    for (let i = 0; i < DAKIKADA_ISTEK; i++) {
       saat = T0 + i * 1000
-      // 2.–6. istekler hız sınırına değil, oturum penceresine takılır (bekleme süresi pencereye göre).
-      const yanit = await istek()
-      hataBekle(yanit, 429, 'cok_sik')
-      expect(yanit.basliklar.get('Retry-After')).toBe(String(570 - i))
+      verildiBekle(await istek(), DILIM_SN, DONEM_SN - (i + 1) * DILIM_SN, bitis)
     }
 
     saat = T0 + 6000
@@ -576,49 +739,27 @@ describe('kullanım sınırları', () => {
     hataBekle(yedinci, 429, 'cok_sik')
     // Hız sınırı: ilk isteğin üzerinden bir dakika geçene dek.
     expect(yedinci.basliklar.get('Retry-After')).toBe('54')
+    // Yenilenen dönemin işlemi de hız sınırını aşamaz.
+    hataBekle(await istek(bitis + 7 * GUN_MS), 429, 'cok_sik')
+    expect(sonioxCagrilari).toHaveLength(DAKIKADA_ISTEK)
 
-    // Hız sınırı, devir anı gelmiş olsa bile uygulanır: dakikada 6 istek dolmuşken anahtar verilmez.
-    const kisa = ayarli({ OTURUM_SANIYE: '30' })
-    const kimlik2 = yeniKimlik()
-    const hizli = async (): Promise<Yanit> =>
-      gonder(await gecerliIslem({ originalTransactionId: kimlik2 }), { env: kisa })
-    saat = T0
-    for (let i = 0; i < 6; i++) {
-      saat = T0 + i * 1000
-      expect((await hizli()).durum).toBe(200)
-    }
-    saat = T0 + 7000
-    hataBekle(await hizli(), 429, 'cok_sik')
-    saat = T0 + 61_000
-    expect((await hizli()).durum).toBe(200)
+    // Bir dakika dolunca yeniden verilir; reddedilen istekler bütçeden düşmedi ve dönemi değiştirmedi.
+    saat = T0 + 60_001
+    verildiBekle(await istek(), DILIM_SN, DONEM_SN - 7 * DILIM_SN, bitis)
   })
 
-  it('iki eşzamanlı istekten yalnız biri anahtar alır', async () => {
+  it('bütçesi dolmuş abonelik de hız sınırına takılır', async () => {
     const kimlik = yeniKimlik()
-    const [a, b] = await Promise.all([
-      gecerliIslem({ originalTransactionId: kimlik }),
-      gecerliIslem({ originalTransactionId: kimlik }),
-    ])
-    // Soniox yavaş yanıt verir ki iki istek gerçekten üst üste binsin.
-    sonioxYaniti = async () => {
-      await new Promise((coz) => setTimeout(coz, 50))
-      return sonioxBasarili()
-    }
-    const yanitlar = await Promise.all([gonder(a), gonder(b)])
-    expect(yanitlar.map((yanit) => yanit.durum).sort()).toEqual([200, 429])
-    const reddedilen = yanitlar.find((yanit) => yanit.durum === 429)!
-    hataBekle(reddedilen, 429, 'cok_sik')
-    expect(sonioxCagrilari).toHaveLength(1)
-  })
+    const bitis = T0 + 6 * GUN_MS
+    const kucuk = ayarli({ DONEM_SANIYE: '120', OTURUM_SANIYE: '120' })
+    const istek = async (): Promise<Yanit> =>
+      gonder(await gecerliIslem({ originalTransactionId: kimlik, expiresDate: bitis }), { env: kucuk })
 
-  it('on eşzamanlı istekten yalnız biri anahtar alır', async () => {
-    const kimlik = yeniKimlik()
-    const islemler = await Promise.all(
-      Array.from({ length: 10 }, () => gecerliIslem({ originalTransactionId: kimlik })),
-    )
-    const yanitlar = await Promise.all(islemler.map((islem) => gonder(islem)))
-    expect(yanitlar.filter((yanit) => yanit.durum === 200)).toHaveLength(1)
-    expect(yanitlar.filter((yanit) => yanit.durum === 429)).toHaveLength(9)
+    verildiBekle(await istek(), 120, 0, bitis)
+    for (let i = 1; i < DAKIKADA_ISTEK; i++) sinirDolduBekle(await istek(), bitis)
+    const fazla = await istek()
+    hataBekle(fazla, 429, 'cok_sik')
+    expect(fazla.basliklar.get('Retry-After')).toBe('60')
     expect(sonioxCagrilari).toHaveLength(1)
   })
 
@@ -645,6 +786,94 @@ describe('kullanım sınırları', () => {
     for (let i = 0; i < IP_GECERSIZ_SINIRI + 5; i++) {
       expect((await gonder(await gecerliIslem(), { ip })).durum).toBe(200)
     }
+  })
+})
+
+describe('eşzamanlı istekler', () => {
+  /** Soniox yavaş yanıt verir ki istekler gerçekten üst üste binsin. */
+  async function yavasca<T>(deger: () => T): Promise<T> {
+    await new Promise((coz) => setTimeout(coz, 50))
+    return deger()
+  }
+
+  it('eşzamanlı iki istek de anahtar alır; bütçe toplamda tam iki dilim düşer', async () => {
+    const kimlik = yeniKimlik()
+    const bitis = T0 + 6 * GUN_MS
+    const islem = (): Promise<string> => gecerliIslem({ originalTransactionId: kimlik, expiresDate: bitis })
+    const [a, b] = await Promise.all([islem(), islem()])
+
+    sonioxYaniti = () => yavasca(sonioxBasarili)
+    const yanitlar = await Promise.all([gonder(a), gonder(b)])
+    expect(yanitlar.map((yanit) => yanit.durum)).toEqual([200, 200])
+    expect(yanitlar.map((yanit) => yanit.govde.sure_sn)).toEqual([DILIM_SN, DILIM_SN])
+    // Sayaç istekleri sırayla işler: biri bir dilim, öteki iki dilim düşülmüş kalanı görür.
+    expect(yanitlar.map((yanit) => Number(yanit.govde.kalan_sn)).sort((x, y) => x - y)).toEqual([
+      DONEM_SN - 2 * DILIM_SN,
+      DONEM_SN - DILIM_SN,
+    ])
+    expect(new Set(yanitlar.map((yanit) => yanit.govde.anahtar)).size).toBe(2)
+    expect(sonioxCagrilari).toHaveLength(2)
+
+    sonioxYaniti = sonioxBasarili
+    verildiBekle(await gonder(await islem()), DILIM_SN, DONEM_SN - 3 * DILIM_SN, bitis)
+  })
+
+  it('yarışta fazla harcama yok: bütçe iki dilimlikse eşzamanlı on istekten yalnız ikisi anahtar alır', async () => {
+    const kimlik = yeniKimlik()
+    const kucuk = ayarli({ DONEM_SANIYE: '240', OTURUM_SANIYE: '120' })
+    const islemler = await Promise.all(
+      Array.from({ length: 10 }, () => gecerliIslem({ originalTransactionId: kimlik })),
+    )
+
+    sonioxYaniti = () => yavasca(sonioxBasarili)
+    const yanitlar = await Promise.all(islemler.map((islem) => gonder(islem, { env: kucuk })))
+    const verilenler = yanitlar.filter((yanit) => yanit.durum === 200)
+    expect(verilenler).toHaveLength(2)
+    expect(verilenler.reduce((toplam, yanit) => toplam + Number(yanit.govde.sure_sn), 0)).toBe(240)
+    expect(verilenler.map((yanit) => Number(yanit.govde.kalan_sn)).sort((x, y) => x - y)).toEqual([0, 120])
+    // Kalan sekiz istek 429 alır: dakikadaki ilk altının dördü bütçeye, sonraki dördü hız sınırına takılır.
+    expect(yanitlar.filter((yanit) => yanit.durum === 429)).toHaveLength(8)
+    expect(yanitlar.filter((yanit) => yanit.govde.hata === 'sinir_doldu')).toHaveLength(4)
+    expect(yanitlar.filter((yanit) => yanit.govde.hata === 'cok_sik')).toHaveLength(4)
+    expect(sonioxCagrilari).toHaveLength(2)
+  })
+
+  it('eşzamanlı iki istekten birinde Soniox hata verirse yalnız onun dilimi geri alınır', async () => {
+    const kimlik = yeniKimlik()
+    const bitis = T0 + 6 * GUN_MS
+    const islem = (): Promise<string> => gecerliIslem({ originalTransactionId: kimlik, expiresDate: bitis })
+    const [a, b] = await Promise.all([islem(), islem()])
+
+    let cagri = 0
+    sonioxYaniti = () => {
+      const ilk = ++cagri === 1
+      return yavasca(() => (ilk ? new Response('ic hata', { status: 500 }) : sonioxBasarili()))
+    }
+    const yanitlar = await Promise.all([gonder(a), gonder(b)])
+    expect(yanitlar.map((yanit) => yanit.durum).sort()).toEqual([200, 502])
+    hataBekle(
+      yanitlar.find((yanit) => yanit.durum === 502)!,
+      502,
+      'sunucu_hatasi',
+    )
+
+    // Bütçeden yalnız anahtarı verilen dilim düşmüş: sıradaki istek ikinci dilimi alır.
+    sonioxYaniti = sonioxBasarili
+    verildiBekle(await gonder(await islem()), DILIM_SN, DONEM_SN - 2 * DILIM_SN, bitis)
+  })
+
+  it('eşzamanlı iki istekte de Soniox hata verirse bütçe hiç düşmez', async () => {
+    const kimlik = yeniKimlik()
+    const bitis = T0 + 6 * GUN_MS
+    const islem = (): Promise<string> => gecerliIslem({ originalTransactionId: kimlik, expiresDate: bitis })
+    const [a, b] = await Promise.all([islem(), islem()])
+
+    sonioxYaniti = () => yavasca(() => new Response('ic hata', { status: 500 }))
+    const yanitlar = await Promise.all([gonder(a), gonder(b)])
+    expect(yanitlar.map((yanit) => yanit.durum)).toEqual([502, 502])
+
+    sonioxYaniti = sonioxBasarili
+    verildiBekle(await gonder(await islem()), DILIM_SN, DONEM_SN - DILIM_SN, bitis)
   })
 })
 
@@ -701,12 +930,12 @@ describe('Soniox hataları', () => {
     const hata = await istek()
     hataBekle(hata, 502, 'sunucu_hatasi')
 
-    // Bütçe düşmedi ve pencere açılmadı: hemen ardından gelen istek tam bütçeyle anahtar alır.
+    // Bütçe düşmedi: hemen ardından gelen istek tam bütçeyle anahtar alır.
     sonioxYaniti = sonioxBasarili
     saat += 1000
     const yanit = await istek()
     expect(yanit.durum).toBe(200)
-    expect(yanit.govde).toMatchObject({ sure_sn: 600, kalan_sn: 6600 })
+    expect(yanit.govde).toMatchObject({ sure_sn: DILIM_SN, kalan_sn: DONEM_SN - DILIM_SN })
   }
 
   it('401 dönünce 502 ve bütçe düşmez', async () => {
@@ -748,7 +977,8 @@ describe('yapılandırma', () => {
       { SONIOX_API_KEY: undefined },
       { PAKET_KIMLIGI: '' },
       { URUN_KIMLIGI: undefined },
-      { GUNLUK_SANIYE: 'çok' },
+      { DONEM_SANIYE: 'çok' },
+      { DONEM_SANIYE: '604801' },
       { OTURUM_SANIYE: '5' },
       { SANDBOX_GUNLUK_SANIYE: '-1' },
     ] satisfies Partial<Env>[]) {
@@ -758,14 +988,29 @@ describe('yapılandırma', () => {
   })
 
   it('sayısal değerler verilmezse varsayılanlar kullanılır', async () => {
-    const varsayilan = ayarli({ GUNLUK_SANIYE: undefined, SANDBOX_GUNLUK_SANIYE: undefined, OTURUM_SANIYE: undefined })
+    const varsayilan = ayarli({ DONEM_SANIYE: undefined, SANDBOX_GUNLUK_SANIYE: undefined, OTURUM_SANIYE: undefined })
+    // Varsayılanlar: dönem 9600 sn (160 dakika), Sandbox günlük 1800 sn, dilim 120 sn.
     expect((await gonder(await gecerliIslem(), { env: varsayilan })).govde).toMatchObject({
-      sure_sn: 600,
-      kalan_sn: 6600,
+      sure_sn: 120,
+      kalan_sn: 9480,
     })
     expect((await gonder(await gecerliIslem({ environment: 'Sandbox' }), { env: varsayilan })).govde).toMatchObject({
-      sure_sn: 600,
-      kalan_sn: 1200,
+      sure_sn: 120,
+      kalan_sn: 1680,
+    })
+  })
+
+  it('kaldırılan GUNLUK_SANIYE değişkeni okunmaz; Production bütçesini yalnız DONEM_SANIYE belirler', async () => {
+    const eskiDegiskenli = { ...env, GUNLUK_SANIYE: '60' } as Env
+    expect((await gonder(await gecerliIslem(), { env: eskiDegiskenli })).govde).toMatchObject({
+      sure_sn: DILIM_SN,
+      kalan_sn: DONEM_SN - DILIM_SN,
+    })
+    // Sandbox bütçesi DONEM_SANIYE'den, Production bütçesi SANDBOX_GUNLUK_SANIYE'den etkilenmez.
+    const ayrik = ayarli({ DONEM_SANIYE: '300', SANDBOX_GUNLUK_SANIYE: '500' })
+    expect((await gonder(await gecerliIslem(), { env: ayrik })).govde).toMatchObject({ kalan_sn: 180 })
+    expect((await gonder(await gecerliIslem({ environment: 'Sandbox' }), { env: ayrik })).govde).toMatchObject({
+      kalan_sn: 380,
     })
   })
 })
