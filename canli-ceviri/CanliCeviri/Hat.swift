@@ -285,7 +285,7 @@ final class Hat {
     /// Bulut motorunun akışı; cihaz motorunda nil (S02). Motor ayrımı bu değere bakar.
     @ObservationIgnored private var bulut: BulutAkisi?
     /// Çevirinin okunacağı dil: cihaz motorunda Türkçe, bulut motorunda hedef dil (KR13).
-    @ObservationIgnored private var okumaDili = bulutDilleri[0]
+    @ObservationIgnored private var okumaDili = turkceDil
 
     // Seslendirilecek metinlerin sırası (cümleler üst üste binmesin diye).
     private let sesSirasi: AsyncStream<(Int, String)>
@@ -353,7 +353,7 @@ final class Hat {
         alaniaHataSayisi = 0
         alaniaKapali = false
         turkceSesYok = false
-        okumaDili = bulutDilleri[0]   // cihaz motorunda hedef Türkçe
+        okumaDili = turkceDil   // cihaz motorunda hedef Türkçe
 
         // .allowBluetoothA2DP: ses AirPods'a yüksek kalitede gider,
         // mikrofon olarak iPhone'unki kalır (AirPods mikrofonu açılmaz).
@@ -1111,10 +1111,18 @@ final class Hat {
         await appleIleOku(no, metin)
     }
 
+    /// Okuma dilinin Apple sesi. Türkçede eskisi gibi "tr-TR"; öteki dillerde bölge kodu uydurulmaz: ses önce dil
+    /// koduyla istenir, yoksa cihazda yüklü seslerden o dile ait ilki alınır. Hiçbiri yoksa nil (ekranda not çıkar).
+    private nonisolated static func appleSesi(_ kod: String) -> AVSpeechSynthesisVoice? {
+        if kod == turkceDil.kod, let turkce = AVSpeechSynthesisVoice(language: "tr-TR") { return turkce }
+        if let dogrudan = AVSpeechSynthesisVoice(language: kod) { return dogrudan }
+        return AVSpeechSynthesisVoice.speechVoices().first { $0.language == kod || $0.language.hasPrefix(kod + "-") }
+    }
+
     private func appleIleOku(_ no: Int, _ metin: String) async {
         guard no == sesNo, !Task.isCancelled else { return }
         let soz = AVSpeechUtterance(string: metin)
-        if let sesi = AVSpeechSynthesisVoice(language: okumaDili.ses) ?? AVSpeechSynthesisVoice(language: okumaDili.kod) {
+        if let sesi = Hat.appleSesi(okumaDili.kod) {
             soz.voice = sesi
         } else if !turkceSesYok {
             // S7: okuma yine denenir.

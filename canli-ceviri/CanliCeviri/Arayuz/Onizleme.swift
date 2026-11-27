@@ -20,6 +20,7 @@ enum OrnekEkran: String, CaseIterable {
     case sinirDoldu = "sinir-doldu"
     case ayarlarBulut = "ayarlar-bulut"   // S02: anahtar girilmiş, motor bulut
     case ceviriBulut = "ceviri-bulut"     // S02: bulut motoruyla dinliyor, canlı asıl metin ve akan çeviri
+    case dilSecimi = "dil-secimi"         // S02 tur 2: Çeviri ekranında aranabilir kaynak dil sayfası açık
 
     /// En son örnek durumu üretilen ekran; `AyarlarEkrani` örnek Soniox anahtarını buna bakarak gösterir.
     @MainActor static var gosterilen: OrnekEkran?
@@ -31,7 +32,7 @@ enum OrnekEkran: String, CaseIterable {
 
     var sekme: Sekme {
         switch self {
-        case .ceviriBos, .ceviri, .dinliyor, .kulakliksiz, .abonelik, .sinirDoldu, .ceviriBulut: .ceviri
+        case .ceviriBos, .ceviri, .dinliyor, .kulakliksiz, .abonelik, .sinirDoldu, .ceviriBulut, .dilSecimi: .ceviri
         case .gecmis, .gecmisBos:                         .gecmis
         case .ayarlar, .tanilama, .ayarlarBulut:          .ayarlar
         }
@@ -65,7 +66,7 @@ enum OrnekEkran: String, CaseIterable {
             durum.satirlar = Satir.ornekler
             durum.asama = .dinliyor
             durum.bulutCalisiyor = true
-        case .ceviriBos, .gecmisBos, .ayarlar, .ayarlarBulut:
+        case .ceviriBos, .gecmisBos, .ayarlar, .ayarlarBulut, .dilSecimi:
             break
         }
         return durum
@@ -97,5 +98,10 @@ extension Satir {
 #Preview("Süre doldu") { KokEkran(durum: OrnekEkran.sinirDoldu.durum()) }
 #Preview("Ayarlar — bulut") { KokEkran(durum: OrnekEkran.ayarlarBulut.durum(), sekme: .ayarlar) }
 #Preview("Çeviri — bulut") { KokEkran(durum: OrnekEkran.ceviriBulut.durum()) }
+#Preview("Dil seçimi") {
+    DilSecimEkrani(baslik: "Kaynak dil", diller: bulutDilleri, otomatik: true, secili: .constant(otomatikDil))
+        .background(Renk.zemin)
+        .preferredColorScheme(.dark)
+}
 #Preview("Tanılama") { KokEkran(durum: OrnekEkran.tanilama.durum(), sekme: .ayarlar, tanilamaAcik: true) }
 #endif
