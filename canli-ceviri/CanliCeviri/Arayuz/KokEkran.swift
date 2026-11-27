@@ -51,7 +51,8 @@ struct KokEkran: View {
             SekmeCubugu(secili: $sekme)
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)   // C-4: @ScaledMetric sınırı yalnız çağrı yerinde görür
         }
-        // Apple'ın çeviri oturumu yalnızca bu yolla alınabiliyor.
+        // Apple'ın çeviri oturumu yalnızca bu yolla alınabiliyor (cihaz motoru). Bulut motoru buna bağlı değildir:
+        // `ayar` boş kalır, döngüyü `Durum` kendi başlatır (S02 KR4).
         // `ayar` dolunca çalışır; Durdur'dan sonra eski oturum Durum'daki kimlik denetimiyle durur.
         .translationTask(durum.ayar) { oturum in
             await durum.calistir(oturum)
@@ -87,12 +88,13 @@ struct KokEkran: View {
             }
         }
         .onChange(of: durum.hat.kulaklik) { eski, yeni in
-            guard (eski == nil) != (yeni == nil) else { return }
+            // KR11: sesli okuma kapalıyken kulaklık durumu duyurulmaz.
+            guard Hat.sesliOku, (eski == nil) != (yeni == nil) else { return }
             duyur(yeni == nil ? "Kulaklık bağlantısı koptu" : "Kulaklık bağlandı")
         }
         .onChange(of: durum.satirlar.count) { eski, yeni in
             guard yeni > eski, let son = durum.satirlar.last else { return }
-            duyur(son.ceviri)
+            duyur(son.ceviri.isEmpty ? son.asil : son.ceviri)
         }
     }
 

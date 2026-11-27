@@ -31,24 +31,30 @@ enum KesintiNedeni: Equatable {
     case arkaPlan       // uygulama arka plana gitti
     case yapilandirma   // ses motorunun yapılandırması ya da ses yolu değişti
     case bekci          // mikrofondan 2 sn ses tamponu gelmedi
+    case bulut            // bulut motoru: bağlantı koptu, yeni akış deneniyor (S02 KR5)
+    case bulutBaglaniyor  // bulut motoru: mikrofon açık, akış henüz başlamadı (S02 K6)
 
     /// "Duraklatıldı: <neden>" içindeki neden.
     var ekranMetni: String {
         switch self {
-        case .telefon:      "arama, alarm ya da Siri"
-        case .arkaPlan:     "uygulama arka planda"
-        case .yapilandirma: "ses yolu değişiyor"
-        case .bekci:        "mikrofondan ses gelmiyor"
+        case .telefon:         "arama, alarm ya da Siri"
+        case .arkaPlan:        "uygulama arka planda"
+        case .yapilandirma:    "ses yolu değişiyor"
+        case .bekci:           "mikrofondan ses gelmiyor"
+        case .bulut:           "bulut bağlantısı koptu"
+        case .bulutBaglaniyor: "buluta bağlanıyor"
         }
     }
 
     /// Tanılama satırındaki neden.
     var kayitAdi: String {
         switch self {
-        case .telefon:      "telefon"
-        case .arkaPlan:     "arka plan"
-        case .yapilandirma: "yapılandırma"
-        case .bekci:        "bekçi"
+        case .telefon:         "telefon"
+        case .arkaPlan:        "arka plan"
+        case .yapilandirma:    "yapılandırma"
+        case .bekci:           "bekçi"
+        case .bulut:           "bulut"
+        case .bulutBaglaniyor: "bulut bağlanıyor"
         }
     }
 }
@@ -61,6 +67,8 @@ enum HatBildirimi {
     case not(NotTuru, String?)
     /// Hat dinlemeyi kendi içinden hatayla bitirdi; `Durum` aşamayı hemen günceller (Ön-3).
     case durdu(HatHatasi)
+    /// Bulut motorunda kapanan cümle: asıl metin ve çevirisi (S02).
+    case bulutCumlesi(SonioxCumle)
 }
 
 /// Mikrofon tamponlarını o anki tanıma isteğine yönlendirir ve son tamponun zamanını tutar
@@ -68,6 +76,8 @@ enum HatBildirimi {
 final class MikrofonKutusu: @unchecked Sendable {
     private let kilit = NSLock()
     private var istek: SFSpeechAudioBufferRecognitionRequest?
+    /// Bulut motorunda tamponların gittiği yer; cihaz motorunda nil (S02).
+    private var bulut: BulutSesHedefi?
     private var son = Date.distantPast
     /// Yalnız gerçek tampon günceller (`sifirla` değil): bekçinin ardışık alarmı için (K15, C6).
     private var gercekSon = Date.distantPast
@@ -75,6 +85,12 @@ final class MikrofonKutusu: @unchecked Sendable {
     func yonlendir(_ yeni: SFSpeechAudioBufferRecognitionRequest?) {
         kilit.lock()
         istek = yeni
+        kilit.unlock()
+    }
+
+    func bulutaYonlendir(_ yeni: BulutSesHedefi?) {
+        kilit.lock()
+        bulut = yeni
         kilit.unlock()
     }
 
@@ -91,8 +107,10 @@ final class MikrofonKutusu: @unchecked Sendable {
         son = Date()
         gercekSon = son
         let hedef = istek
+        let bulutHedefi = bulut
         kilit.unlock()
         hedef?.append(tampon)
+        bulutHedefi?.tampon(tampon)
     }
 
     /// Son tampondan bu yana geçen süre (sn).
@@ -220,6 +238,8 @@ private let alaniaOturumu: URLSession = {
 final class Hat {
     /// O an söylenen, henüz bitmemiş cümle (ekranda canlı gösterilir).
     var canliMetin = ""
+    /// Bulut motorunda o an akan, henüz kapanmamış çeviri; cihaz motorunda hep boş (S02).
+    var canliCeviri = ""
     /// Çevirinin okunacağı kulaklığın adı (ör. "AirPods Pro"); kulaklık bağlı değilse nil.
     /// Ad yalnız ekranda gösterilir, Tanılama'ya yazılmaz.
     var kulaklik: String?
@@ -262,6 +282,10 @@ final class Hat {
     @ObservationIgnored private var alaniaHataSayisi = 0
     @ObservationIgnored private var alaniaKapali = false
     @ObservationIgnored private var turkceSesYok = false
+    /// Bulut motorunun akışı; cihaz motorunda nil (S02). Motor ayrımı bu değere bakar.
+    @ObservationIgnored private var bulut: BulutAkisi?
+    /// Çevirinin okunacağı dil: cihaz motorunda Türkçe, bulut motorunda hedef dil (KR13).
+    @ObservationIgnored private var okumaDili = bulutDilleri[0]
 
     // Seslendirilecek metinlerin sırası (cümleler üst üste binmesin diye).
     private let sesSirasi: AsyncStream<(Int, String)>
@@ -294,6 +318,16 @@ final class Hat {
         return (konusma, mikrofon)
     }
 
+    /// Bulut motoru yalnız mikrofon izni ister (S02 KR4).
+    nonisolated static func mikrofonIzni() async -> Bool {
+        await AVAudioApplication.requestRecordPermission()
+    }
+
+    /// Çeviri sesli okunsun mu (KR11; varsayılan hayır).
+    nonisolated static var sesliOku: Bool {
+        UserDefaults.standard.bool(forKey: Kayit.sesliOku)
+    }
+
     /// Dinlemeyi başlatır; biten her cümleyi döndürdüğü akışa yazar (şartname Y1, G5).
     func baslat(konusmaDili: String) throws -> AsyncThrowingStream<String, Error> {
         let kayit = Tanilama.ortak
@@ -319,6 +353,7 @@ final class Hat {
         alaniaHataSayisi = 0
         alaniaKapali = false
         turkceSesYok = false
+        okumaDili = bulutDilleri[0]   // cihaz motorunda hedef Türkçe
 
         // .allowBluetoothA2DP: ses AirPods'a yüksek kalitede gider,
         // mikrofon olarak iPhone'unki kalır (AirPods mikrofonu açılmaz).
@@ -345,10 +380,58 @@ final class Hat {
         return akis
     }
 
+    /// Bulut motoruyla dinlemeyi başlatır (S02). Ses oturumu, mikrofon, kesintiler ve seslendirme cihaz motoruyla
+    /// aynıdır (ilke 1 ve 2); konuşma tanıma açılmaz, mikrofon sesi Soniox akışına gider. Kapanan cümleler
+    /// `bildir` ile (`.bulutCumlesi`) gelir; döndürülen akış yalnız dinlemenin bitişini ve hatasını taşır.
+    /// `kaynak` nil ise dil kendiliğinden tanınır (KR12).
+    func baslatBulut(kaynak: String?, hedef: BulutDili, anahtar: String) throws -> AsyncThrowingStream<String, Error> {
+        taniyici = nil
+        oturumNo += 1
+        sesNo += 1
+        kesinti = nil
+        bekciAlarmi = nil
+        bosBitis = 0
+        alaniaHataSayisi = 0
+        alaniaKapali = false
+        turkceSesYok = false
+        okumaDili = hedef
+
+        let akisi = BulutAkisi(kaynak: kaynak, hedef: hedef.kod, anahtar: anahtar)
+        akisi.olay = { [weak self] olay in self?.bulutOlayi(olay) }
+        bulut = akisi
+        kutu.bulutaYonlendir(akisi.hedef)
+
+        // Cihaz motoruyla aynı ses yolu: ses AirPods'a, mikrofon iPhone'unki (AirPods mikrofonu açılmaz).
+        let oturum = AVAudioSession.sharedInstance()
+        try oturum.setCategory(.playAndRecord, mode: .default, options: [.allowBluetoothA2DP])
+        try oturum.setActive(true)
+        oturumEtkin = true
+        dahiliMikrofonuSec()
+
+        let (akis, ekle) = AsyncThrowingStream<String, Error>.makeStream()
+        cumleEkle = ekle
+        yoluGuncelle()
+        yoluKaydet(neden: nil)
+
+        try dinlemeyiAc()   // mikrofonu bağlar ve bulut akışını açar
+        UIApplication.shared.isIdleTimerDisabled = true
+        kesintileriIzle()
+        sesDongusunuBaslat()
+        return akis
+    }
+
+    /// Bulut akışını kapatır; seslendirme sürer. Günlük süre dolunca ses buluta gitmeyi hemen keser (S03 KR2).
+    func bulutuKapat() {
+        bulut?.kapat()
+        bulut = nil
+        kutu.bulutaYonlendir(nil)
+    }
+
     /// Kapatma sırası (şartname § 2.3). Her adım bir öncekinden bağımsız çalışır; iki kez çağrılması zararsızdır.
     func durdur() {
         oturumNo += 1
         tur += 1
+        bulutuKapat()   // cihaz motorunda etkisiz; bulut motorunda akış boş çerçeveyle biter (S02 K7)
         duraklamaGorevi?.cancel()
         duraklamaGorevi = nil
         bekciGorevi?.cancel()
@@ -367,10 +450,51 @@ final class Hat {
         bekciAlarmi = nil
         bosBitis = 0
         canliMetin = ""
+        canliCeviri = ""
         yoluGuncelle()
     }
 
+    // MARK: Bulut motoru (S02)
+
+    private func bulutOlayi(_ olay: BulutOlayi) {
+        guard cumleEkle != nil else { return }
+        switch olay {
+        case .canli(let asil, let ceviri):
+            if asil != canliMetin { canliMetin = asil }
+            if ceviri != canliCeviri { canliCeviri = ceviri }
+        case .cumle(let cumle):
+            bildir?(.not(.bulutKopma, nil))
+            bildir?(.bulutCumlesi(cumle))
+        case .akista:
+            // Mikrofon da açıksa artık dinleniyor; değilse ekranda mikrofon kesintisinin nedeni kalır.
+            if kesinti == nil && bekciAlarmi == nil { bildir?(.kesintiBitti) }
+        case .koptu(let akiyordu):
+            // KR5: ekran "Duraklatıldı: bulut bağlantısı koptu" der; arama ve arka plan nedeni ezilmez.
+            if kesinti != .telefon && kesinti != .arkaPlan { bildir?(.kesintiBasladi(.bulut)) }
+            if akiyordu {
+                bildir?(.not(.bulutKopma, "Bulut bağlantısı koptu; o sırada söylenenler çevrilmedi."))
+            }
+        case .durdu(let hata):
+            hataylaBitir(hata)
+        }
+    }
+
+    /// Mikrofon yeniden açıldı. Cihaz motorunda dinleme sürüyor demektir; bulut motorunda akış da başlamış olmalı,
+    /// yoksa ekran "Dinliyorum" demez (S02 K6).
+    private func dinlemeSuruyorBildir() {
+        if let bulut, !bulut.akista {
+            bildir?(.kesintiBasladi(.bulutBaglaniyor))
+            return
+        }
+        bildir?(.kesintiBitti)
+    }
+
     // MARK: Ses yolu
+
+    /// Ekran yeniden göründüğünde ses yolu uyarısını tazeler (KR11: sesli okuma ayarı değişmiş olabilir).
+    func yoluYenile() {
+        yoluGuncelle()
+    }
 
     /// Kulaklık adını ve sarı uyarıyı günceller (şartname Y4–Y6).
     private func yoluGuncelle() {
@@ -381,7 +505,8 @@ final class Hat {
         if ad != kulaklik { kulaklik = ad }
 
         let dinlerken = cumleEkle != nil && kesinti == nil
-        let uyari = Hat.uyariMetni(cikis: yol.outputs.first?.portType,
+        // KR11: sesli okuma kapalıyken sesin nereden çıktığı önemsizdir; yalnız mikrofon uyarısı kalır.
+        let uyari = Hat.uyariMetni(cikis: Hat.sesliOku ? yol.outputs.first?.portType : nil,
                                    giris: dinlerken ? yol.inputs.first?.portType : nil)
         if uyari != yolUyarisi { yolUyarisi = uyari }
     }
@@ -566,6 +691,7 @@ final class Hat {
             kesintiNo += 1
             bekciAlarmi = nil   // tamponun gelmemesi bu kesintiden olabilir; dönüşte bekçi yeniden sayar
             Tanilama.ortak.kaydet("kesinti", "neden değişti=\(neden.kayitAdi)", uyari: true)
+            bulut?.kapat()   // S02 K7: arama ve arka planda bulut akışı kapanır
             sesiKes(okunmadiysaSoyle: true)
             bildir?(.kesintiBasladi(neden))
             uzunKesintiNotunuKur()
@@ -581,6 +707,7 @@ final class Hat {
         // G11, S4: ses yalnız telefon ve arka planda kesilir; yapılandırma ve bekçide sürer, sıra korunur (YÖ-1).
         if sesKesilir {
             bekciAlarmi = nil
+            bulut?.kapat()   // S02 K7: arama ve arka planda bulut akışı kapanır; dönüşte yenisi açılır
             sesiKes(okunmadiysaSoyle: true)
         }
         yoluGuncelle()
@@ -630,7 +757,7 @@ final class Hat {
             } else {
                 kayit.kaydet("motor", "yeniden başlatıldı")
                 yoluKaydet(neden: nil)
-                bildir?(.kesintiBitti)
+                dinlemeSuruyorBildir()
             }
         } catch {
             tur += 1
@@ -724,6 +851,7 @@ final class Hat {
         baglandi = true
         Tanilama.ortak.kaydet("mikrofon", bicim)
         tanimayiBaslat()
+        bulut?.ac()   // bulut motorunda akış açılır (açıksa dokunulmaz); cihaz motorunda etkisiz
         motor.prepare()
         try motor.start()
         kutu.sifirla()
@@ -765,7 +893,7 @@ final class Hat {
         if let an = bekciAlarmi, kutu.tamponGeldi(sonra: an) {
             bekciAlarmi = nil
             Tanilama.ortak.kaydet("motor", "tampon geldi")
-            bildir?(.kesintiBitti)
+            dinlemeSuruyorBildir()
         }
         guard kutu.gecen > bekciSiniri else { return }
         if bekciAlarmi != nil {
@@ -875,6 +1003,7 @@ final class Hat {
 
     /// Ekrandaki yarım cümleyi akışa yazar ve tanıma görevini kapatır; yenisini açmaz.
     private func yarimCumleyiGonder() {
+        guard bulut == nil else { return }   // bulut motorunda cümleyi sunucu kapatır
         duraklamaGorevi?.cancel()
         let metin = canliMetin.trimmingCharacters(in: .whitespacesAndNewlines)
         tur += 1
@@ -938,7 +1067,8 @@ final class Hat {
 
     private func oku(_ no: Int, _ metin: String) async {
         let anahtar = Anahtarlik.alaniaAnahtari
-        guard !anahtar.isEmpty, !alaniaKapali else {
+        // Alania Türkçe okur; hedef dil Türkçe değilse Apple sesi kullanılır (KR13).
+        guard okumaDili.kod == "tr", !anahtar.isEmpty, !alaniaKapali else {
             await appleIleOku(no, metin)
             return
         }
@@ -984,13 +1114,13 @@ final class Hat {
     private func appleIleOku(_ no: Int, _ metin: String) async {
         guard no == sesNo, !Task.isCancelled else { return }
         let soz = AVSpeechUtterance(string: metin)
-        if let turkce = AVSpeechSynthesisVoice(language: "tr-TR") {
-            soz.voice = turkce
+        if let sesi = AVSpeechSynthesisVoice(language: okumaDili.ses) ?? AVSpeechSynthesisVoice(language: okumaDili.kod) {
+            soz.voice = sesi
         } else if !turkceSesYok {
             // S7: okuma yine denenir.
             turkceSesYok = true
-            Tanilama.ortak.kaydet("ses", "Türkçe ses yok", uyari: true)
-            bildir?(.not(.turkceSes, "Türkçe ses yüklü değil; çeviri başka bir sesle okunabilir."))
+            Tanilama.ortak.kaydet("ses", "\(okumaDili.ad) ses yok", uyari: true)
+            bildir?(.not(.turkceSes, "\(okumaDili.ad) ses yüklü değil; çeviri başka bir sesle okunabilir."))
         }
         Tanilama.ortak.kaydet("ses", "apple")
         let sentez = yedekSes
@@ -1082,11 +1212,12 @@ final class Hat {
 extension Hat {
     /// Simülatör ekran görüntüleri ve önizlemeler için: açıldıktan sonra gerçek ses yolu okunmaz,
     /// gözlemciler durumu ezmez; kulaklık ve uyarı elle verilir. Mikrofon, tanıma ve çeviri açılmaz.
-    func onizlemeKipi(kulaklik: String?, yolUyarisi: String? = nil, canliMetin: String = "") {
+    func onizlemeKipi(kulaklik: String?, yolUyarisi: String? = nil, canliMetin: String = "", canliCeviri: String = "") {
         onizlemede = true
         self.kulaklik = kulaklik
         self.yolUyarisi = yolUyarisi
         self.canliMetin = canliMetin
+        self.canliCeviri = canliCeviri
     }
 }
 #endif

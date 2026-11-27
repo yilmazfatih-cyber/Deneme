@@ -25,23 +25,42 @@ struct Kart<Icerik: View>: View {
     }
 }
 
-/// Asıl cümle + Türkçesi. VoiceOver önce çeviriyi (Türkçe), sonra asıl cümleyi kendi diliyle okur (B-4).
+/// Asıl cümle + çevirisi. VoiceOver önce çeviriyi, sonra asıl cümleyi kendi diliyle okur (B-4).
+/// Çeviri yoksa (bulut motoru: konuşma zaten hedef dilde ya da çeviri gelmedi) asıl cümle tek başına durur (KR13).
 struct SatirGorunumu: View {
     let satir: Satir
     var buyuk = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(satir.asil)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .environment(\.locale, Locale(identifier: satir.kaynakDil))
-                .dynamicTypeSize(...DynamicTypeSize.accessibility3)   // çeviri baskın kalır (tasarim § 4.1.1)
-                .accessibilitySortPriority(0)
-            Text(satir.ceviri)
-                .font(buyuk ? .title2.weight(.semibold) : .body.weight(.medium))
-                .fixedSize(horizontal: false, vertical: true)   // çeviri sınırsız ölçeklenir, kesilmez
-                .accessibilitySortPriority(1)
+            if let etiket = satir.dilEtiketi {
+                // KR12: kaynak dil otomatikken sunucunun tanıdığı dil.
+                Text(etiket)
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(Renk.acikMavi)
+                    .accessibilitySortPriority(0)
+            }
+            if satir.ceviri.isEmpty {
+                Text(satir.asil)
+                    .font(buyuk ? .title2.weight(.semibold) : .body.weight(.medium))
+                    .fixedSize(horizontal: false, vertical: true)
+                    .environment(\.locale, Locale(identifier: satir.kaynakDil))
+                    .accessibilitySortPriority(1)
+            } else {
+                if !satir.asil.isEmpty {
+                    Text(satir.asil)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .environment(\.locale, Locale(identifier: satir.kaynakDil))
+                        .dynamicTypeSize(...DynamicTypeSize.accessibility3)   // çeviri baskın kalır (tasarim § 4.1.1)
+                        .accessibilitySortPriority(0)
+                }
+                Text(satir.ceviri)
+                    .font(buyuk ? .title2.weight(.semibold) : .body.weight(.medium))
+                    .fixedSize(horizontal: false, vertical: true)   // çeviri sınırsız ölçeklenir, kesilmez
+                    .environment(\.locale, Locale(identifier: satir.hedefDil))
+                    .accessibilitySortPriority(1)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .contain)

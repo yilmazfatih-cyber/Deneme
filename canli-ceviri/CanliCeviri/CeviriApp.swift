@@ -1,14 +1,18 @@
 // CeviriApp.swift — Canlı Çeviri (koyu lacivert tema)
 //
-// Akış:  iPhone mikrofonu -> konuşma tanıma (Apple) -> çeviri (Apple)
-//        -> Türkçe seslendirme (Alania-2, anahtar yoksa Apple sesi) -> AirPods
+// Akış (cihaz motoru):  iPhone mikrofonu -> konuşma tanıma (Apple) -> çeviri (Apple) -> ekran
+// Akış (bulut motoru):  iPhone mikrofonu -> Soniox (tanıma ve çeviri tek akışta) -> ekran
+// İsteğe bağlı sesli okuma: Alania-2 (anahtar yoksa ya da hedef dil Türkçe değilse Apple sesi) -> AirPods
 //
 // Dosyalar:
 //   Sabitler.swift              diller, süreler, Alania adresi, renkler
 //   Durum.swift                 ekranların paylaştığı durum (aşama, notlar) ve çeviri döngüsü
 //   Hat.swift                   mikrofon, cümle ayırma, seslendirme, kesintiler
 //   Tanilama.swift              cihazda tutulan olay kaydı (içerik ve cihaz adı yazılmaz)
-//   Anahtarlik.swift            Alania anahtarı (Anahtar Zinciri)
+//   Anahtarlik.swift            Alania ve Soniox anahtarları (Anahtar Zinciri), seçili motor
+//   Bulut/SonioxCozucu.swift    Soniox yanıtlarını cümlelere ayıran saf mantık (yalnız Foundation; testi tests/ios)
+//   Bulut/BulutAkisi.swift      Soniox WebSocket akışı ve ses dönüşümü (16 kHz, tek kanal, 16 bit)
+//   Bulut/GomuluAnahtar.swift   yapıya gömülü Soniox anahtarı (depoda hep boş; yalnız TestFlight iş akışı doldurur)
 //   Abonelik.swift              haftalık abonelik (StoreKit 2) ve günlük ücretsiz süre
 //   Arayuz/KokEkran.swift       arka plan, sekme çubuğu, çeviri oturumu, duyurular
 //   Arayuz/*Ekrani.swift        Çeviri, Geçmiş, Ayarlar ve Tanılama ekranları

@@ -4,9 +4,31 @@ import SwiftUI
 struct CeviriEkrani: View {
     let durum: Durum
     @AppStorage(Kayit.kaynakDil) private var kaynakKod = "en"
+    /// Bulut motorunda kaynak dil; varsayılan "Otomatik" (KR12).
+    @AppStorage(Kayit.bulutKaynak) private var bulutKaynak = otomatikDil
+    @AppStorage(Kayit.hedefDil) private var hedefKod = "tr"
+    @AppStorage(Kayit.motor) private var motorKaydi = ""
+    @AppStorage(Kayit.sesliOku) private var sesliOku = false
     @Environment(\.dynamicTypeSize) private var yaziBoyu
 
     private var dil: Dil { diller.first { $0.kod == kaynakKod } ?? diller[0] }
+
+    /// Dinlerken o dinlemenin motoru; duruyorken seçili motor (anahtar yoksa cihaz; karar `Anahtarlik`'tadır).
+    private var bulutMotoru: Bool {
+        if durum.calisiyor { return durum.bulutCalisiyor }
+        return motorKaydi == Motor.cihaz.rawValue ? false : Anahtarlik.motor == .bulut
+    }
+
+    /// Kaynak dilin ekrandaki adı: bulut motorunda "Otomatik" olabilir; cihaz motorunda tek bir dildir.
+    private var kaynakAd: String {
+        guard bulutMotoru else { return dil.ad }
+        return bulutDilleri.first { $0.kod == bulutKaynak }?.ad ?? "Otomatik"
+    }
+
+    /// Çeviri dili: cihaz motorunda Türkçe, bulut motorunda Ayarlar'da seçilen dil (KR13).
+    private var hedefAd: String {
+        bulutMotoru ? dilAdi(hedefKod) : "Türkçe"
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -24,6 +46,7 @@ struct CeviriEkrani: View {
             .altSolma()
             altBlok
         }
+        .onAppear { durum.hat.yoluYenile() }   // KR11: sesli okuma ayarı değişmiş olabilir
     }
 
     // MARK: Başlık
@@ -72,19 +95,27 @@ struct CeviriEkrani: View {
     private var dilSeridi: some View {
         let kompakt = durum.calisiyor || yaziBoyu >= .xxxLarge
         return Menu {
-            Picker("Kaynak dil", selection: $kaynakKod) {
-                ForEach(diller) { Text($0.ad).tag($0.kod) }
+            if bulutMotoru {
+                // KR12: bulut motoru dili kendiliğinden tanıyabilir; cihaz motorunda "Otomatik" yoktur.
+                Picker("Kaynak dil", selection: $bulutKaynak) {
+                    Text("Otomatik").tag(otomatikDil)
+                    ForEach(bulutDilleri) { Text($0.ad).tag($0.kod) }
+                }
+            } else {
+                Picker("Kaynak dil", selection: $kaynakKod) {
+                    ForEach(diller) { Text($0.ad).tag($0.kod) }
+                }
             }
         } label: {
             HStack(spacing: 12) {
                 if kompakt {
-                    Text("\(dil.ad) → Türkçe")
+                    Text("\(kaynakAd) → \(hedefAd)")
                         .font(.body.weight(.semibold))
                         .lineLimit(1)
                         .minimumScaleFactor(0.7)
                 } else {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("\(dil.ad) → Türkçe")
+                        Text("\(kaynakAd) → \(hedefAd)")
                             .font(.title2.weight(.semibold))
                         Text("Kaynak dili değiştirmek için dokunun")
                             .font(.subheadline)
@@ -111,7 +142,7 @@ struct CeviriEkrani: View {
         }
         .disabled(durum.calisiyor)
         .accessibilityLabel("Kaynak dil")
-        .accessibilityValue("\(dil.ad), Türkçeye çevrilir")
+        .accessibilityValue("\(kaynakAd), \(yonelme(hedefAd)) çevrilir")
         .accessibilityHint(durum.calisiyor ? "Dili değiştirmek için önce dinlemeyi durdurun" : "Dil listesini açar")
     }
 
@@ -123,10 +154,24 @@ struct CeviriEkrani: View {
             asamaSatiri
                 .dynamicTypeSize(...DynamicTypeSize.accessibility2)
 
+            // Bulut motoru: çeviri cümle bitmeden akar (S02). Cihaz motorunda `canliCeviri` hep boştur.
+            if durum.asama.canli, !durum.hat.canliCeviri.isEmpty {
+                Text(durum.hat.canliCeviri)
+                    .font(.title3.weight(.semibold))
+                    .fixedSize(horizontal: false, vertical: true)
+                    .environment(\.locale, Locale(identifier: hedefKod))
+                    .accessibilityLabel("Çeviri: \(durum.hat.canliCeviri)")
+                if !durum.satirlar.isEmpty {
+                    Divider().overlay(Renk.ayrac)
+                }
+            }
+
             if let son = durum.satirlar.last {
                 SatirGorunumu(satir: son, buyuk: true)
             } else if durum.asama == .duruyor {
-                Text("AirPods'u takın ve aşağıdaki düğmeye dokunun. Çeviri kulaklığınızdan okunur.")
+                // KR11: sesli okuma kapalıyken kulaklık gerekmez.
+                Text(sesliOku ? "AirPods'u takın ve aşağıdaki düğmeye dokunun. Çeviri kulaklığınızdan okunur."
+                              : "Aşağıdaki düğmeye dokunun. Çeviri ekrana yazılır.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -207,7 +252,24 @@ struct CeviriEkrani: View {
         if let uyari = durum.hat.yolUyarisi {
             UyariSatiri(metin: uyari, renk: Renk.sari)
         }
-        kulaklikDurumu
+        if durum.bulutCalisiyor {
+            bulutBildirimi
+        }
+        // KR11: kulaklık durumu yalnız sesli okuma açıkken gösterilir; kapalıyken kulaklık yokluğu uyarı değildir.
+        if sesliOku {
+            kulaklikDurumu
+        }
+    }
+
+    /// S02 K5: bulut motoruyla dinlerken sesin Soniox'a gittiği ekranda yazar (uyarı değil, bilgi).
+    private var bulutBildirimi: some View {
+        Label("Ses, tanıma ve çeviri için Soniox'a gönderiliyor.", systemImage: "cloud.fill")
+            .font(.footnote.weight(.medium))
+            .foregroundStyle(.secondary)
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Ses, tanıma ve çeviri için Soniox'a gönderiliyor")
     }
 
     // Uygulama AirPods için: çevirinin okunacağı kulaklık düğmenin hemen üstünde görünür.

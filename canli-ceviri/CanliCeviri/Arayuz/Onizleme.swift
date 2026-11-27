@@ -5,7 +5,8 @@
 #if DEBUG
 import SwiftUI
 
-/// Brief "Sözleşmeler" tablosundaki ekranlar (S03: abonelik, sinir-doldu); ham değer `-ekran` argümanının değeridir.
+/// Brief "Sözleşmeler" tablosundaki ekranlar (S03: abonelik, sinir-doldu; S02: ayarlar-bulut, ceviri-bulut);
+/// ham değer `-ekran` argümanının değeridir.
 enum OrnekEkran: String, CaseIterable {
     case ceviriBos = "ceviri-bos"
     case ceviri
@@ -17,6 +18,11 @@ enum OrnekEkran: String, CaseIterable {
     case tanilama
     case abonelik
     case sinirDoldu = "sinir-doldu"
+    case ayarlarBulut = "ayarlar-bulut"   // S02: anahtar girilmiş, motor bulut
+    case ceviriBulut = "ceviri-bulut"     // S02: bulut motoruyla dinliyor, canlı asıl metin ve akan çeviri
+
+    /// En son örnek durumu üretilen ekran; `AyarlarEkrani` örnek Soniox anahtarını buna bakarak gösterir.
+    @MainActor static var gosterilen: OrnekEkran?
 
     /// `-ekran <ad>` ile açıldıysa o ekran; yoksa nil.
     static var baslangic: OrnekEkran? {
@@ -25,9 +31,9 @@ enum OrnekEkran: String, CaseIterable {
 
     var sekme: Sekme {
         switch self {
-        case .ceviriBos, .ceviri, .dinliyor, .kulakliksiz, .abonelik, .sinirDoldu: .ceviri
+        case .ceviriBos, .ceviri, .dinliyor, .kulakliksiz, .abonelik, .sinirDoldu, .ceviriBulut: .ceviri
         case .gecmis, .gecmisBos:                         .gecmis
-        case .ayarlar, .tanilama:                         .ayarlar
+        case .ayarlar, .tanilama, .ayarlarBulut:          .ayarlar
         }
     }
 
@@ -37,8 +43,10 @@ enum OrnekEkran: String, CaseIterable {
     @MainActor
     func durum() -> Durum {
         let durum = Durum()
+        OrnekEkran.gosterilen = self
         durum.hat.onizlemeKipi(kulaklik: self == .kulakliksiz ? nil : "AirPods Pro",
-                               canliMetin: self == .dinliyor ? "Excuse me, where is the" : "")
+                               canliMetin: self == .dinliyor || self == .ceviriBulut ? "Excuse me, where is the" : "",
+                               canliCeviri: self == .ceviriBulut ? "Affedersiniz, en yakın" : "")
         switch self {
         case .ceviri, .kulakliksiz, .gecmis:
             durum.satirlar = Satir.ornekler
@@ -53,7 +61,11 @@ enum OrnekEkran: String, CaseIterable {
         case .sinirDoldu:
             durum.satirlar = Satir.ornekler
             durum.sinirMetni = Durum.sinirAciklamasi
-        case .ceviriBos, .gecmisBos, .ayarlar:
+        case .ceviriBulut:
+            durum.satirlar = Satir.ornekler
+            durum.asama = .dinliyor
+            durum.bulutCalisiyor = true
+        case .ceviriBos, .gecmisBos, .ayarlar, .ayarlarBulut:
             break
         }
         return durum
@@ -83,5 +95,7 @@ extension Satir {
 #Preview("Ayarlar") { KokEkran(durum: OrnekEkran.ayarlar.durum(), sekme: .ayarlar) }
 #Preview("Abonelik") { KokEkran(durum: OrnekEkran.abonelik.durum()) }
 #Preview("Süre doldu") { KokEkran(durum: OrnekEkran.sinirDoldu.durum()) }
+#Preview("Ayarlar — bulut") { KokEkran(durum: OrnekEkran.ayarlarBulut.durum(), sekme: .ayarlar) }
+#Preview("Çeviri — bulut") { KokEkran(durum: OrnekEkran.ceviriBulut.durum()) }
 #Preview("Tanılama") { KokEkran(durum: OrnekEkran.tanilama.durum(), sekme: .ayarlar, tanilamaAcik: true) }
 #endif

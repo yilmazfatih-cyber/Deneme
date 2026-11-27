@@ -9,13 +9,14 @@
 | 25.11.2026 | Mac derleme iş akışı: uygulama ilk kez derlendi (Xcode 26.6; derleyici hatası ve uyarısı yok); ekip ve anayasa kuruldu |
 | 25.11.2026 | S01: ses hattı ve tasarım şartnameleri, Tanılama (iPhone ve web), Anahtar Zinciri, aşama (hazırlanıyor / dinliyor / duraklatıldı), erişilebilirlik ve büyük yazı, cihaz testi belgesi; Mac derlemesi Debug ve Release, uyarıda kırılır; 13 simülatör görüntüsü |
 | 25.11.2026 | S01 tur 4 yayına alındı (PR #25); canlı web sayfası doğrulandı (sahte mikrofon ve çeviriyle)                 |
+| 27.11.2026 | Apple Developer hesabı açıldı; uygulama GitHub iş akışıyla imzalanıp App Store Connect'e yüklendi (yapı 1). Telefonda TestFlight'tan kurulup denenmesi bekleniyor |
 
 ## Sprintler
 
 | Sprint | Hedef                                                                                                   | Durum   |
 | ------ | ------------------------------------------------------------------------------------------------------- | ------- |
 | S01    | Cihaz denemesine hazır sürüm: bağımsız kod incelemesi, Tanılama, anahtarın Anahtar Zinciri'nde saklanması, erişilebilirlik, simülatör ekran görüntüleri, cihaz testi belgesi | otomatik kapı ve uzman incelemesi geçti; **insan kapısını bekliyor** (`docs/sprints/S01/demo.md`) |
-| S02    | İkinci motor: bulut hattı (Soniox). Görev tanımı yazıldı; proje sahibinin isteğiyle **beklemede** (25.11.2026) | beklemede |
+| S02    | İkinci motor: bulut hattı (Soniox). Görev tanımı yazıldı; 25.11'de beklemeye alındı, proje sahibinin isteğiyle 27.11.2026'da yeniden başladı | sürüyor |
 | S03    | Ödeme ve App Store hazırlığı: haftalık abonelik, günlük ücretsiz süre, gizlilik sayfası, yayın kılavuzu, büyüme ajanı, indirilebilir `.ipa` | kod ve derleme bitti; **insan kapısını bekliyor** (`docs/sprints/S03/demo.md`) |
 | S04    | Cihaz denemesinden çıkan sorunlar (proje sahibinin `docs/cihaz-testi.md` sonuçlarına göre)               | bekliyor |
 
@@ -59,7 +60,7 @@
 - Çift yönlü konuşma: kişinin Türkçe söylediğini karşı tarafın diline çevirip telefonun hoparlöründen okumak.
 - Arka planda ve ekran kilitliyken dinleme (ses arka plan kipi; gizlilik göstergesi ve pil etkisiyle birlikte düşünülmeli).
 - Mac'siz kurulum: imzasız `.ipa` üretiliyor (25.11.2026, `canli-ceviri-deneme-1`; bir iPhone'a kurulduğu denenmedi).
-  Bilgisayarsız kurulum için TestFlight (ücretli geliştirici hesabı gerekir; iş akışı hazır, hiç çalıştırılmadı).
+  Bilgisayarsız kurulum için TestFlight (ücretli geliştirici hesabı gerekir; ilk yükleme 27.11.2026'da yapıldı).
 - Geçmişi isteğe bağlı saklama ve dışa aktarma.
 - Kaynak dili kendiliğinden tanıma.
 - Web sürümünde çeviriyi cihazda yapma (tarayıcı desteklediğinde) ve mikrofon seçimi.
