@@ -1,0 +1,226 @@
+name: Canlı Çeviri (anahtar sunucusu)
+
+# Geçici anahtar sunucusunu (canli-ceviri/sunucu, Cloudflare Workers) sınar; istenirse yayımlar.
+# - Her push ve pull request'te (yalnız sunucu klasörü ya da bu dosya değişince): tip denetimi, testler (Workers
+#   çalışma zamanında), paketleme denemesi ve sabitlenmiş Apple kökünün Apple'daki kopyayla karşılaştırması.
+# - Elle başlatılıp "yayinla" işaretlenirse (Actions → bu iş akışı → Run workflow) ve yalnız varsayılan dalda:
+#   testlerden sonra Cloudflare'e yayımlar ve Worker'ın gizli değerlerini ayarlar.
+# Yayın için gerekli gizli değerler (Settings → Secrets and variables → Actions):
+#   CLOUDFLARE_API_TOKEN  ("Edit Cloudflare Workers" yetkili API belirteci), CLOUDFLARE_ACCOUNT_ID,
+#   SONIOX_API_KEY        (uzun ömürlü Soniox anahtarı; yalnız Worker'da durur, uygulamaya gömülmez),
+#   SUNUCU_OZET_TUZU      (rastgele, en az 16 karakter; örn. `openssl rand -hex 32`. Değiştirilirse sayaçlar sıfırlanır).
+# Gizli değerler hiçbir adımda kayda yazılmaz; Worker'a `wrangler secret put` ile standart girdiden verilir.
+on:
+  push:
+    paths:
+      - canli-ceviri/sunucu/**
+      - .github/workflows/canli-ceviri-sunucu.yml
+  pull_request:
+    paths:
+      - canli-ceviri/sunucu/**
+      - .github/workflows/canli-ceviri-sunucu.yml
+  workflow_dispatch:
+    inputs:
+      yayinla:
+        description: "Testlerden sonra Cloudflare'e yayımla (yalnız varsayılan dalda)"
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: canli-ceviri-sunucu-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  # Wrangler kullanım ölçümü göndermesin.
+  WRANGLER_SEND_METRICS: 'false'
+  KOK_ADRESI: https://www.apple.com/certificateauthority/AppleRootCA-G3.cer
+
+defaults:
+  run:
+    working-directory: canli-ceviri/sunucu
+
+jobs:
+  sina:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: canli-ceviri/sunucu/package-lock.json
+      - name: Bağımlılıkları kur
+        run: npm ci
+
+      - name: Sabitlenmiş Apple kökünü denetle
+        run: |
+          set -euo pipefail
+          # Kaynaktaki kök, Apple'ın yayımladığı "Apple Root CA - G3" ile bayt bayt aynı olmalı.
+          if curl -fsS --max-time 30 -o "$RUNNER_TEMP/AppleRootCA-G3.cer" "$KOK_ADRESI"; then
+            if ! node scripts/kok-denetle.mjs "$RUNNER_TEMP/AppleRootCA-G3.cer"; then
+              echo "::error title=Kök sertifika tutmuyor::canli-ceviri/sunucu/src/kok.ts içindeki kök, Apple'ın yayımladığı Apple Root CA - G3 ile aynı değil. Dosyayı inceleyin; bu hâliyle yayımlamayın."
+              exit 1
+            fi
+          else
+            echo "::warning title=Kök indirilemedi::Apple'ın kök sertifikası indirilemedi; yalnız kaynaktaki PEM ile parmak izinin birbirini tuttuğu denetlendi."
+            node scripts/kok-denetle.mjs
+          fi
+
+      - name: Tip denetimi
+        run: npx tsc --noEmit
+
+      - name: Testler (Workers çalışma zamanında)
+        run: npm test
+
+      - name: Paketleme denemesi (yayımlamadan)
+        run: npx wrangler deploy --dry-run --outdir "$RUNNER_TEMP/paket"
+
+  yayinla:
+    needs: sina
+    if: github.event_name == 'workflow_dispatch' && inputs.yayinla
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Dal denetimi
+        working-directory: .
+        env:
+          VARSAYILAN: ${{ github.event.repository.default_branch }}
+        run: |
+          if [ "$GITHUB_REF_NAME" != "$VARSAYILAN" ]; then
+            echo "::error title=Yanlış dal::Yayın yalnız '$VARSAYILAN' dalında yapılır; siz '$GITHUB_REF_NAME' dalını seçtiniz. Run workflow menüsünde '$VARSAYILAN' dalını seçip yeniden başlatın. Hiçbir şey yayımlanmadı."
+            exit 1
+          fi
+          echo "Dal: $GITHUB_REF_NAME (varsayılan dal)"
+
+      - name: Gizli değerleri denetle
+        working-directory: .
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SONIOX_API_KEY: ${{ secrets.SONIOX_API_KEY }}
+          SUNUCU_OZET_TUZU: ${{ secrets.SUNUCU_OZET_TUZU }}
+        run: |
+          # Yalnız adlar yazılır; değerler asla.
+          eksik=""
+          for ad in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID SONIOX_API_KEY SUNUCU_OZET_TUZU; do
+            if [ -z "${!ad:-}" ]; then
+              eksik="$eksik $ad"
+            fi
+          done
+          if [ -n "$eksik" ]; then
+            echo "::error title=Eksik gizli değer::Şu gizli değerler girilmemiş:$eksik. GitHub'da Settings → Secrets and variables → Actions → New repository secret ile ekleyip işi yeniden başlatın. Hiçbir şey yayımlanmadı."
+            exit 1
+          fi
+          # Değerin kendisi yazdırılmaz; yalnız uzunluğu.
+          tuz="$(printf '%s' "$SUNUCU_OZET_TUZU" | LC_ALL=C tr -d '[:space:]')"
+          if [ "${#tuz}" -lt 16 ]; then
+            echo "::error title=SUNUCU_OZET_TUZU kısa::SUNUCU_OZET_TUZU en az 16 karakter olmalı (şu an ${#tuz}). 'openssl rand -hex 32' çıktısını gizli değer olarak girip işi yeniden başlatın. Hiçbir şey yayımlanmadı."
+            exit 1
+          fi
+          echo "Dört gizli değer de girilmiş."
+
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: canli-ceviri/sunucu/package-lock.json
+      - name: Bağımlılıkları kur
+        run: npm ci
+
+      - name: Sabitlenmiş Apple kökünü denetle (yayın öncesi, zorunlu)
+        run: |
+          set -euo pipefail
+          if ! curl -fsS --max-time 30 -o "$RUNNER_TEMP/AppleRootCA-G3.cer" "$KOK_ADRESI"; then
+            echo "::error title=Kök indirilemedi::Apple'ın kök sertifikası indirilemedi; karşılaştırma yapılamadığı için yayımlanmadı. İşi yeniden başlatın."
+            exit 1
+          fi
+          if ! node scripts/kok-denetle.mjs "$RUNNER_TEMP/AppleRootCA-G3.cer"; then
+            echo "::error title=Kök sertifika tutmuyor::canli-ceviri/sunucu/src/kok.ts içindeki kök, Apple'ın yayımladığı Apple Root CA - G3 ile aynı değil. Hiçbir şey yayımlanmadı."
+            exit 1
+          fi
+
+      - name: Yayımla (wrangler deploy)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_OUTPUT_FILE_PATH: ${{ runner.temp }}/wrangler-cikti.ndjson
+        run: |
+          set -euo pipefail
+          if ! npx wrangler deploy; then
+            echo "::error title=Yayın başarısız::wrangler deploy hata verdi. Yukarıdaki kayıt nedeni söyler: API belirtecinin yetkisi ('Edit Cloudflare Workers'), hesap kimliği ve hesapta workers.dev alt alan adının açılmış olması en sık nedenlerdir."
+            exit 1
+          fi
+          # Worker adresi wrangler'ın yazdığı çıktı dosyasından okunur.
+          adres="$(node -e '
+            const satirlar = require("node:fs").readFileSync(process.argv[1], "utf8").split("\n").filter(Boolean)
+            const yayin = satirlar.map((s) => JSON.parse(s)).filter((o) => o.type === "deploy").pop()
+            const hedef = (yayin?.targets ?? []).find((t) => /^https:\/\/[a-z0-9.-]+$/.test(t))
+            process.stdout.write(hedef ?? "")
+          ' "$WRANGLER_OUTPUT_FILE_PATH" || true)"
+          echo "WORKER_ADRESI=$adres" >> "$GITHUB_ENV"
+          echo "Yayımlandı: ${adres:-adres okunamadı; yukarıdaki wrangler çıktısına bakın}"
+
+      - name: Worker gizli değerlerini ayarla
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SONIOX_API_KEY: ${{ secrets.SONIOX_API_KEY }}
+          SUNUCU_OZET_TUZU: ${{ secrets.SUNUCU_OZET_TUZU }}
+        run: |
+          set -euo pipefail
+          # Değerler komut satırına ya da kayda yazılmaz; wrangler'a standart girdiden verilir.
+          # Yapıştırırken giren boşluk ve satır sonları atılır.
+          printf '%s' "$SONIOX_API_KEY" | LC_ALL=C tr -d '[:space:]' | npx wrangler secret put SONIOX_API_KEY
+          printf '%s' "$SUNUCU_OZET_TUZU" | LC_ALL=C tr -d '[:space:]' | npx wrangler secret put OZET_TUZU
+          echo "Gizli değerler ayarlandı (SONIOX_API_KEY, OZET_TUZU)."
+
+      - name: Yayını yokla
+        run: |
+          set -euo pipefail
+          if [ -z "${WORKER_ADRESI:-}" ]; then
+            echo "::warning title=Yoklama atlandı::Worker adresi okunamadığı için yayın yoklanmadı."
+            exit 0
+          fi
+          # Boş gövdeli istek 400 gecersiz_istek almalı: bu, yapılandırmanın ve sayaçların çalıştığını gösterir.
+          # (Gizli değer eksikse 500 sunucu_hatasi döner.) İlk yayında adresin açılması bir dakika sürebilir.
+          durum=000
+          for deneme in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            durum="$(curl -s -o "$RUNNER_TEMP/yoklama.json" -w '%{http_code}' --max-time 15 -X POST -H 'Content-Type: application/json' -d '{}' "$WORKER_ADRESI/v1/oturum" || true)"
+            if [ "$durum" = "400" ]; then
+              break
+            fi
+            sleep 5
+          done
+          if [ "$durum" != "400" ] || ! grep -q '"gecersiz_istek"' "$RUNNER_TEMP/yoklama.json"; then
+            echo "::error title=Yoklama başarısız::Yayın yapıldı ama sunucu beklenen yanıtı vermedi (HTTP $durum; beklenen 400 gecersiz_istek). 500 ise gizli değerler ya da Durable Object kurulumu eksiktir; Cloudflare panosunda Worker'ın kaydına bakın."
+            exit 1
+          fi
+          echo "Yoklama tamam: sunucu yanıt veriyor."
+
+      - name: İş özeti
+        if: always()
+        env:
+          ISIN_DURUMU: ${{ job.status }}
+        run: |
+          {
+            echo "## Canlı Çeviri → anahtar sunucusu"
+            echo ""
+            echo "- Commit: $GITHUB_SHA"
+            if [ -n "${WORKER_ADRESI:-}" ]; then
+              echo "- Worker adresi: $WORKER_ADRESI"
+              echo "- Uç nokta: \`POST $WORKER_ADRESI/v1/oturum\`"
+            else
+              echo "- Worker adresi: okunamadı (yayın yapılmadı ya da çıktı dosyası yok)"
+            fi
+            if [ "$ISIN_DURUMU" = "success" ]; then
+              echo "- Sonuç: Yayın tamam; gizli değerler ayarlandı ve sunucu yanıt veriyor."
+            else
+              echo "- Sonuç: Yayın tamamlanmadı. Kayıtta kırmızı işaretli adıma bakın."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
