@@ -48,7 +48,7 @@ final class Tanilama {
         eskiAtildi = false
     }
 
-    /// Panoya gidecek düz metin: başta sürüm, iOS ve cihaz modeli; olaylar eskiden yeniye,
+    /// Panoya gidecek düz metin: başta sürüm, iOS, cihaz modeli, motor ve anahtar kaynağı; olaylar eskiden yeniye,
     /// her satır `SS:DD:SS.mmm  olay  ayrıntı`.
     var metin: String {
         var satirlar = [
@@ -56,6 +56,7 @@ final class Tanilama {
             "iOS \(UIDevice.current.systemVersion)",
             "Cihaz \(Tanilama.cihazModeli)",
             "Saat dilimi \(Tanilama.saatDilimi)",
+            Anahtarlik.tanilamaOzeti,
             "Sıra: eskiden yeniye · \(olaylar.count) olay (en çok \(tanilamaSiniri)"
                 + (eskiAtildi ? "; eski olaylar atıldı)" : ")"),
             "",

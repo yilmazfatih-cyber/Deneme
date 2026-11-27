@@ -25,6 +25,8 @@ enum OrnekEkran: String, CaseIterable {
     case tanilamaGelistirici = "tanilama-gelistirici"   // S02 tur 3: Tanılama sayfasında Geliştirici bölümü
     case ayarlarKota = "ayarlar-kota"       // S03: abone, Ayarlar'da "Bu hafta kalan" satırı görünür
     case ceviriKotaAz = "ceviri-kota-az"    // S03: bulut motoruyla dinliyor, kotada 10 dakikadan az kaldı (sarı not)
+    /// S03 tur 2: duruyor, bulut motoru; iki dil düğmesi seçilebilir. Görüntüsü en büyük Dinamik Yazı'da alınır.
+    case ceviriDiller = "ceviri-diller-buyuk-yazi"
 
     /// En son örnek durumu üretilen ekran; `AyarlarEkrani` örnek Soniox anahtarını buna bakarak gösterir.
     @MainActor static var gosterilen: OrnekEkran?
@@ -37,7 +39,7 @@ enum OrnekEkran: String, CaseIterable {
     var sekme: Sekme {
         switch self {
         case .ceviriBos, .ceviri, .dinliyor, .kulakliksiz, .abonelik, .abonelikBitti, .ceviriBulut, .dilSecimi,
-             .ceviriKotaAz:
+             .ceviriKotaAz, .ceviriDiller:
             .ceviri
         case .gecmis, .gecmisBos:
             .gecmis
@@ -60,7 +62,7 @@ enum OrnekEkran: String, CaseIterable {
         // Kalan kota yalnız kota ekranlarında bilinir; ötekilerde satır ve not görünmez.
         Kota.ortak.ornekle(kalanSn: nil)
         switch self {
-        case .ceviri, .kulakliksiz, .gecmis:
+        case .ceviri, .kulakliksiz, .gecmis, .ceviriDiller:
             durum.satirlar = Satir.ornekler
         case .dinliyor:
             durum.satirlar = Satir.ornekler
@@ -128,8 +130,12 @@ extension Satir {
 #Preview("Ayarlar — kota") { KokEkran(durum: OrnekEkran.ayarlarKota.durum(), sekme: .ayarlar) }
 #Preview("Çeviri — kota az") { KokEkran(durum: OrnekEkran.ceviriKotaAz.durum()) }
 #Preview("Çeviri — bulut") { KokEkran(durum: OrnekEkran.ceviriBulut.durum()) }
+#Preview("Çeviri — diller, büyük yazı") {
+    KokEkran(durum: OrnekEkran.ceviriDiller.durum())
+        .dynamicTypeSize(.accessibility5)
+}
 #Preview("Dil seçimi") {
-    DilSecimEkrani(baslik: "Kaynak dil", diller: bulutDilleri, otomatik: true, secili: .constant(otomatikDil))
+    DilSecimEkrani(baslik: "Konuşulan dil", diller: bulutDilleri, otomatik: true, secili: .constant(otomatikDil))
         .background(Renk.zemin)
         .preferredColorScheme(.dark)
 }

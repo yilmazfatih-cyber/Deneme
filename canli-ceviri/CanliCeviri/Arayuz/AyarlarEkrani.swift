@@ -9,6 +9,7 @@ struct AyarlarEkrani: View {
     @Binding var tanilamaAcik: Bool
     /// Motor seçimi değişince ekran yenilensin diye okunur; karar `Anahtarlik.motor`'dadır.
     @AppStorage(Kayit.motor) private var motorKaydi = ""
+    @AppStorage(Kayit.cihazSecildi) private var cihazSecildi = false
     @AppStorage(Kayit.hedefDil) private var hedefKod = "tr"
     @AppStorage(Kayit.sesliOku) private var sesliOku = false
     /// Çeviri dili sayfası (aranabilir liste) açık mı.
@@ -16,10 +17,11 @@ struct AyarlarEkrani: View {
     @ScaledMetric(relativeTo: .title3) private var simgeSutunu: CGFloat = 30
 
     /// Bulut motoru etkin mi (geçerli Soniox anahtarı var ya da anahtar sunucudan geliyor, ve geliştirici bölümünde
-    /// cihaz seçilmemiş).
+    /// cihaz açıkça seçilmemiş).
     private var bulutEtkin: Bool {
         if AyarlarEkrani.ornekBulut() { return true }
-        return motorKaydi == Motor.cihaz.rawValue ? false : Anahtarlik.motor == .bulut
+        if motorKaydi == Motor.cihaz.rawValue && cihazSecildi { return false }
+        return Anahtarlik.motor == .bulut
     }
 
     var body: some View {
@@ -187,10 +189,17 @@ struct AyarlarEkrani: View {
     }
 
     /// Çeviri dili: bulut motorunda aranabilir dil sayfasını açar (Türkçe en üstte); cihaz motoru yalnız Türkçeye
-    /// çevirdiği için orada satır yalnız bilgi verir.
+    /// çevirdiği için orada satır yalnız bilgi verir. Aynı ayar Çeviri ekranındaki "Çeviri dili" düğmesindedir.
+    /// Dinlerken değiştirilemez (süren akışın dili değişmez; Çeviri ekranındaki düğmeyle aynı kural).
     @ViewBuilder
     private var hedefDilSatiri: some View {
-        if bulutEtkin {
+        if bulutEtkin && durum.calisiyor {
+            hedefDilIcerigi(dilAdi(hedefKod), ok: false)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Çeviri dili")
+                .accessibilityValue(dilAdi(hedefKod))
+                .accessibilityHint("Değiştirmek için dinlemeyi durdurun")
+        } else if bulutEtkin {
             Button {
                 hedefAcik = true
             } label: {

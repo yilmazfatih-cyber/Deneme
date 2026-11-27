@@ -47,6 +47,8 @@ enum Anahtarlik {
     /// Kullanıcının Ayarlar'da girdiği Soniox anahtarı; yoksa boş dizge. Kurallar Alania anahtarıyla aynıdır:
     /// boş dizge atamak siler, baştaki ve sondaki boşluklar kırpılır, değer hiçbir kayda yazılmaz.
     /// KR8: anahtar ilk kez kaydedilince motor "bulut" olur; silinince (gömülü anahtar da yoksa) "cihaz"a döner.
+    /// Buranın yazdığı "cihaz" açık seçim değildir (`Kayit.cihazSecildi` yazılmaz): sonraki bir yapıda anahtar
+    /// yeniden bulununca (gömülü ya da sunucudan) motor kendiliğinden buluta döner (S03 tur 2).
     static var sonioxAnahtari: String {
         get {
             if let onceki = sonioxBellekte { return onceki }
@@ -69,6 +71,7 @@ enum Anahtarlik {
                 }
             } else if onceki.isEmpty {
                 UserDefaults.standard.set(Motor.bulut.rawValue, forKey: Kayit.motor)
+                UserDefaults.standard.removeObject(forKey: Kayit.cihazSecildi)
             }
         }
     }
@@ -97,12 +100,38 @@ enum Anahtarlik {
         #endif
     }
 
-    /// Seçili motor (K3, KR8, KR14; S03). Ne yerel anahtar ne sunucu varsa cihaz. Geliştirici bölümünde hiç seçim
-    /// yapılmadıysa: anahtar varsa ya da sunucudan geliyorsa bulut, yoksa cihaz.
+    /// Seçili motor (K3, KR8, KR14; S03). Ne yerel anahtar ne sunucu varsa cihaz. Anahtar varsa ya da sunucudan
+    /// geliyorsa bulut; cihaz yalnız Geliştirici bölümünde AÇIKÇA seçildiyse (`cihazSecildi`).
     static var motor: Motor {
         guard !gecerliSonioxAnahtari.isEmpty || sunucudanAnahtar else { return .cihaz }
-        guard let secim = UserDefaults.standard.string(forKey: Kayit.motor) else { return .bulut }
-        return Motor(rawValue: secim) ?? .cihaz
+        return cihazSecildi ? .cihaz : .bulut
+    }
+
+    /// Kullanıcı Geliştirici bölümünde cihaz motorunu açıkça seçti mi (S03 tur 2). `Kayit.motor`'daki "cihaz" tek
+    /// başına yetmez: onu anahtar silinince otomatik geçiş kodu da yazar ve eski yapılardan kalmış olabilir; öyle bir
+    /// değer, anahtarın sunucudan geldiği mağaza yapısında bulut motorunu (ve dil seçimini) kapatırdı.
+    static var cihazSecildi: Bool {
+        let varsayilanlar = UserDefaults.standard
+        return varsayilanlar.bool(forKey: Kayit.cihazSecildi)
+            && varsayilanlar.string(forKey: Kayit.motor) == Motor.cihaz.rawValue
+    }
+
+    /// Soniox anahtarının nereden geldiği; yalnız Tanılama içindir. Anahtarın kendisi asla yazılmaz (KR14).
+    static var anahtarKaynagi: String {
+        if !sonioxAnahtari.isEmpty { return "kullanıcı" }
+        if sonioxGomulu { return "gömülü" }
+        return sunucudanAnahtar ? "sunucu" : "yok"
+    }
+
+    /// Tanılama başlığı için tek satır: seçili motor, anahtar kaynağı, yapı türü ve (varsa) açık cihaz seçimi.
+    static var tanilamaOzeti: String {
+        #if DENEME
+        let yapi = "deneme"
+        #else
+        let yapi = "mağaza"
+        #endif
+        return "Motor \(motor.rawValue) · anahtar \(anahtarKaynagi) · yapı \(yapi)"
+            + (cihazSecildi ? " · cihaz açıkça seçildi" : "")
     }
 
     /// A2: `UserDefaults`'taki değer, boş da olsa, kazanır (orada yalnız eski arayüz yazmış olabilir, o da

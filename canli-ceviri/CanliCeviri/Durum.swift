@@ -136,7 +136,8 @@ final class Durum {
             if Anahtarlik.motor == .bulut {
                 bulutuBaslat()   // Apple çeviri oturumu gerekmez (S02 KR4)
             } else {
-                Tanilama.ortak.kaydet("başlat", "dil=\(dil.kod)")
+                Tanilama.ortak.kaydet("başlat", "dil=\(dil.kod) motor=cihaz anahtar=\(Anahtarlik.anahtarKaynagi)"
+                                      + (Anahtarlik.cihazSecildi ? " seçim=cihaz" : ""))
                 // Bu atama KokEkran'daki translationTask'i tetikler.
                 ayar = .init(source: Locale.Language(identifier: dil.kod),
                              target: Locale.Language(identifier: "tr"))
@@ -157,7 +158,8 @@ final class Durum {
         bulutKaynak = kaynak
         bulutHedef = hedef
         bulutCalisiyor = true
-        Tanilama.ortak.kaydet("başlat", "dil=\(kaynak ?? otomatikDil) motor=bulut hedef=\(hedef.kod)")
+        Tanilama.ortak.kaydet("başlat", "dil=\(kaynak ?? otomatikDil) motor=bulut hedef=\(hedef.kod)"
+                              + " anahtar=\(Anahtarlik.anahtarKaynagi)")
         let benim = kimlik
         bulutGorevi = Task { [weak self] in
             guard let self else { return }
