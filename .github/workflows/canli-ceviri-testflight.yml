@@ -5,10 +5,13 @@ name: Canlı Çeviri (TestFlight'a yükle)
 # Elle başlatılır (Actions → bu iş akışı → Run workflow) ve yalnız varsayılan dalda çalışır.
 # Gerekli gizli değerler (Settings → Secrets and variables → Actions):
 #   ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8 (App Store Connect API anahtarının .p8 içeriği), APPLE_TEAM_ID.
-# İsteğe bağlı gizli değer: SONIOX_API_KEY. Girilmişse bulut motorunun anahtarı bu yapıya gömülür (yalnız koşucudaki
-#   kopyada; depoya yazılmaz) ve kullanıcının Ayarlar'da anahtar girmesi gerekmez. Girilmemişse iş yine çalışır.
-#   Gömülü anahtar uygulama dosyasının içinde düz dizge olarak durur ve oradan çıkarılabilir; bu yüzden yalnız bu
-#   (TestFlight) iş akışında gömülür, herkese açık deneme .ipa'sına ve simülatör derlemesine girmez.
+# Yapı türü (ic_test girdisi):
+#   İç test (varsayılan): DENEME bayrağıyla derlenir (abonelik gerekmez) ve Soniox anahtarı gömülür.
+#   Mağaza (ic_test = false): DENEME yok (abonelik zorunlu) ve Soniox anahtarı GÖMÜLMEZ.
+# İsteğe bağlı gizli değer: SONIOX_API_KEY. İç test yapısında girilmişse bulut motorunun anahtarı yapıya gömülür
+#   (yalnız koşucudaki kopyada; depoya yazılmaz). Girilmemişse iş yine çalışır.
+#   Gömülü anahtar uygulama dosyasının içinde düz dizge olarak durur ve oradan çıkarılabilir; bu yüzden yalnız iç
+#   test yapısına gömülür, mağaza yapısına, herkese açık deneme .ipa'sına ve simülatör derlemesine girmez.
 # Gizli değerler hiçbir adımda kayda yazılmaz; saklanan kayıt dosyalarından da silinir.
 on:
   workflow_dispatch:
@@ -17,6 +20,11 @@ on:
         description: 'Sürüm notu (isteğe bağlı; iş özetine yazılır)'
         required: false
         default: ''
+      ic_test:
+        description: 'İç test yapısı: abonelik gerekmez, Soniox anahtarı gömülür. Mağazaya gönderilecek yapı için false seçin'
+        type: boolean
+        required: false
+        default: true
 
 permissions:
   contents: read
@@ -89,15 +97,27 @@ jobs:
           echo "ASC_ANAHTAR_YOLU=$anahtar" >> "$GITHUB_ENV"
           echo "Anahtar dosyası yazıldı (yalnız bu iş okuyabilir; iş bitince silinir)."
 
-      - name: Soniox anahtarını yapıya göm (varsa)
+      - name: Soniox anahtarını yapıya göm (yalnız iç test yapısı; varsa)
         env:
           SONIOX_API_KEY: ${{ secrets.SONIOX_API_KEY }}
+          IC_TEST: ${{ inputs.ic_test }}
         run: |
           set -euo pipefail
           # Değer hiçbir satıra yazdırılmaz. Yalnız koşucudaki dosya değişir; depoya dolu hâli asla yazılmaz.
+          dosya=canli-ceviri/CanliCeviri/Bulut/GomuluAnahtar.swift
+          if [ "$IC_TEST" != "true" ]; then
+            # Mağaza yapısı: anahtar gömülmez; dosyanın depodaki boş hâliyle derlendiği de denetlenir.
+            if ! grep -q '^let gomuluSonioxAnahtari = ""$' "$dosya"; then
+              echo "::error title=Gömülü anahtar boş değil::$dosya depodaki boş hâlinde değil; mağaza yapısına anahtar girmemeli. Hiçbir şey yüklenmedi."
+              exit 1
+            fi
+            echo "SONIOX_GOMULU=yok (mağaza yapısı)" >> "$GITHUB_ENV"
+            echo "Mağaza yapısı: anahtar gömülmez."
+            exit 0
+          fi
           if [ -z "${SONIOX_API_KEY:-}" ]; then
             echo "SONIOX_GOMULU=yok" >> "$GITHUB_ENV"
-            echo "Gömülü anahtar yok, kullanıcı Ayarlar'dan girer."
+            echo "Gömülü anahtar yok; anahtar uygulamada Tanılama sayfasının Geliştirici bölümünden girilir."
             exit 0
           fi
           # Yapıştırırken giren boşluk ve satır sonları atılır (anahtarda boşluk olmaz).
@@ -111,7 +131,6 @@ jobs:
             exit 1
           fi
           echo "Anahtar biçimi uygun (uzunluk $uzunluk)."
-          dosya=canli-ceviri/CanliCeviri/Bulut/GomuluAnahtar.swift
           if [ ! -f "$dosya" ]; then
             echo "::error title=Dosya yok::$dosya bulunamadı; anahtar gömülemedi. Hiçbir şey yüklenmedi."
             exit 1
@@ -125,10 +144,19 @@ jobs:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          IC_TEST: ${{ inputs.ic_test }}
         run: |
           set -o pipefail
           echo "Yapı numarası: $YAPI_NO"
           ARSIV="$RUNNER_TEMP/CanliCeviri.xcarchive"
+          # İç test yapısı DENEME bayrağıyla derlenir (abonelik denetimi atlanır); mağaza yapısında bayrak yoktur.
+          EK_AYAR=()
+          if [ "$IC_TEST" = "true" ]; then
+            EK_AYAR=('SWIFT_ACTIVE_COMPILATION_CONDITIONS=$(inherited) DENEME')
+            echo "Yapı türü: iç test (DENEME: abonelik gerekmez)"
+          else
+            echo "Yapı türü: mağaza (abonelik zorunlu)"
+          fi
           durum=0
           xcodebuild archive \
             -project canli-ceviri/CanliCeviri.xcodeproj \
@@ -138,6 +166,7 @@ jobs:
             -archivePath "$ARSIV" \
             DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
             CURRENT_PROJECT_VERSION="$YAPI_NO" \
+            ${EK_AYAR[@]+"${EK_AYAR[@]}"} \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$ASC_ANAHTAR_YOLU" \
             -authenticationKeyID "$ASC_KEY_ID" \
@@ -191,11 +220,18 @@ jobs:
         env:
           SURUM_NOTU: ${{ inputs.surum_notu }}
           ISIN_DURUMU: ${{ job.status }}
+          IC_TEST: ${{ inputs.ic_test }}
         run: |
+          if [ "$IC_TEST" = "true" ]; then
+            YAPI_TURU="iç test"
+          else
+            YAPI_TURU="mağaza"
+          fi
           {
             echo "## Canlı Çeviri → TestFlight"
             echo ""
             echo "- Yapı numarası: $YAPI_NO"
+            echo "- Yapı türü: $YAPI_TURU"
             echo "- Commit: $GITHUB_SHA"
             echo "- Soniox anahtarı: ${SONIOX_GOMULU:-yok}"
             if [ "$ISIN_DURUMU" = "success" ]; then

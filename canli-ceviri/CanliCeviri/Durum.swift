@@ -42,7 +42,6 @@ enum NotTuru: Hashable {
     case ceviri         // Ö-9: bir cümle çevrilemedi
     case okunmayanCeviri   // S4: telefon / arka plan kesintisinde gelen çeviri okunmadı
     case uzunKesinti       // K4: kesinti 10 sn'dir sürüyor; çıkış yolu söylenir
-    case sonDakika         // S03 KR3: günlük ücretsiz sürenin son dakikası
     case bulutKopma        // S02 KR5: bulut bağlantısı koptu; o sırada söylenenler çevrilmedi
 }
 
@@ -64,8 +63,8 @@ final class Durum {
     var notlar: [EkranNotu] = []
     let hat = Hat()
     let abonelik = Abonelik()
-    /// Günlük ücretsiz süre doldu: Çeviri ekranında açıklama (KR2); abone olunca ya da yeni başlatmada kalkar.
-    var sinirMetni: String?
+    /// Abonelik oturum ortasında bitti: Çeviri ekranında açıklama; abone olunca ya da yeni başlatmada kalkar.
+    var abonelikNotu: String?
     /// Abonelik sayfası açık mı (Çeviri ekranı ve Ayarlar açar).
     var abonelikAcik = false
     /// Bu dinleme bulut motoruyla (Soniox) çalışıyor: Çeviri ekranı sesin Soniox'a gittiğini söyler (S02 K5).
@@ -75,10 +74,9 @@ final class Durum {
     /// Oturum kimliği (şartname D-1): her Başlat ve Durdur artırır; eski işler yan etki yapmadan çıkar.
     @ObservationIgnored private var kimlik = 0
     @ObservationIgnored private var ceviriHatasi = 0
-    /// Ücretsiz süre sayacı: saniyede bir bakar, yalnız "dinliyor" aşamasında sayar.
-    @ObservationIgnored private var sayacGorevi: Task<Void, Never>?
-    @ObservationIgnored private var sonTik = Date()
-    /// Süre dolunca çalan çeviri bitene kadar bekleyip hattı kapatan görev (KR2).
+    /// Abonelik nöbeti: dinleme sürerken aboneliğin bitip bitmediğine bakar (deneme yapısında çalışmaz).
+    @ObservationIgnored private var nobetGorevi: Task<Void, Never>?
+    /// Abonelik bitince çalan çeviri bitene kadar bekleyip hattı kapatan görev.
     @ObservationIgnored private var kapanisGorevi: Task<Void, Never>?
     /// Bulut motorunun döngüsü (S02); cihaz motorunda nil.
     @ObservationIgnored private var bulutGorevi: Task<Void, Never>?
@@ -103,7 +101,7 @@ final class Durum {
         #endif
         if calisiyor {
             Tanilama.ortak.kaydet("durdur", "neden=düğme")
-            sayaciDurdur()
+            nobetiDurdur()
             hat.durdur()
             bulutuBirak()
             ayar = nil
@@ -111,13 +109,25 @@ final class Durum {
             notlar = []
         } else {
             kapanisiBitir()
-            if !abonelik.abone && GunlukSure.doldu() {
-                Tanilama.ortak.kaydet("sınır", "günlük süre doldu")
-                sinirMetni = Durum.sinirAciklamasi
+            // Yalnız ücretli (S02 tur 3): abonelik yoksa dinleme başlamaz. Bu noktadan önce mikrofon açılmaz,
+            // izin istenmez, buluta bağlanılmaz; dinlemeyi başlatan tek yer bu dalın devamıdır.
+            if abonelikGerekli {
+                if !abonelik.durumOkundu {
+                    // Açılıştan hemen sonra abonelik durumu henüz okunmamış olabilir: okunur, karar ondan sonra.
+                    let benim = kimlik
+                    Task { [weak self] in
+                        guard let self else { return }
+                        await self.abonelik.durumuGuncelle()
+                        guard benim == self.kimlik, !self.calisiyor else { return }
+                        self.dugmeyeBasildi(dil: dil)
+                    }
+                    return
+                }
+                Tanilama.ortak.kaydet("abonelik", "gerekli, fiyat ekranı açıldı")
                 abonelikAcik = true
                 return
             }
-            sinirMetni = nil
+            abonelikNotu = nil
             hata = nil
             notlar = []
             ceviriHatasi = 0
@@ -166,23 +176,17 @@ final class Durum {
             hataylaBitir("Mikrofon izni gerekli (Ayarlar'dan açabilirsiniz).", neden: "izin yok")
             return
         }
-        // Anahtar yalnız Anahtar Zinciri'nden (ya da yapıdan) okunur ve yalnız bağlantı isteğine verilir (K5).
-        let anahtar = Anahtarlik.gecerliSonioxAnahtari
-        guard !anahtar.isEmpty else {
-            hataylaBitir("Soniox anahtarı okunamadı. Ayarlar'dan anahtarı yeniden girin ya da cihaz motoruna geçin.",
-                         neden: "hata bulut anahtar yok")
-            return
-        }
+        // Anahtarı `BulutAkisi` her yeni akışta `SonioxAnahtarKaynagi`'ndan kendisi ister; burada okunmaz (K5).
         let bitis: AsyncThrowingStream<String, Error>
         do {
-            bitis = try hat.baslatBulut(kaynak: kaynak, hedef: hedef, anahtar: anahtar)
+            bitis = try hat.baslatBulut(kaynak: kaynak, hedef: hedef)
         } catch {
             let (mesaj, kod) = Durum.turkce(error)
             hataylaBitir(mesaj, neden: "hata \(kod)")
             return
         }
         // Aşama "hazırlanıyor" kalır; akış başlayınca `Hat` bildirir ve "dinliyor" olur (K6).
-        sayaciBaslat()
+        nobetiBaslat()
         do {
             for try await _ in bitis {}
         } catch {
@@ -275,7 +279,7 @@ final class Durum {
             return
         }
         asama = .dinliyor
-        sayaciBaslat()
+        nobetiBaslat()
 
         // Her biten cümle buraya düşer: çevir, ekrana yaz, seslendir.
         // Mikrofon geri açılamazsa akış hatayla biter ve hata ekranda görünür.
@@ -310,59 +314,70 @@ final class Durum {
         }
     }
 
-    // MARK: Günlük ücretsiz süre (S03)
+    // MARK: Abonelik (yalnız ücretli; S02 tur 3)
 
-    static let sinirAciklamasi =
-        "Bugünkü 10 dakikalık ücretsiz süre doldu. Yarın yeniden kullanabilir ya da abone olabilirsiniz."
+    /// Dinlemek için abonelik gerekiyor ve yok. Deneme (`DENEME`) yapısında abonelik denetimi yoktur; bayraksız
+    /// yapıda bu denetimi atlayan hiçbir yol yoktur (gizli hareket, saklanan ayar ya da başlatma argümanı yok).
+    var abonelikGerekli: Bool {
+        #if DENEME
+        return false
+        #else
+        return !abonelik.abone
+        #endif
+    }
 
-    private func sayaciBaslat() {
-        sayacGorevi?.cancel()
-        sonTik = Date()
-        sayacGorevi = Task { [weak self] in
+    /// Fiyat ekranı uygulamanın ilk açılışında bir kez gösterilir; kapatılabilir. Abonede, deneme yapısında ve
+    /// önizleme kipinde gösterilmez. Kapatmak dinlemeyi açmaz: Başlat aboneliksiz çalışmaz.
+    func ilkAcilis() async {
+        #if !DENEME
+        guard !hat.onizlemede else { return }
+        let kayit = UserDefaults.standard
+        guard !kayit.bool(forKey: Kayit.fiyatEkraniGosterildi) else { return }
+        await abonelik.durumuGuncelle()
+        kayit.set(true, forKey: Kayit.fiyatEkraniGosterildi)
+        guard !abonelik.abone, !calisiyor, !abonelikAcik else { return }
+        abonelikAcik = true
+        #endif
+    }
+
+    /// Dinleme sürerken abonelik düzenli aralıkla yeniden okunur; bittiyse (süresi doldu, iade edildi) dinleme durur.
+    private func nobetiBaslat() {
+        nobetGorevi?.cancel()
+        nobetGorevi = nil
+        #if !DENEME
+        nobetGorevi = Task { [weak self] in
             while !Task.isCancelled {
-                try? await Task.sleep(for: .seconds(1))
+                try? await Task.sleep(for: .seconds(abonelikNobetAraligi))
                 guard let self, !Task.isCancelled else { return }
-                self.sureyiSay()
+                await self.abonelik.durumuGuncelle()
+                guard !Task.isCancelled else { return }
+                if !self.abonelik.abone, self.calisiyor {
+                    self.abonelikBitti()
+                    return
+                }
             }
         }
+        #endif
     }
 
-    private func sayaciDurdur() {
-        sayacGorevi?.cancel()
-        sayacGorevi = nil
+    private func nobetiDurdur() {
+        nobetGorevi?.cancel()
+        nobetGorevi = nil
     }
 
-    /// Son tikten bu yana geçen süreyi, aşama "dinliyor" ise ve abone değilse bugünün toplamına ekler.
-    private func sureyiSay() {
-        let simdi = Date()
-        let gecen = min(max(simdi.timeIntervalSince(sonTik), 0), 2)
-        sonTik = simdi
-        guard asama == .dinliyor else { return }
-        guard !abonelik.abone else {
-            notKaldir(.sonDakika)
-            return
-        }
-        let kalan = gunlukUcretsizSure - GunlukSure.ekle(gecen, simdi)
-        if kalan <= 0 {
-            sureDoldu()
-        } else if kalan <= sonDakikaEsigi {
-            notEkle(.sonDakika, "Bugünkü ücretsiz sürenin son dakikası.")
-        }
-    }
-
-    /// KR2: yeni cümle alınmaz, çalan çeviri bitirilir, sonra mikrofon kapanır; ekran ne olduğunu söyler.
-    private func sureDoldu() {
+    /// Abonelik oturum ortasında bitti: yeni cümle alınmaz, çalan okuma bitirilir, sonra mikrofon kapanır;
+    /// ekran nedenini söyler ve fiyat ekranı açılır.
+    private func abonelikBitti() {
         kimlik += 1   // çeviri döngüsü yeni cümle çevirmez
-        sayaciDurdur()
-        Tanilama.ortak.kaydet("sınır", "günlük süre doldu")
-        Tanilama.ortak.kaydet("durdur", "neden=günlük süre")
+        nobetiDurdur()
+        Tanilama.ortak.kaydet("durdur", "neden=abonelik bitti", uyari: true)
         ayar = nil
         asama = .duruyor
         notlar = []
         // Bulut motorunda ses buluta gitmeyi hemen keser; çalan çeviri yine bitirilir.
         hat.bulutuKapat()
         bulutuBirak()
-        sinirMetni = Durum.sinirAciklamasi
+        abonelikNotu = Durum.abonelikBittiMetni
         abonelikAcik = true
         kapanisGorevi = Task { [weak self] in
             // Sigorta: en çok 20 sn beklenir (Alania süresi + okuma).
@@ -376,6 +391,8 @@ final class Durum {
             self.kapanisGorevi = nil
         }
     }
+
+    static let abonelikBittiMetni = "Aboneliğiniz sona erdi."
 
     /// Bekleyen kapanış varsa hattı hemen kapatır (yeni Başlat'tan önce).
     private func kapanisiBitir() {
@@ -430,7 +447,7 @@ final class Durum {
     private func hataylaBitir(_ mesaj: String, neden: String) {
         kimlik += 1
         Tanilama.ortak.kaydet("durdur", "neden=\(neden)", uyari: true)
-        sayaciDurdur()
+        nobetiDurdur()
         kapanisiBitir()
         hat.durdur()
         bulutuBirak()

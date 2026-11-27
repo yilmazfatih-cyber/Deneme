@@ -1,8 +1,10 @@
 import StoreKit
 import SwiftUI
 
-/// Abonelik sayfası (alttan açılır): ne kazandırdığı, App Store'dan okunan fiyat, satın alma, geri yükleme,
-/// koşullar ve gizlilik bağlantıları. Abone ise durum ve "Aboneliği yönet".
+/// Fiyat ekranı (alttan açılır; S02 tur 3): uygulamanın yaptıkları, tek paket (haftalık; fiyat App Store'dan okunur),
+/// satın alma, yenileme ve iptal bilgisi, geri yükleme, koşullar ve gizlilik bağlantıları, sağ üstte Kapat.
+/// Bunlar App Review'un abonelik ekranı şartlarıdır; hiçbiri kaldırılmaz. Fiyat koda yazılmaz.
+/// Abone ise durum ve "Aboneliği yönet" gösterilir.
 struct AbonelikEkrani: View {
     let abonelik: Abonelik
     @Environment(\.dismiss) private var kapat
@@ -10,54 +12,95 @@ struct AbonelikEkrani: View {
     @ScaledMetric(relativeTo: .title3) private var simgeSutunu: CGFloat = 30
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
-                Text("Sınırsız çeviri")
-                    .font(.largeTitle.weight(.bold))
-                    .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityAddTraits(.isHeader)
-
-                if abonelik.abone {
-                    etkinKarti
-                } else {
-                    maddeler
-                    fiyatSatiri
-                    if let ileti = abonelik.ileti {
-                        UyariSatiri(metin: ileti, renk: Renk.sari)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                    aboneOlDugmesi
-                    ikincilDugme("Satın alımları geri yükle", ipucu: "Daha önce alınan aboneliği bu telefona getirir") {
-                        Task { await abonelik.geriYukle() }
-                    }
-                    .disabled(abonelik.yukleniyor)
-                    Text("Abonelik haftalık yenilenir. İstediğiniz zaman Ayarlar → Apple Kimliği → Abonelikler'den iptal edebilirsiniz.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-
-                VStack(alignment: .leading, spacing: 0) {
-                    baglanti("Kullanım Koşulları", Adres.kosullar)
-                    baglanti("Gizlilik Politikası", Adres.gizlilik)
-                }
-
-                ikincilDugme("Kapat", ipucu: "Abonelik sayfasını kapatır") { kapat() }
+        VStack(spacing: 0) {
+            HStack {
+                Spacer(minLength: 0)
+                kapatDugmesi
             }
             .padding(.horizontal, 20)
-            .padding(.top, 28)
-            .padding(.bottom, 20)
+            .padding(.top, 14)
+
+            // Kaydırılabilir: en büyük Dinamik Yazı'da da hiçbir metin kesilmez.
+            ScrollView {
+                VStack(alignment: .leading, spacing: 18) {
+                    Text("Sınırsız çeviri")
+                        .font(.largeTitle.weight(.bold))
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityAddTraits(.isHeader)
+
+                    if abonelik.abone {
+                        etkinKarti
+                    } else {
+                        maddeler
+                        paketKarti
+                        if let ileti = abonelik.ileti {
+                            UyariSatiri(metin: ileti, renk: Renk.sari)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        aboneOlDugmesi
+                        Text("Haftalık yenilenir. İstediğiniz zaman iptal edebilirsiniz.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        ikincilDugme("Satın alımları geri yükle", ipucu: "Daha önce alınan aboneliği bu telefona getirir") {
+                            Task { await abonelik.geriYukle() }
+                        }
+                        .disabled(abonelik.yukleniyor)
+                    }
+
+                    VStack(alignment: .leading, spacing: 0) {
+                        baglanti("Kullanım Koşulları", Adres.kosullar)
+                        baglanti("Gizlilik Politikası", Adres.gizlilik)
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 4)
+                .padding(.bottom, 20)
+            }
         }
         .task {
             if abonelik.fiyat == nil && !abonelik.yukleniyor { await abonelik.urunuYukle() }
         }
     }
 
+    /// Sağ üstte, en az 44 pt.
+    private var kapatDugmesi: some View {
+        Button {
+            kapat()
+        } label: {
+            Text("Kapat")
+                .font(.subheadline.weight(.semibold))
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                .foregroundStyle(Renk.maviMetin)
+                .frame(minWidth: 44, minHeight: 44, alignment: .trailing)
+                .contentShape(Rectangle())
+        }
+        .accessibilityLabel("Kapat")
+        .accessibilityHint("Abonelik sayfasını kapatır")
+    }
+
+    /// Bulut motoru etkin mi: yarar satırları uygulamanın o yapıda gerçekten yaptığını yazar.
+    @MainActor
+    private static func bulutEtkin() -> Bool {
+        #if DEBUG
+        // `-ekran abonelik`: simülatörde anahtar yokken de müşteri yapısındaki (bulut) metinler görünür.
+        if OrnekEkran.gosterilen == .abonelik { return true }
+        #endif
+        return Anahtarlik.motor == .bulut
+    }
+
+    /// Uygulamanın yaptıkları: kısa, abartısız. Dil sayıları listelerden gelir.
     private var maddeler: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            madde("infinity", "Sınırsız dinleme süresi")
-            madde("gift.fill", "Her gün 10 dakika ücretsiz kullanım devam eder")
-            madde("calendar", "İstediğiniz zaman iptal")
+        let bulut = AbonelikEkrani.bulutEtkin()
+        return VStack(alignment: .leading, spacing: 14) {
+            madde("infinity", "Sınırsız çeviri süresi")
+            if bulut {
+                madde("globe", "\(bulutDilleri.count) dilden istediğiniz dile")
+                madde("ear", "Dili kendiliğinden tanır")
+            } else {
+                madde("globe", "\(diller.count) dilden Türkçeye")
+            }
+            madde("nosign", "Reklam yok")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
@@ -77,7 +120,21 @@ struct AbonelikEkrani: View {
         }
     }
 
-    /// Fiyat yalnız App Store'dan gelir; yoksa yükleniyor ya da yüklenemedi denir.
+    /// Tek paket: haftalık. Fiyat yalnız App Store'dan gelir.
+    private var paketKarti: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Haftalık")
+                .font(.headline)
+                .accessibilityAddTraits(.isHeader)
+            fiyatSatiri
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(18)
+        .background(Renk.kart, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).stroke(Renk.maviMetin, lineWidth: 2))
+    }
+
+    /// Ürün yüklenene dek ilerleme göstergesi; yüklenemezse açıklama ve "Yeniden dene".
     @ViewBuilder
     private var fiyatSatiri: some View {
         if let fiyat = abonelik.fiyat {
@@ -94,7 +151,9 @@ struct AbonelikEkrani: View {
             .accessibilityElement(children: .combine)
         } else {
             VStack(alignment: .leading, spacing: 10) {
-                UyariSatiri(metin: "Fiyat yüklenemedi. İnternet bağlantınızı denetleyip yeniden deneyin.", renk: Renk.sari)
+                Text("Fiyat şu an yüklenemedi.")
+                    .font(.subheadline)
+                    .foregroundStyle(Renk.sari)
                     .fixedSize(horizontal: false, vertical: true)
                 ikincilDugme("Yeniden dene", ipucu: "Fiyatı App Store'dan yeniden yükler") {
                     Task { await abonelik.urunuYukle() }
@@ -143,7 +202,7 @@ struct AbonelikEkrani: View {
                     .accessibilityHidden(true)
             }
             .font(.title3.weight(.semibold))
-            baglanti("Aboneliği yönet", Adres.abonelikleriYonet)
+            baglanti("Aboneliği yönet", Adres.abonelikleriYonet, ipucu: "Apple'ın abonelik sayfasını açar")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
@@ -165,7 +224,7 @@ struct AbonelikEkrani: View {
         .accessibilityHint(ipucu)
     }
 
-    private func baglanti(_ baslik: String, _ adres: URL) -> some View {
+    private func baglanti(_ baslik: String, _ adres: URL, ipucu: String = "Safari'de açar") -> some View {
         Link(destination: adres) {
             HStack(spacing: 8) {
                 Text(baslik)
@@ -181,6 +240,6 @@ struct AbonelikEkrani: View {
             .contentShape(Rectangle())
         }
         .accessibilityLabel(baslik)
-        .accessibilityHint("Safari'de açar")
+        .accessibilityHint(ipucu)
     }
 }

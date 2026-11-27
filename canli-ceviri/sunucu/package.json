@@ -1,0 +1,28 @@
+{
+  "name": "canli-ceviri-sunucu",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Canlı Çeviri — abonelik doğrulayan, kullanım sınırı uygulayan geçici Soniox anahtarı sunucusu (Cloudflare Workers)",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "kok": "node scripts/kok-denetle.mjs",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@peculiar/x509": "3.1.0",
+    "reflect-metadata": "0.2.2"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "1.9.2",
+    "@cloudflare/workers-types": "5.20261123.1",
+    "typescript": "6.0.3",
+    "vitest": "5.1.2",
+    "wrangler": "4.168.0"
+  }
+}

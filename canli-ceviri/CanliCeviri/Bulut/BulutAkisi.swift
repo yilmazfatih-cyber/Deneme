@@ -168,8 +168,9 @@ final class BulutAkisi {
 
     private let kaynak: String?
     private let hedefDil: String
-    private let anahtar: String
     private var baglanti: URLSessionWebSocketTask?
+    /// Anahtarın `SonioxAnahtarKaynagi`'ndan istenmesi sürüyor (bağlantı henüz açılmadı).
+    private var anahtarGorevi: Task<Void, Never>?
     /// Bağlantı kuşağı: her açılış ve kapanışta artar; eski geri çağrılar yan etki yapmadan çıkar.
     private var no = 0
     private var cozucu = SonioxCozucu()
@@ -188,16 +189,16 @@ final class BulutAkisi {
     /// Sunucudan son ileti (yanıt ya da pong) ne zaman geldi.
     private var sonGelen = Date.distantPast
 
-    /// `kaynak` nil ise dil kendiliğinden tanınır (KR12). `anahtar` yalnız bağlantı isteğinin başlığına konur.
-    init(kaynak: String?, hedef: String, anahtar: String) {
+    /// `kaynak` nil ise dil kendiliğinden tanınır (KR12). Anahtar burada tutulmaz: her yeni akışta
+    /// `SonioxAnahtarKaynagi`'ndan istenir ve yalnız bağlantı isteğinin başlığına konur.
+    init(kaynak: String?, hedef: String) {
         self.kaynak = kaynak
         self.hedefDil = hedef
-        self.anahtar = anahtar
     }
 
     /// Akışı açar; açıksa, bağlanıyorsa ya da yeniden deneme bekliyorsa dokunmaz (kesintiden dönüşte de çağrılır).
     func ac() {
-        guard baglanti == nil, denemeGorevi == nil else { return }
+        guard baglanti == nil, denemeGorevi == nil, anahtarGorevi == nil else { return }
         deneme = 0
         internetYok = false
         baglan()
@@ -212,18 +213,36 @@ final class BulutAkisi {
 
     // MARK: Bağlantı
 
+    /// Yeni akış: önce anahtar `SonioxAnahtarKaynagi`'ndan istenir (her akışta yeniden), sonra bağlantı açılır.
     private func baglan() {
-        guard let adres = URL(string: sonioxAdres) else { return }
         no += 1
         let buNo = no
         akista = false
         ilkSonucBekleniyor = true
         bekleyenPing = nil
-        sonPing = Date()
-        sonGelen = Date.distantPast
         acilis = Date()
         cozucu = SonioxCozucu()
         Tanilama.ortak.kaydet("bulut", deneme == 0 ? "bağlanıyor" : "bağlanıyor deneme=\(deneme + 1)")
+        anahtarGorevi?.cancel()
+        anahtarGorevi = Task { [weak self] in
+            let alinan = try? await SonioxAnahtarKaynagi.anahtarAl()
+            guard let self, buNo == self.no, !Task.isCancelled else { return }
+            self.anahtarGorevi = nil
+            guard let anahtar = alinan, !anahtar.isEmpty else {
+                // Değer de neden de kayda yazılmaz; yalnız anahtarın alınamadığı yazılır.
+                Tanilama.ortak.kaydet("bulut", "anahtar alınamadı", uyari: true)
+                self.durdur(HatHatasi(mesaj: BulutAkisi.anahtarMesaji, kod: "bulut anahtar yok"))
+                return
+            }
+            self.baglantiyiAc(anahtar, buNo)
+        }
+    }
+
+    /// `anahtar` yalnız burada, bağlantı isteğinin `Authorization` başlığında kullanılır (K5); saklanmaz.
+    private func baglantiyiAc(_ anahtar: String, _ buNo: Int) {
+        guard let adres = URL(string: sonioxAdres) else { return }
+        sonPing = Date()
+        sonGelen = Date.distantPast
 
         var istek = URLRequest(url: adres)
         istek.timeoutInterval = bulutBaslamaSuresi
@@ -254,6 +273,8 @@ final class BulutAkisi {
         saatGorevi = nil
         almaGorevi?.cancel()
         almaGorevi = nil
+        anahtarGorevi?.cancel()
+        anahtarGorevi = nil
         hedef.bagla(nil)
         akista = false
         bekleyenPing = nil
@@ -486,8 +507,11 @@ final class BulutAkisi {
         ProcessInfo.processInfo.systemUptime
     }
 
+    // Müşteri Ayarlar'ında motor ve anahtar yoktur (S02 tur 3); iletiler yalnız müşterinin yapabileceğini söyler.
     private static let internetMesaji =
-        "İnternet bağlantısı yok. Bulut motoru için internet gerekli; bağlanıp yeniden başlatın ya da Ayarlar'dan cihaz motoruna geçin."
+        "İnternet bağlantısı yok. Çeviri için internet gerekli; bağlanıp dinlemeyi yeniden başlatın."
     private static let kopmaMesaji =
-        "Bulut bağlantısı koptu ve yeniden kurulamadı. Yeniden başlatın ya da Ayarlar'dan cihaz motoruna geçin."
+        "Bağlantı koptu ve yeniden kurulamadı. İnterneti denetleyip dinlemeyi yeniden başlatın."
+    private static let anahtarMesaji =
+        "Çeviri hizmetine bağlanılamadı. Biraz sonra yeniden deneyin; sürerse Ayarlar'daki Destek bağlantısından bize yazın."
 }

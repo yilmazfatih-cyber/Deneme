@@ -113,7 +113,7 @@ func yonelme(_ ad: String) -> String {
 let duraklama   = 1.2   // bu kadar saniye sessizlik = cümle bitti
 let alaniaAdres = "https://voice.patientdesk.ai/v1/audio/speech"
 let alaniaModel = "alania-v2"
-let yapiEtiketi = "S02 tur 2"   // Tanılama kopyasının başlığı; her düzeltme turunda artar (KR16)
+let yapiEtiketi = "S02 tur 3"   // Tanılama kopyasının başlığı; her düzeltme turunda artar (KR16)
 
 // Ses hattı süreleri ve eşikleri (docs/ses-hatti.md; kural kimlikleri parantez içinde)
 let alaniaSuresi: TimeInterval         = 5     // Alania isteğinin toplam süresi, sn (S5, KR10)
@@ -139,14 +139,9 @@ let bulutSaatAraligi                   = 100   // bulut saatinin adımı, ms (be
 let bulutCerceveBayt                   = 3200  // 100 ms ses: 16 kHz × 2 bayt × 0,1 sn (KR3)
 let bulutOnBellekBayt                  = 32_000   // bağlantı kurulurken tutulan en çok ses (1 sn)
 
-// Abonelik (S03)
-#if DENEME
-// Yandan yüklenen deneme yapısı (canli-ceviri-ipa.yml): uygulama içi satın alma çalışmaz, süre sınırı fiilen kapalı.
-let gunlukUcretsizSure: TimeInterval   = 86_400   // 24 saat; bir günde dolmaz
-#else
-let gunlukUcretsizSure: TimeInterval   = 600   // abone olmayana günde bu kadar sn dinleme (yalnız "dinliyor" sayılır)
-#endif
-let sonDakikaEsigi: TimeInterval       = 60    // kalan süre bunun altına inince sarı not (KR3)
+// Abonelik (S03; S02 tur 3: yalnız ücretli, ücretsiz süre yok). `DENEME` bayrağıyla derlenen iç test yapısında
+// abonelik denetimi atlanır; bayraksız yapıda atlama yolu yoktur (bkz. `Durum.abonelikGerekli`).
+let abonelikNobetAraligi: TimeInterval = 30    // dinlerken abonelik bu aralıkla yeniden okunur, sn
 let abonelikUrunu = "canliceviri.sinirsiz.haftalik"   // App Store Connect'teki ürün kimliği
 
 /// Abonelik ekranı ve Ayarlar'daki bağlantılar.
@@ -162,8 +157,7 @@ enum Kayit {
     static let kaynakDil      = "kaynakDil"
     static let alaniaAnahtari = "alaniaAnahtar"
     static let alaniaSesi     = "alaniaSes"
-    static let ucretsizGun    = "ucretsizGun"      // ücretsiz sürenin sayıldığı yerel gün (yyyy-aa-gg)
-    static let ucretsizSaniye = "ucretsizSaniye"   // o gün kullanılan dinleme saniyesi
+    static let fiyatEkraniGosterildi = "fiyatEkraniGosterildi"   // fiyat ekranı ilk açılışta bir kez gösterildi
     static let motor          = "motor"            // "cihaz" | "bulut"; yoksa "cihaz" (S02)
     static let bulutKaynak    = "bulutKaynakDil"   // bulut motorunda kaynak dil; yoksa "otomatik" (KR12)
     static let hedefDil       = "hedefDil"         // bulut motorunda hedef dil; yoksa "tr" (KR13)

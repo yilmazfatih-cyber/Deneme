@@ -2,7 +2,7 @@ name: Canlı Çeviri (deneme .ipa)
 
 # iPhone uygulamasını GitHub'ın Mac makinesinde imzasız derler, .ipa olarak paketler ve herkese açık bir ön sürüme
 # (GitHub Release) koyar. Dosya Sideloadly ya da AltStore ile kişinin kendi Apple Kimliğiyle yeniden imzalanıp kurulur;
-# Apple Developer hesabı ve Xcode gerekmez. DENEME bayrağıyla derlenir: günlük süre sınırı kapalıdır.
+# Apple Developer hesabı ve Xcode gerekmez. DENEME bayrağıyla derlenir: abonelik denetimi atlanır (iç test yapısı).
 # Bu iş akışı Soniox anahtarına (SONIOX_API_KEY) HİÇ dokunmaz: dosya herkese açık indirilir, içine anahtar girmemeli.
 # Bulut/GomuluAnahtar.swift burada depodaki boş hâliyle derlenir; anahtar yalnız TestFlight iş akışında gömülür.
 on:
@@ -107,7 +107,7 @@ jobs:
 
           - Kurulum: .ipa dosyasını indirin, Sideloadly ya da AltStore ile kendi Apple Kimliğinizle kurun.
           - Ücretsiz Apple Kimliğiyle uygulama 7 gün çalışır; sonra aynı araçla yeniden kurun.
-          - Bu yapıda abonelik (satın alma) çalışmaz; günlük süre sınırı kapalıdır.
+          - Bu yapıda abonelik (satın alma) çalışmaz ve gerekmez: deneme yapısıdır.
           - Gerçek iPhone'da henüz denenmedi.
           NOTLAR
           gh release create "$ETIKET" "$IPA" \

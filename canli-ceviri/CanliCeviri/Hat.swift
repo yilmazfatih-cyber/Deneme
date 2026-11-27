@@ -384,7 +384,7 @@ final class Hat {
     /// aynıdır (ilke 1 ve 2); konuşma tanıma açılmaz, mikrofon sesi Soniox akışına gider. Kapanan cümleler
     /// `bildir` ile (`.bulutCumlesi`) gelir; döndürülen akış yalnız dinlemenin bitişini ve hatasını taşır.
     /// `kaynak` nil ise dil kendiliğinden tanınır (KR12).
-    func baslatBulut(kaynak: String?, hedef: BulutDili, anahtar: String) throws -> AsyncThrowingStream<String, Error> {
+    func baslatBulut(kaynak: String?, hedef: BulutDili) throws -> AsyncThrowingStream<String, Error> {
         taniyici = nil
         oturumNo += 1
         sesNo += 1
@@ -396,7 +396,7 @@ final class Hat {
         turkceSesYok = false
         okumaDili = hedef
 
-        let akisi = BulutAkisi(kaynak: kaynak, hedef: hedef.kod, anahtar: anahtar)
+        let akisi = BulutAkisi(kaynak: kaynak, hedef: hedef.kod)
         akisi.olay = { [weak self] olay in self?.bulutOlayi(olay) }
         bulut = akisi
         kutu.bulutaYonlendir(akisi.hedef)

@@ -10,6 +10,8 @@ import SwiftUI
 final class Abonelik {
     /// Doğrulanmış, süresi geçmemiş ve geri alınmamış bir abonelik var.
     private(set) var abone = false
+    /// Abonelik durumu en az bir kez okundu (açılıştan hemen sonra `abone` henüz güvenilir değildir).
+    private(set) var durumOkundu = false
     /// App Store'dan okunan ürün; yüklenemediyse nil.
     private(set) var urun: Product?
     /// Ürün yükleme, satın alma ya da geri yükleme sürüyor.
@@ -121,9 +123,10 @@ final class Abonelik {
             etkin = true
         }
         abone = etkin
+        if !durumOkundu { durumOkundu = true }
         if bildirilenDurum != etkin {
             bildirilenDurum = etkin
-            Tanilama.ortak.kaydet("abonelik", etkin ? "durum=abone" : "durum=ücretsiz")
+            Tanilama.ortak.kaydet("abonelik", etkin ? "durum=abone" : "durum=abone değil")
         }
     }
 
@@ -133,35 +136,5 @@ final class Abonelik {
             await islem.finish()
         }
         await durumuGuncelle()
-    }
-}
-
-/// Abone olmayanın günlük ücretsiz dinleme süresi: yerel takvim günü + o gün kullanılan saniye, telefonda tutulur.
-enum GunlukSure {
-    /// Bugün kullanılan saniye (gün değiştiyse 0).
-    static func kullanilan(_ an: Date = Date()) -> TimeInterval {
-        let kayit = UserDefaults.standard
-        guard kayit.string(forKey: Kayit.ucretsizGun) == gunAnahtari(an) else { return 0 }
-        return kayit.double(forKey: Kayit.ucretsizSaniye)
-    }
-
-    /// Süre ekler; bugünün toplamını döndürür.
-    @discardableResult
-    static func ekle(_ saniye: TimeInterval, _ an: Date = Date()) -> TimeInterval {
-        let toplam = kullanilan(an) + max(0, saniye)
-        let kayit = UserDefaults.standard
-        kayit.set(gunAnahtari(an), forKey: Kayit.ucretsizGun)
-        kayit.set(toplam, forKey: Kayit.ucretsizSaniye)
-        return toplam
-    }
-
-    static func doldu(_ an: Date = Date()) -> Bool {
-        kullanilan(an) >= gunlukUcretsizSure
-    }
-
-    /// Ör. "2026-11-25" (cihazın takvimi ve saat dilimiyle).
-    private static func gunAnahtari(_ an: Date) -> String {
-        let g = Calendar.current.dateComponents([.year, .month, .day], from: an)
-        return "\(g.year ?? 0)-\(g.month ?? 0)-\(g.day ?? 0)"
     }
 }
