@@ -1,0 +1,118 @@
+name: Canlı Çeviri (aboneliği kur)
+
+# App Store Connect'te haftalık "Sınırsız" aboneliğini (canliceviri.sinirsiz.haftalik) kurar: abonelik grubu, abonelik,
+# tr / en-US adları, tüm bölgelerde kullanılabilirlik ve fiyat (ABD 4,99 USD + Apple'ın eş değer fiyatları).
+# Elle başlatılır (Actions → bu iş akışı → Run workflow) ve yalnız varsayılan dalda çalışır.
+# 'uygula' işaretlenmezse KURU ÇALIŞMADIR: hiçbir şey değiştirmez, yalnız neyin var olduğunu ve neyin oluşturulacağını
+#   iş özetine yazar. Önce böyle çalıştırıp özeti okuyun; sonra 'uygula' işaretli yeniden başlatın.
+# Yeniden çalıştırmak güvenlidir: var olan kayıt değiştirilmez, hiçbir şey silinmez; yalnız eksik olan oluşturulur.
+# Gerekli gizli değerler (Settings → Secrets and variables → Actions): ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8.
+# "Ücretli Uygulamalar" anlaşması, banka ve vergi bilgisi API ile yapılamaz; onları App Store Connect → İş bölümünden
+#   hesap sahibi tamamlar. Betik bunu denetleyemez, yalnız iş özetinde hatırlatır.
+# Gizli değerler hiçbir adımda kayda yazılmaz.
+on:
+  workflow_dispatch:
+    inputs:
+      uygula:
+        description: 'Gerçekten oluştur (işaretlenmezse kuru çalışma: yalnız rapor yazar)'
+        type: boolean
+        required: false
+        default: false
+      eski_yol:
+        description: 'Yalnız ekip isterse işaretleyin: Apple’ın eski uç noktalarını kullanır'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: canli-ceviri-abonelik-kur
+  cancel-in-progress: false
+
+jobs:
+  kur:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Dal denetimi
+        env:
+          VARSAYILAN: ${{ github.event.repository.default_branch }}
+        run: |
+          if [ "$GITHUB_REF_NAME" != "$VARSAYILAN" ]; then
+            echo "::error title=Yanlış dal::Bu iş yalnız '$VARSAYILAN' dalında çalışır; siz '$GITHUB_REF_NAME' dalını seçtiniz. Run workflow menüsünde '$VARSAYILAN' dalını seçip yeniden başlatın. Hiçbir şey değiştirilmedi."
+            exit 1
+          fi
+          echo "Dal: $GITHUB_REF_NAME (varsayılan dal)"
+
+      - name: Gizli değerleri denetle
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          # Yalnız adlar yazılır; değerler asla.
+          eksik=""
+          for ad in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do
+            if [ -z "${!ad:-}" ]; then
+              eksik="$eksik $ad"
+            fi
+          done
+          if [ -n "$eksik" ]; then
+            echo "::error title=Eksik gizli değer::Şu gizli değerler girilmemiş:$eksik. GitHub'da Settings → Secrets and variables → Actions → New repository secret ile ekleyip işi yeniden başlatın. Hiçbir şey değiştirilmedi."
+            exit 1
+          fi
+          if ! printf '%s' "$ASC_KEY_P8" | grep -q "BEGIN PRIVATE KEY"; then
+            echo "::error title=ASC_KEY_P8 biçimi::ASC_KEY_P8 bir .p8 dosyasının içeriğine benzemiyor. Dosyayı metin düzenleyiciyle açıp '-----BEGIN PRIVATE KEY-----' satırından '-----END PRIVATE KEY-----' satırına dek hepsini yapıştırın."
+            exit 1
+          fi
+          echo "Üç gizli değer de girilmiş."
+
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Bağımlılıkları kur (sabit sürümler)
+        run: |
+          set -euo pipefail
+          # Doğrudan ve dolaylı bütün paketler tek tek sabitlenir (--no-deps); yalnız hazır tekerlek kurulur, kurulum
+          # sırasında kaynak derlenmez. Sürümleri değiştirirken betiğin yerel sınamalarını yeniden çalıştırın.
+          python -m pip install --disable-pip-version-check --no-deps --only-binary=:all: \
+            'PyJWT==2.15.0' \
+            'cryptography==50.0.1' \
+            'cffi==2.1.1' \
+            'pycparser==3.0' \
+            'requests==2.34.2' \
+            'urllib3==2.8.0' \
+            'idna==3.20' \
+            'certifi==2026.10.18' \
+            'charset-normalizer==3.5.1'
+          python -m pip check
+
+      - name: Aboneliği kur
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+          UYGULA: ${{ inputs.uygula }}
+          ESKI_YOL: ${{ inputs.eski_yol }}
+        run: |
+          set -euo pipefail
+          # Girdiler ortam değişkeninden okunur; komut satırına doğrudan yazılmaz. Anahtar yalnız bu adımın ortamındadır,
+          # diske yazılmaz; betik anahtarı ve belirteci hiçbir çıktıya yazmaz. Sonuç iş özetine betik tarafından yazılır.
+          secenekler=()
+          if [ "$UYGULA" = "true" ]; then
+            secenekler+=(--uygula)
+            echo "Kip: UYGULA"
+          else
+            echo "Kip: KURU ÇALIŞMA (hiçbir şey değiştirilmez)"
+          fi
+          if [ "$ESKI_YOL" = "true" ]; then
+            secenekler+=(--eski-yol)
+          fi
+          python canli-ceviri/scripts/abonelik-kur.py ${secenekler[@]+"${secenekler[@]}"}

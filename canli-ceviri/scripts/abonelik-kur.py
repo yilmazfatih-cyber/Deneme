@@ -142,7 +142,7 @@ def gizle(metin):
 
 def gizli_ekle(*degerler):
     for deger in degerler:
-        if deger and deger not in _GIZLI:
+        if deger and len(deger) >= 6 and deger not in _GIZLI:
             _GIZLI.append(deger)
 
 
@@ -750,7 +750,9 @@ class Kurulum:
             e["id"]: ozellik(e, "customerPrice") for e in ekler if e.get("type") == "subscriptionPricePoints"
         }
         fiyatli = {}
-        for fiyat in fiyatlar:
+        # Bir bölgede hem yürürlükteki (startDate boş) hem ileri tarihli fiyat olabilir; raporda yürürlükteki
+        # gösterilsin diye o öne alınır.
+        for fiyat in sorted(fiyatlar, key=lambda f: ozellik(f, "startDate") is not None):
             bolge = iliski_kimligi(fiyat, "territory")
             if bolge is None:
                 raise Durdur(
@@ -863,7 +865,11 @@ class Kurulum:
         acik_bolgeler = self.kullanilabilirligi_kur(self.abonelik_kimligi, bolgeler)
         self.fiyati_kur(self.abonelik_kimligi, bolgeler, acik_bolgeler)
         self.etkin_adim = None
-        self.durumu_oku(self.abonelik_kimligi)
+        try:
+            self.durumu_oku(self.abonelik_kimligi)
+        except ApiHatasi as hata:  # kurulum bitti; yalnız son durum okunamadı
+            hata.yazdir()
+            self.uyar("Aboneliğin son durumu (state) okunamadı; yukarıdaki adımların sonucu geçerlidir.")
 
 
 DURUM_ACIKLAMALARI = {
@@ -980,6 +986,12 @@ def ana(argv=None, oturum=None, ortam=None, kok=API_KOKU, bekle=time.sleep):
             kurulum.rapor[kurulum.etkin_adim][0] = BASARISIZ
         kodlar = ", ".join(k for k in hata.kodlar() if k) or "kod yok"
         hata_iletisi = f"{adim} adımında Apple HTTP {hata.durum} döndürdü ({kodlar}). {hata.aciklama()}"
+        yeni_yol_adimi = kurulum.etkin_adim in ("grup_yerel", "abonelik_yerel", "kullanilabilirlik")
+        if yeni_yol_adimi and not secenekler.eski_yol and hata.durum in (404, 405):
+            hata_iletisi += (
+                " Bu adım Apple'ın yeni (sürümlü) uç noktalarını kullanıyor; işi 'eski_yol' kutusunu da "
+                "işaretleyip yeniden başlatmak sorunu aşabilir."
+            )
         if not secenekler.uygula:
             hata_iletisi += " Kuru çalışmaydı; hiçbir şey değiştirilmedi."
         eylem_iletisi("error", f"{adim} başarısız", hata_iletisi)
@@ -988,7 +1000,7 @@ def ana(argv=None, oturum=None, ortam=None, kok=API_KOKU, bekle=time.sleep):
         if kurulum.etkin_adim:
             kurulum.rapor[kurulum.etkin_adim][0] = BASARISIZ
         hata_iletisi = f"{adim}: {hata}"
-        eylem_iletisi("error", f"{adim} başarısız", hata_iletisi)
+        eylem_iletisi("error", f"{adim} başarısız", str(hata))
     except Exception as hata:  # noqa: BLE001 - yığın izi yerine kısa, gizlenmiş ileti
         adim = dict(ADIMLAR).get(kurulum.etkin_adim, "Hazırlık")
         if kurulum.etkin_adim:
