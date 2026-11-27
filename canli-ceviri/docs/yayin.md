@@ -80,8 +80,8 @@ Durum "Etkin" (Active) olana dek birkaç gün sürebilir.
 ## 5b. Xcode'suz yol: GitHub uygulamayı sizin yerinize yüklesin
 
 Xcode kullanmak istemiyorsanız 5. adımın 6. maddesi yerine bunu yapın. GitHub uygulamayı derler, imzalar ve Apple'a
-yükler; siz yalnız telefonda TestFlight'tan kurarsınız. Önce 1, 2 ve 3. adımlar bitmiş olmalı. **Bu yol henüz hiç
-çalıştırılmadı** (hesap yoktu); ilk denemede bir hata çıkarsa iş akışının kaydını gönderin.
+yükler; siz yalnız telefonda TestFlight'tan kurarsınız. Önce 1, 2 ve 3. adımlar bitmiş olmalı. İlk yükleme 27.11.2026'da
+bu yolla yapıldı (yapı 1); bir hata çıkarsa iş akışının kaydını gönderin.
 
 **Bir kez yapılır: Apple'dan anahtar alıp GitHub'a girin**
 
