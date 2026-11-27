@@ -1,0 +1,998 @@
+{
+ "tarama": {
+  "an": "2026-11-27T10:55:00+03:00",
+  "kategoriler": [
+   "mont-ceket-yelek",
+   "canta-deri",
+   "esarp-sal"
+  ],
+  "not": "Günlük tarama; Alibaba ilanları ve Akakçe doğrudan okundu. Yeni kategorilerde eşiği geçen yok: paşmina şallar 2,2–2,7 (ağırlık tahmini, kargo payı %38–44), hakiki deri clutch 2,73, mont/yelekte ilan fiyatı bulunamadı. Baş düzeltmeleri: erkek kemerler 'mont-ceket-yelek' kategorisiyle yazılmıştı → 'kemer'; 'palaska tarzı' taktik kemer paketleri (suni deri değil) çıkarıldı; markalı DeFacto suni deri erkek kemer 150–264 TL (kıyasa alınmadı, fiyat baskısı notu). Eldivende taktik/motosiklet polar eldiven, örgü kemerde BOYD deri aksesuarlı kemer çıkarıldı. Saten gömlek Türkiye medyanı 714 TL'ye düştü. Sırt çantası, saat, silikon bakılmadı."
+ },
+ "adaylar": [
+  {
+   "urun": "Erkek otomatik tokalı PU kemer",
+   "kategori": "kemer",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Belt-Male-Factory-Custom-Selling-Men_1600459863541.html",
+    "baslik": "Belt Male Factory Custom Selling Men's Business Automatic Buckle PU Leather Belt",
+    "tedarikci": "ilan sayfasında okunamadı",
+    "fiyat_usd": 0.6,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 0.6
+     },
+     {
+      "min_adet": 300,
+      "fiyat_usd": 0.57
+     },
+     {
+      "min_adet": 3000,
+      "fiyat_usd": 0.54
+     }
+    ],
+    "birim_agirlik_kg": 0.12,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 449.88,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-dagoster-dmk26-351-siyah-4-cm-suni-deri-siyah-fiyati,986921181.html",
+      "baslik": "Dagoster DMK26-351 Siyah 4 CM Suni Deri Erkek Kemer (diğer DMK26 renk/varyantları tek sayıldı)"
+     },
+     {
+      "fiyat_tl": 449.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-deribond-siyah-erkek-130-cm-fiyati,1738812000.html",
+      "baslik": "Deribond Siyah Erkek Kemer 130 cm (3 satıcı)"
+     },
+     {
+      "fiyat_tl": 367.18,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-deepsea-erkek-lacivert-duz-sade-suni-deri-gunluk-spor-2602658-fiyati,1426970844.html",
+      "baslik": "DeepSEA Erkek Lacivert Düz Sade Suni Deri Kemer 2602658"
+     }
+    ],
+    "not": "Akakçe 27.11.2026, markasız/pazar yeri suni deri ve palaska tarzı erkek kemerler; paketler adet başına çevrildi, aynı ürün varyantları tek sayıldı; DeFacto vb. markalılar alınmadı. Baş (27.11): kategori 'mont-ceket-yelek' yazılmıştı, 'kemer' olarak düzeltildi. 'Palaska tarzı' 2'li/3'lü paketler taktik dokuma kemer (suni deri değil), çıkarıldı. Not: markalı DeFacto suni deri erkek kemer Akakçe'de 150–264 TL; pazar fiyat baskısı yüksek."
+   },
+   "taklit_riski": false,
+   "gerekce": "Erkek suni deri kemer Türkiye'de sürekli satan, hafif ve bedensiz bir aksesuardır.",
+   "riskler": [
+    "Ağırlık ilanda yok, 0,12 kg tahmin",
+    "Kemer GTİP'i 4203 (bu kategorinin öneklerinde değil), vergi oranı farklı olabilir",
+    "Toka/logo kontrolü gerekir",
+    "Tedarikçi bilgisi okunamadı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Belt-Male-Factory-Custom-Selling-Men_1600459863541.html",
+    "https://www.akakce.com/kemer/en-ucuz-dagoster-dmk26-351-siyah-4-cm-suni-deri-siyah-fiyati,986921181.html",
+    "https://www.akakce.com/kemer/en-ucuz-deribond-siyah-erkek-130-cm-fiyati,1738812000.html"
+   ]
+  },
+  {
+   "urun": "Erkek pimli tokalı PU kemer",
+   "kategori": "kemer",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/2024-Pu-Leather-Belts-Men-Professional_1600321987837.html",
+    "baslik": "2024 Pu Leather Belts Men Professional Belts Best Price Cheap Customize Pin Buckle Belt for Men",
+    "tedarikci": "ilan sayfasında okunamadı",
+    "fiyat_usd": 0.67,
+    "moq": 50,
+    "kademeler": [
+     {
+      "min_adet": 50,
+      "fiyat_usd": 0.67
+     },
+     {
+      "min_adet": 600,
+      "fiyat_usd": 0.64
+     },
+     {
+      "min_adet": 3000,
+      "fiyat_usd": 0.61
+     }
+    ],
+    "birim_agirlik_kg": 0.12,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 449.88,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-dagoster-dmk26-351-siyah-4-cm-suni-deri-siyah-fiyati,986921181.html",
+      "baslik": "Dagoster DMK26-351 Siyah 4 CM Suni Deri Erkek Kemer (diğer DMK26 renk/varyantları tek sayıldı)"
+     },
+     {
+      "fiyat_tl": 449.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-deribond-siyah-erkek-130-cm-fiyati,1738812000.html",
+      "baslik": "Deribond Siyah Erkek Kemer 130 cm (3 satıcı)"
+     },
+     {
+      "fiyat_tl": 367.18,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-deepsea-erkek-lacivert-duz-sade-suni-deri-gunluk-spor-2602658-fiyati,1426970844.html",
+      "baslik": "DeepSEA Erkek Lacivert Düz Sade Suni Deri Kemer 2602658"
+     }
+    ],
+    "not": "Akakçe 27.11.2026, markasız/pazar yeri suni deri ve palaska tarzı erkek kemerler; paketler adet başına çevrildi, aynı ürün varyantları tek sayıldı; DeFacto vb. markalılar alınmadı. Baş (27.11): kategori 'mont-ceket-yelek' yazılmıştı, 'kemer' olarak düzeltildi. 'Palaska tarzı' 2'li/3'lü paketler taktik dokuma kemer (suni deri değil), çıkarıldı. Not: markalı DeFacto suni deri erkek kemer Akakçe'de 150–264 TL; pazar fiyat baskısı yüksek."
+   },
+   "taklit_riski": false,
+   "gerekce": "Erkek suni deri kemer Türkiye'de sürekli satan, hafif ve bedensiz bir aksesuardır.",
+   "riskler": [
+    "Ağırlık ilanda yok, 0,12 kg tahmin",
+    "Kemer GTİP'i 4203 (bu kategorinin öneklerinde değil), vergi oranı farklı olabilir",
+    "Toka/logo kontrolü gerekir",
+    "Tedarikçi bilgisi okunamadı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/2024-Pu-Leather-Belts-Men-Professional_1600321987837.html",
+    "https://www.akakce.com/kemer/en-ucuz-dagoster-dmk26-351-siyah-4-cm-suni-deri-siyah-fiyati,986921181.html",
+    "https://www.akakce.com/kemer/en-ucuz-deribond-siyah-erkek-130-cm-fiyati,1738812000.html"
+   ]
+  },
+  {
+   "urun": "Erkek hakiki deri clutch / el cüzdan çantası (fermuarlı, telefon cepli)",
+   "kategori": "canta-deri",
+   "gtip": "4202.21",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Vintage-Men-s-Genuine-Cowhide-Leather_1601552490217.html",
+    "baslik": "Vintage Men's Large Capacity Genuine Cowhide Leather Clutch Wallet Top Layer Zipper Simple Casual Handheld Phone Bag Large",
+    "tedarikci": "ilanda görünmedi",
+    "fiyat_usd": 3.8,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 3.8
+     },
+     {
+      "min_adet": 49,
+      "fiyat_usd": 3.7
+     },
+     {
+      "min_adet": 99,
+      "fiyat_usd": 3.6
+     }
+    ],
+    "birim_agirlik_kg": 0.25,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 999.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/el-cantasi/en-ucuz-erzeno-siyah-hakiki-deri-erkek-tiras-el-portfoy-clutch-bakim-cantasi-fiyati,774382916.html",
+      "baslik": "Erzeno Siyah Hakiki Deri Erkek Tıraş El Portföy&Clutch Bakım Çantası"
+     },
+     {
+      "fiyat_tl": 1299.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/portfoy-canta/en-ucuz-erzeno-hakiki-deri-erkek-el-portfoy-clutch-bakim-cantasi-bilek-askili-ve-cikarilabilir-omuz-askili-siyah-fiyati,1278828767.html",
+      "baslik": "Erzeno Hakiki Deri Erkek El Portföy&Clutch Bakım Çantası (bilek askılı)"
+     },
+     {
+      "fiyat_tl": 1499.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/portfoy-canta/en-ucuz-hakiki-deri-luks-model-buyuk-boy-gunluk-erkek-el-cantasi-tiras-cantasi-portfoy-clutch-bakim-cantasi-fiyati,1568633868.html",
+      "baslik": "Hakiki Deri Büyük Boy Günlük Erkek El Çantası Portföy&Clutch"
+     },
+     {
+      "fiyat_tl": 1279.92,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/el-cantasi/en-ucuz-erzeno-hakiki-deri-luks-model-buyuk-boy-gunluk-erkek-tiras-cantasi-portfoy-clutch-bakim-cantasi-fiyati,1163507203.html",
+      "baslik": "Erzeno Hakiki Deri Büyük Boy Günlük Erkek El Çantası Portföy&Clutch"
+     },
+     {
+      "fiyat_tl": 1460.2,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/portfoy-canta/en-ucuz-nahitatyana-siyah-hakiki-deri-erkek-tiras-el-portfoy-clutch-bakim-cantasi-cift-gozlu-fiyati,1802298122.html",
+      "baslik": "NahitaTyana Siyah Hakiki Deri Erkek El Portföy&Clutch Çift Gözlü"
+     },
+     {
+      "fiyat_tl": 999.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/el-cantasi/en-ucuz-erzeno-erkek-hakiki-deri-portfoy-clutch-tras-bakim-kozmetik-cantasi-ve-gunluk-dopp-kit-taba-fiyati,1671033214.html",
+      "baslik": "Erzeno Erkek Hakiki Deri Portföy Clutch Günlük El Çantası (taba)"
+     },
+     {
+      "fiyat_tl": 758.32,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/el-cantasi/en-ucuz-nahitatyana-siyah-hakiki-deri-erkek-tiras-el-portfoy-clutch-bakim-cantasi-fiyati,1599266011.html",
+      "baslik": "NahitaTyana Siyah Hakiki Deri Erkek El Portföy&Clutch Bakım Çantası"
+     },
+     {
+      "fiyat_tl": 1091.92,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/el-cantasi/en-ucuz-erzeno-hakiki-deri-erkek-tiras-el-portfoy-clutch-bakim-cantasi-fiyati,794933582.html",
+      "baslik": "Erzeno Hakiki Deri Erkek El Portföy&Clutch Bakım Çantası"
+     }
+    ],
+    "not": "Akakçe 'hakiki deri erkek el çantası clutch' araması, markasız/az bilinen markalı 8 ilan; çoğu 'bakım/tıraş çantası' tipi el portföyü, Alibaba ilanındaki fermuarlı clutch cüzdana boyut ve kullanımda yakın ama birebir değil."
+   },
+   "taklit_riski": false,
+   "gerekce": "Hakiki deri erkek el portföyü/clutch Türkiye'de hediye ve günlük kullanım olarak sürekli satılıyor, raf fiyatı 760-1500 TL.",
+   "riskler": [
+    "Birim ağırlık ilanda yok (tahmin 0,25 kg)",
+    "Tedarikçi bilgisi ilanda görünmedi",
+    "Deri türü/kalite ve kenar dikişi numune ile doğrulanmalı; 'hakiki deri' belgesi istenmeli",
+    "Türkiye karşılaştırması birebir aynı ürün değil",
+    "Çok düşük fiyat gerçek deri için şüpheli olabilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Vintage-Men-s-Genuine-Cowhide-Leather_1601552490217.html",
+    "https://www.akakce.com/arama/?q=hakiki%20deri%20erkek%20el%20cantasi%20clutch"
+   ]
+  },
+  {
+   "urun": "Örgü elastik kemer (unisex)",
+   "kategori": "kemer",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Fairwin-Unisex-Gift-Elastic-Braided-Belt_1600984297184.html",
+    "baslik": "Fairwin Unisex Gift Elastic Braided Belt 1 3/8\" Width Casual Golf Shorts Jeans Belts",
+    "tedarikci": "ilanda görünmedi",
+    "fiyat_usd": 1.37,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 1.37
+     },
+     {
+      "min_adet": 240,
+      "fiyat_usd": 1.27
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 1.25
+     },
+     {
+      "min_adet": 3000,
+      "fiyat_usd": 1.18
+     }
+    ],
+    "birim_agirlik_kg": 0.1,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 799,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-spor-orgu-fiyati,1214674187.html",
+      "baslik": "Spor Örgü Kemer"
+     },
+     {
+      "fiyat_tl": 899,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-hediye-kutulu-spor-likrali-elastik-orgu-fiyati,1322653147.html",
+      "baslik": "Hediye Kutulu Spor Likralı Elastik Örgü Kemer"
+     },
+     {
+      "fiyat_tl": 999.96,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-renk-gecis-detayli-elastik-orgu-fiyati,1432775204.html",
+      "baslik": "Renk Geçiş Detaylı Elastik Örgü Kemer"
+     }
+    ],
+    "not": "Akakçe'de elastik/örgü/likralı kemer aramaları (elastik kemer, örgü kemer, lastik kemer unisex, hediye kutulu kemer); Mavi, Bison, Sisley gibi markalı/farklı ürünler ve pantolon ilanları hariç; 4 benzer ilan bulundu. Baş: BOYD hakiki deri aksesuarlı örgü kemer farklı ürün, çıkarıldı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Unisex örgü elastik kemer hediyelik ve günlük kullanımda satılıyor, beden derdi yok, çok hafif.",
+   "riskler": [
+    "Ürün adında 'Fairwin' var; ürün üstünde logo olup olmadığı görsellerden doğrulanamadı",
+    "Birim ağırlık ilanda yok (tahmin 0,1 kg)",
+    "Tedarikçi bilgisi ilanda görünmedi"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Fairwin-Unisex-Gift-Elastic-Braided-Belt_1600984297184.html",
+    "https://www.akakce.com/arama/?q=elastik%20kemer"
+   ]
+  },
+  {
+   "urun": "Katlanabilir polyester alışveriş çantası (kılıfına katlanır)",
+   "kategori": "canta-kumas",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Custom-Eco-friendly-Carry-Packaging-Reusable_1600512383899.html",
+    "baslik": "Custom Eco-friendly Carry Packaging Reusable Portable Polyester Tote Foldable Recycle Shopping Grocery Reusable Bag",
+    "tedarikci": "ilanda görünmedi",
+    "fiyat_usd": 0.39,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 0.39
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 0.37
+     },
+     {
+      "min_adet": 50000,
+      "fiyat_usd": 0.35
+     },
+     {
+      "min_adet": 100000,
+      "fiyat_usd": 0.19
+     }
+    ],
+    "birim_agirlik_kg": 0.08,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 172.66,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/omuz-cantasi/en-ucuz-tarzinisec-tarzini-sec-katlanabilir-cepli-bez-market-cantasi-44x48-cm-avokado-desenli-alisveris-cantasi-fiyati,1792445363.html",
+      "baslik": "Tarzını Seç Katlanabilir Cepli Bez Market Çantası 44x48 cm (varyantlar 160-176 TL)"
+     },
+     {
+      "fiyat_tl": 437.25,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/omuz-cantasi/en-ucuz-baag-istanbul-tasarim-cevre-dostu-dayanikli-yikanabilen-katlanir-gri-lacivert-kareli-alisveris-cantasi-fiyati,1123352116.html",
+      "baslik": "Baag Istanbul Katlanır Alışveriş Çantası Gri-Lacivert Kareli"
+     }
+    ],
+    "not": "Akakçe'de katlanabilir bez market çantası ve katlanır alışveriş çantası aramaları; tekerlekli pazar arabaları ve IKEA (marka) hariç. Yalnız 2 ürün (Tarzını Seç varyantları tek sayıldı); 25.11'de görülen 645/650 TL ilanlar bu taramada yeniden bulunamadı. Baş: ağırlık dünkü 0,08 kg tahmine geri alındı. Karşılaştırma yalnız 2 ilan (25.11'deki 645/650 TL ilanlar bulunamadı; Tarzını Seç varyantları tek sayıldı) — kat oynak."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kılıflı katlanır alışveriş çantası günlük kullanımda ve poşet yasağı sonrası sürekli satılıyor.",
+   "riskler": [
+    "Karşılaştırma yalnız 2 ürün",
+    "Kılıf ve kapasite ilan görselinden doğrulanmalı",
+    "Birim ağırlık ilanda yok (tahmin 0,06 kg)",
+    "Düşük fiyatlı ilanda kalite ve renk tutarlılığı riski"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Custom-Eco-friendly-Carry-Packaging-Reusable_1600512383899.html",
+    "https://www.akakce.com/arama/?q=katlanabilir%20bez%20market%20cantasi"
+   ]
+  },
+  {
+   "urun": "Düz püsküllü paşmina şal (kaşmir görünümlü)",
+   "kategori": "esarp-sal",
+   "gtip": "6214.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Luxury-Soft-Winter-Pashmina-Scarf-for_1600226731779.html",
+    "baslik": "Luxury Soft Winter Pashmina Scarf for Women Stylish Plain Woven Tassel Shawl Fashion Cashmere Feeling Warm Wrap Stole",
+    "tedarikci": "bilinmiyor (ilan sayfasından okunamadı)",
+    "fiyat_usd": 1.8,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 1.8
+     },
+     {
+      "min_adet": 50,
+      "fiyat_usd": 1.6
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 1.5
+     }
+    ],
+    "birim_agirlik_kg": 0.2,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 855.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-toprak-art-gallery-pashmina-fiyati,1175402823.html",
+      "baslik": "TOPRAK ART GALLERY Pashmina Şal"
+     },
+     {
+      "fiyat_tl": 621.13,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-chale-shine-serisi-pashmina-premium-dokuma-omuz-i-fiyati,1331839304.html",
+      "baslik": "CHALE Shine Serisi Pashmina Şal - Omuz Şalı"
+     },
+     {
+      "fiyat_tl": 486.45,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-sema-aksesuar-pashmina-viskon-kadin-pasmina-omuz-i-180x75-cm-puskullu-yuksek-kalite-hediyelik-fiyati,953280281.html",
+      "baslik": "sema aksesuar Pashmina Şal Viskon 180x75 Püsküllü"
+     },
+     {
+      "fiyat_tl": 614.29,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-manifestobutik-kadin-etnik-desen-pashmina-omuz-ve-bas-i-fiyati,1798271743.html",
+      "baslik": "MANİFESTOBUTİK Kadın Etnik Desen Pashmina Omuz ve Baş Şalı"
+     },
+     {
+      "fiyat_tl": 550.72,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-lagranze-premium-pasmina-kadin-fiyati,1193707362.html",
+      "baslik": "LAGRANZE Premium Paşmina Kadın Şal"
+     },
+     {
+      "fiyat_tl": 583.51,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/esarp/en-ucuz-misirli-lari-duz-renk-organik-pamuk-pasmina-sal-fiyati,1239503623.html",
+      "baslik": "Mısırlı Eşarpları Düz Renk Organik Pamuk Paşmina Şal"
+     },
+     {
+      "fiyat_tl": 949.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-dolce-desenli-pasmina-yumusak-dokulu-pamuk-tesettur-gunluk-ozel-gun-kadin-trend-kombin-fiyati,1663951777.html",
+      "baslik": "Dolce Desenli Paşmina Şal Pamuk Tesettür"
+     },
+     {
+      "fiyat_tl": 469.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-bordo-duz-klasik-viskon-kumas-simli-seritli-202100-16-bordo-fiyati,1239492696.html",
+      "baslik": "Bordo Düz Klasik Şal Viskon Kumaş Simli Şeritli"
+     }
+    ],
+    "not": "Akakçe arama sonuçlarında markasız/az bilinen markalı 8 düz ya da desenli paşmina/viskon şal (en ucuz satıcı fiyatları, 27.11.2026). Lüks kaşmir şallar (Ralph, Yargıcı vb.) ve ipek şallar alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kasım-Şubat'ta tesettür ve günlük kullanımda sürekli satan düz paşmina/omuz şalı; Türkiye raf fiyatı Alibaba'nın çok üstünde.",
+   "riskler": [
+    "Ağırlık ilanda yok, tahmin; tedarikçi bilgisi okunamadı",
+    "Polyester 'cashmere feel' ürün; kaşmir diye satılamaz, kumaş içeriği etiketlenmeli",
+    "Renk/desen ve kumaş kalitesi numuneyle doğrulanmalı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Luxury-Soft-Winter-Pashmina-Scarf-for_1600226731779.html",
+    "https://www.akakce.com/arama/?q=pashmina%20sal",
+    "https://www.akakce.com/arama/?q=ka%C5%9Fmir%20%C5%9Fal"
+   ]
+  },
+  {
+   "urun": "Düz püsküllü polyester paşmina şal",
+   "kategori": "esarp-sal",
+   "gtip": "6214.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Stylish-Ladies-Winter-Pashmina-Scarf-Fashion_1601359584189.html",
+    "baslik": "Stylish Ladies Winter Pashmina Scarf Fashion Women's Soft Cashmere Scarf With Custom Plain Tassel Warm Shawl Polyester Wholesale",
+    "tedarikci": "bilinmiyor (ilan sayfasından okunamadı)",
+    "fiyat_usd": 1.49,
+    "moq": 10,
+    "kademeler": [
+     {
+      "min_adet": 10,
+      "fiyat_usd": 1.49
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.2
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 1.1
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 1.0
+     }
+    ],
+    "birim_agirlik_kg": 0.2,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 855.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-toprak-art-gallery-pashmina-fiyati,1175402823.html",
+      "baslik": "TOPRAK ART GALLERY Pashmina Şal"
+     },
+     {
+      "fiyat_tl": 621.13,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-chale-shine-serisi-pashmina-premium-dokuma-omuz-i-fiyati,1331839304.html",
+      "baslik": "CHALE Shine Serisi Pashmina Şal - Omuz Şalı"
+     },
+     {
+      "fiyat_tl": 486.45,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-sema-aksesuar-pashmina-viskon-kadin-pasmina-omuz-i-180x75-cm-puskullu-yuksek-kalite-hediyelik-fiyati,953280281.html",
+      "baslik": "sema aksesuar Pashmina Şal Viskon 180x75 Püsküllü"
+     },
+     {
+      "fiyat_tl": 614.29,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-manifestobutik-kadin-etnik-desen-pashmina-omuz-ve-bas-i-fiyati,1798271743.html",
+      "baslik": "MANİFESTOBUTİK Kadın Etnik Desen Pashmina Omuz ve Baş Şalı"
+     },
+     {
+      "fiyat_tl": 550.72,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-lagranze-premium-pasmina-kadin-fiyati,1193707362.html",
+      "baslik": "LAGRANZE Premium Paşmina Kadın Şal"
+     },
+     {
+      "fiyat_tl": 583.51,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/esarp/en-ucuz-misirli-lari-duz-renk-organik-pamuk-pasmina-sal-fiyati,1239503623.html",
+      "baslik": "Mısırlı Eşarpları Düz Renk Organik Pamuk Paşmina Şal"
+     },
+     {
+      "fiyat_tl": 949.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-dolce-desenli-pasmina-yumusak-dokulu-pamuk-tesettur-gunluk-ozel-gun-kadin-trend-kombin-fiyati,1663951777.html",
+      "baslik": "Dolce Desenli Paşmina Şal Pamuk Tesettür"
+     },
+     {
+      "fiyat_tl": 469.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-bordo-duz-klasik-viskon-kumas-simli-seritli-202100-16-bordo-fiyati,1239492696.html",
+      "baslik": "Bordo Düz Klasik Şal Viskon Kumaş Simli Şeritli"
+     }
+    ],
+    "not": "Akakçe arama sonuçlarında markasız/az bilinen markalı 8 düz ya da desenli paşmina/viskon şal (en ucuz satıcı fiyatları, 27.11.2026). Lüks kaşmir şallar (Ralph, Yargıcı vb.) ve ipek şallar alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kasım-Şubat'ta tesettür ve günlük kullanımda sürekli satan düz paşmina/omuz şalı; Türkiye raf fiyatı Alibaba'nın çok üstünde.",
+   "riskler": [
+    "Ağırlık ilanda yok, tahmin; tedarikçi bilgisi okunamadı",
+    "Polyester 'cashmere feel' ürün; kaşmir diye satılamaz, kumaş içeriği etiketlenmeli",
+    "Renk/desen ve kumaş kalitesi numuneyle doğrulanmalı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Stylish-Ladies-Winter-Pashmina-Scarf-Fashion_1601359584189.html",
+    "https://www.akakce.com/arama/?q=pashmina%20sal",
+    "https://www.akakce.com/arama/?q=ka%C5%9Fmir%20%C5%9Fal"
+   ]
+  },
+  {
+   "urun": "Kalın düz paşmina şal (püsküllü)",
+   "kategori": "esarp-sal",
+   "gtip": "6214.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/High-Quality-Fashion-Winter-Thick-Pashmina_1601256353736.html",
+    "baslik": "High Quality Fashion Winter Thick Pashmina Scarf Lady Shawls Stylish Warm Custom Plain Tassels Cashmere Feeling Scarf Women",
+    "tedarikci": "bilinmiyor (ilan sayfasından okunamadı)",
+    "fiyat_usd": 1.75,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.75
+     },
+     {
+      "min_adet": 300,
+      "fiyat_usd": 1.55
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 1.35
+     }
+    ],
+    "birim_agirlik_kg": 0.25,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 855.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-toprak-art-gallery-pashmina-fiyati,1175402823.html",
+      "baslik": "TOPRAK ART GALLERY Pashmina Şal"
+     },
+     {
+      "fiyat_tl": 621.13,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-chale-shine-serisi-pashmina-premium-dokuma-omuz-i-fiyati,1331839304.html",
+      "baslik": "CHALE Shine Serisi Pashmina Şal - Omuz Şalı"
+     },
+     {
+      "fiyat_tl": 486.45,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-sema-aksesuar-pashmina-viskon-kadin-pasmina-omuz-i-180x75-cm-puskullu-yuksek-kalite-hediyelik-fiyati,953280281.html",
+      "baslik": "sema aksesuar Pashmina Şal Viskon 180x75 Püsküllü"
+     },
+     {
+      "fiyat_tl": 614.29,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-manifestobutik-kadin-etnik-desen-pashmina-omuz-ve-bas-i-fiyati,1798271743.html",
+      "baslik": "MANİFESTOBUTİK Kadın Etnik Desen Pashmina Omuz ve Baş Şalı"
+     },
+     {
+      "fiyat_tl": 550.72,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-lagranze-premium-pasmina-kadin-fiyati,1193707362.html",
+      "baslik": "LAGRANZE Premium Paşmina Kadın Şal"
+     },
+     {
+      "fiyat_tl": 583.51,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/esarp/en-ucuz-misirli-lari-duz-renk-organik-pamuk-pasmina-sal-fiyati,1239503623.html",
+      "baslik": "Mısırlı Eşarpları Düz Renk Organik Pamuk Paşmina Şal"
+     },
+     {
+      "fiyat_tl": 949.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-dolce-desenli-pasmina-yumusak-dokulu-pamuk-tesettur-gunluk-ozel-gun-kadin-trend-kombin-fiyati,1663951777.html",
+      "baslik": "Dolce Desenli Paşmina Şal Pamuk Tesettür"
+     },
+     {
+      "fiyat_tl": 469.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-bordo-duz-klasik-viskon-kumas-simli-seritli-202100-16-bordo-fiyati,1239492696.html",
+      "baslik": "Bordo Düz Klasik Şal Viskon Kumaş Simli Şeritli"
+     }
+    ],
+    "not": "Akakçe arama sonuçlarında markasız/az bilinen markalı 8 düz ya da desenli paşmina/viskon şal (en ucuz satıcı fiyatları, 27.11.2026). Lüks kaşmir şallar (Ralph, Yargıcı vb.) ve ipek şallar alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kasım-Şubat'ta tesettür ve günlük kullanımda sürekli satan düz paşmina/omuz şalı; Türkiye raf fiyatı Alibaba'nın çok üstünde.",
+   "riskler": [
+    "Ağırlık ilanda yok, tahmin; tedarikçi bilgisi okunamadı",
+    "Polyester 'cashmere feel' ürün; kaşmir diye satılamaz, kumaş içeriği etiketlenmeli",
+    "Renk/desen ve kumaş kalitesi numuneyle doğrulanmalı",
+    "MOQ 100 adet"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/High-Quality-Fashion-Winter-Thick-Pashmina_1601256353736.html",
+    "https://www.akakce.com/arama/?q=pashmina%20sal",
+    "https://www.akakce.com/arama/?q=ka%C5%9Fmir%20%C5%9Fal"
+   ]
+  },
+  {
+   "urun": "Düz renk orta boy kışlık şal (kaşmir görünümlü)",
+   "kategori": "esarp-sal",
+   "gtip": "6214.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Pure-Color-Mid-Length-Shawl-Scarf_1601564303483.html",
+    "baslik": "Pure Color Mid-Length Shawl Scarf for Women Autumn Winter Korean Style Versatile Imitation Cashmere Feel Polyester Material",
+    "tedarikci": "bilinmiyor (ilan sayfasından okunamadı)",
+    "fiyat_usd": 1.8,
+    "moq": 10,
+    "kademeler": [
+     {
+      "min_adet": 10,
+      "fiyat_usd": 1.8
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.78
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 1.71
+     },
+     {
+      "min_adet": 10000,
+      "fiyat_usd": 1.62
+     }
+    ],
+    "birim_agirlik_kg": 0.15,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 855.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-toprak-art-gallery-pashmina-fiyati,1175402823.html",
+      "baslik": "TOPRAK ART GALLERY Pashmina Şal"
+     },
+     {
+      "fiyat_tl": 621.13,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-chale-shine-serisi-pashmina-premium-dokuma-omuz-i-fiyati,1331839304.html",
+      "baslik": "CHALE Shine Serisi Pashmina Şal - Omuz Şalı"
+     },
+     {
+      "fiyat_tl": 486.45,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-sema-aksesuar-pashmina-viskon-kadin-pasmina-omuz-i-180x75-cm-puskullu-yuksek-kalite-hediyelik-fiyati,953280281.html",
+      "baslik": "sema aksesuar Pashmina Şal Viskon 180x75 Püsküllü"
+     },
+     {
+      "fiyat_tl": 614.29,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-manifestobutik-kadin-etnik-desen-pashmina-omuz-ve-bas-i-fiyati,1798271743.html",
+      "baslik": "MANİFESTOBUTİK Kadın Etnik Desen Pashmina Omuz ve Baş Şalı"
+     },
+     {
+      "fiyat_tl": 550.72,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-lagranze-premium-pasmina-kadin-fiyati,1193707362.html",
+      "baslik": "LAGRANZE Premium Paşmina Kadın Şal"
+     },
+     {
+      "fiyat_tl": 583.51,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/esarp/en-ucuz-misirli-lari-duz-renk-organik-pamuk-pasmina-sal-fiyati,1239503623.html",
+      "baslik": "Mısırlı Eşarpları Düz Renk Organik Pamuk Paşmina Şal"
+     },
+     {
+      "fiyat_tl": 949.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-dolce-desenli-pasmina-yumusak-dokulu-pamuk-tesettur-gunluk-ozel-gun-kadin-trend-kombin-fiyati,1663951777.html",
+      "baslik": "Dolce Desenli Paşmina Şal Pamuk Tesettür"
+     },
+     {
+      "fiyat_tl": 469.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-bordo-duz-klasik-viskon-kumas-simli-seritli-202100-16-bordo-fiyati,1239492696.html",
+      "baslik": "Bordo Düz Klasik Şal Viskon Kumaş Simli Şeritli"
+     }
+    ],
+    "not": "Akakçe arama sonuçlarında markasız/az bilinen markalı 8 düz ya da desenli paşmina/viskon şal (en ucuz satıcı fiyatları, 27.11.2026). Lüks kaşmir şallar (Ralph, Yargıcı vb.) ve ipek şallar alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kasım-Şubat'ta tesettür ve günlük kullanımda sürekli satan düz paşmina/omuz şalı; Türkiye raf fiyatı Alibaba'nın çok üstünde.",
+   "riskler": [
+    "Ağırlık ilanda yok, tahmin; tedarikçi bilgisi okunamadı",
+    "Polyester 'cashmere feel' ürün; kaşmir diye satılamaz, kumaş içeriği etiketlenmeli",
+    "Renk/desen ve kumaş kalitesi numuneyle doğrulanmalı",
+    "İlanda her kademede ikinci bir fiyat (2 $, 1,98 $...) görünüyor; indirim mi liste fiyatı mı doğrulanmadı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Pure-Color-Mid-Length-Shawl-Scarf_1601564303483.html",
+    "https://www.akakce.com/arama/?q=pashmina%20sal",
+    "https://www.akakce.com/arama/?q=ka%C5%9Fmir%20%C5%9Fal"
+   ]
+  },
+  {
+   "urun": "Viskon paisley desenli tesettür şal",
+   "kategori": "esarp-sal",
+   "gtip": "6214.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Wholesale-Ethnic-Design-Cape-Viscose-Shawls_1601255654512.html",
+    "baslik": "Wholesale Ethnic Design Cape Viscose Shawls Ladies Pashmina Hijab Voile Paisley Winter Cashmere Feel Scarf Scarves for Winter",
+    "tedarikci": "bilinmiyor (ilan sayfasından okunamadı)",
+    "fiyat_usd": 2.69,
+    "moq": 5,
+    "kademeler": [
+     {
+      "min_adet": 5,
+      "fiyat_usd": 2.69
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 2.59
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 2.39
+     }
+    ],
+    "birim_agirlik_kg": 0.15,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 855.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-toprak-art-gallery-pashmina-fiyati,1175402823.html",
+      "baslik": "TOPRAK ART GALLERY Pashmina Şal"
+     },
+     {
+      "fiyat_tl": 621.13,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-chale-shine-serisi-pashmina-premium-dokuma-omuz-i-fiyati,1331839304.html",
+      "baslik": "CHALE Shine Serisi Pashmina Şal - Omuz Şalı"
+     },
+     {
+      "fiyat_tl": 486.45,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-sema-aksesuar-pashmina-viskon-kadin-pasmina-omuz-i-180x75-cm-puskullu-yuksek-kalite-hediyelik-fiyati,953280281.html",
+      "baslik": "sema aksesuar Pashmina Şal Viskon 180x75 Püsküllü"
+     },
+     {
+      "fiyat_tl": 614.29,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-manifestobutik-kadin-etnik-desen-pashmina-omuz-ve-bas-i-fiyati,1798271743.html",
+      "baslik": "MANİFESTOBUTİK Kadın Etnik Desen Pashmina Omuz ve Baş Şalı"
+     },
+     {
+      "fiyat_tl": 550.72,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-lagranze-premium-pasmina-kadin-fiyati,1193707362.html",
+      "baslik": "LAGRANZE Premium Paşmina Kadın Şal"
+     },
+     {
+      "fiyat_tl": 583.51,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/esarp/en-ucuz-misirli-lari-duz-renk-organik-pamuk-pasmina-sal-fiyati,1239503623.html",
+      "baslik": "Mısırlı Eşarpları Düz Renk Organik Pamuk Paşmina Şal"
+     },
+     {
+      "fiyat_tl": 949.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-dolce-desenli-pasmina-yumusak-dokulu-pamuk-tesettur-gunluk-ozel-gun-kadin-trend-kombin-fiyati,1663951777.html",
+      "baslik": "Dolce Desenli Paşmina Şal Pamuk Tesettür"
+     },
+     {
+      "fiyat_tl": 469.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/sal/en-ucuz-bordo-duz-klasik-viskon-kumas-simli-seritli-202100-16-bordo-fiyati,1239492696.html",
+      "baslik": "Bordo Düz Klasik Şal Viskon Kumaş Simli Şeritli"
+     }
+    ],
+    "not": "Akakçe arama sonuçlarında markasız/az bilinen markalı 8 düz ya da desenli paşmina/viskon şal (en ucuz satıcı fiyatları, 27.11.2026). Lüks kaşmir şallar (Ralph, Yargıcı vb.) ve ipek şallar alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kasım-Şubat'ta tesettür ve günlük kullanımda sürekli satan düz paşmina/omuz şalı; Türkiye raf fiyatı Alibaba'nın çok üstünde. Viskon/voile hijab tipi.",
+   "riskler": [
+    "Ağırlık ilanda yok, tahmin; tedarikçi okunamadı",
+    "Paisley desen marka deseni (ör. Etro) çağrışımı yapmamalı; numuneyle kontrol"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Wholesale-Ethnic-Design-Cape-Viscose-Shawls_1601255654512.html",
+    "https://www.akakce.com/arama/?q=pashmina%20sal",
+    "https://www.akakce.com/arama/?q=ka%C5%9Fmir%20%C5%9Fal"
+   ]
+  },
+  {
+   "urun": "Dokunmatik ekran uyumlu örgü kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Solid Magic Gloves Capacitive Mobile Phone Smartphone Texting Touchscreen Gloves Knit Hot",
+    "tedarikci": "bilinmiyor (ilan sayfasından okunamadı)",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 36,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 60,
+      "fiyat_usd": 0.44
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.06,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 248.57,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kislik-eldiven/en-ucuz-axe-sportswear-kadin-kislik-yumusak-dokulu-triko-orgu-eldiven-bas-ve-isaret-parmak-dokunmatik-ekran-uyumlu-telefon-tablet-kullanimli-soguktan-koruyucu-sicak-tutan-eldiven-fiyati,1798876458.html",
+      "baslik": "AXE SPORTSWEAR Kadın Kışlık Triko Örgü Eldiven Dokunmatik Ekran Uyumlu"
+     }
+    ],
+    "not": "Akakçe'de yalnız 2 markasız/az bilinen dokunmatik eldiven bulundu (biri polar, taktik/motosiklet tipi; asıl emsal AXE). Dokunmatik olmayan düz örgü kadın eldivenleri (ör. 85-420 TL aralığında çocuk/basic modeller) listeye alınmadı. Karşılaştırma ince. Baş: Single Sword polar taktik/motosiklet eldiveni farklı ürün, çıkarıldı (önceki günlerle tutarlı)."
+   },
+   "taklit_riski": false,
+   "gerekce": "Telefon kullanımına uygun ucuz örgü kışlık eldiven, kış boyunca hızlı döner.",
+   "riskler": [
+    "Türkiye'de yalnız 2 emsal; fiyat referansı zayıf",
+    "Ağırlık tahmin",
+    "Kademeli fiyat MOQ 12 çift"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.akakce.com/kislik-eldiven.html"
+   ]
+  },
+  {
+   "urun": "Kadın saten gömlek (uzun kollu, düğmeli)",
+   "kategori": "gomlek-bluz-tunik",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Women-Button-up-Satin-Shirt-Tops_1601484471566.html",
+    "baslik": "Women Button up Satin Shirt Tops Lady Niche Design Long Sleeve Office V Neck Satin Blouse",
+    "tedarikci": "bilinmiyor (ilan sayfasından okunamadı)",
+    "fiyat_usd": 2.95,
+    "moq": 10,
+    "kademeler": [
+     {
+      "min_adet": 10,
+      "fiyat_usd": 2.95
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 2.8
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 2.7
+     }
+    ],
+    "birim_agirlik_kg": 0.25,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 649.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-sweetness-kadin-pudra-pembe-likrali-saten-uzun-kol-abiye-pudra-fiyati,1178029355.html",
+      "baslik": "Sweetness Kadın Likralı Saten Uzun Kol Gömlek"
+     },
+     {
+      "fiyat_tl": 785.43,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-maxi-idol-kadin-saten-dokulu-sik-uzun-kollu-ofis-gunluk-kullanima-uygun-bluz-001-beyaz-fiyati,1236914541.html",
+      "baslik": "Maxi İdol Kadın Saten Uzun Kollu Gömlek"
+     },
+     {
+      "fiyat_tl": 615.12,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-ribana-classic-kadin-v-yaka-uzun-kollu-sedef-dugmeli-saten-3140-taba-fiyati,1434153396.html",
+      "baslik": "Ribana Classic V Yaka Sedef Düğmeli Saten Gömlek 3140"
+     },
+     {
+      "fiyat_tl": 713.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-ribana-classic-kadin-cizgili-saten-kumas-klasik-yaka-onu-dugmeli-uzun-kollu-manset-bitisli-3971-siyah-fiyati,1446061658.html",
+      "baslik": "Ribana Classic Çizgili Saten Gömlek 3971"
+     },
+     {
+      "fiyat_tl": 679.81,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-thesunfyre-kadin-siyah-sik-ve-casual-uzun-kollu-dar-kesim-dugmeli-saten-fiyati,1168190036.html",
+      "baslik": "thesunfyre Kadın Uzun Kollu Düğmeli Saten Gömlek"
+     },
+     {
+      "fiyat_tl": 712.4,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-rich-kadin-beyaz-ince-uzun-kollu-saten-fiyati,1382937958.html",
+      "baslik": "Rich Kadın Beyaz İnce Uzun Kollu Saten Gömlek"
+     },
+     {
+      "fiyat_tl": 424.15,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-kadin-saten-baskikili-desen-uzun-kol-bgl-st04214-fiyati,975932981.html",
+      "baslik": "Kadın Saten Baskılı Desen Uzun Kol Gömlek BGL-ST04214"
+     },
+     {
+      "fiyat_tl": 776.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-ded-collection-kadin-saten-pariltili-kumas-yildiz-desenli-uzun-kollu-13k-kahverengi-fiyati,1013965108.html",
+      "baslik": "Ded Collection Kadın Saten Parıltılı Uzun Kollu Gömlek"
+     },
+     {
+      "fiyat_tl": 1020.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-kadin-hafif-dokumlu-siyah-saten-fiyati,1239284567.html",
+      "baslik": "Kadın Hafif Dökümlü Siyah Saten Gömlek"
+     },
+     {
+      "fiyat_tl": 989.62,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-kadin-uzun-kollu-dijital-baskili-salas-saten-beyaz-fiyati,1361936583.html",
+      "baslik": "Kadın Uzun Kollu Dijital Baskılı Salaş Saten Gömlek"
+     },
+     {
+      "fiyat_tl": 880.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/gomlek/en-ucuz-exve-exclusive-lacivert-hafif-dokumlu-sirti-koruklu-saten-dokuma-kadin-fiyati,1175848916.html",
+      "baslik": "Exve Exclusive Hafif Dökümlü Saten Dokuma Kadın Gömlek"
+     }
+    ],
+    "not": "Akakçe aramasında 11 markasız/az bilinen uzun kollu saten kadın gömlek (en ucuz fiyatlar, 27.11.2026); Madmext, Pierre Cardin, Ekol ve kısa kollu ürünler alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Ofis ve günlük kullanımda sürekli satan saten gömlek.",
+   "riskler": [
+    "Beden/kalıp riski",
+    "Ağırlık tahmin",
+    "Moda ürünü, iade oranı yüksek"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Women-Button-up-Satin-Shirt-Tops_1601484471566.html",
+    "https://www.akakce.com/arama/?q=saten%20g%C3%B6mlek%20kad%C4%B1n"
+   ]
+  }
+ ]
+}
