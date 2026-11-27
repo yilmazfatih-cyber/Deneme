@@ -10,6 +10,7 @@
 | 25.11.2026 | S01: ses hattı ve tasarım şartnameleri, Tanılama (iPhone ve web), Anahtar Zinciri, aşama (hazırlanıyor / dinliyor / duraklatıldı), erişilebilirlik ve büyük yazı, cihaz testi belgesi; Mac derlemesi Debug ve Release, uyarıda kırılır; 13 simülatör görüntüsü |
 | 25.11.2026 | S01 tur 4 yayına alındı (PR #25); canlı web sayfası doğrulandı (sahte mikrofon ve çeviriyle)                 |
 | 27.11.2026 | Apple Developer hesabı açıldı; uygulama GitHub iş akışıyla imzalanıp App Store Connect'e yüklendi (yapı 1). Telefonda TestFlight'tan kurulup denenmesi bekleniyor |
+| 27.11.2026 | S02: bulut motoru (Soniox) yazıldı, derlendi ve TestFlight'a yüklendi (yapı 5): otomatik kaynak dil, 60 hedef dil, sesli okuma isteğe bağlı ve kapalı, anahtar yalnız TestFlight yapısına gömülü. Gerçek Soniox akışı ve telefonda deneme bekleniyor; uzman incelemesi yapılmadı |
 
 ## Sprintler
 
