@@ -1,6 +1,6 @@
 name: Canlı Çeviri (aboneliği kur)
 
-# App Store Connect'te haftalık "Sınırsız" aboneliğini (canliceviri.sinirsiz.haftalik) kurar: abonelik grubu, abonelik,
+# App Store Connect'te haftalık "Sınırsız" aboneliğini (canliceviri.haftalik) kurar: abonelik grubu, abonelik,
 # tr / en-US adları, tüm bölgelerde kullanılabilirlik ve fiyat (ABD 4,99 USD + Apple'ın eş değer fiyatları).
 # Elle başlatılır (Actions → bu iş akışı → Run workflow) ve yalnız varsayılan dalda çalışır.
 # 'uygula' işaretlenmezse KURU ÇALIŞMADIR: hiçbir şey değiştirmez, yalnız neyin var olduğunu ve neyin oluşturulacağını
