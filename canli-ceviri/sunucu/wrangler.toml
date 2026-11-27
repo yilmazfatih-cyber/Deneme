@@ -1,0 +1,35 @@
+# Canlı Çeviri — geçici anahtar sunucusu (Cloudflare Workers, ücretsiz planda çalışır).
+# Bu dosya herkese açık depodadır: içine gizli değer YAZILMAZ.
+# Gizli değerler yalnız `wrangler secret put` ile girilir: SONIOX_API_KEY, OZET_TUZU (bkz. README).
+
+name = "canli-ceviri-anahtar"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+# Uygulamanın paket kimliği ve abonelik ürünü; imzalı işlemde bunlar aranır.
+PAKET_KIMLIGI = "com.yilmazfatih.canliceviri"
+URUN_KIMLIGI = "canliceviri.sinirsiz.haftalik"
+# Abone başına günlük kullanım bütçesi (saniye; gün UTC'ye göre döner).
+GUNLUK_SANIYE = "7200"
+# Sandbox (TestFlight, App Review) işlemleri için ayrı, düşük bütçe.
+SANDBOX_GUNLUK_SANIYE = "1800"
+# Tek oturumun en uzun süresi (saniye). Verildiği anda tamamı bütçeden düşülür.
+OTURUM_SANIYE = "600"
+# "true" değilse Sandbox işlemleri reddedilir. TestFlight ve App Review Sandbox kullanır.
+SANDBOX_IZINLI = "true"
+
+[[durable_objects.bindings]]
+name = "SAYAC"
+class_name = "AbonelikSayaci"
+
+[[durable_objects.bindings]]
+name = "IP_SAYAC"
+class_name = "IpSayaci"
+
+# Ücretsiz planda Durable Object yalnız SQLite depolamalı sınıfla kurulabilir (new_sqlite_classes).
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["AbonelikSayaci", "IpSayaci"]
