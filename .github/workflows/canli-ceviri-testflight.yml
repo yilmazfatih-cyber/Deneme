@@ -100,18 +100,17 @@ jobs:
             echo "Gömülü anahtar yok, kullanıcı Ayarlar'dan girer."
             exit 0
           fi
-          # Biçim: yalnız harf, rakam, alt çizgi ve tire; 16–200 karakter; tek satır. Böylece değer Swift dizgesine
-          # ve aşağıdaki temizleme adımına güvenle girer.
           # Yapıştırırken giren boşluk ve satır sonları atılır (anahtarda boşluk olmaz).
           anahtar="$(printf '%s' "$SONIOX_API_KEY" | LC_ALL=C tr -d '[:space:]')"
-          desen='^[A-Za-z0-9_-]{16,200}$'
-          if ! [[ "$anahtar" =~ $desen ]]; then
-            # Değerin kendisi yazdırılmaz; yalnız uzunluğu ve izin verilmeyen karakter sayısı.
-            uzunluk=${#anahtar}
-            yabanci="$(printf '%s' "$anahtar" | LC_ALL=C tr -d 'A-Za-z0-9_-' | wc -c | tr -d ' ')"
-            echo "::error title=SONIOX_API_KEY biçimi::SONIOX_API_KEY beklenen biçimde değil (uzunluk $uzunluk, izin verilmeyen karakter $yabanci). Yalnız harf, rakam, alt çizgi ve tire içermeli, 16–200 karakter olmalı. Gizli değeri yeniden girip işi yeniden başlatın. Hiçbir şey yüklenmedi."
+          # Biçim: yazdırılabilir ASCII; çift tırnak ve ters bölü yok (değer Swift dizgesine girer); 16–400 karakter.
+          # Değerin kendisi yazdırılmaz; yalnız uzunluğu ve izin verilmeyen karakter sayısı.
+          uzunluk=${#anahtar}
+          yabanci="$(printf '%s' "$anahtar" | LC_ALL=C tr -d '\041\043-\133\135-\176' | wc -c | tr -d ' ')"
+          if [ "$uzunluk" -lt 16 ] || [ "$uzunluk" -gt 400 ] || [ "$yabanci" -ne 0 ]; then
+            echo "::error title=SONIOX_API_KEY biçimi::SONIOX_API_KEY beklenen biçimde değil (uzunluk $uzunluk, izin verilmeyen karakter $yabanci). Çift tırnak, ters bölü ve ASCII dışı karakter içermemeli, 16–400 karakter olmalı. Gizli değeri yeniden girip işi yeniden başlatın. Hiçbir şey yüklenmedi."
             exit 1
           fi
+          echo "Anahtar biçimi uygun (uzunluk $uzunluk)."
           dosya=canli-ceviri/CanliCeviri/Bulut/GomuluAnahtar.swift
           if [ ! -f "$dosya" ]; then
             echo "::error title=Dosya yok::$dosya bulunamadı; anahtar gömülemedi. Hiçbir şey yüklenmedi."
@@ -222,12 +221,14 @@ jobs:
         run: |
           # xcodebuild komut satırını kayda yazar; saklanan kopyada kimlikler gizlenir. Gömülü Soniox anahtarı kayda
           # yazılmaz; yine de saklanan kopyada aranıp gizlenir.
-          soniox="$(printf '%s' "${SONIOX_API_KEY:-}" | LC_ALL=C tr -d '[:space:]' | LC_ALL=C tr -cd 'A-Za-z0-9_-')"
+          # Değerler düz metin olarak aranır (\Q…\E): içlerindeki nokta, artı gibi karakterler desen sayılmaz.
+          SONIOX_TEMIZ="$(printf '%s' "${SONIOX_API_KEY:-}" | LC_ALL=C tr -d '[:space:]')"
+          export SONIOX_TEMIZ
           for dosya in arsiv.log yukleme.log; do
             [ -f "$dosya" ] || continue
-            for deger in "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$APPLE_TEAM_ID" "$soniox"; do
-              [ -n "$deger" ] || continue
-              LC_ALL=C sed -i '' "s|$deger|***|g" "$dosya"
+            for ad in ASC_KEY_ID ASC_ISSUER_ID APPLE_TEAM_ID SONIOX_TEMIZ; do
+              [ -n "${!ad:-}" ] || continue
+              GIZLI_AD="$ad" LC_ALL=C perl -pi -e 's/\Q$ENV{$ENV{GIZLI_AD}}\E/***/g' "$dosya"
             done
           done
 
