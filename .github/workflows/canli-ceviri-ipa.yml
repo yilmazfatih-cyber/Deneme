@@ -3,6 +3,8 @@ name: Canlı Çeviri (deneme .ipa)
 # iPhone uygulamasını GitHub'ın Mac makinesinde imzasız derler, .ipa olarak paketler ve herkese açık bir ön sürüme
 # (GitHub Release) koyar. Dosya Sideloadly ya da AltStore ile kişinin kendi Apple Kimliğiyle yeniden imzalanıp kurulur;
 # Apple Developer hesabı ve Xcode gerekmez. DENEME bayrağıyla derlenir: günlük süre sınırı kapalıdır.
+# Bu iş akışı Soniox anahtarına (SONIOX_API_KEY) HİÇ dokunmaz: dosya herkese açık indirilir, içine anahtar girmemeli.
+# Bulut/GomuluAnahtar.swift burada depodaki boş hâliyle derlenir; anahtar yalnız TestFlight iş akışında gömülür.
 on:
   workflow_dispatch:
   push:

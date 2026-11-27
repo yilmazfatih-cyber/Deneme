@@ -5,6 +5,10 @@ name: Canlı Çeviri (TestFlight'a yükle)
 # Elle başlatılır (Actions → bu iş akışı → Run workflow) ve yalnız varsayılan dalda çalışır.
 # Gerekli gizli değerler (Settings → Secrets and variables → Actions):
 #   ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8 (App Store Connect API anahtarının .p8 içeriği), APPLE_TEAM_ID.
+# İsteğe bağlı gizli değer: SONIOX_API_KEY. Girilmişse bulut motorunun anahtarı bu yapıya gömülür (yalnız koşucudaki
+#   kopyada; depoya yazılmaz) ve kullanıcının Ayarlar'da anahtar girmesi gerekmez. Girilmemişse iş yine çalışır.
+#   Gömülü anahtar uygulama dosyasının içinde düz dizge olarak durur ve oradan çıkarılabilir; bu yüzden yalnız bu
+#   (TestFlight) iş akışında gömülür, herkese açık deneme .ipa'sına ve simülatör derlemesine girmez.
 # Gizli değerler hiçbir adımda kayda yazılmaz; saklanan kayıt dosyalarından da silinir.
 on:
   workflow_dispatch:
@@ -85,6 +89,33 @@ jobs:
           echo "ASC_ANAHTAR_YOLU=$anahtar" >> "$GITHUB_ENV"
           echo "Anahtar dosyası yazıldı (yalnız bu iş okuyabilir; iş bitince silinir)."
 
+      - name: Soniox anahtarını yapıya göm (varsa)
+        env:
+          SONIOX_API_KEY: ${{ secrets.SONIOX_API_KEY }}
+        run: |
+          set -euo pipefail
+          # Değer hiçbir satıra yazdırılmaz. Yalnız koşucudaki dosya değişir; depoya dolu hâli asla yazılmaz.
+          if [ -z "${SONIOX_API_KEY:-}" ]; then
+            echo "SONIOX_GOMULU=yok" >> "$GITHUB_ENV"
+            echo "Gömülü anahtar yok, kullanıcı Ayarlar'dan girer."
+            exit 0
+          fi
+          # Biçim: yalnız harf, rakam, alt çizgi ve tire; 16–200 karakter; tek satır. Böylece değer Swift dizgesine
+          # ve aşağıdaki temizleme adımına güvenle girer.
+          desen='^[A-Za-z0-9_-]{16,200}$'
+          if ! [[ "$SONIOX_API_KEY" =~ $desen ]]; then
+            echo "::error title=SONIOX_API_KEY biçimi::SONIOX_API_KEY beklenen biçimde değil: yalnız harf, rakam, alt çizgi ve tire içermeli, 16–200 karakter olmalı, boşluk ya da satır sonu olmamalı. Gizli değeri yeniden girip işi yeniden başlatın. Hiçbir şey yüklenmedi."
+            exit 1
+          fi
+          dosya=canli-ceviri/CanliCeviri/Bulut/GomuluAnahtar.swift
+          if [ ! -f "$dosya" ]; then
+            echo "::error title=Dosya yok::$dosya bulunamadı; anahtar gömülemedi. Hiçbir şey yüklenmedi."
+            exit 1
+          fi
+          printf 'let gomuluSonioxAnahtari = "%s"\n' "$SONIOX_API_KEY" > "$dosya"
+          echo "SONIOX_GOMULU=gömülü" >> "$GITHUB_ENV"
+          echo "Soniox anahtarı bu yapıya gömüldü (değer kayda yazılmaz)."
+
       - name: Arşivle (Release, App Store için imzalı)
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
@@ -162,6 +193,7 @@ jobs:
             echo ""
             echo "- Yapı numarası: $YAPI_NO"
             echo "- Commit: $GITHUB_SHA"
+            echo "- Soniox anahtarı: ${SONIOX_GOMULU:-yok}"
             if [ "$ISIN_DURUMU" = "success" ]; then
               echo "- Sonuç: Yükleme tamam; TestFlight'ta 10–30 dakika içinde görünür."
             else
@@ -181,11 +213,13 @@ jobs:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          SONIOX_API_KEY: ${{ secrets.SONIOX_API_KEY }}
         run: |
-          # xcodebuild komut satırını kayda yazar; saklanan kopyada kimlikler gizlenir.
+          # xcodebuild komut satırını kayda yazar; saklanan kopyada kimlikler gizlenir. Gömülü Soniox anahtarı kayda
+          # yazılmaz; yine de saklanan kopyada aranıp gizlenir.
           for dosya in arsiv.log yukleme.log; do
             [ -f "$dosya" ] || continue
-            for deger in "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$APPLE_TEAM_ID"; do
+            for deger in "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$APPLE_TEAM_ID" "$SONIOX_API_KEY"; do
               [ -n "$deger" ] || continue
               LC_ALL=C sed -i '' "s|$deger|***|g" "$dosya"
             done

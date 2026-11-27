@@ -269,7 +269,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Canlı Çeviri";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Karşınızdaki kişinin konuşmasını dinleyip Türkçeye çevirmek için mikrofon kullanılır.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Karşınızdaki kişinin konuşmasını dinleyip seçtiğiniz dile çevirmek için mikrofon kullanılır.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Konuşmayı yazıya dökmek için konuşma tanıma kullanılır; destekleniyorsa cihazın içinde yapılır.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -301,7 +301,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Canlı Çeviri";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Karşınızdaki kişinin konuşmasını dinleyip Türkçeye çevirmek için mikrofon kullanılır.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Karşınızdaki kişinin konuşmasını dinleyip seçtiğiniz dile çevirmek için mikrofon kullanılır.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Konuşmayı yazıya dökmek için konuşma tanıma kullanılır; destekleniyorsa cihazın içinde yapılır.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

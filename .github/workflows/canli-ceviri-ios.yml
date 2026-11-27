@@ -2,12 +2,14 @@ name: Canlı Çeviri (iOS derleme)
 
 # iPhone uygulamasını (canli-ceviri/CanliCeviri.xcodeproj) GitHub'ın Mac makinelerinde derler, sonra simülatörde
 # her ekranın görüntüsünü alıp canli-ceviri-ekran dalına yazar. İmzasızdır ve simülatör içindir; telefona yüklenebilir
-# dosya üretmez. Derleme ve görüntü ayrı adımlardır: kayıtta hangisinin kırıldığı görünür.
+# dosya üretmez. Çözücü testi, derleme ve görüntü ayrı adımlardır: kayıtta hangisinin kırıldığı görünür.
+# Bu iş akışı Soniox anahtarına (SONIOX_API_KEY) hiç dokunmaz; anahtar yalnız TestFlight iş akışında gömülür.
 on:
   push:
     paths:
       - canli-ceviri/CanliCeviri/**
       - canli-ceviri/CanliCeviri.xcodeproj/**
+      - canli-ceviri/tests/ios/**
       - .github/workflows/canli-ceviri-ios.yml
   workflow_dispatch:
 
@@ -28,6 +30,16 @@ jobs:
         run: |
           xcodebuild -version
           xcodebuild -showsdks | grep -i iphone || true
+      - name: Çözücü testi (bulut motorunun saf mantığı)
+        run: |
+          set -euo pipefail
+          # Soniox yanıtlarını cümlelere ayıran çözücü yalnız Foundation kullanır; XCTest ve simülatör gerekmez.
+          # Derlenemezse ya da bir denetim kalırsa iş burada, uygulama derlenmeden kırılır (S02 K2).
+          swiftc -swift-version 5 -parse-as-library \
+            canli-ceviri/CanliCeviri/Bulut/SonioxCozucu.swift \
+            canli-ceviri/tests/ios/cozucu-testi.swift \
+            -o "$RUNNER_TEMP/cozucu-testi"
+          "$RUNNER_TEMP/cozucu-testi"
       - name: Derle (iOS Simülatörü, imzasız; Debug ve Release)
         run: |
           set -o pipefail
@@ -125,7 +137,8 @@ jobs:
             xcrun simctl io "$UDID" screenshot "ekran/$2.png"
             xcrun simctl terminate "$UDID" "$PAKET" > /dev/null 2>&1 || true
           }
-          for ad in ceviri-bos ceviri dinliyor kulakliksiz gecmis gecmis-bos ayarlar tanilama abonelik sinir-doldu; do
+          for ad in ceviri-bos ceviri dinliyor kulakliksiz gecmis gecmis-bos ayarlar tanilama abonelik sinir-doldu \
+            ayarlar-bulut ceviri-bulut; do
             cek "$ad" "$ad"
           done
           # En büyük Dinamik Yazı (AX5) boyutunda dört ekran, AX3'te Çeviri; sonra boyut eski hâline döner.

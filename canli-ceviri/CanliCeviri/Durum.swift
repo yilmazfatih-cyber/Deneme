@@ -2,13 +2,18 @@ import AVFoundation
 import SwiftUI
 import Translation
 
-/// Çevrilmiş bir cümle: konuşmacının söylediği ve Türkçesi.
+/// Çevrilmiş bir cümle: konuşmacının söylediği ve çevirisi.
 struct Satir: Identifiable {
     let id = UUID()
     let asil: String
+    /// Boş olabilir (bulut motoru): konuşma zaten hedef dildeyse ya da çeviri gelmediyse asıl metin tek başına durur.
     let ceviri: String
     /// Asıl cümlenin dil kodu (VoiceOver'ın doğru dille okuması için).
     var kaynakDil = "en"
+    /// Çevirinin dil kodu: cihaz motorunda Türkçe, bulut motorunda seçilen hedef dil (KR13).
+    var hedefDil = "tr"
+    /// Bulut motorunda kaynak dil "Otomatik" iken sunucunun tanıdığı dilin adı (KR12); yoksa nil.
+    var dilEtiketi: String?
     let saat = Date()
 }
 
@@ -38,6 +43,7 @@ enum NotTuru: Hashable {
     case okunmayanCeviri   // S4: telefon / arka plan kesintisinde gelen çeviri okunmadı
     case uzunKesinti       // K4: kesinti 10 sn'dir sürüyor; çıkış yolu söylenir
     case sonDakika         // S03 KR3: günlük ücretsiz sürenin son dakikası
+    case bulutKopma        // S02 KR5: bulut bağlantısı koptu; o sırada söylenenler çevrilmedi
 }
 
 /// Ekranda sarı not (uyarı rengi, hata değil).
@@ -62,6 +68,8 @@ final class Durum {
     var sinirMetni: String?
     /// Abonelik sayfası açık mı (Çeviri ekranı ve Ayarlar açar).
     var abonelikAcik = false
+    /// Bu dinleme bulut motoruyla (Soniox) çalışıyor: Çeviri ekranı sesin Soniox'a gittiğini söyler (S02 K5).
+    var bulutCalisiyor = false
 
     @ObservationIgnored private var dil = diller[0]
     /// Oturum kimliği (şartname D-1): her Başlat ve Durdur artırır; eski işler yan etki yapmadan çıkar.
@@ -72,6 +80,11 @@ final class Durum {
     @ObservationIgnored private var sonTik = Date()
     /// Süre dolunca çalan çeviri bitene kadar bekleyip hattı kapatan görev (KR2).
     @ObservationIgnored private var kapanisGorevi: Task<Void, Never>?
+    /// Bulut motorunun döngüsü (S02); cihaz motorunda nil.
+    @ObservationIgnored private var bulutGorevi: Task<Void, Never>?
+    /// Bulut motorunda seçilen kaynak dil; nil = otomatik (KR12).
+    @ObservationIgnored private var bulutKaynak: String?
+    @ObservationIgnored private var bulutHedef = bulutDilleri[0]
 
     /// Duruyor dışındaki her aşama (ana düğme "Durdur" yazar).
     var calisiyor: Bool { asama != .duruyor }
@@ -92,6 +105,7 @@ final class Durum {
             Tanilama.ortak.kaydet("durdur", "neden=düğme")
             sayaciDurdur()
             hat.durdur()
+            bulutuBirak()
             ayar = nil
             asama = .duruyor
             notlar = []
@@ -109,11 +123,105 @@ final class Durum {
             ceviriHatasi = 0
             self.dil = dil
             asama = .hazirlaniyor
-            Tanilama.ortak.kaydet("başlat", "dil=\(dil.kod)")
-            // Bu atama KokEkran'daki translationTask'i tetikler.
-            ayar = .init(source: Locale.Language(identifier: dil.kod),
-                         target: Locale.Language(identifier: "tr"))
+            if Anahtarlik.motor == .bulut {
+                bulutuBaslat()   // Apple çeviri oturumu gerekmez (S02 KR4)
+            } else {
+                Tanilama.ortak.kaydet("başlat", "dil=\(dil.kod)")
+                // Bu atama KokEkran'daki translationTask'i tetikler.
+                ayar = .init(source: Locale.Language(identifier: dil.kod),
+                             target: Locale.Language(identifier: "tr"))
+            }
         }
+    }
+
+    // MARK: Bulut motoru (S02)
+
+    /// Kaynak ve hedef dili ayarlardan okur, bulut döngüsünü başlatır. `.translationTask`'e bağlı değildir.
+    private func bulutuBaslat() {
+        let varsayilanlar = UserDefaults.standard
+        let secilen = varsayilanlar.string(forKey: Kayit.bulutKaynak) ?? otomatikDil
+        // Listede olmayan değer ("otomatik" dahil) dilin kendiliğinden tanınması demektir (KR12).
+        let kaynak = bulutDilleri.first { $0.kod == secilen }?.kod
+        let hedefKod = varsayilanlar.string(forKey: Kayit.hedefDil) ?? "tr"
+        let hedef = bulutDilleri.first { $0.kod == hedefKod } ?? bulutDilleri[0]
+        bulutKaynak = kaynak
+        bulutHedef = hedef
+        bulutCalisiyor = true
+        Tanilama.ortak.kaydet("başlat", "dil=\(kaynak ?? otomatikDil) motor=bulut hedef=\(hedef.kod)")
+        let benim = kimlik
+        bulutGorevi = Task { [weak self] in
+            guard let self else { return }
+            await self.calistirBulut(kaynak: kaynak, hedef: hedef, benim: benim)
+        }
+    }
+
+    /// Bulut motorunun döngüsü: yalnız mikrofon izni ister (KR4), hattı bulut akışıyla başlatır ve dinlemenin
+    /// bitişini bekler. Kapanan cümleler `hatBildirdi` üzerinden gelir.
+    private func calistirBulut(kaynak: String?, hedef: BulutDili, benim: Int) async {
+        let kayit = Tanilama.ortak
+        let mikrofon = await Hat.mikrofonIzni()
+        guard gecerli(benim) else { return }
+        kayit.kaydet("izin", "mikrofon=\(mikrofon ? "verildi" : "reddedildi")", uyari: !mikrofon)
+        guard mikrofon else {
+            hataylaBitir("Mikrofon izni gerekli (Ayarlar'dan açabilirsiniz).", neden: "izin yok")
+            return
+        }
+        // Anahtar yalnız Anahtar Zinciri'nden (ya da yapıdan) okunur ve yalnız bağlantı isteğine verilir (K5).
+        let anahtar = Anahtarlik.gecerliSonioxAnahtari
+        guard !anahtar.isEmpty else {
+            hataylaBitir("Soniox anahtarı okunamadı. Ayarlar'dan anahtarı yeniden girin ya da cihaz motoruna geçin.",
+                         neden: "hata bulut anahtar yok")
+            return
+        }
+        let bitis: AsyncThrowingStream<String, Error>
+        do {
+            bitis = try hat.baslatBulut(kaynak: kaynak, hedef: hedef, anahtar: anahtar)
+        } catch {
+            let (mesaj, kod) = Durum.turkce(error)
+            hataylaBitir(mesaj, neden: "hata \(kod)")
+            return
+        }
+        // Aşama "hazırlanıyor" kalır; akış başlayınca `Hat` bildirir ve "dinliyor" olur (K6).
+        sayaciBaslat()
+        do {
+            for try await _ in bitis {}
+        } catch {
+            guard gecerli(benim) else { return }
+            let (mesaj, kod) = Durum.turkce(error)
+            hataylaBitir(mesaj, neden: "hata \(kod)")
+            return
+        }
+        if benim == kimlik, calisiyor {
+            hataylaBitir("Çeviri durdu. Dinlemeyi yeniden başlatın.", neden: "hata bulut akışı bitti")
+        }
+    }
+
+    /// Bulut motorunda kapanan cümle: ekrana yazılır; sesli okuma açıksa sıraya girer (KR2, KR11).
+    private func bulutCumlesiGeldi(_ cumle: SonioxCumle) {
+        let kayit = Tanilama.ortak
+        let kaynakKod = cumle.dil ?? bulutKaynak ?? "und"
+        // KR12: kaynak dil otomatikse satır, sunucunun tanıdığı dilin adını taşır.
+        let etiket: String? = bulutKaynak == nil ? cumle.dil.map { dilAdi($0) } : nil
+        if cumle.ceviri.isEmpty {
+            // KR13: çeviri gelmediyse (ör. konuşma zaten hedef dilde) asıl metin tek başına gösterilir.
+            guard !cumle.asil.isEmpty else { return }
+            kayit.kaydet("çeviri", cumle.ceviriBeklendi ? "bulut gelmedi" : "bulut yok (konuşma hedef dilde)",
+                         uyari: cumle.ceviriBeklendi)
+            satirlar.append(Satir(asil: cumle.asil, ceviri: "", kaynakDil: kaynakKod, hedefDil: bulutHedef.kod,
+                                  dilEtiketi: etiket))
+            return
+        }
+        kayit.kaydet("çeviri", "bulut \(cumle.beklemeMs) ms")
+        satirlar.append(Satir(asil: cumle.asil, ceviri: cumle.ceviri, kaynakDil: kaynakKod, hedefDil: bulutHedef.kod,
+                              dilEtiketi: etiket))
+        if Hat.sesliOku { hat.seslendir(cumle.ceviri) }
+    }
+
+    /// Bulut döngüsünü bırakır (Durdur, hata, süre sınırı). Cihaz motorunda etkisizdir.
+    private func bulutuBirak() {
+        bulutGorevi?.cancel()
+        bulutGorevi = nil
+        if bulutCalisiyor { bulutCalisiyor = false }
     }
 
     /// Çeviri oturumu açıkken çalışan ana döngü. Her `await`'ten sonra ve her `translate`'ten
@@ -182,7 +290,7 @@ final class Durum {
                     ceviriHatasi = 0
                     notKaldir(.ceviri)
                     satirlar.append(Satir(asil: cumle, ceviri: sonuc.targetText, kaynakDil: kaynakKod))
-                    hat.seslendir(sonuc.targetText)
+                    if Hat.sesliOku { hat.seslendir(sonuc.targetText) }   // KR11: sesli okuma isteğe bağlı
                 } catch {
                     // Ö-9: tek bir çeviri hatası dinlemeyi durdurmaz; art arda 3 hata durdurur.
                     guard gecerli(benim) else { return }
@@ -251,6 +359,9 @@ final class Durum {
         ayar = nil
         asama = .duruyor
         notlar = []
+        // Bulut motorunda ses buluta gitmeyi hemen keser; çalan çeviri yine bitirilir.
+        hat.bulutuKapat()
+        bulutuBirak()
         sinirMetni = Durum.sinirAciklamasi
         abonelikAcik = true
         kapanisGorevi = Task { [weak self] in
@@ -309,6 +420,9 @@ final class Durum {
             guard calisiyor else { return }
             let (mesaj, kod) = Durum.turkce(h)
             hataylaBitir(mesaj, neden: "hata \(kod)")
+        case .bulutCumlesi(let cumle):
+            guard calisiyor, bulutCalisiyor else { return }
+            bulutCumlesiGeldi(cumle)
         }
     }
 
@@ -319,6 +433,7 @@ final class Durum {
         sayaciDurdur()
         kapanisiBitir()
         hat.durdur()
+        bulutuBirak()
         ayar = nil
         asama = .duruyor
         notlar = []
