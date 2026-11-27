@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- Çeviri uygulama simgesi: koyu lacivert zemin, mavi parıltı, iki konuşma balonu ve ses dalgası. -->
+  <defs>
+    <linearGradient id="zemin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14306E"/>
+      <stop offset="1" stop-color="#040A1C"/>
+    </linearGradient>
+    <radialGradient id="parilti" cx="0.5" cy="0.45" r="0.55">
+      <stop offset="0" stop-color="#2F7BFF" stop-opacity="0.70"/>
+      <stop offset="1" stop-color="#2F7BFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mavi" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4C8DFF"/>
+      <stop offset="1" stop-color="#2463E8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#zemin)"/>
+  <rect width="1024" height="1024" fill="url(#parilti)"/>
+
+  <!-- Arkadaki mavi balon: duyulan dil -->
+  <path d="M262 236 H582 A72 72 0 0 1 654 308 V474 A72 72 0 0 1 582 546 H396 L304 626 V546 H262
+           A72 72 0 0 1 190 474 V308 A72 72 0 0 1 262 236 Z" fill="url(#mavi)"/>
+  <rect x="252" y="314" width="214" height="34" rx="17" fill="#FFFFFF" opacity="0.92"/>
+  <rect x="252" y="374" width="150" height="34" rx="17" fill="#FFFFFF" opacity="0.92"/>
+
+  <!-- Öndeki beyaz balon: Türkçesi, ses olarak -->
+  <path d="M452 418 H762 A72 72 0 0 1 834 490 V680 A72 72 0 0 1 762 752 H720 V838 L622 752 H452
+           A72 72 0 0 1 380 680 V490 A72 72 0 0 1 452 418 Z" fill="#FFFFFF"/>
+  <g fill="#2F6FF0">
+    <rect x="482" y="553" width="36" height="64" rx="18"/>
+    <rect x="546" y="511" width="36" height="148" rx="18"/>
+    <rect x="610" y="487" width="36" height="196" rx="18"/>
+    <rect x="674" y="527" width="36" height="116" rx="18"/>
+    <rect x="738" y="563" width="36" height="44" rx="18"/>
+  </g>
+</svg>

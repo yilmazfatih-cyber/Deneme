@@ -1,0 +1,29 @@
+name: Çeviri (iOS) denetimi
+
+# ceviri/ altındaki iOS uygulamasını Xcode'suz denetler: çekirdek testleri ve Apple çatılarının taklitlerine karşı
+# farklı Swift kiplerinde tip ve veri yarışı denetimi (ceviri/denetim/calistir.sh).
+on:
+  push:
+    paths:
+      - 'ceviri/**'
+      - '.github/workflows/ceviri.yml'
+  pull_request:
+    paths:
+      - 'ceviri/**'
+      - '.github/workflows/ceviri.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  denetim:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        swift: ['6.0', '6.2']
+    container: swift:${{ matrix.swift }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash ceviri/denetim/calistir.sh
