@@ -5,6 +5,7 @@ import { env as calismaOrtami } from 'cloudflare:workers'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import type { Env } from '../src/ayarlar'
 import worker from '../src/index'
+import { kokuHazirla } from '../src/jws'
 import { DEVIR_PAYI_MS, IP_GECERSIZ_SINIRI } from '../src/sayac'
 import type { GetirIslevi } from '../src/soniox'
 import { GOVDE_SINIRI, type Isleyici, isleyiciOlustur } from '../src/uygulama'
@@ -180,7 +181,7 @@ beforeAll(async () => {
     })
   }
   zincir = await zincirUret(T0)
-  isleyici = isleyiciOlustur({ kokDer: zincir.kok.der, simdi: () => saat, getir: sahteGetir })
+  isleyici = isleyiciOlustur({ kok: kokuHazirla(zincir.kok.der), simdi: () => saat, getir: sahteGetir })
 })
 
 let taranmisYanit = 0
@@ -305,6 +306,15 @@ describe('güvenlik: imza ve zincir', () => {
     await reddedilmeli(await jwsImzala(baslik(), yuk(), baskaYaprak.anahtarlar.privateKey))
   })
 
+  it('ara sertifikanın adını taşıyan ama onun imzalamadığı (sahte) yaprak reddedilir', async () => {
+    // Saldırı: gerçek ara ve kök sertifika zincire konur; yaprağı ise saldırgan kendi anahtarıyla imzalar ve
+    // yayımcı adına gerçek aranın adını yazar.
+    const saldirganAnahtari = (await kokUret('Saldirgan', GECERLILIK)).anahtarlar
+    const sahteYayimci: Sertifika = { ...zincir.ara, anahtarlar: saldirganAnahtari }
+    const yaprak = await yaprakUret(sahteYayimci, GECERLILIK)
+    await reddedilmeli(await jwsImzala(baslik([yaprak, zincir.ara, zincir.kok]), yuk(), yaprak.anahtarlar.privateKey))
+  })
+
   it('başka köke bağlı zincir reddedilir', async () => {
     const baska = await zincirUret(T0, 'Baska Kok')
     // Zincirin tamamı başka kökten.
@@ -368,7 +378,7 @@ describe('güvenlik: imza ve zincir', () => {
     const kok = await kokUret('Eski Kok', { baslangic: T0 - 30 * GUN_MS, bitis: T0 - GUN_MS })
     const ara = await araUret(kok, GECERLILIK)
     const yaprak = await yaprakUret(ara, GECERLILIK)
-    const eskiKokluIsleyici = isleyiciOlustur({ kokDer: kok.der, simdi: () => saat, getir: sahteGetir })
+    const eskiKokluIsleyici = isleyiciOlustur({ kok: kokuHazirla(kok.der), simdi: () => saat, getir: sahteGetir })
     const jws = await jwsImzala(baslik([yaprak, ara, kok]), yuk(), yaprak.anahtarlar.privateKey)
     gizliEkle(jws)
     hataBekle(await gonder(jws, { isleyici: eskiKokluIsleyici }), 401, 'imza_gecersiz')
@@ -655,7 +665,11 @@ describe('girdi', () => {
   it("16 KB'ı aşan gövde 413 alır", async () => {
     const buyuk = JSON.stringify({ islem: 'a'.repeat(GOVDE_SINIRI) })
     hataBekle(await gonderHam(buyuk), 413, 'gecersiz_istek')
-    hataBekle(await gonderHam('{}', { basliklar: { 'Content-Length': String(GOVDE_SINIRI + 1) } }), 413, 'gecersiz_istek')
+    hataBekle(
+      await gonderHam('{}', { basliklar: { 'Content-Length': String(GOVDE_SINIRI + 1) } }),
+      413,
+      'gecersiz_istek',
+    )
     // Sınırın hemen altı boyut yüzünden reddedilmez (içerik yüzünden 401 alır).
     const sinirda = JSON.stringify({ islem: 'a'.repeat(GOVDE_SINIRI - 12) })
     expect(new TextEncoder().encode(sinirda).length).toBe(GOVDE_SINIRI)

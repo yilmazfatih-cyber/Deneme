@@ -10,7 +10,7 @@
 
 import { type Abonelik, type Ortam, yukuDenetle } from './abonelik'
 import { type Ayarlar, type Env, ayarlariOku } from './ayarlar'
-import { DogrulamaHatasi, jwsDogrula } from './jws'
+import { DogrulamaHatasi, type GuvenKoku, jwsDogrula } from './jws'
 import { type GetirIslevi, geciciAnahtarAl } from './soniox'
 import { jsonCoz, tuzluOzet } from './yardimci'
 
@@ -33,10 +33,10 @@ const ILETILER: Record<HataKodu, string> = {
 
 export interface Bagimliliklar {
   /**
-   * Güven kökü (DER). Üretimde yalnız sabitlenmiş Apple kökü verilir (bkz. index.ts); başka kök ancak testte,
+   * Güven kökü. Üretimde yalnız sabitlenmiş Apple kökü verilir (bkz. index.ts); başka kök ancak testte,
    * bu işlev doğrudan çağrılarak verilebilir. Ortam değişkeni ya da yapılandırma kökü değiştiremez.
    */
-  kokDer: Uint8Array
+  kok: GuvenKoku
   simdi: () => number
   getir: GetirIslevi
 }
@@ -154,7 +154,7 @@ async function oturumAc(istek: Request, env: Env, ayarlar: Ayarlar, bagimlilikla
 
   let yuk: Record<string, unknown>
   try {
-    yuk = await jwsDogrula(islem, bagimliliklar.kokDer, simdi)
+    yuk = await jwsDogrula(islem, bagimliliklar.kok, simdi)
   } catch (hata) {
     if (hata instanceof DogrulamaHatasi) return gecersiz(401, 'imza_gecersiz')
     throw hata

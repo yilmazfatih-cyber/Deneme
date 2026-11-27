@@ -47,9 +47,13 @@ export async function sha256Onaltilik(baytlar: Uint8Array): Promise<string> {
  */
 export async function tuzluOzet(tuz: string, deger: string): Promise<string> {
   const kodlayici = new TextEncoder()
-  const anahtar = await crypto.subtle.importKey('raw', kodlayici.encode(tuz), { name: 'HMAC', hash: 'SHA-256' }, false, [
-    'sign',
-  ])
+  const anahtar = await crypto.subtle.importKey(
+    'raw',
+    kodlayici.encode(tuz),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  )
   return onaltilik(await crypto.subtle.sign('HMAC', anahtar, kodlayici.encode(deger)))
 }
 

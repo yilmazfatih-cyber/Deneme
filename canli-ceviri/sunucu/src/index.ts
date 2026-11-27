@@ -4,13 +4,15 @@
 // değiştirilemez (bkz. kok.ts). Testler kendi köklerini `isleyiciOlustur` ile verir; bu giriş onu kabul etmez.
 
 import type { Env } from './ayarlar'
+import { kokuHazirla } from './jws'
 import { APPLE_KOK_G3_DER } from './kok'
 import { isleyiciOlustur } from './uygulama'
 
 export { AbonelikSayaci, IpSayaci } from './sayac'
 
 const isleyici = isleyiciOlustur({
-  kokDer: APPLE_KOK_G3_DER,
+  // Kök burada, modül yüklenirken bir kez ayrıştırılır (istek başına işlemci süresinden düşmez).
+  kok: kokuHazirla(APPLE_KOK_G3_DER),
   simdi: () => Date.now(),
   getir: (adres, secenekler) => fetch(adres, secenekler),
 })

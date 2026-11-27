@@ -28,7 +28,10 @@ export interface SertifikaSecenekleri {
 let seriNo = 1
 
 async function anahtarUret(egri: 'P-256' | 'P-384'): Promise<CryptoKeyPair> {
-  return (await crypto.subtle.generateKey({ name: 'ECDSA', namedCurve: egri }, true, ['sign', 'verify'])) as CryptoKeyPair
+  return (await crypto.subtle.generateKey({ name: 'ECDSA', namedCurve: egri }, true, [
+    'sign',
+    'verify',
+  ])) as CryptoKeyPair
 }
 
 async function sertifikaUret(
@@ -112,7 +115,11 @@ export async function jwsImzala(
   ozelAnahtar: CryptoKey,
 ): Promise<string> {
   const imzalanan = `${base64Url(JSON.stringify(baslik))}.${base64Url(JSON.stringify(yuk))}`
-  const imza = await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, ozelAnahtar, new TextEncoder().encode(imzalanan))
+  const imza = await crypto.subtle.sign(
+    { name: 'ECDSA', hash: 'SHA-256' },
+    ozelAnahtar,
+    new TextEncoder().encode(imzalanan),
+  )
   return `${imzalanan}.${base64Url(new Uint8Array(imza))}`
 }
 

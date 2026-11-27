@@ -10,6 +10,9 @@
 //   - Yaprak 1.2.840.113635.100.6.11.1 uzantısını taşır (App Store alındı imzalama) ve yetkili değildir.
 //   - JWS imzası yaprağın P-256 açık anahtarıyla doğrulanır.
 // Sertifika iptal sorgusu (OCSP) yapılmaz; bkz. README "Bilinen sınırlar".
+//
+// İşlemci süresi: ücretsiz planda istek başına 10 ms vardır ve sertifika ayrıştırma pahalıdır. Bu yüzden kök bir kez,
+// modül yüklenirken ayrıştırılır; doğrulanan zincir çalışma örneğinde saklanır; uzantılara ham haliyle bakılır.
 
 import 'reflect-metadata'
 import * as x509 from '@peculiar/x509'
@@ -19,6 +22,7 @@ import { base64Coz, base64UrlCoz, baytlarEsit, jsonCoz } from './yardimci'
 export const YAPRAK_OID = '1.2.840.113635.100.6.11.1'
 /** Ara sertifikada aranan uzantı: Apple Worldwide Developer Relations ara yetkilisi. */
 export const ARA_OID = '1.2.840.113635.100.6.2.1'
+const TEMEL_KISITLAR_OID = '2.5.29.19'
 
 /** Sertifika geçerlilik tarihlerinde hoş görülen saat kayması. */
 const SAAT_KAYMASI_MS = 60_000
@@ -34,98 +38,142 @@ export class DogrulamaHatasi extends Error {
   }
 }
 
-interface DogrulanmisZincir {
-  anahtar: CryptoKey
-  /** Zincirdeki en geç başlangıç ve en erken bitiş (ms). */
-  baslangic: number
-  bitis: number
-}
-
-// Apple aynı yaprak ve ara sertifikayı uzun süre kullanır. Doğrulanan zincir bu çalışma örneğinde saklanır ki her
-// istekte üç sertifika yeniden ayrıştırılıp imzaları yeniden denetlenmesin (ücretsiz planda işlemci süresi kısıtlı).
-// Anahtar kökü de içerir; yalnız doğrulaması başarılı zincirler saklanır ve tarihleri her kullanımda yeniden bakılır.
-const zincirOnbellegi = new Map<string, DogrulanmisZincir>()
-
 function reddet(): never {
   throw new DogrulamaHatasi()
+}
+
+/**
+ * Kitaplığın sertifika sınıfı + uzantılara ham erişim. Kitaplığın `getExtension` yolu sertifikadaki bütün uzantıları
+ * tek tek yeniden kodlayıp ayrıştırır; burada yalnız aranan uzantının varlığına ve ham değerine bakılır.
+ */
+class Sertifika extends x509.X509Certificate {
+  /** Uzantının ham değeri; uzantı yoksa `null`. */
+  uzantiDegeri(oid: string): Uint8Array | null {
+    const uzanti = this.asn.tbsCertificate.extensions?.find((oge) => oge.extnID === oid)
+    return uzanti === undefined ? null : new Uint8Array(uzanti.extnValue.buffer)
+  }
+
+  /**
+   * Sertifika yetkilisi mi? BasicConstraints ::= SEQUENCE { cA BOOLEAN DEFAULT FALSE, pathLen INTEGER OPTIONAL };
+   * DER'de cA = TRUE tam olarak `01 01 FF` baytlarıdır ve dizinin ilk öğesidir.
+   */
+  get yetkili(): boolean {
+    const deger = this.uzantiDegeri(TEMEL_KISITLAR_OID)
+    return (
+      deger !== null &&
+      deger.length >= 5 &&
+      deger[0] === 0x30 &&
+      deger[2] === 0x01 &&
+      deger[3] === 0x01 &&
+      deger[4] === 0xff
+    )
+  }
 }
 
 function adlarEsit(a: x509.Name, b: x509.Name): boolean {
   return baytlarEsit(new Uint8Array(a.toArrayBuffer()), new Uint8Array(b.toArrayBuffer()))
 }
 
-function yetkiliMi(sertifika: x509.X509Certificate): boolean {
-  return sertifika.getExtension(x509.BasicConstraintsExtension)?.ca === true
-}
-
 function tarihiGecerli(baslangic: number, bitis: number, simdi: number): boolean {
   return baslangic <= simdi + SAAT_KAYMASI_MS && bitis >= simdi - SAAT_KAYMASI_MS
 }
 
+interface DogrulanmisZincir {
+  anahtar: CryptoKey
+  /** Zincirdeki (kök dahil) en geç başlangıç ve en erken bitiş (ms). */
+  baslangic: number
+  bitis: number
+}
+
+/** Ayrıştırılmış güven kökü ve ona göre doğrulanmış zincirlerin önbelleği. `kokuHazirla` ile üretilir. */
+export interface GuvenKoku {
+  readonly der: Uint8Array
+  readonly sertifika: Sertifika
+  // Apple aynı yaprak ve ara sertifikayı uzun süre kullanır. Doğrulanan zincir saklanır ki her istekte sertifikalar
+  // yeniden ayrıştırılıp imzaları yeniden denetlenmesin. Yalnız doğrulaması başarılı zincirler saklanır ve tarihlerine
+  // her kullanımda yeniden bakılır.
+  readonly onbellek: Map<string, DogrulanmisZincir>
+}
+
 /**
- * Sertifika zincirini (DER; yaprak, ara, kök) sabit köke göre doğrular ve yaprağın açık anahtarını döndürür.
+ * Güven kökünü (DER) ayrıştırır. Kök, kendi adına düzenlenmiş bir yetkili değilse hata fırlatır.
+ * Kökün kendi imzası burada denetlenmez: kök bayt bayt sabitlenmiştir, güveni imzasından değil sabitlenmesinden gelir
+ * (sabit Apple kökünün imzası testte ayrıca doğrulanır).
+ */
+export function kokuHazirla(der: Uint8Array): GuvenKoku {
+  const sertifika = new Sertifika(der)
+  if (!adlarEsit(sertifika.issuerName, sertifika.subjectName) || !sertifika.yetkili) {
+    throw new Error('Güven kökü kendi adına düzenlenmiş bir sertifika yetkilisi değil.')
+  }
+  return { der, sertifika, onbellek: new Map() }
+}
+
+function base64Yap(baytlar: Uint8Array): string {
+  let ikili = ''
+  for (const bayt of baytlar) ikili += String.fromCharCode(bayt)
+  return btoa(ikili)
+}
+
+/**
+ * Sertifika zincirini (DER; yaprak, ara, kök) güven köküne göre doğrular ve yaprağın açık anahtarını döndürür.
  * Herhangi bir kural tutmazsa `DogrulamaHatasi` fırlatır.
  */
-export async function zinciriDogrula(zincir: Uint8Array[], kokDer: Uint8Array, simdi: number): Promise<CryptoKey> {
+export async function zinciriDogrula(zincir: Uint8Array[], guvenKoku: GuvenKoku, simdi: number): Promise<CryptoKey> {
   if (zincir.length !== 3) reddet()
   const [yaprakDer, araDer, zincirKokDer] = zincir as [Uint8Array, Uint8Array, Uint8Array]
-  if (!baytlarEsit(zincirKokDer, kokDer)) reddet()
+  // Zincirdeki kök, güvenilen kökle bayt bayt aynı olmalı. Bundan sonra yalnız güvenilen kökün kendisi kullanılır.
+  if (!baytlarEsit(zincirKokDer, guvenKoku.der)) reddet()
 
-  const onbellekAnahtari = [kokDer, araDer, yaprakDer].map((der) => btoa(String.fromCharCode(...der))).join('.')
-  const sakli = zincirOnbellegi.get(onbellekAnahtari)
+  const onbellekAnahtari = `${base64Yap(araDer)}.${base64Yap(yaprakDer)}`
+  const sakli = guvenKoku.onbellek.get(onbellekAnahtari)
   if (sakli !== undefined) {
     if (!tarihiGecerli(sakli.baslangic, sakli.bitis, simdi)) reddet()
     return sakli.anahtar
   }
 
-  let anahtar: CryptoKey
-  let baslangic: number
-  let bitis: number
+  let dogrulanmis: DogrulanmisZincir
   try {
-    const kok = new x509.X509Certificate(kokDer)
-    const ara = new x509.X509Certificate(araDer)
-    const yaprak = new x509.X509Certificate(yaprakDer)
+    const kok = guvenKoku.sertifika
+    const ara = new Sertifika(araDer)
+    const yaprak = new Sertifika(yaprakDer)
 
-    baslangic = Math.max(kok.notBefore.getTime(), ara.notBefore.getTime(), yaprak.notBefore.getTime())
-    bitis = Math.min(kok.notAfter.getTime(), ara.notAfter.getTime(), yaprak.notAfter.getTime())
+    const baslangic = Math.max(kok.notBefore.getTime(), ara.notBefore.getTime(), yaprak.notBefore.getTime())
+    const bitis = Math.min(kok.notAfter.getTime(), ara.notAfter.getTime(), yaprak.notAfter.getTime())
     if (!tarihiGecerli(baslangic, bitis, simdi)) reddet()
 
-    // Kök: kendi kendini imzalamış bir yetkili.
-    if (!adlarEsit(kok.issuerName, kok.subjectName) || !yetkiliMi(kok)) reddet()
-    if (!(await kok.verify({ publicKey: kok.publicKey, signatureOnly: true }, crypto))) reddet()
-
     // Ara: kökün imzaladığı, Apple'ın işaretlediği bir yetkili.
-    if (!adlarEsit(ara.issuerName, kok.subjectName) ) reddet()
-    if (ara.getExtension(ARA_OID) === null) reddet()
+    if (!adlarEsit(ara.issuerName, kok.subjectName) || !ara.yetkili) reddet()
+    if (ara.uzantiDegeri(ARA_OID) === null) reddet()
     if (!(await ara.verify({ publicKey: kok.publicKey, signatureOnly: true }, crypto))) reddet()
 
     // Yaprak: aranın imzaladığı, App Store imzalama için işaretlenmiş, yetkili olmayan sertifika.
-    if (!adlarEsit(yaprak.issuerName, ara.subjectName) || yetkiliMi(yaprak)) reddet()
-    if (yaprak.getExtension(YAPRAK_OID) === null) reddet()
+    if (!adlarEsit(yaprak.issuerName, ara.subjectName) || yaprak.yetkili) reddet()
+    if (yaprak.uzantiDegeri(YAPRAK_OID) === null) reddet()
     if (!(await yaprak.verify({ publicKey: ara.publicKey, signatureOnly: true }, crypto))) reddet()
 
     // ES256 yalnız P-256 anahtarla doğrulanır; yaprağın anahtarı başka türdeyse içe aktarma hata verir.
-    anahtar = await crypto.subtle.importKey(
+    const anahtar = await crypto.subtle.importKey(
       'spki',
       yaprak.publicKey.rawData,
       { name: 'ECDSA', namedCurve: 'P-256' },
       false,
       ['verify'],
     )
+    dogrulanmis = { anahtar, baslangic, bitis }
   } catch {
     reddet()
   }
 
-  if (zincirOnbellegi.size >= ZINCIR_ONBELLEK_SINIRI) zincirOnbellegi.clear()
-  zincirOnbellegi.set(onbellekAnahtari, { anahtar, baslangic, bitis })
-  return anahtar
+  if (guvenKoku.onbellek.size >= ZINCIR_ONBELLEK_SINIRI) guvenKoku.onbellek.clear()
+  guvenKoku.onbellek.set(onbellekAnahtari, dogrulanmis)
+  return dogrulanmis.anahtar
 }
 
 /**
  * İmzalı işlemi doğrular ve yükünü (JSON nesnesi) döndürür. Yükün içeriği burada denetlenmez (bkz. abonelik.ts).
  * Herhangi bir kural tutmazsa `DogrulamaHatasi` fırlatır.
  */
-export async function jwsDogrula(jws: string, kokDer: Uint8Array, simdi: number): Promise<Record<string, unknown>> {
+export async function jwsDogrula(jws: string, guvenKoku: GuvenKoku, simdi: number): Promise<Record<string, unknown>> {
   const parcalar = jws.split('.')
   if (parcalar.length !== 3) reddet()
   const [baslikMetni, yukMetni, imzaMetni] = parcalar as [string, string, string]
@@ -143,7 +191,7 @@ export async function jwsDogrula(jws: string, kokDer: Uint8Array, simdi: number)
     zincir.push(der)
   }
 
-  const anahtar = await zinciriDogrula(zincir, kokDer, simdi)
+  const anahtar = await zinciriDogrula(zincir, guvenKoku, simdi)
 
   // JOSE imzası r||s biçimindedir; P-256 için tam 64 bayt.
   const imza = base64UrlCoz(imzaMetni)

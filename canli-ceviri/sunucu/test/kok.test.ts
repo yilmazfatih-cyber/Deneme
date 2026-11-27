@@ -2,8 +2,10 @@
 // Burada Apple'ın GERÇEK ara ve yaprak sertifikaları kullanılır (özel anahtarları olmadığı için işlem imzalanamaz;
 // yalnız zincir doğrulanır).
 
+import 'reflect-metadata'
+import * as x509 from '@peculiar/x509'
 import { describe, expect, it } from 'vitest'
-import { DogrulamaHatasi, zinciriDogrula } from '../src/jws'
+import { DogrulamaHatasi, kokuHazirla, zinciriDogrula } from '../src/jws'
 import { APPLE_KOK_G3_DER, APPLE_KOK_G3_PEM, APPLE_KOK_G3_SHA256, pemdenDer } from '../src/kok'
 import { base64Coz, base64UrlCoz, sha256Onaltilik, tuzluOzet } from '../src/yardimci'
 import { GERCEK_APPLE_ARA_BASE64, GERCEK_APPLE_GECERLI_AN, GERCEK_APPLE_YAPRAK_BASE64 } from './apple-gercek'
@@ -11,6 +13,7 @@ import { zincirUret } from './destek'
 
 const ara = base64Coz(GERCEK_APPLE_ARA_BASE64)!
 const yaprak = base64Coz(GERCEK_APPLE_YAPRAK_BASE64)!
+const appleKoku = kokuHazirla(APPLE_KOK_G3_DER)
 
 describe('sabitlenmiş kök', () => {
   it('PEM metninin SHA-256 parmak izi, kaynakta yazılı parmak iziyle aynıdır', async () => {
@@ -19,19 +22,33 @@ describe('sabitlenmiş kök', () => {
     expect(APPLE_KOK_G3_DER.length).toBe(583)
   })
 
+  it('sabit kök gerçekten "Apple Root CA - G3"tür ve kendi imzası geçerlidir', async () => {
+    const kok = new x509.X509Certificate(APPLE_KOK_G3_DER)
+    expect(kok.subject).toBe('CN=Apple Root CA - G3, OU=Apple Certification Authority, O=Apple Inc., C=US')
+    expect(kok.serialNumber).toBe('2dc5fc88d2c54b95')
+    expect(kok.notAfter.toISOString()).toBe('2039-04-30T18:19:06.000Z')
+    expect(await kok.isSelfSigned(crypto)).toBe(true)
+  })
+
+  it('kök olarak yaprak ya da ara sertifika verilemez', () => {
+    expect(() => kokuHazirla(yaprak)).toThrow()
+    expect(() => kokuHazirla(ara)).toThrow()
+    expect(() => kokuHazirla(new Uint8Array([1, 2, 3]))).toThrow()
+  })
+
   it("Apple'ın gerçek ara ve yaprak sertifikasını doğrular", async () => {
-    const anahtar = await zinciriDogrula([yaprak, ara, APPLE_KOK_G3_DER], APPLE_KOK_G3_DER, GERCEK_APPLE_GECERLI_AN)
+    const anahtar = await zinciriDogrula([yaprak, ara, APPLE_KOK_G3_DER], appleKoku, GERCEK_APPLE_GECERLI_AN)
     expect(anahtar.type).toBe('public')
     expect(anahtar.algorithm).toMatchObject({ name: 'ECDSA', namedCurve: 'P-256' })
     // İkinci çağrı önbellekten gelir ve aynı anahtarı verir.
-    expect(await zinciriDogrula([yaprak, ara, APPLE_KOK_G3_DER], APPLE_KOK_G3_DER, GERCEK_APPLE_GECERLI_AN)).toBe(anahtar)
+    expect(await zinciriDogrula([yaprak, ara, APPLE_KOK_G3_DER], appleKoku, GERCEK_APPLE_GECERLI_AN)).toBe(anahtar)
   })
 
   it('gerçek zincir, yaprağın geçerlilik süresi dışında reddedilir', async () => {
     const zincir = [yaprak, ara, APPLE_KOK_G3_DER]
     // Yaprak 2025-09-19'da başlar, 2027-10-13'te biter.
-    await expect(zinciriDogrula(zincir, APPLE_KOK_G3_DER, Date.UTC(2025, 5, 1))).rejects.toBeInstanceOf(DogrulamaHatasi)
-    await expect(zinciriDogrula(zincir, APPLE_KOK_G3_DER, Date.UTC(2027, 10, 1))).rejects.toBeInstanceOf(DogrulamaHatasi)
+    await expect(zinciriDogrula(zincir, appleKoku, Date.UTC(2025, 5, 1))).rejects.toBeInstanceOf(DogrulamaHatasi)
+    await expect(zinciriDogrula(zincir, appleKoku, Date.UTC(2027, 10, 1))).rejects.toBeInstanceOf(DogrulamaHatasi)
   })
 
   it('gerçek zincir yanlış sırayla ya da eksik verilirse reddedilir', async () => {
@@ -43,24 +60,24 @@ describe('sabitlenmiş kök', () => {
       [yaprak, ara],
       [yaprak, ara, ara],
     ]) {
-      await expect(zinciriDogrula(zincir, APPLE_KOK_G3_DER, an)).rejects.toBeInstanceOf(DogrulamaHatasi)
+      await expect(zinciriDogrula(zincir, appleKoku, an)).rejects.toBeInstanceOf(DogrulamaHatasi)
     }
   })
 
   it('test kökü Apple köküne göre, Apple zinciri test köküne göre reddedilir', async () => {
     const test = await zincirUret(GERCEK_APPLE_GECERLI_AN)
     await expect(
-      zinciriDogrula([test.yaprak.der, test.ara.der, test.kok.der], APPLE_KOK_G3_DER, GERCEK_APPLE_GECERLI_AN),
+      zinciriDogrula([test.yaprak.der, test.ara.der, test.kok.der], appleKoku, GERCEK_APPLE_GECERLI_AN),
     ).rejects.toBeInstanceOf(DogrulamaHatasi)
     await expect(
-      zinciriDogrula([test.yaprak.der, test.ara.der, APPLE_KOK_G3_DER], APPLE_KOK_G3_DER, GERCEK_APPLE_GECERLI_AN),
+      zinciriDogrula([test.yaprak.der, test.ara.der, APPLE_KOK_G3_DER], appleKoku, GERCEK_APPLE_GECERLI_AN),
     ).rejects.toBeInstanceOf(DogrulamaHatasi)
     await expect(
-      zinciriDogrula([yaprak, ara, APPLE_KOK_G3_DER], test.kok.der, GERCEK_APPLE_GECERLI_AN),
+      zinciriDogrula([yaprak, ara, APPLE_KOK_G3_DER], kokuHazirla(test.kok.der), GERCEK_APPLE_GECERLI_AN),
     ).rejects.toBeInstanceOf(DogrulamaHatasi)
     // Test zinciri kendi köküne göre geçerlidir (denetimin kendisi çalışıyor).
     await expect(
-      zinciriDogrula([test.yaprak.der, test.ara.der, test.kok.der], test.kok.der, GERCEK_APPLE_GECERLI_AN),
+      zinciriDogrula([test.yaprak.der, test.ara.der, test.kok.der], kokuHazirla(test.kok.der), GERCEK_APPLE_GECERLI_AN),
     ).resolves.toBeDefined()
   })
 })
