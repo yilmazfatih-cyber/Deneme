@@ -1,0 +1,6 @@
+Commit: ab3092841ea2c28ec8947c508458ec87d729581b
+Dal: claude/merhaba-f982gj
+Xcode: Xcode 26.6 Build version 17F113 
+Simülatör: iPhone 17 (iOS 26.5)
+Derleme: Debug ve Release, hata 0, uyarı 0
+Tarih (UTC): 2026-11-27T17:35:34Z
