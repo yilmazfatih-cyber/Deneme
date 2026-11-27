@@ -18,33 +18,84 @@ let diller = [
     Dil(ad: "Arapça",     kod: "ar", konusma: "ar-SA"),
 ]
 
-/// Bulut motorunun (Soniox) dilleri: kaynak ve hedef seçimi (S02 KR12, KR13). Hepsi Soniox'un dil listesindedir.
-/// `ses`: çeviri sesli okunacaksa Apple sesinin bölge kodu.
+/// Bulut motorunun (Soniox) dili: kaynak ve hedef seçimi (S02 KR12, KR13).
 struct BulutDili: Identifiable, Hashable {
-    let ad: String
-    let kod: String
-    let ses: String
+    let ad: String    // ekranda görünen Türkçe ad
+    let kod: String   // Soniox'un dil kodu
     var id: String { kod }
 }
 
+/// Soniox'un desteklediği dillerin tamamı (60 dil; belge: stt/concepts/supported-languages ve
+/// translation/supported-languages, ikisi aynı listedir: her dil hem kaynak hem hedef olabilir).
+/// Türkçe alfabe sırasıyladır; listede olmayan dil ya da kod eklenmez.
 let bulutDilleri = [
-    BulutDili(ad: "Türkçe",     kod: "tr", ses: "tr-TR"),
-    BulutDili(ad: "İngilizce",  kod: "en", ses: "en-US"),
-    BulutDili(ad: "Almanca",    kod: "de", ses: "de-DE"),
-    BulutDili(ad: "Fransızca",  kod: "fr", ses: "fr-FR"),
-    BulutDili(ad: "İspanyolca", kod: "es", ses: "es-ES"),
-    BulutDili(ad: "Arapça",     kod: "ar", ses: "ar-001"),
-    BulutDili(ad: "Rusça",      kod: "ru", ses: "ru-RU"),
-    BulutDili(ad: "İtalyanca",  kod: "it", ses: "it-IT"),
-    BulutDili(ad: "Portekizce", kod: "pt", ses: "pt-BR"),
-    BulutDili(ad: "Felemenkçe", kod: "nl", ses: "nl-NL"),
-    BulutDili(ad: "Japonca",    kod: "ja", ses: "ja-JP"),
-    BulutDili(ad: "Korece",     kod: "ko", ses: "ko-KR"),
-    BulutDili(ad: "Çince",      kod: "zh", ses: "zh-CN"),
-    BulutDili(ad: "Farsça",     kod: "fa", ses: "fa-IR"),
-    BulutDili(ad: "Yunanca",    kod: "el", ses: "el-GR"),
-    BulutDili(ad: "Ukraynaca",  kod: "uk", ses: "uk-UA"),
+    BulutDili(ad: "Afrikaanca",   kod: "af"),
+    BulutDili(ad: "Almanca",      kod: "de"),
+    BulutDili(ad: "Arapça",       kod: "ar"),
+    BulutDili(ad: "Arnavutça",    kod: "sq"),
+    BulutDili(ad: "Azerbaycanca", kod: "az"),
+    BulutDili(ad: "Baskça",       kod: "eu"),
+    BulutDili(ad: "Belarusça",    kod: "be"),
+    BulutDili(ad: "Bengalce",     kod: "bn"),
+    BulutDili(ad: "Boşnakça",     kod: "bs"),
+    BulutDili(ad: "Bulgarca",     kod: "bg"),
+    BulutDili(ad: "Çekçe",        kod: "cs"),
+    BulutDili(ad: "Çince",        kod: "zh"),
+    BulutDili(ad: "Danca",        kod: "da"),
+    BulutDili(ad: "Endonezce",    kod: "id"),
+    BulutDili(ad: "Estonca",      kod: "et"),
+    BulutDili(ad: "Farsça",       kod: "fa"),
+    BulutDili(ad: "Felemenkçe",   kod: "nl"),
+    BulutDili(ad: "Fince",        kod: "fi"),
+    BulutDili(ad: "Fransızca",    kod: "fr"),
+    BulutDili(ad: "Galce",        kod: "cy"),
+    BulutDili(ad: "Galiçyaca",    kod: "gl"),
+    BulutDili(ad: "Güceratça",    kod: "gu"),
+    BulutDili(ad: "Hırvatça",     kod: "hr"),
+    BulutDili(ad: "Hintçe",       kod: "hi"),
+    BulutDili(ad: "İbranice",     kod: "he"),
+    BulutDili(ad: "İngilizce",    kod: "en"),
+    BulutDili(ad: "İspanyolca",   kod: "es"),
+    BulutDili(ad: "İsveççe",      kod: "sv"),
+    BulutDili(ad: "İtalyanca",    kod: "it"),
+    BulutDili(ad: "Japonca",      kod: "ja"),
+    BulutDili(ad: "Kannadaca",    kod: "kn"),
+    BulutDili(ad: "Katalanca",    kod: "ca"),
+    BulutDili(ad: "Kazakça",      kod: "kk"),
+    BulutDili(ad: "Korece",       kod: "ko"),
+    BulutDili(ad: "Lehçe",        kod: "pl"),
+    BulutDili(ad: "Letonca",      kod: "lv"),
+    BulutDili(ad: "Litvanca",     kod: "lt"),
+    BulutDili(ad: "Macarca",      kod: "hu"),
+    BulutDili(ad: "Makedonca",    kod: "mk"),
+    BulutDili(ad: "Malayalamca",  kod: "ml"),
+    BulutDili(ad: "Malayca",      kod: "ms"),
+    BulutDili(ad: "Marathice",    kod: "mr"),
+    BulutDili(ad: "Norveççe",     kod: "no"),
+    BulutDili(ad: "Pencapça",     kod: "pa"),
+    BulutDili(ad: "Portekizce",   kod: "pt"),
+    BulutDili(ad: "Rumence",      kod: "ro"),
+    BulutDili(ad: "Rusça",        kod: "ru"),
+    BulutDili(ad: "Sırpça",       kod: "sr"),
+    BulutDili(ad: "Slovakça",     kod: "sk"),
+    BulutDili(ad: "Slovence",     kod: "sl"),
+    BulutDili(ad: "Svahilice",    kod: "sw"),
+    BulutDili(ad: "Tagalogca",    kod: "tl"),
+    BulutDili(ad: "Tamilce",      kod: "ta"),
+    BulutDili(ad: "Tayca",        kod: "th"),
+    BulutDili(ad: "Teluguca",     kod: "te"),
+    BulutDili(ad: "Türkçe",       kod: "tr"),
+    BulutDili(ad: "Ukraynaca",    kod: "uk"),
+    BulutDili(ad: "Urduca",       kod: "ur"),
+    BulutDili(ad: "Vietnamca",    kod: "vi"),
+    BulutDili(ad: "Yunanca",      kod: "el"),
 ]
+
+/// Türkçe: cihaz motorunun tek hedefi, bulut motorunda varsayılan hedef.
+let turkceDil = BulutDili(ad: "Türkçe", kod: "tr")
+
+/// Hedef dil listesi: Türkçe en üstte, ötekiler alfabe sırasıyla (KR13).
+let hedefDilleri = [turkceDil] + bulutDilleri.filter { $0.kod != turkceDil.kod }
 
 /// Bulut motorunda kaynak dil seçimindeki "Otomatik" değeri (`Kayit.bulutKaynak`).
 let otomatikDil = "otomatik"
@@ -62,7 +113,7 @@ func yonelme(_ ad: String) -> String {
 let duraklama   = 1.2   // bu kadar saniye sessizlik = cümle bitti
 let alaniaAdres = "https://voice.patientdesk.ai/v1/audio/speech"
 let alaniaModel = "alania-v2"
-let yapiEtiketi = "S02 tur 1"   // Tanılama kopyasının başlığı; her düzeltme turunda artar (KR16)
+let yapiEtiketi = "S02 tur 2"   // Tanılama kopyasının başlığı; her düzeltme turunda artar (KR16)
 
 // Ses hattı süreleri ve eşikleri (docs/ses-hatti.md; kural kimlikleri parantez içinde)
 let alaniaSuresi: TimeInterval         = 5     // Alania isteğinin toplam süresi, sn (S5, KR10)
@@ -116,6 +167,7 @@ enum Kayit {
     static let motor          = "motor"            // "cihaz" | "bulut"; yoksa "cihaz" (S02)
     static let bulutKaynak    = "bulutKaynakDil"   // bulut motorunda kaynak dil; yoksa "otomatik" (KR12)
     static let hedefDil       = "hedefDil"         // bulut motorunda hedef dil; yoksa "tr" (KR13)
+    static let sonKaynaklar   = "sonKaynakDiller"  // bulut motorunda son seçilen kaynak diller (virgülle ayrılmış kodlar)
     static let sesliOku       = "sesliOku"         // çeviri sesli okunsun mu; yoksa hayır (KR11)
 }
 

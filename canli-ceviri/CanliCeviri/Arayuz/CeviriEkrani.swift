@@ -9,6 +9,10 @@ struct CeviriEkrani: View {
     @AppStorage(Kayit.hedefDil) private var hedefKod = "tr"
     @AppStorage(Kayit.motor) private var motorKaydi = ""
     @AppStorage(Kayit.sesliOku) private var sesliOku = false
+    /// Bulut motorunda son seçilen kaynak diller (virgülle ayrılmış kodlar); dil şeridinin kısa listesi için.
+    @AppStorage(Kayit.sonKaynaklar) private var sonKaynaklar = ""
+    /// Bulut motorunun tüm dillerini gösteren aranabilir sayfa açık mı.
+    @State private var tumDillerAcik = false
     @Environment(\.dynamicTypeSize) private var yaziBoyu
 
     private var dil: Dil { diller.first { $0.kod == kaynakKod } ?? diller[0] }
@@ -30,6 +34,39 @@ struct CeviriEkrani: View {
         bulutMotoru ? dilAdi(hedefKod) : "Türkçe"
     }
 
+    /// Dil şeridinin kısa listesi (bulut motoru): seçili dil, son kullanılanlar, sonra sık kullanılan birkaç dil;
+    /// en çok beş tane. Öteki diller "Tüm diller…" sayfasındadır (60 dil bir menüye sığmaz).
+    private var kisaListe: [BulutDili] {
+        var adaylar = [bulutKaynak]
+        adaylar += sonKaynaklar.split(separator: ",").map { String($0) }
+        adaylar += ["en", "de", "fr", "es", "ar", "ru"]
+        var secilenler: [BulutDili] = []
+        for kod in adaylar {
+            guard secilenler.count < 5, !secilenler.contains(where: { $0.kod == kod }),
+                  let dil = bulutDilleri.first(where: { $0.kod == kod }) else { continue }
+            secilenler.append(dil)
+        }
+        return secilenler
+    }
+
+    /// Kaynak dili seçer ve son kullanılanların başına yazar (en çok dört dil tutulur).
+    private func kaynagiSec(_ kod: String) {
+        bulutKaynak = kod
+        guard kod != otomatikDil else { return }
+        let oncekiler = sonKaynaklar.split(separator: ",").map { String($0) }.filter { $0 != kod }
+        sonKaynaklar = ([kod] + oncekiler).prefix(4).joined(separator: ",")
+    }
+
+    /// Menü satırı: seçili olanın yanında onay işareti.
+    @ViewBuilder
+    private func menuSatiri(_ ad: String, secili: Bool) -> some View {
+        if secili {
+            Label(ad, systemImage: "checkmark")
+        } else {
+            Text(ad)
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
@@ -46,7 +83,21 @@ struct CeviriEkrani: View {
             .altSolma()
             altBlok
         }
-        .onAppear { durum.hat.yoluYenile() }   // KR11: sesli okuma ayarı değişmiş olabilir
+        .onAppear {
+            durum.hat.yoluYenile()   // KR11: sesli okuma ayarı değişmiş olabilir
+            #if DEBUG
+            // `-ekran dil-secimi`: dil sayfası açık başlar (yalnız simülatör görüntüsü ve önizleme).
+            if OrnekEkran.gosterilen == .dilSecimi { tumDillerAcik = true }
+            #endif
+        }
+        .sheet(isPresented: $tumDillerAcik) {
+            DilSecimEkrani(baslik: "Kaynak dil", diller: bulutDilleri, otomatik: true, secili: $bulutKaynak,
+                           secildi: { kod in kaynagiSec(kod) })
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+                .presentationBackground(Renk.zemin)
+                .preferredColorScheme(.dark)
+        }
     }
 
     // MARK: Başlık
@@ -97,9 +148,24 @@ struct CeviriEkrani: View {
         return Menu {
             if bulutMotoru {
                 // KR12: bulut motoru dili kendiliğinden tanıyabilir; cihaz motorunda "Otomatik" yoktur.
-                Picker("Kaynak dil", selection: $bulutKaynak) {
-                    Text("Otomatik").tag(otomatikDil)
-                    ForEach(bulutDilleri) { Text($0.ad).tag($0.kod) }
+                // 60 dil menüye sığmaz: "Otomatik", kısa liste ve tümünü açan aranabilir sayfa.
+                Button {
+                    kaynagiSec(otomatikDil)
+                } label: {
+                    menuSatiri("Otomatik", secili: !bulutDilleri.contains(where: { $0.kod == bulutKaynak }))
+                }
+                ForEach(kisaListe) { secenek in
+                    Button {
+                        kaynagiSec(secenek.kod)
+                    } label: {
+                        menuSatiri(secenek.ad, secili: secenek.kod == bulutKaynak)
+                    }
+                }
+                Divider()
+                Button {
+                    tumDillerAcik = true
+                } label: {
+                    Label("Tüm diller…", systemImage: "list.bullet")
                 }
             } else {
                 Picker("Kaynak dil", selection: $kaynakKod) {

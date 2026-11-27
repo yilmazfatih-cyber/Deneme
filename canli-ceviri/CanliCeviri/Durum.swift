@@ -84,7 +84,7 @@ final class Durum {
     @ObservationIgnored private var bulutGorevi: Task<Void, Never>?
     /// Bulut motorunda seçilen kaynak dil; nil = otomatik (KR12).
     @ObservationIgnored private var bulutKaynak: String?
-    @ObservationIgnored private var bulutHedef = bulutDilleri[0]
+    @ObservationIgnored private var bulutHedef = turkceDil
 
     /// Duruyor dışındaki her aşama (ana düğme "Durdur" yazar).
     var calisiyor: Bool { asama != .duruyor }
@@ -143,7 +143,7 @@ final class Durum {
         // Listede olmayan değer ("otomatik" dahil) dilin kendiliğinden tanınması demektir (KR12).
         let kaynak = bulutDilleri.first { $0.kod == secilen }?.kod
         let hedefKod = varsayilanlar.string(forKey: Kayit.hedefDil) ?? "tr"
-        let hedef = bulutDilleri.first { $0.kod == hedefKod } ?? bulutDilleri[0]
+        let hedef = bulutDilleri.first { $0.kod == hedefKod } ?? turkceDil
         bulutKaynak = kaynak
         bulutHedef = hedef
         bulutCalisiyor = true

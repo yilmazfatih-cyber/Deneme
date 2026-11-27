@@ -18,6 +18,8 @@ struct AyarlarEkrani: View {
     @AppStorage(Kayit.motor) private var motorKaydi = ""
     @AppStorage(Kayit.hedefDil) private var hedefKod = "tr"
     @AppStorage(Kayit.sesliOku) private var sesliOku = false
+    /// Çeviri dili sayfası (aranabilir liste) açık mı.
+    @State private var hedefAcik = false
     @ScaledMetric(relativeTo: .title3) private var simgeSutunu: CGFloat = 30
 
     /// Bulut motoru yalnız Soniox anahtarı varken seçilebilir (K3).
@@ -154,6 +156,13 @@ struct AyarlarEkrani: View {
             .padding(.bottom, 20)
         }
         .altSolma()
+        .sheet(isPresented: $hedefAcik) {
+            DilSecimEkrani(baslik: "Çeviri dili", diller: hedefDilleri, secili: $hedefKod)
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+                .presentationBackground(Renk.zemin)
+                .preferredColorScheme(.dark)
+        }
         .onAppear {
             guard !anahtarOkundu else { return }
             let okunan = Anahtarlik.alaniaAnahtari
@@ -204,18 +213,32 @@ struct AyarlarEkrani: View {
             .accessibilityHint(bulutKullanilabilir ? "" : "Bulut motoru için önce Soniox anahtarını girin")
 
             if motor == .bulut {
-                HStack(spacing: 12) {
-                    Text("Çeviri dili")
-                        .font(.subheadline)
-                    Spacer(minLength: 8)
-                    Picker("Çeviri dili", selection: $hedefKod) {
-                        ForEach(bulutDilleri) { Text($0.ad).tag($0.kod) }
+                // KR13: 60 dil menüye sığmaz; satır aranabilir dil sayfasını açar (Türkçe en üstte).
+                Button {
+                    hedefAcik = true
+                } label: {
+                    HStack(spacing: 12) {
+                        Text("Çeviri dili")
+                            .font(.subheadline)
+                            .foregroundStyle(.white)
+                        Spacer(minLength: 8)
+                        Text(dilAdi(hedefKod))
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(Renk.maviMetin)
+                            .multilineTextAlignment(.trailing)
+                        Image(systemName: "chevron.right")
+                            .font(.footnote.weight(.bold))
+                            .foregroundStyle(.secondary)
                     }
-                    .pickerStyle(.menu)
-                    .tint(Renk.maviMetin)
-                    .accessibilityLabel("Çeviri dili")
+                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                    .contentShape(Rectangle())
                 }
-                .frame(minHeight: 44)
+                .buttonStyle(.plain)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Çeviri dili")
+                .accessibilityValue(dilAdi(hedefKod))
+                .accessibilityHint("Dil listesini açar")
+                .accessibilityAddTraits(.isButton)
             } else {
                 Text(bulutKullanilabilir ? "Cihaz motoru yalnız Türkçeye çevirir."
                                          : "Bulut motoru için Soniox anahtarını girin. Cihaz motoru yalnız Türkçeye çevirir.")
