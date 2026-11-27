@@ -1,10 +1,12 @@
 name: Canlı Çeviri (aboneliği kur)
 
-# App Store Connect'te haftalık "Sınırsız" aboneliğini (canliceviri.sinirsiz.haftalik) kurar: abonelik grubu, abonelik,
+# App Store Connect'te haftalık "Sınırsız" aboneliğini (canliceviri.haftalik) kurar: abonelik grubu, abonelik,
 # tr / en-US adları, tüm bölgelerde kullanılabilirlik ve fiyat (ABD 4,99 USD + Apple'ın eş değer fiyatları).
 # Elle başlatılır (Actions → bu iş akışı → Run workflow) ve yalnız varsayılan dalda çalışır.
 # 'uygula' işaretlenmezse KURU ÇALIŞMADIR: hiçbir şey değiştirmez, yalnız neyin var olduğunu ve neyin oluşturulacağını
 #   iş özetine yazar. Önce böyle çalıştırıp özeti okuyun; sonra 'uygula' işaretli yeniden başlatın.
+# Aboneliğin inceleme ekran görüntüsü (App Store Review screenshot) yoksa onu da yükler: görüntü, iOS derleme işinin
+#   canli-ceviri-ekran dalına yazdığı abonelik.png dosyasıdır. Dal ya da dosya yoksa iş kırılmaz; o adım atlanır.
 # Yeniden çalıştırmak güvenlidir: var olan kayıt değiştirilmez, hiçbir şey silinmez; yalnız eksik olan oluşturulur.
 # Gerekli gizli değerler (Settings → Secrets and variables → Actions): ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8.
 # "Ücretli Uygulamalar" anlaşması, banka ve vergi bilgisi API ile yapılamaz; onları App Store Connect → İş bölümünden
@@ -94,6 +96,28 @@ jobs:
             'charset-normalizer==3.5.1'
           python -m pip check
 
+      - name: İnceleme ekran görüntüsünü al
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          # Görüntü, iOS derleme işinin canli-ceviri-ekran dalına yazdığı abonelik.png dosyasıdır (1206×2622 PNG).
+          # actions/checkout yalnız çalışan dalın son commit'ini indirir ve kimlik bilgisini saklamaz; bu yüzden dal
+          # burada açıkça, belirteç yalnız bu komuta verilerek alınır. Belirteç kayda yazılmaz.
+          # Görüntü alınamazsa iş kırılmaz: betik görüntüsüz çalışır ve o adımı "atlandı" diye raporlar.
+          hedef="$RUNNER_TEMP/abonelik.png"
+          rm -f "$hedef"
+          kimlik=$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')
+          echo "::add-mask::$kimlik"
+          if git -c "http.$GITHUB_SERVER_URL/.extraheader=AUTHORIZATION: basic $kimlik" \
+            fetch --quiet --no-tags --depth=1 origin canli-ceviri-ekran \
+            && git show FETCH_HEAD:abonelik.png > "$hedef" \
+            && [ "$(head -c 8 "$hedef" | od -An -tx1 | tr -d ' \n')" = "89504e470d0a1a0a" ]; then
+            echo "Görüntü alındı: abonelik.png ($(wc -c < "$hedef") bayt)"
+          else
+            rm -f "$hedef"
+            echo "::warning title=İnceleme ekran görüntüsü alınamadı::canli-ceviri-ekran dalından abonelik.png alınamadı (dal ya da dosya yok, ya da dosya PNG değil). Kurulum görüntüsüz sürer; inceleme ekran görüntüsü adımı atlanır. Önce 'Canlı Çeviri (iOS derleme)' işinin o dala görüntü yazdığına bakın."
+          fi
+
       - name: Aboneliği kur
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
@@ -114,5 +138,12 @@ jobs:
           fi
           if [ "$ESKI_YOL" = "true" ]; then
             secenekler+=(--eski-yol)
+          fi
+          # Önceki adım görüntüyü alabildiyse betiğe verilir; kuru çalışmada yalnız "yüklenecek" diye raporlanır.
+          goruntu="$RUNNER_TEMP/abonelik.png"
+          if [ -s "$goruntu" ]; then
+            secenekler+=(--inceleme-goruntusu "$goruntu")
+          else
+            echo "İnceleme ekran görüntüsü yok; o adım atlanacak."
           fi
           python canli-ceviri/scripts/abonelik-kur.py ${secenekler[@]+"${secenekler[@]}"}

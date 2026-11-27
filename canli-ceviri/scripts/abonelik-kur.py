@@ -6,17 +6,24 @@ Ne yapar (sırayla; her adımda önce var mı diye bakar, varsa DEĞİŞTİRMEZ)
   2. Abonelik (ürün kimliği, 1 hafta, düzey 1, aile paylaşımı kapalı) ve tr / en-US adı + açıklaması
   3. Kullanılabilirlik: tüm bölgeler, yeni bölgeler de dahil
   4. Fiyat: ABD'de 4,99 USD; öteki bölgelerde Apple'ın eş değer (equalization) fiyat noktaları
+  5. İnceleme ekran görüntüsü (App Store Review screenshot): yoksa ve `--inceleme-goruntusu` verilmişse yüklenir
+     (rezerve et → parçaları Apple'ın depolama adresine gönder → tamamla → işlenmesini bekle)
 
 Güvenlik kuralları:
   - `--uygula` verilmezse KURU ÇALIŞMA: yalnız GET yapılır; neyin var olduğu ve neyin oluşturulacağı yazılır.
   - Hiçbir şey silinmez; betikte DELETE çağrısı yoktur. Var olan kayıtlar değiştirilmez. Tek istisna: içinde hiç
     bölge olmayan (boş) kullanılabilirlik kaydı doldurulur, çünkü o hâliyle fiyat atanamaz.
-  - Anahtar ve belirteç hiçbir çıktıya yazılmaz.
+  - Yarım kalmış ya da başarısız bir inceleme görüntüsü kaydı silinmez, üstüne yazılmaz; yalnız raporlanır.
+  - Görüntü parçaları Apple'ın verdiği depolama adresine gider: o isteklere belirteç (Authorization) eklenmez,
+    yalnız Apple'ın bildirdiği başlıklar gönderilir; adres https değilse istek gönderilmez.
+  - Anahtar, belirteç ve yükleme adresleri hiçbir çıktıya yazılmaz.
   - "Ücretli Uygulamalar" anlaşması, banka ve vergi API ile yapılamaz; betik yalnız özetinde hatırlatır.
 
 Kullanım (anahtar ortam değişkenlerinden okunur: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8):
     python3 canli-ceviri/scripts/abonelik-kur.py              # kuru çalışma
     python3 canli-ceviri/scripts/abonelik-kur.py --uygula     # gerçekten oluşturur
+    python3 canli-ceviri/scripts/abonelik-kur.py --uygula --inceleme-goruntusu abonelik.png
+        # Aboneliğin inceleme ekran görüntüsü yoksa bu PNG / JPEG dosyasını yükler.
     python3 canli-ceviri/scripts/abonelik-kur.py --uygula --eski-yol
         # Yerelleştirme ve kullanılabilirlik için Apple'ın kullanımdan kaldırdığı (ama hâlâ açık tuttuğu) eski uç
         # noktaları kullanır. Yalnız sürümlü yeni yol beklenmedik biçimde çalışmazsa denenir.
@@ -27,10 +34,13 @@ Uç noktalar Apple'ın belgelerinden alındı (App Store Connect API 4.4.1):
   https://developer.apple.com/documentation/appstoreconnectapi
 Yerelleştirmeler 4.4.1'den beri bir "sürüm"e (subscriptionGroupVersions / subscriptionVersions) bağlanır;
 kullanılabilirlik 4.4'ten beri plan türüyle (subscriptionPlanAvailabilities, UPFRONT = peşin) tanımlanır.
+Görüntü yükleme akışı: .../appstoreconnectapi/uploading-assets-to-app-store-connect
 """
 
 import argparse
+import hashlib
 import os
+import re
 import sys
 import time
 from decimal import Decimal, InvalidOperation
@@ -79,12 +89,39 @@ HIZ_SINIRI_DENEMESI = 6
 HIZ_SINIRI_BEKLEME = (30, 60, 120, 120, 120)
 FIYAT_HATA_SINIRI = 5
 
+# --- İnceleme ekran görüntüsü ---
+GORUNTU_TURU = "subscriptionAppStoreReviewScreenshots"
+GORUNTU_EN_COK = 8 * 1024 * 1024  # bayt; betiğin kendi tavanı (Apple bu görüntü için dosya boyutu sınırı belgelemiyor)
+GORUNTU_UZANTILARI = {"PNG": (".png",), "JPEG": (".jpg", ".jpeg")}
+GORUNTU_YOKLAMA_ARALIGI = 5  # saniye
+GORUNTU_YOKLAMA_SAYISI = 12  # en çok ~60 sn
+PARCA_DENEMESI = 3
+# Apple'ın "Screenshot specifications" yardım sayfasındaki iPhone ve iPad ölçüleri (yatayı da kabul edilir). Apple,
+# inceleme görüntüsünün "uygulamanın desteklediği ekran görüntüsü ölçülerinden birine" uymasını ister; hangisinin
+# geçerli olduğu uygulamaya bağlı olduğundan uymayan ölçü yalnız uyarı üretir.
+EKRAN_OLCULERI_METNI = (
+    "640x920 640x960 640x1096 640x1136 750x1334 1080x2340 1125x2436 1170x2532 1179x2556 1206x2622 1242x2208 "
+    "1242x2688 1260x2736 1284x2778 1290x2796 1320x2868 768x1004 768x1024 1488x2266 1536x2008 1536x2048 "
+    "1640x2360 1668x2224 1668x2388 1668x2420 2048x2732 2064x2752"
+)
+EKRAN_OLCULERI = frozenset(tuple(int(sayi) for sayi in olcu.split("x")) for olcu in EKRAN_OLCULERI_METNI.split())
+YUKLEME_TAMAM, YUKLEME_ISLENIYOR, YUKLEME_BEKLIYOR, YUKLEME_BASARISIZ = (
+    "COMPLETE",
+    "UPLOAD_COMPLETE",
+    "AWAITING_UPLOAD",
+    "FAILED",
+)
+
 VARDI = "vardı"
 OLUSTURULDU = "oluşturuldu"
 OLUSTURULACAK = "oluşturulacak (kuru çalışma)"
 BASARISIZ = "başarısız"
 ATLANDI = "atlandı (dokunulmadı)"
 YAPILMADI = "yapılmadı"
+YUKLENDI = "yüklendi"
+YUKLENECEK = "yüklenecek (kuru çalışma)"
+ATLANDI_GORUNTU_YOK = "atlandı (görüntü verilmedi)"
+ATLANDI_ELLE = "atlandı (elle bakın)"
 
 ADIMLAR = (
     ("grup", "Abonelik grubu"),
@@ -93,6 +130,7 @@ ADIMLAR = (
     ("abonelik_yerel", "Abonelik yerelleştirmeleri"),
     ("kullanilabilirlik", "Kullanılabilirlik"),
     ("fiyat", "Fiyat"),
+    ("goruntu", "İnceleme ekran görüntüsü"),
 )
 
 ANLASMA_HATIRLATMASI = (
@@ -238,6 +276,8 @@ class Istemci:
         self._belirtec_zamani = 0
         self.okuma_sayisi = 0
         self.yazma_sayisi = 0
+        # Yükleme adresleri API kökünün şemasını taşımalı: gerçek kökte bu https'tir (yerel sınamada http).
+        self._depolama_semasi = urlsplit(self.kok).scheme
 
     def _belirtec(self):
         simdi = int(time.time())
@@ -338,6 +378,66 @@ class Istemci:
             except ValueError:
                 pass
             raise ApiHatasi(durum, yontem, ozet, hatalar, yanit.text or "")
+
+    def parca_yukle(self, islem, veri):
+        """Apple'ın verdiği tek yükleme işlemini (UploadOperation) uygular.
+
+        Bu istek API sunucusuna değil, Apple'ın depolama adresine gider: belirteç (Authorization) ve oturumun kendi
+        başlıkları EKLENMEZ, yalnız işlemdeki `requestHeaders` gönderilir. Adres (imza taşır) hiçbir çıktıya yazılmaz.
+        """
+        if not self.uygula:
+            raise Durdur("İç hata: kuru çalışmada yükleme isteği denendi. İstek gönderilmedi.")
+        if not isinstance(islem, dict):
+            raise Durdur("Apple'ın yükleme yönergesi beklenen biçimde değil; istek gönderilmedi.")
+        yontem = str(islem.get("method") or "").upper()
+        if yontem not in ("PUT", "POST"):
+            raise Durdur(
+                f"Apple'ın yükleme yönergesinde beklenmeyen yöntem var ({yontem or 'boş'}); istek gönderilmedi."
+            )
+        url = islem.get("url")
+        parca = urlsplit(url) if isinstance(url, str) else None
+        if parca is None or parca.scheme != self._depolama_semasi or not parca.hostname:
+            raise Durdur(
+                f"Apple'ın verdiği yükleme adresi {self._depolama_semasi} değil ya da okunamadı; görüntü gönderilmedi."
+            )
+        sunucu = parca.hostname
+        gizli_ekle(url, parca.query)  # adres imza taşır; beklenmeyen bir hata iletisine girerse de gizlensin
+        bas, uzunluk = islem.get("offset"), islem.get("length")
+        tam = all(isinstance(sayi, int) and not isinstance(sayi, bool) for sayi in (bas, uzunluk))
+        if not tam or bas < 0 or uzunluk <= 0 or bas + uzunluk > len(veri):
+            raise Durdur("Apple'ın yükleme yönergesindeki bayt aralığı dosyaya uymuyor; istek gönderilmedi.")
+        basliklar = {}
+        for baslik in islem.get("requestHeaders") or []:
+            if isinstance(baslik, dict) and baslik.get("name") and baslik.get("value") is not None:
+                basliklar[str(baslik["name"])] = str(baslik["value"])
+        deneme = 0
+        while True:
+            deneme += 1
+            self.yazma_sayisi += 1
+            try:
+                # Oturumun varsayılan başlıkları, çerezleri ve kimlik bilgisi karışmasın diye istek oturumdan bağımsız
+                # hazırlanır; oturum yalnız bağlantı (vekil sunucu, sertifika) ayarları için kullanılır.
+                hazir = requests.Request(yontem, url, data=veri[bas : bas + uzunluk], headers=basliklar).prepare()
+                ayarlar = self.oturum.merge_environment_settings(hazir.url, {}, None, None, None)
+                yanit = self.oturum.send(hazir, timeout=ZAMAN_ASIMI, allow_redirects=False, **ayarlar)
+            except requests.RequestException as hata:
+                if deneme < PARCA_DENEMESI:
+                    yaz(f"  Ağ hatası ({type(hata).__name__}); {5 * deneme} sn sonra parça yeniden gönderilecek.")
+                    self.bekle(5 * deneme)
+                    continue
+                raise Durdur(
+                    f"Apple'ın depolama sunucusuna ({sunucu}) ulaşılamadı ({type(hata).__name__}); görüntü yüklenemedi."
+                ) from None
+            durum = yanit.status_code
+            if 200 <= durum < 300:
+                return
+            if (durum == 429 or durum >= 500) and deneme < PARCA_DENEMESI:
+                yaz(f"  Depolama sunucusu HTTP {durum} verdi; {5 * deneme} sn sonra parça yeniden gönderilecek.")
+                self.bekle(5 * deneme)
+                continue
+            kod = re.search(r"<Code>([A-Za-z0-9_.-]{1,60})</Code>", yanit.text or "")
+            ek = f", kod {kod[1]}" if kod else ""
+            raise Durdur(f"Apple'ın depolama sunucusu ({sunucu}) görüntü parçasını kabul etmedi (HTTP {durum}{ek}).")
 
     def sayfala(self, yol, params=None):
         """Bir listeyi `links.next` bitene dek izler; (data, included) döndürür."""
@@ -475,6 +575,102 @@ def fiyat_govdesi(abonelik_kimligi, fiyat_noktasi_kimligi, plan_turu_yaz=True):
     }
 
 
+def goruntu_rezervasyon_govdesi(abonelik_kimligi, dosya_adi, boyut):
+    return {
+        "data": {
+            "type": GORUNTU_TURU,
+            "attributes": {"fileName": dosya_adi, "fileSize": boyut},
+            "relationships": {"subscription": baglanti("subscriptions", abonelik_kimligi)},
+        }
+    }
+
+
+def goruntu_tamamlama_govdesi(goruntu_kimligi, md5):
+    return {
+        "data": {
+            "type": GORUNTU_TURU,
+            "id": goruntu_kimligi,
+            "attributes": {"uploaded": True, "sourceFileChecksum": md5},
+        }
+    }
+
+
+def goruntu_bicimi(veri):
+    """(tür, genişlik, yükseklik) döndürür. Tür 'PNG' ya da 'JPEG'; tanınmazsa None. Ölçü okunamazsa None, None."""
+    if veri[:8] == b"\x89PNG\r\n\x1a\n":
+        if len(veri) >= 24 and veri[12:16] == b"IHDR":
+            return "PNG", int.from_bytes(veri[16:20], "big"), int.from_bytes(veri[20:24], "big")
+        return "PNG", None, None
+    if veri[:3] == b"\xff\xd8\xff":
+        konum = 2
+        while konum + 9 <= len(veri) and veri[konum] == 0xFF:
+            isaret = veri[konum + 1]
+            if isaret == 0xFF:  # dolgu baytı
+                konum += 1
+                continue
+            if isaret == 0x01 or 0xD0 <= isaret <= 0xD9:  # uzunluk taşımayan işaretler
+                konum += 2
+                continue
+            uzunluk = int.from_bytes(veri[konum + 2 : konum + 4], "big")
+            if 0xC0 <= isaret <= 0xCF and isaret not in (0xC4, 0xC8, 0xCC):  # SOFn: çerçeve başlığı
+                yukseklik = int.from_bytes(veri[konum + 5 : konum + 7], "big")
+                return "JPEG", int.from_bytes(veri[konum + 7 : konum + 9], "big"), yukseklik
+            if uzunluk < 2:
+                break
+            konum += 2 + uzunluk
+        return "JPEG", None, None
+    return None, None, None
+
+
+def goruntuyu_oku(yol):
+    """İnceleme görüntüsünü okur ve istek atmadan önce denetler. Dosya adı dışında yol hiçbir yere yazılmaz."""
+    ad = os.path.basename(yol)
+    try:
+        boyut = os.path.getsize(yol)
+        if boyut > GORUNTU_EN_COK:
+            raise Durdur(
+                f"Görüntü dosyası çok büyük ('{ad}': {boyut} bayt; en çok {GORUNTU_EN_COK // (1024 * 1024)} MB)."
+            )
+        with open(yol, "rb") as dosya:
+            veri = dosya.read(GORUNTU_EN_COK + 1)
+    except OSError as hata:
+        raise Durdur(
+            f"Görüntü dosyası okunamadı ('{ad}': {type(hata).__name__}). --inceleme-goruntusu ile verilen yol doğru mu?"
+        ) from None
+    if not veri or len(veri) > GORUNTU_EN_COK:
+        raise Durdur(f"Görüntü dosyası boş ya da okunurken değişti ('{ad}').")
+    tur, genislik, yukseklik = goruntu_bicimi(veri)
+    if tur is None:
+        raise Durdur(f"Görüntü dosyası PNG ya da JPEG değil ('{ad}'). Hiçbir şey değiştirilmedi.")
+    if not ad.lower().endswith(GORUNTU_UZANTILARI[tur]):
+        raise Durdur(
+            f"Görüntü dosyasının adı içeriğiyle uyuşmuyor ('{ad}' bir {tur} dosyası; uzantı "
+            f"{' ya da '.join(GORUNTU_UZANTILARI[tur])} olmalı). Hiçbir şey değiştirilmedi."
+        )
+    olcu_uyuyor = None  # None = ölçü okunamadı, doğrulanamadı
+    if genislik and yukseklik:
+        olcu_uyuyor = (min(genislik, yukseklik), max(genislik, yukseklik)) in EKRAN_OLCULERI
+    olcu = f"{genislik}×{yukseklik}" if genislik and yukseklik else "ölçü okunamadı"
+    return {
+        "ad": ad,
+        "veri": veri,
+        "md5": hashlib.md5(veri).hexdigest(),  # Apple'ın istediği bütünlük özeti (güvenlik amaçlı değil)
+        "tanim": f"'{ad}' ({tur}, {olcu}, {len(veri)} bayt)",
+        "olcu": olcu,
+        "olcu_uyuyor": olcu_uyuyor,
+    }
+
+
+def yukleme_durumu(kayit):
+    """(durum, hata metni) — `assetDeliveryState` içinden."""
+    teslim = ozellik(kayit, "assetDeliveryState") or {}
+    hatalar = []
+    for hata in teslim.get("errors") or []:
+        if isinstance(hata, dict):
+            hatalar.append(f"{hata.get('code')}: {hata.get('description')}")
+    return teslim.get("state"), "; ".join(hatalar)
+
+
 def ozellik(kayit, ad, varsayilan=None):
     return (kayit.get("attributes") or {}).get(ad, varsayilan)
 
@@ -509,10 +705,11 @@ def metinleri_denetle():
 
 
 class Kurulum:
-    def __init__(self, istemci, uygula, eski_yol=False):
+    def __init__(self, istemci, uygula, eski_yol=False, goruntu_yolu=None):
         self.ist = istemci
         self.uygula = uygula
         self.eski_yol = eski_yol
+        self.goruntu_yolu = goruntu_yolu
         self.rapor = {anahtar: [YAPILMADI, ""] for anahtar, _ in ADIMLAR}
         self.uyarilar = []
         self.etkin_adim = None
@@ -843,6 +1040,105 @@ class Kurulum:
             return
         self.sonuc("fiyat", OLUSTURULDU, ayrinti)
 
+    def goruntu_islenmesini_bekle(self, goruntu_kimligi, durum, hatalar):
+        """Apple görüntüyü işleyene dek kısa aralıklarla yoklar (yalnız GET); (durum, hata metni) döndürür."""
+        for _ in range(GORUNTU_YOKLAMA_SAYISI):
+            if durum != YUKLEME_ISLENIYOR:
+                break
+            self.ist.bekle(GORUNTU_YOKLAMA_ARALIGI)
+            belge = self.ist.istek("GET", f"/v1/{GORUNTU_TURU}/{goruntu_kimligi}") or {}
+            durum, hatalar = yukleme_durumu(belge.get("data") or {})
+        return durum, hatalar
+
+    def goruntuyu_kur(self, abonelik_kimligi, goruntu):
+        self.adim("goruntu")
+        if abonelik_kimligi is None:
+            if goruntu is None:
+                self.sonuc("goruntu", ATLANDI_GORUNTU_YOK)
+            else:
+                self.sonuc("goruntu", YUKLENECEK, goruntu["tanim"])
+            return
+        # Görüntü yoksa Apple 404 ya da boş `data` döndürebilir; ikisi de "yok" sayılır.
+        belge = self.ist.istek(
+            "GET", f"/v1/subscriptions/{abonelik_kimligi}/appStoreReviewScreenshot", yok_sayilan=(404,)
+        )
+        kayit = (belge or {}).get("data")
+        if isinstance(kayit, dict) and kayit.get("id"):
+            durum, hatalar = yukleme_durumu(kayit)
+            if durum == YUKLEME_ISLENIYOR:
+                durum, hatalar = self.goruntu_islenmesini_bekle(kayit["id"], durum, hatalar)
+            tanim = f"'{ozellik(kayit, 'fileName')}' ({ozellik(kayit, 'fileSize')} bayt)"
+            if durum == YUKLEME_TAMAM:
+                self.sonuc("goruntu", VARDI, tanim)
+                return
+            if durum == YUKLEME_ISLENIYOR:
+                neden = "Apple görüntüyü hâlâ işliyor; birkaç dakika sonra işi yeniden başlatıp sonucu görün"
+            elif durum == YUKLEME_BEKLIYOR:
+                neden = "yükleme yarım kalmış (yer ayrılmış ama dosya tamamlanmamış)"
+            elif durum == YUKLEME_BASARISIZ:
+                neden = "Apple görüntüyü işleyemedi" + (f" ({hatalar})" if hatalar else "")
+            else:
+                neden = "yükleme durumu okunamadı"
+            self.uyar(
+                f"İnceleme ekran görüntüsü kaydı var ama tamamlanmamış: {neden} (durum: {durum}). Kayıt silinmedi, "
+                "değiştirilmedi. App Store Connect → Abonelikler → bu abonelik → Review Information bölümünden "
+                "görüntüyü elle yükleyin ya da yarım kaydı oradan silip bu işi yeniden başlatın."
+            )
+            self.sonuc("goruntu", ATLANDI_ELLE, f"{tanim}; durum: {durum}")
+            return
+        if goruntu is None:
+            self.sonuc("goruntu", ATLANDI_GORUNTU_YOK, "abonelikte inceleme ekran görüntüsü yok")
+            return
+        if goruntu["olcu_uyuyor"] is not True:
+            self.uyar(
+                f"İnceleme ekran görüntüsünün ölçüsü ({goruntu['olcu']}) Apple'ın iPhone / iPad ekran görüntüsü "
+                "ölçüleri listesinde doğrulanamadı; Apple görüntüyü işlerken reddedebilir."
+            )
+        if not self.uygula:
+            self.sonuc("goruntu", YUKLENECEK, goruntu["tanim"])
+            return
+        govde = goruntu_rezervasyon_govdesi(abonelik_kimligi, goruntu["ad"], len(goruntu["veri"]))
+        yanit = self.ist.istek("POST", f"/v1/{GORUNTU_TURU}", govde=govde)
+        kayit = yanit["data"]
+        try:
+            islemler = ozellik(kayit, "uploadOperations") or []
+            if not islemler:
+                raise Durdur("Apple yer ayırdı ama yükleme yönergesi (uploadOperations) vermedi.")
+            for sira, islem in enumerate(islemler, 1):
+                self.ist.parca_yukle(islem, goruntu["veri"])
+                yaz(f"  … parça {sira}/{len(islemler)} gönderildi")
+            yanit = self.ist.istek(
+                "PATCH",
+                f"/v1/{GORUNTU_TURU}/{kayit['id']}",
+                govde=goruntu_tamamlama_govdesi(kayit["id"], goruntu["md5"]),
+            )
+        except (ApiHatasi, Durdur):
+            self.uyar(
+                "İnceleme ekran görüntüsü için yer ayrıldı ama yükleme tamamlanamadı. Yarım kayıt silinmedi; betik "
+                "yeniden çalışınca ona dokunmaz. App Store Connect → Abonelikler → bu abonelik → Review Information "
+                "bölümünden görüntüyü elle yükleyin ya da yarım kaydı oradan silip bu işi yeniden başlatın."
+            )
+            raise
+        durum, hatalar = yukleme_durumu((yanit or {}).get("data") or {})
+        durum, hatalar = self.goruntu_islenmesini_bekle(kayit["id"], durum or YUKLEME_ISLENIYOR, hatalar)
+        if durum == YUKLEME_TAMAM:
+            self.sonuc("goruntu", YUKLENDI, goruntu["tanim"])
+        elif durum == YUKLEME_BASARISIZ:
+            self.uyar(
+                "Apple yüklenen inceleme ekran görüntüsünü işleyemedi"
+                + (f" ({hatalar})" if hatalar else "")
+                + ". Kayıt silinmedi; App Store Connect → Abonelikler → bu abonelik → Review Information bölümünden "
+                "uygun bir görüntüyü elle yükleyin."
+            )
+            self.sonuc("goruntu", BASARISIZ, f"{goruntu['tanim']}; durum: {durum}")
+        else:
+            self.uyar(
+                "İnceleme ekran görüntüsü yüklendi ama Apple işlemeyi "
+                f"{GORUNTU_YOKLAMA_ARALIGI * GORUNTU_YOKLAMA_SAYISI} sn içinde bitirmedi (durum: {durum}). Birkaç "
+                "dakika sonra işi yeniden başlatıp sonucu görün."
+            )
+            self.sonuc("goruntu", YUKLENDI, f"{goruntu['tanim']}; Apple hâlâ işliyor (durum: {durum})")
+
     def durumu_oku(self, abonelik_kimligi):
         if abonelik_kimligi is None:
             return
@@ -851,6 +1147,13 @@ class Kurulum:
 
     def calistir(self):
         metinleri_denetle()
+        goruntu = None
+        if self.goruntu_yolu:
+            # Dosya sorunu hiçbir şey oluşturulmadan önce ortaya çıksın diye ilk iş olarak denetlenir.
+            self.etkin_adim = "goruntu"
+            goruntu = goruntuyu_oku(self.goruntu_yolu)
+            yaz(f"İnceleme ekran görüntüsü okundu: {goruntu['tanim']}")
+            self.etkin_adim = None
         uygulama_kimligi = self.uygulamayi_bul()
         self.etkin_adim = "grup"
         hedef_grup, abonelik, abonelik_grubu = self.grubu_ve_aboneligi_bul(uygulama_kimligi)
@@ -864,6 +1167,7 @@ class Kurulum:
         bolgeler = self.tum_bolgeler()
         acik_bolgeler = self.kullanilabilirligi_kur(self.abonelik_kimligi, bolgeler)
         self.fiyati_kur(self.abonelik_kimligi, bolgeler, acik_bolgeler)
+        self.goruntuyu_kur(self.abonelik_kimligi, goruntu)
         self.etkin_adim = None
         try:
             self.durumu_oku(self.abonelik_kimligi)
@@ -873,11 +1177,8 @@ class Kurulum:
 
 
 DURUM_ACIKLAMALARI = {
-    "MISSING_METADATA": (
-        "eksik bilgi var. Yukarıdaki adımlar tamamsa eksik olan inceleme ekran görüntüsü olabilir "
-        "(App Store Connect → Abonelikler → bu abonelik → Review Information); bu betik onu yüklemez"
-    ),
-    "READY_TO_SUBMIT": "incelemeye gönderilmeye hazır",
+    "MISSING_METADATA": "eksik bilgi var",
+    "READY_TO_SUBMIT": "inceleme için hazır; TestFlight'ta fiyatın görünmesi bir saate kadar sürebilir",
     "WAITING_FOR_REVIEW": "inceleme bekliyor",
     "IN_REVIEW": "incelemede",
     "DEVELOPER_ACTION_NEEDED": "sizden işlem bekleniyor (App Store Connect'teki iletiye bakın)",
@@ -889,10 +1190,30 @@ DURUM_ACIKLAMALARI = {
 }
 
 
+def eksik_bilgi_aciklamasi(goruntu_sonucu):
+    """`MISSING_METADATA` satırının devamı: inceleme görüntüsü adımının sonucuna göre neyin eksik olabileceği."""
+    yer = "App Store Connect → Abonelikler → bu abonelik"
+    if goruntu_sonucu in (VARDI, YUKLENDI):
+        return (
+            ". İnceleme ekran görüntüsü yerinde; görüntü yeni yüklendiyse durumun değişmesi birkaç dakika sürebilir "
+            f"(işi yeniden başlatıp bakın). Değişmezse eksik olan başka bir bilgidir: {yer} sayfasındaki uyarıya bakın"
+        )
+    if goruntu_sonucu in (ATLANDI_GORUNTU_YOK, YUKLENECEK):
+        return (
+            ". Eksik olan büyük olasılıkla inceleme ekran görüntüsü: işi 'uygula' kipinde görüntüyle çalıştırın ya da "
+            f"{yer} → Review Information bölümünden elle yükleyin"
+        )
+    if goruntu_sonucu == YAPILMADI:
+        return ". İnceleme ekran görüntüsü adımına gelinemedi; yukarıdaki hata giderilince işi yeniden başlatın"
+    return f". İnceleme ekran görüntüsü tamamlanmadı: {yer} → Review Information bölümüne bakın"
+
+
 def ozet_yaz(kurulum, uygula, hata_iletisi):
     durum = kurulum.abonelik_durumu
     if durum:
         durum_satiri = f"`{durum}` — {DURUM_ACIKLAMALARI.get(durum, 'Apple bu değeri belgelemiyor')}"
+        if durum == "MISSING_METADATA":
+            durum_satiri += eksik_bilgi_aciklamasi(kurulum.rapor["goruntu"][0])
     else:
         durum_satiri = "— (abonelik henüz yok)"
     satirlar = [
@@ -958,6 +1279,11 @@ def ana(argv=None, oturum=None, ortam=None, kok=API_KOKU, bekle=time.sleep):
         action="store_true",
         help="Yerelleştirme ve kullanılabilirlik için kullanımdan kaldırılmış eski uç noktaları kullan",
     )
+    ayristirici.add_argument(
+        "--inceleme-goruntusu",
+        metavar="DOSYA",
+        help="Aboneliğin inceleme ekran görüntüsü yoksa yüklenecek PNG / JPEG dosyası",
+    )
     secenekler = ayristirici.parse_args(argv)
     ortam = os.environ if ortam is None else ortam
 
@@ -973,7 +1299,9 @@ def ana(argv=None, oturum=None, ortam=None, kok=API_KOKU, bekle=time.sleep):
         oturum = requests.Session()
         oturum.headers["User-Agent"] = "abonelik-kur/1"
     istemci = Istemci(oturum, anahtar_kimligi, veren_kimligi, ozel_anahtar, secenekler.uygula, kok=kok, bekle=bekle)
-    kurulum = Kurulum(istemci, secenekler.uygula, eski_yol=secenekler.eski_yol)
+    kurulum = Kurulum(
+        istemci, secenekler.uygula, eski_yol=secenekler.eski_yol, goruntu_yolu=secenekler.inceleme_goruntusu
+    )
 
     hata_iletisi = None
     try:
@@ -1016,6 +1344,9 @@ def ana(argv=None, oturum=None, ortam=None, kok=API_KOKU, bekle=time.sleep):
             kurulum.son_hata.aciklama() if kurulum.son_hata else "Ayrıntı yukarıdaki uyarılarda."
         )
         eylem_iletisi("error", "Fiyat başarısız", hata_iletisi)
+    if hata_iletisi is None and kurulum.rapor["goruntu"][0] == BASARISIZ:
+        hata_iletisi = "İnceleme ekran görüntüsü yüklendi ama Apple onu işleyemedi. Ayrıntı yukarıdaki uyarılarda."
+        eylem_iletisi("error", "İnceleme ekran görüntüsü başarısız", hata_iletisi)
     for uyari in kurulum.uyarilar:
         eylem_iletisi("warning", "Abonelik kurulumu", uyari)
     ozet_yaz(kurulum, secenekler.uygula, hata_iletisi)
