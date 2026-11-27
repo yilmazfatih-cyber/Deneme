@@ -4,6 +4,8 @@ import UIKit
 /// Tanılama sayfası (tasarim § 4.4): olay kaydı, Kopyala (birincil) ve Temizle.
 /// Ayarlar'daki "Tanılama kaydı" satırından alttan açılan sayfa olarak gösterilir.
 struct TanilamaEkrani: View {
+    /// Önizleme kipi: Geliştirici bölümü Anahtar Zinciri'ne yazmaz.
+    let onizleme: Bool
     @Environment(\.dismiss) private var kapat
     @Environment(\.dynamicTypeSize) private var yaziBoyu
     @ScaledMetric(relativeTo: .largeTitle) private var bosSimge: CGFloat = 54
@@ -13,6 +15,10 @@ struct TanilamaEkrani: View {
     @AccessibilityFocusState private var baslikOdakta: Bool
 
     private var kayit: Tanilama { Tanilama.ortak }
+
+    init(onizleme: Bool = false) {
+        self.onizleme = onizleme
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -25,10 +31,17 @@ struct TanilamaEkrani: View {
                 .padding(.top, 8)
 
             ScrollView {
-                if kayit.olaylar.isEmpty {
-                    bosDurum
-                } else {
-                    liste
+                VStack(spacing: 0) {
+                    if kayit.olaylar.isEmpty {
+                        bosDurum
+                    } else {
+                        liste
+                    }
+                    // Müşteri Ayarlar'ında olmayanlar: motor, anahtarlar, okuma sesi (S02 tur 3).
+                    GelistiriciBolumu(onizleme: onizleme)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 24)
+                        .padding(.bottom, 20)
                 }
             }
             .altSolma()

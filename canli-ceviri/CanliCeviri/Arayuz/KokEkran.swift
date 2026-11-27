@@ -57,8 +57,12 @@ struct KokEkran: View {
         .translationTask(durum.ayar) { oturum in
             await durum.calistir(oturum)
         }
+        // Fiyat ekranı ilk açılışta bir kez gösterilir (abonede, deneme yapısında ve önizlemede gösterilmez).
+        .task {
+            await durum.ilkAcilis()
+        }
         .sheet(isPresented: $tanilamaAcik) {
-            TanilamaEkrani()
+            TanilamaEkrani(onizleme: durum.hat.onizlemede)
                 .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
                 .presentationBackground(Renk.zemin)
@@ -78,7 +82,7 @@ struct KokEkran: View {
         .onChange(of: durum.hata) { _, yeni in
             if let yeni { duyur(yeni) }
         }
-        .onChange(of: durum.sinirMetni) { _, yeni in
+        .onChange(of: durum.abonelikNotu) { _, yeni in
             if let yeni { duyur(yeni) }
         }
         // C-7: yalnız yeni eklenen ya da metni değişen sarı not duyurulur.

@@ -137,17 +137,18 @@ jobs:
             xcrun simctl io "$UDID" screenshot "ekran/$2.png"
             xcrun simctl terminate "$UDID" "$PAKET" > /dev/null 2>&1 || true
           }
-          for ad in ceviri-bos ceviri dinliyor kulakliksiz gecmis gecmis-bos ayarlar tanilama abonelik sinir-doldu \
-            ayarlar-bulut ceviri-bulut dil-secimi; do
+          for ad in ceviri-bos ceviri dinliyor kulakliksiz gecmis gecmis-bos ayarlar tanilama abonelik abonelik-bitti \
+            ayarlar-bulut ceviri-bulut dil-secimi tanilama-gelistirici; do
             cek "$ad" "$ad"
           done
-          # En büyük Dinamik Yazı (AX5) boyutunda beş ekran, AX3'te Çeviri; sonra boyut eski hâline döner.
+          # En büyük Dinamik Yazı (AX5) boyutunda altı ekran, AX3'te Çeviri; sonra boyut eski hâline döner.
           xcrun simctl ui "$UDID" content_size accessibility-extra-extra-extra-large
           cek ceviri ceviri-buyuk-yazi
           cek gecmis gecmis-buyuk-yazi
           cek ayarlar ayarlar-buyuk-yazi
           cek tanilama tanilama-buyuk-yazi
           cek dil-secimi dil-secimi-buyuk-yazi
+          cek abonelik abonelik-buyuk-yazi
           xcrun simctl ui "$UDID" content_size accessibility-extra-large
           cek ceviri ceviri-buyuk-yazi-ax3
           xcrun simctl ui "$UDID" content_size large

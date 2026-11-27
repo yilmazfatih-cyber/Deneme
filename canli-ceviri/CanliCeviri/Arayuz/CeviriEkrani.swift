@@ -235,9 +235,7 @@ struct CeviriEkrani: View {
             if let son = durum.satirlar.last {
                 SatirGorunumu(satir: son, buyuk: true)
             } else if durum.asama == .duruyor {
-                // KR11: sesli okuma kapalıyken kulaklık gerekmez.
-                Text(sesliOku ? "AirPods'u takın ve aşağıdaki düğmeye dokunun. Çeviri kulaklığınızdan okunur."
-                              : "Aşağıdaki düğmeye dokunun. Çeviri ekrana yazılır.")
+                Text(bosDurumMetni)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -288,6 +286,24 @@ struct CeviriEkrani: View {
         }
     }
 
+    /// Hiç çeviri yokken "Şu An" kartındaki metin. Abonelik yoksa bunu dürüstçe söyler (yalnız ücretli; S02 tur 3):
+    /// alttaki düğme o durumda fiyat ekranını açar. KR11: sesli okuma kapalıyken kulaklık gerekmez.
+    private var bosDurumMetni: String {
+        if durum.abonelikGerekli && durum.abonelik.durumOkundu {
+            return "Çeviri için abonelik gerekir. Aşağıdaki düğme abonelik sayfasını açar."
+        }
+        if sesliOku {
+            return "AirPods'u takın ve aşağıdaki düğmeye dokunun. Çeviri kulaklığınızdan okunur."
+        }
+        return "Aşağıdaki düğmeye dokunun. Çeviri ekrana yazılır."
+    }
+
+    private var anaDugmeIpucu: String {
+        if durum.calisiyor { return "Dinlemeyi ve okumayı durdurur" }
+        if durum.abonelikGerekli && durum.abonelik.durumOkundu { return "Abonelik gerekir; abonelik sayfasını açar" }
+        return "Karşınızdakini dinlemeye ve çevirmeye başlar"
+    }
+
     // MARK: Alt blok
 
     private var altBlok: some View {
@@ -309,8 +325,8 @@ struct CeviriEkrani: View {
         if let hata = durum.hata {
             UyariSatiri(metin: hata, renk: Renk.acikKirmizi)
         }
-        if let sinir = durum.sinirMetni, !durum.abonelik.abone {
-            UyariSatiri(metin: sinir, renk: Renk.sari)
+        if let not = durum.abonelikNotu, durum.abonelikGerekli {
+            UyariSatiri(metin: not, renk: Renk.sari)
         }
         ForEach(durum.notlar) { not in
             UyariSatiri(metin: not.metin, renk: Renk.sari)
@@ -371,8 +387,7 @@ struct CeviriEkrani: View {
                             in: RoundedRectangle(cornerRadius: 22, style: .continuous))
         }
         .accessibilityLabel(calisiyor ? "Durdur" : "Dinlemeyi başlat")
-        .accessibilityHint(calisiyor ? "Dinlemeyi ve okumayı durdurur"
-                                     : "Karşınızdakini dinlemeye ve çevirmeye başlar")
+        .accessibilityHint(anaDugmeIpucu)
         .accessibilityAddTraits(calisiyor ? [] : .startsMediaSession)
         .sensoryFeedback(.impact, trigger: calisiyor)
     }

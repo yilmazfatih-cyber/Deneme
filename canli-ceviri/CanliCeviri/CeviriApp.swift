@@ -13,7 +13,9 @@
 //   Bulut/SonioxCozucu.swift    Soniox yanıtlarını cümlelere ayıran saf mantık (yalnız Foundation; testi tests/ios)
 //   Bulut/BulutAkisi.swift      Soniox WebSocket akışı ve ses dönüşümü (16 kHz, tek kanal, 16 bit)
 //   Bulut/GomuluAnahtar.swift   yapıya gömülü Soniox anahtarı (depoda hep boş; yalnız TestFlight iş akışı doldurur)
-//   Abonelik.swift              haftalık abonelik (StoreKit 2) ve günlük ücretsiz süre
+//   Bulut/SonioxAnahtarKaynagi.swift  bulut anahtarının geldiği tek yer (bugün yerel; ileride sunucu)
+//   Arayuz/GelistiriciBolumu.swift    motor, anahtarlar, okuma sesi: Tanılama sayfasının altında (müşteri görmez)
+//   Abonelik.swift              haftalık abonelik (StoreKit 2); dinleme yalnız aboneyle başlar
 //   Arayuz/KokEkran.swift       arka plan, sekme çubuğu, çeviri oturumu, duyurular
 //   Arayuz/*Ekrani.swift        Çeviri, Geçmiş, Ayarlar ve Tanılama ekranları
 //   Arayuz/Bilesenler.swift     kart, satır ve uyarı satırı

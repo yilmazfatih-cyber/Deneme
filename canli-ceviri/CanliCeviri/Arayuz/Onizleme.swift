@@ -5,7 +5,7 @@
 #if DEBUG
 import SwiftUI
 
-/// Brief "Sözleşmeler" tablosundaki ekranlar (S03: abonelik, sinir-doldu; S02: ayarlar-bulut, ceviri-bulut);
+/// Brief "Sözleşmeler" tablosundaki ekranlar (S03: abonelik; S02: ayarlar-bulut, ceviri-bulut, abonelik-bitti…);
 /// ham değer `-ekran` argümanının değeridir.
 enum OrnekEkran: String, CaseIterable {
     case ceviriBos = "ceviri-bos"
@@ -17,10 +17,11 @@ enum OrnekEkran: String, CaseIterable {
     case ayarlar
     case tanilama
     case abonelik
-    case sinirDoldu = "sinir-doldu"
+    case abonelikBitti = "abonelik-bitti"   // S02 tur 3: abonelik oturum ortasında bitti (eski `sinir-doldu` yerine)
     case ayarlarBulut = "ayarlar-bulut"   // S02: anahtar girilmiş, motor bulut
     case ceviriBulut = "ceviri-bulut"     // S02: bulut motoruyla dinliyor, canlı asıl metin ve akan çeviri
     case dilSecimi = "dil-secimi"         // S02 tur 2: Çeviri ekranında aranabilir kaynak dil sayfası açık
+    case tanilamaGelistirici = "tanilama-gelistirici"   // S02 tur 3: Tanılama sayfasında Geliştirici bölümü
 
     /// En son örnek durumu üretilen ekran; `AyarlarEkrani` örnek Soniox anahtarını buna bakarak gösterir.
     @MainActor static var gosterilen: OrnekEkran?
@@ -32,13 +33,13 @@ enum OrnekEkran: String, CaseIterable {
 
     var sekme: Sekme {
         switch self {
-        case .ceviriBos, .ceviri, .dinliyor, .kulakliksiz, .abonelik, .sinirDoldu, .ceviriBulut, .dilSecimi: .ceviri
+        case .ceviriBos, .ceviri, .dinliyor, .kulakliksiz, .abonelik, .abonelikBitti, .ceviriBulut, .dilSecimi: .ceviri
         case .gecmis, .gecmisBos:                         .gecmis
-        case .ayarlar, .tanilama, .ayarlarBulut:          .ayarlar
+        case .ayarlar, .tanilama, .ayarlarBulut, .tanilamaGelistirici: .ayarlar
         }
     }
 
-    var tanilamaAcik: Bool { self == .tanilama }
+    var tanilamaAcik: Bool { self == .tanilama || self == .tanilamaGelistirici }
 
     /// Önizleme kipinde, örnek verilerle bir `Durum`.
     @MainActor
@@ -57,11 +58,16 @@ enum OrnekEkran: String, CaseIterable {
         case .tanilama:
             Tanilama.ortak.ornekleDoldur()
         case .abonelik:
-            durum.abonelik.ornekFiyat = "₺49,99"   // yalnız önizleme verisi; gerçek fiyat App Store'dan gelir
+            durum.abonelik.ornekFiyat = "$4.99"   // yalnız önizleme verisi; gerçek fiyat App Store'dan gelir
             durum.abonelikAcik = true
-        case .sinirDoldu:
+        case .abonelikBitti:
             durum.satirlar = Satir.ornekler
-            durum.sinirMetni = Durum.sinirAciklamasi
+            durum.abonelikNotu = Durum.abonelikBittiMetni
+        case .tanilamaGelistirici:
+            // Geliştirici bölümü görüntüye sığsın diye kayıtta yalnız birkaç olay bulunur.
+            Tanilama.ortak.temizle()
+            Tanilama.ortak.kaydet("başlat", "dil=otomatik motor=bulut hedef=tr")
+            Tanilama.ortak.kaydet("bulut", "akış başladı 412 ms")
         case .ceviriBulut:
             durum.satirlar = Satir.ornekler
             durum.asama = .dinliyor
@@ -95,7 +101,10 @@ extension Satir {
 #Preview("Geçmiş — boş") { KokEkran(durum: OrnekEkran.gecmisBos.durum(), sekme: .gecmis) }
 #Preview("Ayarlar") { KokEkran(durum: OrnekEkran.ayarlar.durum(), sekme: .ayarlar) }
 #Preview("Abonelik") { KokEkran(durum: OrnekEkran.abonelik.durum()) }
-#Preview("Süre doldu") { KokEkran(durum: OrnekEkran.sinirDoldu.durum()) }
+#Preview("Abonelik bitti") { KokEkran(durum: OrnekEkran.abonelikBitti.durum()) }
+#Preview("Tanılama — geliştirici") {
+    KokEkran(durum: OrnekEkran.tanilamaGelistirici.durum(), sekme: .ayarlar, tanilamaAcik: true)
+}
 #Preview("Ayarlar — bulut") { KokEkran(durum: OrnekEkran.ayarlarBulut.durum(), sekme: .ayarlar) }
 #Preview("Çeviri — bulut") { KokEkran(durum: OrnekEkran.ceviriBulut.durum()) }
 #Preview("Dil seçimi") {

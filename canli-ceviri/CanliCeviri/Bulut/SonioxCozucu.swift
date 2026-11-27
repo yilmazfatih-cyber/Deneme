@@ -22,24 +22,26 @@ enum SonioxHataSinifi: Equatable {
     var yenidenDenenir: Bool { self == .gecici }
 
     /// Ekranda gösterilen, ne yapılacağını söyleyen Türkçe açıklama (KR1: motor kendiliğinden değişmez).
+    /// Müşteri Ayarlar'ında anahtar ve motor seçimi yoktur (S02 tur 3): iletiler yalnız müşterinin yapabileceğini
+    /// söyler; hatanın türü ve kodu Tanılama'dadır.
     var ekranMetni: String {
         switch self {
         case .gecersizAnahtar:
-            return "Soniox anahtarı geçersiz. Ayarlar'dan anahtarı düzeltin ya da cihaz motoruna geçin."
+            return "Çeviri hizmeti anahtarı kabul etmedi. Ayarlar'daki Destek bağlantısından bize yazın."
         case .izinYok:
-            return "Soniox anahtarının canlı tanıma izni yok. Soniox panelinden izin verin ya da Ayarlar'dan cihaz motoruna geçin."
+            return "Çeviri hizmeti bu anahtara izin vermiyor. Ayarlar'daki Destek bağlantısından bize yazın."
         case .bakiye:
-            return "Soniox bakiyesi ya da aylık bütçesi bitti. Soniox hesabınıza bakiye ekleyin ya da Ayarlar'dan cihaz motoruna geçin."
+            return "Çeviri hizmeti şu an kullanılamıyor (bakiye bitti). Ayarlar'daki Destek bağlantısından bize yazın."
         case .kota:
-            return "Soniox kullanım sınırı aşıldı. Biraz sonra yeniden deneyin ya da Ayarlar'dan cihaz motoruna geçin."
+            return "Çeviri hizmeti şu an çok yoğun. Biraz sonra yeniden deneyin."
         case .sureSiniri:
-            return "Bulut akışı 300 dakikalık sınıra ulaştı. Dinlemeyi yeniden başlatın."
+            return "Dinleme 300 dakikalık sınıra ulaştı. Dinlemeyi yeniden başlatın."
         case .gecersizIstek:
-            return "Soniox isteği kabul etmedi. Ayarlar'dan dil seçimini denetleyin ya da cihaz motoruna geçin."
+            return "Çeviri hizmeti isteği kabul etmedi. Dil seçimini değiştirip yeniden deneyin."
         case .gecici:
-            return "Bulut bağlantısı kurulamadı. İnterneti denetleyip yeniden başlatın ya da Ayarlar'dan cihaz motoruna geçin."
+            return "Çeviri hizmetine bağlanılamadı. İnterneti denetleyip dinlemeyi yeniden başlatın."
         case .diger:
-            return "Bulut motoru hata verdi. Yeniden başlatın ya da Ayarlar'dan cihaz motoruna geçin."
+            return "Çeviri hizmeti hata verdi. Dinlemeyi yeniden başlatın."
         }
     }
 }
