@@ -1,0 +1,895 @@
+{
+ "tarama": {
+  "an": "2026-11-28T10:55:00+03:00",
+  "kategoriler": [
+   "taki-bijuteri",
+   "ayakkabi-terlik",
+   "elbise-etek"
+  ],
+  "not": "Günlük tarama; Alibaba ilanları ve Akakçe doğrudan okundu (Akakçe aralıklı Cloudflare engeli verdi). Takıda yeni adaylar: çelik PVD küpeler, kolye, yüzük — Türkiye fiyatları Akakçe arama sayfasından; baş, aynı satıcının model serilerini tek saydı. Terlikte ve etekte eşiği geçen yok (saten midi etek 2,60). Takip: örgü kemer 5,37 ve erkek kemerler 4,17/3,94 (3 TR ilanı, değişmedi); alışveriş çantası tek TR ilanıyla 2,51'e döndü; eldiven 2,83; deri clutch yeni 5 ilanla 2,80."
+ },
+ "adaylar": [
+  {
+   "urun": "Çelik kalp sallantılı halka küpe (PVD altın kaplama)",
+   "kategori": "taki-bijuteri",
+   "gtip": "7117.19",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/New-18K-PVD-Gold-Plated-Stainless_1601577237870.html",
+    "baslik": "New 18K PVD Gold Plated Stainless Steel Heart Drop Hoop Earrings for Hypoallergenic Minimalist Women Jewelry",
+    "tedarikci": "ilan sayfasında firma adı/yıl görünmüyor (Alibaba, Ready to Ship)",
+    "fiyat_usd": 0.68,
+    "moq": 6,
+    "kademeler": [
+     {
+      "min_adet": 6,
+      "fiyat_usd": 0.68
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 0.6
+     }
+    ],
+    "birim_agirlik_kg": 0.02,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 528.36,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20kalp%20k%C3%BCpe",
+      "baslik": "Gamzeli Renklerim Kalp Ve İnci Detaylı Tarz Küpe Çelik"
+     },
+     {
+      "fiyat_tl": 536.73,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20kalp%20k%C3%BCpe",
+      "baslik": "ForWhat Zarif Kadın için Silver Çelik Beyaz Bombeli Kalp Küpe"
+     },
+     {
+      "fiyat_tl": 296.02,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20kalp%20k%C3%BCpe",
+      "baslik": "Uretti — 4 model, satıcı başına tek sayıldı (ortanca)"
+     },
+     {
+      "fiyat_tl": 599.01,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20kalp%20k%C3%BCpe",
+      "baslik": "Zarif Kadın için — 4 model, satıcı başına tek sayıldı (ortanca)"
+     },
+     {
+      "fiyat_tl": 541.72,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20kalp%20k%C3%BCpe",
+      "baslik": "Clariss — 2 model, satıcı başına tek sayıldı (ortanca)"
+     },
+     {
+      "fiyat_tl": 522.29,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20kalp%20k%C3%BCpe",
+      "baslik": "316L Çelik Gold Renk (seri) — 1 model, satıcı başına tek sayıldı (ortanca)"
+     },
+     {
+      "fiyat_tl": 187.49,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20kalp%20k%C3%BCpe",
+      "baslik": "Chavin — 2 model, satıcı başına tek sayıldı (ortanca)"
+     }
+    ],
+    "not": "Kaynak: Akakçe arama sayfası (ürün başına bağlantı çıkarılamadı, url arama sayfasıdır); markalı (Guess, Fossil, Daniel Klein vb.), altın/gümüş, set/paket ve aksesuar ilanları çıkarıldı. Akakçe 'çelik kalp küpe' sonuçları; tekli çift fiyatı. Baş: aynı satıcının model serileri tek ilan sayıldı (satıcı ortancası). Bağlantılar Akakçe arama sayfası, ürün sayfası değil."
+   },
+   "taklit_riski": false,
+   "gerekce": "Minimal kalp küpe kadın hediyesi olarak sürekli satar; Türkiye'de markasız çelik kalp küpe 160-630 TL.",
+   "riskler": [
+    "Ağırlık ilanda yok (kategori örneği 0,02 kg alındı)",
+    "PVD kaplama dayanıklılığı ve nikel/alerji sertifikası doğrulanmalı",
+    "Tedarikçi bilgisi ilan sayfasında görünmedi",
+    "Fiyat Alibaba'da 'Ready to Ship' ilan; MOQ 6 çift"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/New-18K-PVD-Gold-Plated-Stainless_1601577237870.html",
+    "https://www.akakce.com/arama/?q=%C3%A7elik%20kalp%20k%C3%BCpe",
+    "https://www.akakce.com/arama/?q=%C3%A7elik%20kalp%20k%C3%BCpe"
+   ]
+  },
+  {
+   "urun": "Çelik zirkon taşlı sallantılı halka küpe (PVD)",
+   "kategori": "taki-bijuteri",
+   "gtip": "7117.19",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/18K-PVD-Gold-Plated-Stainless-Steel_1601646827651.html",
+    "baslik": "18K PVD Gold Plated Stainless Steel Hoop Earrings with Cubic Zirconia Drop Hypoallergenic Trendy Women's Jewelry",
+    "tedarikci": "ilan sayfasında firma adı/yıl görünmüyor (Alibaba, Ready to Ship)",
+    "fiyat_usd": 0.76,
+    "moq": 5,
+    "kademeler": [
+     {
+      "min_adet": 5,
+      "fiyat_usd": 0.76
+     },
+     {
+      "min_adet": 30,
+      "fiyat_usd": 0.67
+     },
+     {
+      "min_adet": 50,
+      "fiyat_usd": 0.63
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 0.58
+     }
+    ],
+    "birim_agirlik_kg": 0.02,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 71.81,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20halka%20k%C3%BCpe",
+      "baslik": "stainles steel Çelik Yıldız Tozu Dorika Halka Küpe 3 Cm"
+     },
+     {
+      "fiyat_tl": 68.74,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20halka%20k%C3%BCpe",
+      "baslik": "Mach Halka Küpe Çelik Tırtıklı"
+     },
+     {
+      "fiyat_tl": 903.97,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20halka%20k%C3%BCpe",
+      "baslik": "Çelik Siyah Taşlı Halka Küpe"
+     },
+     {
+      "fiyat_tl": 234.36,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20halka%20k%C3%BCpe",
+      "baslik": "Boncadas KADIN HALKA ÇELİK KÜPE"
+     },
+     {
+      "fiyat_tl": 865.26,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20halka%20k%C3%BCpe",
+      "baslik": "Ose Shop 316L anti alerjik cerrahi celik tek halka küpe 1cm 4 mm"
+     },
+     {
+      "fiyat_tl": 399.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20halka%20k%C3%BCpe",
+      "baslik": "Ocean Pole — 2 model, satıcı başına tek sayıldı (ortanca)"
+     },
+     {
+      "fiyat_tl": 275.44,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20halka%20k%C3%BCpe",
+      "baslik": "Uretti — 4 model, satıcı başına tek sayıldı (ortanca)"
+     }
+    ],
+    "not": "Kaynak: Akakçe arama sayfası (ürün başına bağlantı çıkarılamadı, url arama sayfasıdır); markalı (Guess, Fossil, Daniel Klein vb.), altın/gümüş, set/paket ve aksesuar ilanları çıkarıldı. Akakçe 'çelik halka küpe' sonuçları; yalnız halka/zirkon tekli ürünler. Baş: aynı satıcının model serileri tek ilan sayıldı (satıcı ortancası). Bağlantılar Akakçe arama sayfası, ürün sayfası değil."
+   },
+   "taklit_riski": false,
+   "gerekce": "Halka küpe en çok satan takı grubu; markasız çelik halka 70-400 TL aralığında satılıyor.",
+   "riskler": [
+    "Ağırlık ilanda yok (tahmin 0,02 kg)",
+    "İlanda her kademede ikinci bir yüksek fiyat görünüyor (muhtemelen liste fiyatı); indirim kaydı yazılmadı",
+    "Taş tutuculuğu ve kaplama kalitesi örnekle denenmeli"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/18K-PVD-Gold-Plated-Stainless-Steel_1601646827651.html",
+    "https://www.akakce.com/arama/?q=%C3%A7elik%20halka%20k%C3%BCpe",
+    "https://www.akakce.com/arama/?q=%C3%A7elik%20halka%20k%C3%BCpe"
+   ]
+  },
+  {
+   "urun": "Minimalist çelik geometrik kolye (zincir, kolye ucu)",
+   "kategori": "taki-bijuteri",
+   "gtip": "7117.19",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Minimalist-Chain-Pendant-Jewelry-New-Geometric_1601671596701.html",
+    "baslik": "Minimalist Chain Pendant Jewelry New Geometric Round Hoop Cuboid Pendant Necklace for Women Men Stainless Steel Sweater Chains",
+    "tedarikci": "ilan sayfasında firma adı/yıl görünmüyor (Alibaba, Ready to Ship)",
+    "fiyat_usd": 1.05,
+    "moq": 10,
+    "kademeler": [
+     {
+      "min_adet": 10,
+      "fiyat_usd": 1.05
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 0.99
+     },
+     {
+      "min_adet": 200,
+      "fiyat_usd": 0.92
+     }
+    ],
+    "birim_agirlik_kg": 0.03,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 720.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "Gold Renk Toplu Model 316L Şık Trend Çelik Kolye  Minimalist Ve Parlak Tasarım"
+     },
+     {
+      "fiyat_tl": 960.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "İnci Detaylı Antialerjik, 316L Çelik Gold Renk Kolye - Minimalist Ve Modern"
+     },
+     {
+      "fiyat_tl": 600.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "Gold Renk 316L Şık Yıldız Model Parlak Ve Minimalist Tasarım Çelik Kolye"
+     },
+     {
+      "fiyat_tl": 480.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "Gold Renk Modern Minimalist Kelebek Detaylı  316L Çelik Kolye  Özel Günler İçin Şık Tasarım"
+     },
+     {
+      "fiyat_tl": 960.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "Modern Detaylı Antialerjik, 316L Çelik Gold Renk Balık İtalyan Zincir Kolye - Minimalist Şıklık"
+     },
+     {
+      "fiyat_tl": 453.7,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "3Işıltılı Minimalist Mavi Kelebek Figürlü Çelik Kolye"
+     },
+     {
+      "fiyat_tl": 338.34,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "316L Paslanmaz Çelik Yusufçuk Figürlü Minimalist Kolye - Zarif Tasarım Kolyesi"
+     },
+     {
+      "fiyat_tl": 480.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "316L Antialerjik Gold Renk Kalp Detaylı Minimalist Çelik Kadın Kolye - Zarafet Ve Şıklık Bir Arada"
+     },
+     {
+      "fiyat_tl": 790.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "Begondio Minimalist Kalp El İşçiliği Paslanmaz Çelik Zincir Kadın Kolye"
+     },
+     {
+      "fiyat_tl": 405.5,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "Bella Kadın Minimalist Halkalı Sallantılı Çift Zincirli Lariat Paslanmaz Çelik Kolye"
+     },
+     {
+      "fiyat_tl": 483.69,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "Orvena Organik Damla Kadın Kolye 316L Paslanmaz Çelik Modern Minimalist Kolye"
+     },
+     {
+      "fiyat_tl": 599.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "Marka Kolik Minimalist Kadın Kolye, Zirkon Taşlı Kedi Figürlü, Kararmaz Antialerjik Gold Renk Çelik Takı Toptancısı - Siyah"
+     },
+     {
+      "fiyat_tl": 674.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "Gold Renk Çelik Yıldız Kadın Kolye - Zirkon Taşlı Minimalist Tasarım - Siyah"
+     },
+     {
+      "fiyat_tl": 525.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+      "baslik": "Veganyou — 5 model, satıcı başına tek sayıldı (ortanca)"
+     }
+    ],
+    "not": "Kaynak: Akakçe arama sayfası (ürün başına bağlantı çıkarılamadı, url arama sayfasıdır); markalı (Guess, Fossil, Daniel Klein vb.), altın/gümüş, set/paket ve aksesuar ilanları çıkarıldı. Akakçe 'çelik minimalist kolye' sonuçları; kolye ucu aparatı, künye ve altın/gümüş hariç. Baş: aynı satıcının model serileri tek ilan sayıldı (satıcı ortancası). Bağlantılar Akakçe arama sayfası, ürün sayfası değil."
+   },
+   "taklit_riski": false,
+   "gerekce": "Unisex minimalist çelik kolye hediyelik ve günlük kullanımda yüksek talep görür.",
+   "riskler": [
+    "Ağırlık ilanda yok (tahmin 0,03 kg)",
+    "Çelik sınıfı (316L/304) ilanda belirtilmemiş; başlıkta yalnız 'stainless steel'",
+    "Zincir uzunluğu/ebat ilandan netleşmeli"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Minimalist-Chain-Pendant-Jewelry-New-Geometric_1601671596701.html",
+    "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye",
+    "https://www.akakce.com/arama/?q=%C3%A7elik%20minimalist%20kolye"
+   ]
+  },
+  {
+   "urun": "Çelik altın kaplama çiçek/yaprak desenli yüzük",
+   "kategori": "taki-bijuteri",
+   "gtip": "7117.19",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Retro-Style-Flowers-Love-Leaves-Design_1601293947481.html",
+    "baslik": "Retro Style Flowers Love Leaves Design Gold Plated Stainless Steel Ring Wholesale",
+    "tedarikci": "ilan sayfasında firma adı/yıl görünmüyor (Alibaba, Ready to Ship)",
+    "fiyat_usd": 0.31,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.31
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.28
+     },
+     {
+      "min_adet": 12000,
+      "fiyat_usd": 0.23
+     }
+    ],
+    "birim_agirlik_kg": 0.01,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 293.96,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/yuzuk/en-ucuz-monalisa-home-celik-17-numara-unisex-alyans-fiyati,1604202008.html",
+      "baslik": "Monalisa Home Çelik 17 Numara Unısex Alyans Yüzük"
+     },
+     {
+      "fiyat_tl": 391.46,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/yuzuk/en-ucuz-316l-celik-gold-renk-hasir-model-kadin-fiyati,1474925877.html",
+      "baslik": "316L Çelik Gold Renk (seri) — 8 model, satıcı başına tek sayıldı (ortanca)"
+     }
+    ],
+    "not": "Kaynak: Akakçe arama sayfası (ürün başına bağlantı çıkarılamadı, url arama sayfasıdır); markalı (Guess, Fossil, Daniel Klein vb.), altın/gümüş, set/paket ve aksesuar ilanları çıkarıldı. Akakçe 'çelik yüzük' sonuçları; erkek/markalı/setler hariç. Baş: aynı satıcının model serileri tek ilan sayıldı (satıcı ortancası). Bağlantılar Akakçe arama sayfası, ürün sayfası değil."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kadın çelik yüzük hediyelik ve günlük takı olarak sürekli satar.",
+   "riskler": [
+    "Yüzük beden sorunu: ilanda beden seçeneği doğrulanmalı",
+    "Ağırlık ilanda yok (tahmin 0,01 kg)",
+    "Türkiye karşılaştırması büyük ölçüde tek satıcı/aynı seri (391 TL) etkisinde",
+    "Çok düşük birim fiyat kalite/kaplama riski taşır"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Retro-Style-Flowers-Love-Leaves-Design_1601293947481.html",
+    "https://www.akakce.com/yuzuk/en-ucuz-monalisa-home-celik-17-numara-unisex-alyans-fiyati,1604202008.html",
+    "https://www.akakce.com/yuzuk/en-ucuz-316l-celik-gold-renk-hasir-model-kadin-fiyati,1474925877.html"
+   ]
+  },
+  {
+   "urun": "Örgü elastik kemer (unisex)",
+   "kategori": "kemer",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Fairwin-Unisex-Gift-Elastic-Braided-Belt_1600984297184.html",
+    "baslik": "Fairwin Unisex Gift Elastic Braided Belt 1 3/8\" Width Casual Golf Shorts Jeans Belts",
+    "tedarikci": "Fairwin (ilan sayfasında yıl/doğrulama görünmüyor)",
+    "fiyat_usd": 1.37,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 1.37
+     },
+     {
+      "min_adet": 240,
+      "fiyat_usd": 1.27
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 1.25
+     },
+     {
+      "min_adet": 3000,
+      "fiyat_usd": 1.18
+     }
+    ],
+    "birim_agirlik_kg": 0.1,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 899.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-hediye-kutulu-spor-likrali-elastik-orgu-fiyati,1322653147.html",
+      "baslik": "Hediye Kutulu Spor Likralı Elastik Örgü Kemer"
+     },
+     {
+      "fiyat_tl": 999.96,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-renk-gecis-detayli-elastik-orgu-fiyati,1432775204.html",
+      "baslik": "Renk Geçiş Detaylı Elastik Örgü Kemer"
+     },
+     {
+      "fiyat_tl": 799.0,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-spor-orgu-fiyati,1214674187.html",
+      "baslik": "Spor Örgü Kemer"
+     }
+    ],
+    "not": "Akakçe 'elastik kemer' aramasında markasız örgü/likralı elastik kemer olarak yalnız bu 3 ilan çıktı; diğerleri deri/taktik kemer."
+   },
+   "taklit_riski": false,
+   "gerekce": "Elastik örgü kemer beden derdi az, hediyelik ve günlük ürün.",
+   "riskler": [
+    "Ağırlık tahmin (0,1 kg)",
+    "Türkiye'de benzer ilan sayısı az (3)",
+    "Fiyat dünle aynı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Fairwin-Unisex-Gift-Elastic-Braided-Belt_1600984297184.html",
+    "https://www.akakce.com/kemer/en-ucuz-hediye-kutulu-spor-likrali-elastik-orgu-fiyati,1322653147.html",
+    "https://www.akakce.com/kemer/en-ucuz-renk-gecis-detayli-elastik-orgu-fiyati,1432775204.html"
+   ]
+  },
+  {
+   "urun": "Erkek hakiki deri clutch / el çantası",
+   "kategori": "canta-deri",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Vintage-Men-s-Genuine-Cowhide-Leather_1601552490217.html",
+    "baslik": "Vintage Men's Large Capacity Genuine Cowhide Leather Clutch Wallet Top Layer Zipper Simple Casual Handheld Phone Bag",
+    "tedarikci": "ilan sayfasında firma adı/yıl görünmüyor (Alibaba, Ready to Ship)",
+    "fiyat_usd": 3.8,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 3.8
+     },
+     {
+      "min_adet": 49,
+      "fiyat_usd": 3.7
+     },
+     {
+      "min_adet": 99,
+      "fiyat_usd": 3.6
+     }
+    ],
+    "birim_agirlik_kg": 0.3,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 335.16,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/el-cantasi/en-ucuz-aggu-bebe-siyah-deri-erkek-tiras-cantasi-gunluk-el-cantasi-portfoy-clutch-bakim-cantasi-fiyati,1315128805.html",
+      "baslik": "Aggu Bebe Siyah Deri Erkek Tıraş Çantası Günlük El Çantası Portföy - Clutch Bakım Çantası"
+     },
+     {
+      "fiyat_tl": 759.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/el-cantasi/en-ucuz-viatox-np-507-erkek-deri-portfoy-clutch-tras-kozmetik-bakim-ve-gunluk-siyah-fiyati,1652541895.html",
+      "baslik": "VIATOX Np 507 Erkek Deri Portföy Clutch Traş Kozmetik Bakım ve Günlük El Çantası SİYAH"
+     },
+     {
+      "fiyat_tl": 1279.92,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/el-cantasi/en-ucuz-erzeno-hakiki-deri-luks-model-buyuk-boy-gunluk-erkek-tiras-cantasi-portfoy-clutch-bakim-cantasi-fiyati,1163507203.html",
+      "baslik": "Erzeno Hakiki Deri Lüks Model Büyük Boy Günlük Erkek El Çantası Tıraş Çantası Portföy&Clutch Bakım Çantası"
+     },
+     {
+      "fiyat_tl": 1524.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/el-cantasi/en-ucuz-erzeno-hakiki-deri-uzun-askili-capraz-omuz-ve-erkek-fiyati,1180687773.html",
+      "baslik": "Erzeno Hakiki Deri Uzun Askılı Çapraz Omuz ve Erkek El Çantası"
+     },
+     {
+      "fiyat_tl": 1489.18,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/omuz-cantasi/en-ucuz-nahitatyana-hakiki-deri-erkek-el-cantasi-caprac-canta-evrak-cantasi-fiyati,921508750.html",
+      "baslik": "NahitaTyana Hakiki Deri Erkek El Çantası, Omuz Çantası, Çapraç Çanta, Evrak Çantası"
+     }
+    ],
+    "not": "Akakçe 'erkek deri clutch' aramalarından hakiki/gerçek deri erkek portföy-clutch ve el çantası (5 ilan); suni deri ve kadın modeller hariç."
+   },
+   "taklit_riski": false,
+   "gerekce": "Erkek el çantası/portföy hediyelik ve günlük kullanımda satılır.",
+   "riskler": [
+    "Ağırlık tahmin (0,3 kg)",
+    "Hakiki deri ithalatında gümrük/etiketleme kuralları kontrol edilmeli",
+    "Fiyat dünle aynı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Vintage-Men-s-Genuine-Cowhide-Leather_1601552490217.html",
+    "https://www.akakce.com/el-cantasi/en-ucuz-aggu-bebe-siyah-deri-erkek-tiras-cantasi-gunluk-el-cantasi-portfoy-clutch-bakim-cantasi-fiyati,1315128805.html",
+    "https://www.akakce.com/el-cantasi/en-ucuz-viatox-np-507-erkek-deri-portfoy-clutch-tras-kozmetik-bakim-ve-gunluk-siyah-fiyati,1652541895.html"
+   ]
+  },
+  {
+   "urun": "Katlanabilir polyester alışveriş çantası (kılıfına katlanır)",
+   "kategori": "canta-kumas",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Custom-Eco-friendly-Carry-Packaging-Reusable_1600512383899.html",
+    "baslik": "Custom Eco-friendly Reusable Polyester Tote Bag, Foldable Portable Grocery Shopping Bag",
+    "tedarikci": "ilanda görülmedi",
+    "fiyat_usd": 0.39,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 0.39
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 0.37
+     },
+     {
+      "min_adet": 50000,
+      "fiyat_usd": 0.35
+     }
+    ],
+    "birim_agirlik_kg": 0.08,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 172.66,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/omuz-cantasi/en-ucuz-tarzinisec-tarzini-sec-katlanabilir-cepli-bez-market-cantasi-44x48-cm-avokado-desenli-alisveris-cantasi-fiyati,1792445363.html",
+      "baslik": "Tarzını Seç Katlanabilir Cepli Bez Market Çantası 44x48 cm"
+     }
+    ],
+    "not": "Akakçe'de markasız katlanabilir (kılıflı) alışveriş çantası aramaları yalnız bu ürünü (varyantları tek sayıldı: 160,63-174,33 TL) verdi; diğerleri tekerlekli pazar arabası/araç organizeri. 25.11'deki Baag Istanbul 437,25 TL ve iki 645-650 TL ilanı bu turda yeniden doğrulanamadı (Akakçe Cloudflare engeli)."
+   },
+   "taklit_riski": false,
+   "gerekce": "Market poşeti yerine kullanılan katlanabilir bez çanta günlük ihtiyaçtır ve hafiftir.",
+   "riskler": [
+    "Türkiye karşılaştırması tek ilana dayanıyor",
+    "Ağırlık tahmin",
+    "Tedarikçi bilgisi okunamadı",
+    "Dalgalı Türkiye fiyatı (172-650 TL)"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Custom-Eco-friendly-Carry-Packaging-Reusable_1600512383899.html",
+    "https://www.akakce.com/arama/?q=katlanabilir+bez+market+%C3%A7antas%C4%B1"
+   ]
+  },
+  {
+   "urun": "Dokunmatik ekran uyumlu örgü kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Solid Magic Gloves Capacitive Mobile Phone Smartphone Texting Touchscreen Gloves Knit Hot Winter Warm Mittens",
+    "tedarikci": "ilanda görülmedi",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 36,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 60,
+      "fiyat_usd": 0.44
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.06,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 248.57,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kislik-eldiven/en-ucuz-axe-sportswear-kadin-kislik-yumusak-dokulu-triko-orgu-eldiven-bas-ve-isaret-parmak-dokunmatik-ekran-uyumlu-telefon-tablet-kullanimli-soguktan-koruyucu-sicak-tutan-eldiven-fiyati,1798876458.html",
+      "baslik": "AXE Sportswear Kadın Kışlık Triko Örgü Eldiven, dokunmatik ekran uyumlu"
+     }
+    ],
+    "not": "Akakçe 'dokunmatik örgü eldiven' aramasında yalnız bu ilan çıktı; diğer arama denemeleri Cloudflare engeline takıldı. Tek ilan."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kış aylarında telefon kullanımına izin veren ucuz örgü eldiven sürekli satar.",
+   "riskler": [
+    "Türkiye karşılaştırması tek ilana dayanıyor",
+    "Ağırlık tahmin",
+    "En ucuz kademe 120 adette; MOQ 12 fiyatı en yüksek",
+    "Bedensiz ama tek beden esnekliği doğrulanmadı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.akakce.com/arama/?q=dokunmatik+%C3%B6rg%C3%BC+eldiven"
+   ]
+  },
+  {
+   "urun": "Elastik belli saten midi etek (büyük beden)",
+   "kategori": "elbise-etek",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/WY255702-Factory-Outlet-M-4XL-Summer_1601535258449.html",
+    "baslik": "WY255702 Factory Outlet M-4XL Summer Midi Pleated Skirt Plus Sizes Women's Elastic High Waist Satin Plain A-Line Skirt",
+    "tedarikci": "Nanchang Zhaoyun Garment Co., Ltd. (yıl/doğrulama görünmedi; Trade Assurance)",
+    "fiyat_usd": 1.9,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 1.9
+     },
+     {
+      "min_adet": 10,
+      "fiyat_usd": 1.89
+     },
+     {
+      "min_adet": 50,
+      "fiyat_usd": 1.88
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 1.83
+     }
+    ],
+    "birim_agirlik_kg": 0.25,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 577.12,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/etek/en-ucuz-can-kesim-midi-mavi-saten-fiyati,1178129815.html",
+      "baslik": "Çan Kesim Midi Saten Etek (mavi/krem/pembe/bordo tek sayıldı)"
+     },
+     {
+      "fiyat_tl": 629.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/etek/en-ucuz-slim-fit-beli-lastikli-midi-saten-fiyati,1260028577.html",
+      "baslik": "Slim Fit Beli Lastikli Midi Saten Etek"
+     },
+     {
+      "fiyat_tl": 749.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/etek/en-ucuz-regular-fit-midi-boy-saten-klos-fiyati,1175381641.html",
+      "baslik": "Regular Fit Midi Boy Saten Kloş Etek"
+     },
+     {
+      "fiyat_tl": 817.63,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/etek/en-ucuz-kadin-midi-boy-a-line-saten-dokuma-gunluk-siklik-hafta-sonu-yaz-aylarinin-vazgecilmezi-fiyati,1154909717.html",
+      "baslik": "Kadın Midi Boy A line Saten Dokuma Etek"
+     },
+     {
+      "fiyat_tl": 999.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/etek/en-ucuz-midi-boy-saten-acik-yesil-fiyati,1178077080.html",
+      "baslik": "Midi Boy Saten Etek (açık yeşil/ekru/camel tek sayıldı)"
+     }
+    ],
+    "not": "Akakçe en ucuz fiyatlar, 28.11.2026; markasız/pazar yeri saten midi etekler (A-line, çan, kloş, lastikli bel); Koton/DeFacto/Parfois gibi markalılar sayılmadı. Trendyol/Hepsiburada okunamadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Saten midi etek sezonluk ve yıl boyu sürekli satan, bedeni esnek bantlı bir parça.",
+   "riskler": [
+    "Fiyat çok düşük (1,9 $), gerçek kumaş/ölçü doğrulanmalı; aynı ürünün 1601438568056 ve 1601637327565 ilanları da var",
+    "Kumaş kalitesi/örnek gerekli",
+    "Ağırlık ilanda yok, tahmin",
+    "Kış için kalın astar/kumaş değil, satin ince"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/WY255702-Factory-Outlet-M-4XL-Summer_1601535258449.html"
+   ]
+  },
+  {
+   "urun": "Pliseli saten midi etek",
+   "kategori": "elbise-etek",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/2025-Women-Vintage-Midi-Skirt-Wide_1601515392194.html",
+    "baslik": "2025 Women Vintage Midi Skirt Wide Elastic Waistband High Waist Pleated A-Line Skirt Summer Solid Color Smooth Satin Long Skirts",
+    "tedarikci": "Quanzhou Minshan Import & Export Trading Co., Ltd. (yıl/doğrulama görünmedi; Trade Assurance)",
+    "fiyat_usd": 2.79,
+    "moq": 10,
+    "kademeler": [
+     {
+      "min_adet": 10,
+      "fiyat_usd": 2.79
+     },
+     {
+      "min_adet": 30,
+      "fiyat_usd": 2.65
+     },
+     {
+      "min_adet": 50,
+      "fiyat_usd": 2.55
+     }
+    ],
+    "birim_agirlik_kg": 0.25,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 577.12,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/etek/en-ucuz-can-kesim-midi-mavi-saten-fiyati,1178129815.html",
+      "baslik": "Çan Kesim Midi Saten Etek (mavi/krem/pembe/bordo tek sayıldı)"
+     },
+     {
+      "fiyat_tl": 629.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/etek/en-ucuz-slim-fit-beli-lastikli-midi-saten-fiyati,1260028577.html",
+      "baslik": "Slim Fit Beli Lastikli Midi Saten Etek"
+     },
+     {
+      "fiyat_tl": 749.99,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/etek/en-ucuz-regular-fit-midi-boy-saten-klos-fiyati,1175381641.html",
+      "baslik": "Regular Fit Midi Boy Saten Kloş Etek"
+     },
+     {
+      "fiyat_tl": 817.63,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/etek/en-ucuz-kadin-midi-boy-a-line-saten-dokuma-gunluk-siklik-hafta-sonu-yaz-aylarinin-vazgecilmezi-fiyati,1154909717.html",
+      "baslik": "Kadın Midi Boy A line Saten Dokuma Etek"
+     },
+     {
+      "fiyat_tl": 999.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/etek/en-ucuz-midi-boy-saten-acik-yesil-fiyati,1178077080.html",
+      "baslik": "Midi Boy Saten Etek (açık yeşil/ekru/camel tek sayıldı)"
+     }
+    ],
+    "not": "Akakçe en ucuz fiyatlar, 28.11.2026; markasız/pazar yeri saten midi etekler (A-line, çan, kloş, lastikli bel); Koton/DeFacto/Parfois gibi markalılar sayılmadı. Trendyol/Hepsiburada okunamadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Saten midi etek sezonluk ve yıl boyu sürekli satan, bedeni esnek bantlı bir parça.",
+   "riskler": [
+    "Yaz ilanı; Türkiye'de kışlık kombinle satılır, mevsim uyumu orta",
+    "Kumaş kalitesi/örnek gerekli",
+    "Ağırlık ilanda yok, tahmin",
+    "Kış için kalın astar/kumaş değil, satin ince"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/2025-Women-Vintage-Midi-Skirt-Wide_1601515392194.html"
+   ]
+  },
+  {
+   "urun": "Erkek otomatik tokalı PU kemer",
+   "kategori": "kemer",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Belt-Male-Factory-Custom-Selling-Men_1600459863541.html",
+    "baslik": "Belt Male Factory Custom Selling Men's Business Automatic Buckle Manufacture Belt High Quality PU Leather Belt Men",
+    "tedarikci": "Wenzhou Yuanqiao Leather Goods Co., Ltd. (yıl/doğrulama görünmedi)",
+    "fiyat_usd": 0.6,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 0.6
+     },
+     {
+      "min_adet": 300,
+      "fiyat_usd": 0.57
+     },
+     {
+      "min_adet": 3000,
+      "fiyat_usd": 0.54
+     }
+    ],
+    "birim_agirlik_kg": 0.12,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 449.88,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-dagoster-dmk26-353-siyah-4-cm-suni-deri-siyah-fiyati,986921207.html",
+      "baslik": "Dagoster DMK26 4 cm suni deri erkek kemer (varyantlar tek sayıldı)"
+     },
+     {
+      "fiyat_tl": 449.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-deribond-siyah-erkek-130-cm-fiyati,1738812000.html",
+      "baslik": "Deribond siyah erkek kemer 130 cm"
+     },
+     {
+      "fiyat_tl": 367.18,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-deepsea-erkek-lacivert-duz-sade-suni-deri-gunluk-spor-2602658-fiyati,1426970844.html",
+      "baslik": "DeepSEA 2602658 erkek suni deri günlük kemer"
+     }
+    ],
+    "not": "Akakçe 28.11.2026: yalnız 3 markasız suni deri erkek kemer sayfası okunabildi (Cloudflare kesintili; Ziya/Süzer/Derikem suni deri sayfası bulunamadı). Süzer suni deri otomatik kemer arama özetinde 899,90 TL görüldü ama ürün URL'si doğrulanamadı, eklenmedi. DeFacto 150-264 TL markalı, sayılmadı; palaska tarzı taktik paketler farklı ürün."
+   },
+   "taklit_riski": false,
+   "gerekce": "Suni deri erkek kemer hafif, bedensiz ayarlanabilir ve sürekli satan bir aksesuar.",
+   "riskler": [
+    "Ağırlık tahmin",
+    "Karşılaştırma yalnız 3 Türkiye ilanı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Belt-Male-Factory-Custom-Selling-Men_1600459863541.html"
+   ]
+  },
+  {
+   "urun": "Erkek pimli tokalı PU kemer",
+   "kategori": "kemer",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/2024-Pu-Leather-Belts-Men-Professional_1600321987837.html",
+    "baslik": "2024 Pu Leather Belts Men Professional Belts Best Price Cheap Customize Pin Buckle Belt for Men",
+    "tedarikci": "Wenzhou Yuanqiao Leather Goods Co., Ltd. (yıl/doğrulama görünmedi)",
+    "fiyat_usd": 0.67,
+    "moq": 50,
+    "kademeler": [
+     {
+      "min_adet": 50,
+      "fiyat_usd": 0.67
+     },
+     {
+      "min_adet": 600,
+      "fiyat_usd": 0.64
+     },
+     {
+      "min_adet": 3000,
+      "fiyat_usd": 0.61
+     }
+    ],
+    "birim_agirlik_kg": 0.12,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 449.88,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-dagoster-dmk26-353-siyah-4-cm-suni-deri-siyah-fiyati,986921207.html",
+      "baslik": "Dagoster DMK26 4 cm suni deri erkek kemer (varyantlar tek sayıldı)"
+     },
+     {
+      "fiyat_tl": 449.9,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-deribond-siyah-erkek-130-cm-fiyati,1738812000.html",
+      "baslik": "Deribond siyah erkek kemer 130 cm"
+     },
+     {
+      "fiyat_tl": 367.18,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/kemer/en-ucuz-deepsea-erkek-lacivert-duz-sade-suni-deri-gunluk-spor-2602658-fiyati,1426970844.html",
+      "baslik": "DeepSEA 2602658 erkek suni deri günlük kemer"
+     }
+    ],
+    "not": "Akakçe 28.11.2026: yalnız 3 markasız suni deri erkek kemer sayfası okunabildi (Cloudflare kesintili; Ziya/Süzer/Derikem suni deri sayfası bulunamadı). Süzer suni deri otomatik kemer arama özetinde 899,90 TL görüldü ama ürün URL'si doğrulanamadı, eklenmedi. DeFacto 150-264 TL markalı, sayılmadı; palaska tarzı taktik paketler farklı ürün."
+   },
+   "taklit_riski": false,
+   "gerekce": "Suni deri erkek kemer hafif, bedensiz ayarlanabilir ve sürekli satan bir aksesuar.",
+   "riskler": [
+    "Ağırlık tahmin",
+    "Karşılaştırma yalnız 3 Türkiye ilanı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/2024-Pu-Leather-Belts-Men-Professional_1600321987837.html"
+   ]
+  }
+ ]
+}
